@@ -12,10 +12,12 @@ function normalizeBasePath(value) {
 }
 
 const base = normalizeBasePath(process.env.BASE_PATH ?? '/');
+const site = process.env.SITE_URL?.trim();
 
 export default defineConfig({
   output: 'static',
   base,
+  ...(site ? { site } : {}),
   trailingSlash: 'always',
   build: {
     format: 'directory',
