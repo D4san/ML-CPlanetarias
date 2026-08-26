@@ -50,7 +50,7 @@ jobs:
       - run: npm run test:visual
       - if: github.event_name == 'schedule'
         run: npm run test:e2e:cross-browser
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
