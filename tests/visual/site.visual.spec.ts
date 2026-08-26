@@ -113,6 +113,8 @@ test('S01 journey evidence and limit state', async ({ page }) => {
       name: 'La curva demuestra que el modelo aprendió el mecanismo físico.',
     })
     .click();
+  // Keep the visual state deterministic across Chromium/CI focus behavior.
+  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
   await expect(journey).toHaveScreenshot('s01-journey-evidence.png');
 });
 
