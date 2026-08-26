@@ -82,6 +82,9 @@ test('S01 projector narrative across all stops', async ({ page }, testInfo) => {
 test('S01 flipped prediction card', async ({ page }) => {
   await page.goto('./sistema/');
   await page.evaluate(() => document.fonts.ready);
+  await page.addStyleTag({
+    content: '.s01-outcome-card__stage { transition: none !important; }',
+  });
   await page.getByRole('button', { name: 'Predecir. Abrir tarjeta' }).click();
   await page.getByRole('button', { name: 'Voltear: ver definición' }).click();
   await expect(page.locator('.s01-outcome-card')).toHaveScreenshot('s01-predict-card-back.png');
@@ -90,6 +93,9 @@ test('S01 flipped prediction card', async ({ page }) => {
 test('S01 flipped task definition card', async ({ page }) => {
   await page.goto('./sistema/#tarea');
   await page.evaluate(() => document.fonts.ready);
+  await page.addStyleTag({
+    content: '.s01-outcome-card__stage { transition: none !important; }',
+  });
   await page.getByRole('button', { name: 'Regresión. Abrir definición' }).click();
   await page.getByRole('button', { name: 'Voltear: ver definición' }).click();
   await expect(page.locator('.s01-outcome-card')).toHaveScreenshot('s01-regression-card-back.png');
@@ -104,7 +110,11 @@ test('sessions lists S01 as an internal prototype', async ({ page }) => {
 test('S01 journey evidence and limit state', async ({ page }) => {
   await page.goto('./sistema/');
   await page.evaluate(() => document.fonts.ready);
-  await page.addStyleTag({ content: '.site-header { position: static !important; }' });
+  await page.addStyleTag({
+    content:
+      '.site-header { position: static !important; } .skip-link { display: none !important; }',
+  });
+  await page.locator('.skip-link').evaluate((element) => element.remove());
   const journey = page.locator('.s01-journey[data-ready="true"]');
   await page.getByRole('button', { name: '7. Evidencia y límites' }).click();
   await page.getByRole('button', { name: 'Excesiva' }).click();
