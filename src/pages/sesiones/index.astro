@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { withBase } from '../../lib/urls';
+
+const sessions = (await getCollection('sessions')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<SiteLayout
+  title="Sesiones"
+  description="Sesiones y prototipos del curso ML Ciencias Planetarias con estado explícito."
+>
+  <header class="site-shell page-intro">
+    <span class="eyebrow">Cadencia quincenal</span>
+    <h1>Sesiones</h1>
+    <p class="lede">
+      Cada sesión conecta pregunta científica, teoría formal, evaluación, límites y transferencia
+      docente. Los prototipos internos y el contenido revisado muestran siempre su estado.
+    </p>
+  </header>
+  <section class="site-shell" aria-label="Listado de sesiones">
+    <ol class="collection-list">
+      <li class="session-preview">
+        <span class="eyebrow">S01 · en desarrollo</span>
+        <div>
+          <span class="status-tag">Prototipo interno</span>
+          <h2><a href={withBase('/sistema/')}>ML, IA y métodos estadísticos</a></h2>
+          <p>
+            Construye el recorrido desde la pregunta científica hasta los datos, la señal, la tarea,
+            la familia de modelo, la evaluación y sus límites.
+          </p>
+          <a class="text-link" href={withBase('/sistema/')}>Explorar la sesión 1</a>
+        </div>
+      </li>
+      {
+        sessions.map((session) => (
+          <li>
+            <span class="eyebrow">{session.data.session}</span>
+            <div>
+              <h2>
+                <a href={withBase(`/sesiones/${session.id}/`)}>{session.data.title}</a>
+              </h2>
+              <p>{session.data.summary}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+    {
+      sessions.length === 0 && (
+        <p class="sessions-public-note">
+          Las colecciones públicas siguen vacías. S01 se lista aquí como prototipo interno mientras
+          continúa la revisión editorial.
+        </p>
+      )
+    }
+  </section>
+</SiteLayout>
+
+<style>
+  .session-preview {
+    border-top: 0.2rem solid var(--data);
+  }
+
+  .session-preview .status-tag {
+    margin-bottom: var(--space-4);
+  }
+
+  .session-preview h2 {
+    font-size: var(--step-3);
+  }
+
+  .session-preview p {
+    max-width: 58ch;
+    margin-bottom: var(--space-4);
+  }
+
+  .sessions-public-note {
+    max-width: 64ch;
+    margin-top: var(--space-5);
+    color: var(--ink-700);
+    font-size: var(--step--1);
+  }
+</style>

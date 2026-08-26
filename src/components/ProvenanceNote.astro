@@ -1,0 +1,15 @@
+---
+interface Props {
+  note: string;
+  heading: string;
+  vault: string;
+  rights: string;
+}
+
+const { note, heading, vault, rights } = Astro.props;
+---
+
+<aside class="provenance-note" aria-label="Procedencia">
+  <strong>Procedencia.</strong>
+  {vault}: <code>{note}</code>, sección <q>{heading}</q>. Derechos: {rights}.
+</aside>

@@ -1,0 +1,146 @@
+---
+import BrandMark from './BrandMark.astro';
+import { withBase } from '../lib/urls';
+
+const currentPath = Astro.url.pathname;
+const links = [
+  { href: '/sesiones/', label: 'Sesiones' },
+  { href: '/glosario/', label: 'Glosario' },
+  { href: '/ejercicios/', label: 'Ejercicios' },
+  { href: '/sistema/', label: 'S01' },
+];
+
+function active(href: string) {
+  return currentPath.startsWith(withBase(href));
+}
+---
+
+<header class="site-header">
+  <div class="site-shell header-inner">
+    <a class="brand" href={withBase('/')} aria-label="ML Ciencias Planetarias, inicio">
+      <BrandMark />
+      <span><strong>ML</strong> Ciencias Planetarias</span>
+    </a>
+    <nav aria-label="Navegación principal">
+      <ul>
+        {
+          links.map((link) => (
+            <li>
+              <a href={withBase(link.href)} aria-current={active(link.href) ? 'page' : undefined}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    border-bottom: 1px solid rgb(7 26 37 / 0.11);
+    background: rgb(251 248 240 / 0.86);
+    backdrop-filter: blur(16px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 4.5rem;
+    gap: var(--space-5);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--ink-950);
+    text-decoration: none;
+  }
+
+  .brand span {
+    font-family: var(--font-display);
+    font-size: 1.08rem;
+    line-height: 1.05;
+  }
+
+  .brand strong {
+    display: block;
+    color: var(--data);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+  }
+
+  nav ul {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.6rem, 2vw, 1.7rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav a {
+    position: relative;
+    display: block;
+    padding-block: 0.7rem;
+    color: var(--ink-700);
+    font-size: 0.9rem;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  nav a::after {
+    position: absolute;
+    right: 0;
+    bottom: 0.35rem;
+    left: 0;
+    height: 2px;
+    background: var(--data);
+    content: '';
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--ink-950);
+  }
+
+  nav a:hover::after,
+  nav a[aria-current='page']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  @media (max-width: 45rem) {
+    .site-header {
+      position: static;
+    }
+
+    .header-inner {
+      align-items: flex-start;
+      flex-direction: column;
+      padding-block: var(--space-3);
+    }
+
+    nav {
+      overflow-x: auto;
+      width: 100%;
+      scrollbar-width: thin;
+    }
+
+    nav ul {
+      width: max-content;
+      min-width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>

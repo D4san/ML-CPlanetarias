@@ -1,0 +1,4 @@
+interface:
+  display_name: "Desarrollar MLCP Web"
+  short_description: "Construye y verifica páginas interactivas MLCP"
+  default_prompt: "Use $develop-mlcp-web para construir y verificar una página educativa interactiva del curso MLCP."

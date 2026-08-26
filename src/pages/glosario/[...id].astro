@@ -1,0 +1,60 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { withBase } from '../../lib/urls';
+
+export async function getStaticPaths() {
+  const [concepts, sessions, exercises] = await Promise.all([
+    getCollection('concepts'),
+    getCollection('sessions'),
+    getCollection('exercises'),
+  ]);
+  return concepts.map((entry) => ({
+    params: { id: entry.id },
+    props: {
+      entry,
+      sessions: sessions.filter((session) =>
+        session.data.concepts.some((concept) => concept.id === entry.id),
+      ),
+      exercises: exercises.filter((exercise) =>
+        exercise.data.concepts.some((concept) => concept.id === entry.id),
+      ),
+    },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'concepts'>;
+  sessions: CollectionEntry<'sessions'>[];
+  exercises: CollectionEntry<'exercises'>[];
+}
+
+const { entry, sessions, exercises } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<ArticleLayout {...entry.data}>
+  <Content />
+  <section aria-labelledby="used-by-title">
+    <h2 id="used-by-title">Dónde se usa</h2>
+    {
+      sessions.length + exercises.length === 0 ? (
+        <p>Aún no hay sesiones o ejercicios públicos enlazados.</p>
+      ) : (
+        <ul>
+          {sessions.map((session) => (
+            <li>
+              <a href={withBase(`/sesiones/${session.id}/`)}>{session.data.title}</a>
+            </li>
+          ))}
+          {exercises.map((exercise) => (
+            <li>
+              <a href={withBase(`/ejercicios/${exercise.id}/`)}>{exercise.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</ArticleLayout>

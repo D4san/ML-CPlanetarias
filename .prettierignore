@@ -1,0 +1,15 @@
+.astro/
+.agents/
+.codex/
+coverage/
+dist/
+inbox/
+node_modules/
+outbox/
+output/
+public/
+skills/
+config/obsidian.local.example.yaml
+docs/**/*.md
+AGENTS.md
+README.md

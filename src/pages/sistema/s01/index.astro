@@ -1,0 +1,23 @@
+---
+import { withBase } from '../../../lib/urls';
+
+const target = withBase('/sistema/');
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+    <title>Sesión 1 · ML Ciencias Planetarias</title>
+    <script is:inline define:vars={{ target }}>
+      window.location.replace(`${target}${window.location.hash}`);
+    </script>
+  </head>
+  <body>
+    <p><a href={target}>Continuar a la sesión 1</a></p>
+  </body>
+</html>

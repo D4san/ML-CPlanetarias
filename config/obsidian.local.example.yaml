@@ -1,0 +1,12 @@
+# Copiar como config/obsidian.local.yaml y ajustar solo en la máquina local.
+# El archivo real está ignorado por Git.
+vault:
+  name: DASAN
+  root: "<ruta local del vault>"
+  course_root: "01 Temas/Academia/Maestría/ML Ciencias Planetarias"
+  default_access: read_only
+
+bridge:
+  mode: manual-packets
+  relative_source_field: source_note
+  return_channel: outbox

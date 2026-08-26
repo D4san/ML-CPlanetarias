@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mlcp.local/schemas/packet.schema.json",
+  "title": "Paquete de entrada MLCP",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "status",
+    "source_vault",
+    "source_note",
+    "source_heading",
+    "visibility",
+    "publish_ready"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$" },
+    "kind": {
+      "enum": [
+        "session",
+        "session-packet",
+        "concept",
+        "concept-bundle",
+        "exercise",
+        "notebook",
+        "figure"
+      ]
+    },
+    "status": { "enum": ["intake", "drafting", "reviewed", "published", "returned"] },
+    "source_vault": { "type": "string", "minLength": 1 },
+    "source_note": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?!/)(?!file:).+"
+    },
+    "source_heading": { "type": "string", "minLength": 1 },
+    "source_block": { "type": ["string", "null"] },
+    "concepts": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "source_refs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "visibility": { "enum": ["internal", "public"] },
+    "publish_ready": { "type": "boolean" }
+  },
+  "additionalProperties": true
+}

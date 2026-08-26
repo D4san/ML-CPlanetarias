@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+
+import EmptyState from '../../components/EmptyState.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { withBase } from '../../lib/urls';
+
+const exercises = (await getCollection('exercises')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<SiteLayout title="Ejercicios" description="Ejercicios y desafíos revisados del curso.">
+  <header class="site-shell page-intro">
+    <span class="eyebrow">Transferencia y práctica acotada</span>
+    <h1>Ejercicios</h1>
+    <p class="lede">
+      Desafíos conceptuales y computacionales separados de las prácticas completas. Cada uno declara
+      propósito, conceptos, evidencia esperada y límites.
+    </p>
+  </header>
+  <section class="site-shell" aria-label="Listado de ejercicios">
+    {
+      exercises.length === 0 ? (
+        <EmptyState
+          title="Todavía no hay ejercicios públicos"
+          message="Los microproblemas del curso no se convierten automáticamente en prácticas ni en evidencia científica."
+        />
+      ) : (
+        <ol class="collection-list">
+          {exercises.map((exercise) => (
+            <li>
+              <span class="eyebrow">Ejercicio</span>
+              <div>
+                <h2>
+                  <a href={withBase(`/ejercicios/${exercise.id}/`)}>{exercise.data.title}</a>
+                </h2>
+                <p>{exercise.data.summary}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </section>
+</SiteLayout>

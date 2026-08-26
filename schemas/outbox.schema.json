@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mlcp.local/schemas/outbox.schema.json",
+  "title": "Salida del repositorio hacia Obsidian",
+  "type": "object",
+  "required": ["packet", "artifact", "vault_note", "vault_heading", "kind", "status"],
+  "properties": {
+    "packet": { "type": "string", "minLength": 1 },
+    "artifact": { "type": "string", "minLength": 1 },
+    "vault_note": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?!/)(?!file:).+"
+    },
+    "vault_heading": { "type": "string", "minLength": 1 },
+    "kind": { "enum": ["observation", "proposal", "reproducible-error", "decision"] },
+    "status": { "enum": ["open", "accepted", "rejected", "deferred"] }
+  },
+  "additionalProperties": true
+}

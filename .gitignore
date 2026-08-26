@@ -1,0 +1,29 @@
+# Configuración local de la máquina; nunca versionar rutas personales.
+config/obsidian.local.yaml
+
+# Material de trabajo no publicable.
+inbox-private/
+
+# Estado y artefactos temporales.
+.codex/local/
+.agents/local/
+tmp/
+*.log
+.astro/
+coverage/
+dist/
+node_modules/
+output/
+
+# Variables locales y resultados de herramientas.
+.env
+.env.*
+!.env.example
+playwright-report/
+test-results/
+
+# Configuración de Obsidian si alguna copia local termina dentro del repo.
+.obsidian/
+
+# Directorio auxiliar con su propio repositorio; no forma parte del sitio.
+ML-Exoplanets/

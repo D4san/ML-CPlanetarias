@@ -1,0 +1,15 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { withBase } from '../lib/urls';
+---
+
+<SiteLayout title="Página no encontrada" noindex>
+  <section class="site-shell page-intro">
+    <span class="eyebrow">Error 404</span>
+    <h1>Esta órbita no existe.</h1>
+    <p class="lede">
+      La página cambió de ruta o todavía no ha pasado desde revisión hasta publicación.
+    </p>
+    <a class="text-link" href={withBase('/')}>Volver al mapa del curso</a>
+  </section>
+</SiteLayout>

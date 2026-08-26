@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mlcp.local/schemas/public-content.schema.json",
+  "title": "Contenido publicable MLCP",
+  "type": "object",
+  "required": [
+    "title",
+    "summary",
+    "kind",
+    "status",
+    "source_vault",
+    "source_note",
+    "source_heading",
+    "visibility",
+    "publish_ready",
+    "rights"
+  ],
+  "properties": {
+    "title": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1 },
+    "kind": { "enum": ["session", "concept", "exercise"] },
+    "status": { "enum": ["reviewed", "published"] },
+    "source_vault": { "type": "string", "minLength": 1 },
+    "source_note": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?!/)(?!file:).+"
+    },
+    "source_heading": { "type": "string", "minLength": 1 },
+    "source_block": { "type": ["string", "null"] },
+    "source_refs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "visibility": { "const": "public" },
+    "publish_ready": { "const": true },
+    "concepts": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "rights": {
+      "type": "object",
+      "required": ["status", "note"],
+      "properties": {
+        "status": { "enum": ["original", "open-license", "permission"] },
+        "note": { "type": "string", "minLength": 1 },
+        "license": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

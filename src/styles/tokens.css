@@ -1,0 +1,62 @@
+:root {
+  color-scheme: light;
+
+  --ink-950: #071a25;
+  --ink-900: #0d2633;
+  --ink-800: #173743;
+  --ink-700: #31515b;
+  --ink-500: #668087;
+  --paper-50: #fbf8f0;
+  --paper-100: #f3eddf;
+  --paper-200: #e3d9c6;
+  --paper-300: #cabca3;
+  --white: #fffdf8;
+
+  --data: #007c87;
+  --data-soft: #c8eef0;
+  --model: #5144c9;
+  --model-soft: #e3defb;
+  --decision: #965000;
+  --decision-soft: #f5dfbb;
+  --limit: #b33b3b;
+  --limit-soft: #f7d8d2;
+  --transfer: #256f55;
+  --transfer-soft: #d1eadf;
+  --question: #1f5b75;
+  --question-soft: #d6e9f1;
+
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+  --font-body: Aptos, 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: clamp(1.1rem, 1.02rem + 0.35vw, 1.3rem);
+  --step-2: clamp(1.35rem, 1.16rem + 0.8vw, 1.8rem);
+  --step-3: clamp(1.75rem, 1.35rem + 1.55vw, 2.7rem);
+  --step-4: clamp(2.3rem, 1.55rem + 3vw, 4.4rem);
+  --step-5: clamp(3rem, 1.65rem + 5vw, 6.4rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+
+  --measure: 72ch;
+  --wide: 76rem;
+  --screen: 92rem;
+  --radius-sm: 0.35rem;
+  --radius-md: 0.75rem;
+  --radius-pill: 999px;
+  --line: 1px solid color-mix(in srgb, var(--ink-950) 18%, transparent);
+  --shadow-float: 0 1.5rem 4rem rgb(7 26 37 / 0.12);
+  --focus: 0 0 0 3px var(--paper-50), 0 0 0 6px var(--data);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 140ms;
+  --duration-base: 260ms;
+}

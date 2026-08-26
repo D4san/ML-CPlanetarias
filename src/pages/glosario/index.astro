@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+
+import EmptyState from '../../components/EmptyState.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { withBase } from '../../lib/urls';
+
+const concepts = (await getCollection('concepts')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title, 'es'),
+);
+---
+
+<SiteLayout title="Glosario" description="Glosario bidireccional de ML Ciencias Planetarias.">
+  <header class="site-shell page-intro">
+    <span class="eyebrow">Conceptos atómicos y reutilizables</span>
+    <h1>Glosario bidireccional</h1>
+    <p class="lede">
+      Cada concepto enlaza las sesiones y ejercicios que lo usan. Las relaciones inversas se
+      calculan durante el build para evitar listas duplicadas.
+    </p>
+  </header>
+  <section class="site-shell" aria-label="Listado de conceptos">
+    {
+      concepts.length === 0 ? (
+        <EmptyState
+          title="El glosario público está vacío"
+          message="Las semillas conceptuales de S01 siguen en revisión interna. Ninguna definición se publica por inferencia."
+        />
+      ) : (
+        <ol class="collection-list">
+          {concepts.map((concept) => (
+            <li>
+              <span class="eyebrow">{concept.data.branch}</span>
+              <div>
+                <h2>
+                  <a href={withBase(`/glosario/${concept.id}/`)}>{concept.data.title}</a>
+                </h2>
+                <p>{concept.data.summary}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </section>
+</SiteLayout>

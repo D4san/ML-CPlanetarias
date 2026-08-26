@@ -1,0 +1,394 @@
+---
+import LearningPathExplorer from '../components/react/LearningPathExplorer';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { learningStages } from '../lib/learning-path';
+import { withBase } from '../lib/urls';
+---
+
+<SiteLayout>
+  <section class="hero site-shell">
+    <div class="hero__meta">
+      <span class="status-tag">Infraestructura reproducible</span>
+      <span>UdeA · Ciencias planetarias · ML</span>
+    </div>
+    <div class="hero__grid">
+      <div>
+        <p class="eyebrow">Curso web interactivo</p>
+        <h1>Pensar el problema.<br /><em>Modelar con rigor.</em><br />Enseñar para que enseñen.</h1>
+      </div>
+      <div class="hero__aside">
+        <p class="lede">
+          Una publicación educativa para conectar preguntas astronómicas, teoría formal de machine
+          learning y aplicaciones reproducibles sin convertir el curso en una lista de algoritmos.
+        </p>
+        <a class="text-link" href="#explorar">Explorar la cadena pedagógica</a>
+      </div>
+    </div>
+    <div class="hero__orbit" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+  </section>
+
+  <section id="explorar" class="explorer-wrap site-shell" aria-label="Exploración principal">
+    <LearningPathExplorer client:load />
+  </section>
+
+  <section class="site-shell manifesto">
+    <div class="manifesto__intro">
+      <span class="eyebrow">Tres líneas, una sola conversación</span>
+      <h2>La teoría no vive aislada del cielo ni del aula.</h2>
+      <p>
+        Cada ciclo regresa a las mismas preguntas desde otra altura. El objetivo no es solo ejecutar
+        un modelo: es poder defender sus supuestos, interpretar sus límites y volver a explicarlo.
+      </p>
+    </div>
+    <ol class="manifesto__lines">
+      <li data-tone="data">
+        <span>01</span>
+        <div>
+          <h3>Problemas astronómicos</h3>
+          <p>Observables, preguntas científicas, sesgos de adquisición y utilidad de la salida.</p>
+        </div>
+      </li>
+      <li data-tone="model">
+        <span>02</span>
+        <div>
+          <h3>Teoría formal ML</h3>
+          <p>Representaciones, hipótesis, pérdida, generalización, evaluación y mecanismos.</p>
+        </div>
+      </li>
+      <li data-tone="transfer">
+        <span>03</span>
+        <div>
+          <h3>Aplicaciones y transferencia</h3>
+          <p>
+            Experimentos reproducibles, diagnósticos y recursos para que otro tutor los reutilice.
+          </p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="site-shell fallback-map" aria-labelledby="fallback-title">
+    <div>
+      <span class="eyebrow">Mapa completo</span>
+      <h2 id="fallback-title">La lectura no depende de tocar la figura.</h2>
+      <p>
+        La interfaz permite inspeccionar. Esta secuencia textual conserva el argumento, se puede
+        imprimir y sirve como checklist de diseño docente.
+      </p>
+      <a class="text-link" href={withBase('/sesiones/')}>Ver sesiones revisadas</a>
+    </div>
+    <ol>
+      {
+        learningStages.map((stage, index) => (
+          <li data-tone={stage.tone}>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{stage.title}</h3>
+              <p>{stage.explanation}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="site-shell foundation">
+    <div>
+      <span class="eyebrow">Estado del producto</span>
+      <h2>Una base honesta antes de publicar la primera sesión.</h2>
+    </div>
+    <div class="foundation__facts">
+      <p>
+        <strong>El inbox no se publica.</strong> Solo las colecciones revisadas alimentan la web.
+      </p>
+      <p>
+        <strong>La estética es un sistema.</strong> Tokens, componentes y snapshots comparten lenguaje.
+      </p>
+      <p>
+        <strong>La interacción se prueba.</strong> Estado, teclado, móvil, accesibilidad y regresión visual.
+      </p>
+      <a class="text-link" href={withBase('/sistema/')}>Abrir laboratorio del sistema</a>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: clip;
+    min-height: min(52rem, calc(100vh - 4.5rem));
+    padding-block: clamp(5rem, 12vw, 10rem) var(--space-8);
+  }
+
+  .hero__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-bottom: clamp(4rem, 8vw, 8rem);
+    color: var(--ink-700);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(19rem, 0.55fr);
+    gap: clamp(2rem, 7vw, 8rem);
+    align-items: end;
+  }
+
+  .hero h1 {
+    position: relative;
+    z-index: 1;
+    max-width: 14ch;
+    margin: 0;
+  }
+
+  .hero h1 em {
+    color: var(--data);
+    font-weight: 500;
+  }
+
+  .hero__aside {
+    position: relative;
+    z-index: 1;
+    padding-bottom: var(--space-5);
+  }
+
+  .hero__aside .text-link {
+    margin-top: var(--space-4);
+  }
+
+  .hero__orbit {
+    position: absolute;
+    z-index: 0;
+    top: 21%;
+    right: 5%;
+    width: clamp(16rem, 35vw, 34rem);
+    aspect-ratio: 1;
+    border: 1px solid rgb(7 26 37 / 0.11);
+    border-radius: 50%;
+    transform: rotate(-24deg) scaleY(0.48);
+    pointer-events: none;
+  }
+
+  .hero__orbit::before,
+  .hero__orbit::after {
+    position: absolute;
+    border: 1px solid rgb(7 26 37 / 0.09);
+    border-radius: 50%;
+    content: '';
+  }
+
+  .hero__orbit::before {
+    inset: 14%;
+  }
+
+  .hero__orbit::after {
+    inset: 31%;
+  }
+
+  .hero__orbit span {
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background: var(--decision);
+    box-shadow: 0 0 0 0.35rem var(--decision-soft);
+  }
+
+  .hero__orbit span:nth-child(1) {
+    top: 10%;
+    left: 62%;
+  }
+
+  .hero__orbit span:nth-child(2) {
+    right: 2%;
+    bottom: 31%;
+    width: 0.48rem;
+    height: 0.48rem;
+    background: var(--model);
+  }
+
+  .hero__orbit span:nth-child(3) {
+    bottom: 2%;
+    left: 28%;
+    width: 0.6rem;
+    height: 0.6rem;
+    background: var(--data);
+  }
+
+  .explorer-wrap {
+    scroll-margin-top: 6rem;
+  }
+
+  .manifesto,
+  .fallback-map,
+  .foundation {
+    display: grid;
+    grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(3rem, 8vw, 9rem);
+    padding-block: var(--space-9);
+  }
+
+  .manifesto__intro h2,
+  .fallback-map h2,
+  .foundation h2 {
+    max-width: 13ch;
+  }
+
+  .manifesto__intro > p,
+  .fallback-map > div > p {
+    max-width: 48ch;
+    color: var(--ink-700);
+  }
+
+  .manifesto__lines,
+  .fallback-map ol {
+    margin: 0;
+    padding: 0;
+    border-top: var(--line);
+    list-style: none;
+  }
+
+  .manifesto__lines li,
+  .fallback-map li {
+    --line-tone: var(--ink-700);
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    border-bottom: var(--line);
+  }
+
+  :is(.manifesto__lines li, .fallback-map li)[data-tone='data'] {
+    --line-tone: var(--data);
+  }
+
+  :is(.manifesto__lines li, .fallback-map li)[data-tone='model'] {
+    --line-tone: var(--model);
+  }
+
+  :is(.manifesto__lines li, .fallback-map li)[data-tone='decision'] {
+    --line-tone: var(--decision);
+  }
+
+  :is(.manifesto__lines li, .fallback-map li)[data-tone='limit'] {
+    --line-tone: var(--limit);
+  }
+
+  :is(.manifesto__lines li, .fallback-map li)[data-tone='transfer'] {
+    --line-tone: var(--transfer);
+  }
+
+  :is(.manifesto__lines li, .fallback-map li)[data-tone='question'] {
+    --line-tone: var(--question);
+  }
+
+  .manifesto__lines li > span,
+  .fallback-map li > span {
+    color: var(--line-tone);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 700;
+  }
+
+  .manifesto__lines h3,
+  .fallback-map h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .manifesto__lines p,
+  .fallback-map li p {
+    margin: 0;
+    color: var(--ink-700);
+  }
+
+  .fallback-map {
+    border-top: var(--line);
+  }
+
+  .fallback-map .text-link {
+    margin-top: var(--space-4);
+  }
+
+  .fallback-map li {
+    padding-block: var(--space-5);
+  }
+
+  .fallback-map li h3 {
+    font-size: var(--step-1);
+  }
+
+  .foundation {
+    align-items: start;
+    border-top: var(--line);
+  }
+
+  .foundation__facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+
+  .foundation__facts p {
+    margin: 0;
+    padding-top: var(--space-4);
+    border-top: 0.2rem solid var(--paper-300);
+    color: var(--ink-700);
+  }
+
+  .foundation__facts strong {
+    display: block;
+    margin-bottom: var(--space-2);
+    color: var(--ink-950);
+  }
+
+  @media (max-width: 54rem) {
+    .hero__grid,
+    .manifesto,
+    .fallback-map,
+    .foundation {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__grid {
+      gap: var(--space-6);
+    }
+
+    .hero__aside {
+      max-width: 42rem;
+    }
+
+    .manifesto,
+    .fallback-map,
+    .foundation {
+      gap: var(--space-6);
+    }
+  }
+
+  @media (max-width: 38rem) {
+    .hero {
+      min-height: auto;
+      padding-top: var(--space-8);
+    }
+
+    .hero__meta {
+      align-items: flex-start;
+      flex-direction: column;
+      margin-bottom: var(--space-7);
+    }
+
+    .hero__orbit {
+      top: 33%;
+      right: -24%;
+    }
+
+    .foundation__facts {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

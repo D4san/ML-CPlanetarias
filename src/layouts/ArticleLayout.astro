@@ -1,0 +1,35 @@
+---
+import ProvenanceNote from '../components/ProvenanceNote.astro';
+import SiteLayout from './SiteLayout.astro';
+
+interface Props {
+  title: string;
+  summary: string;
+  kind: string;
+  status: string;
+  source_vault: string;
+  source_note: string;
+  source_heading: string;
+  rights: { note: string };
+}
+
+const { title, summary, kind, status, source_vault, source_note, source_heading, rights } =
+  Astro.props;
+---
+
+<SiteLayout title={title} description={summary}>
+  <header class="site-shell page-intro">
+    <span class="eyebrow">{kind} · {status}</span>
+    <h1>{title}</h1>
+    <p class="lede">{summary}</p>
+  </header>
+  <article class="article-body">
+    <slot />
+    <ProvenanceNote
+      note={source_note}
+      heading={source_heading}
+      vault={source_vault}
+      rights={rights.note}
+    />
+  </article>
+</SiteLayout>

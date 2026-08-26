@@ -1,0 +1,20 @@
+x-visual-base: &visual-base
+  image: mcr.microsoft.com/playwright:v1.62.0-noble
+  working_dir: /work
+  environment:
+    CI: 'true'
+    BASE_PATH: /preview
+  volumes:
+    - .:/work
+    - mlcp-node-modules:/work/node_modules
+
+services:
+  visual:
+    <<: *visual-base
+    command: bash -lc "npm ci && npm run build && npm run test:visual"
+  visual-update:
+    <<: *visual-base
+    command: bash -lc "npm ci && npm run build && npm run test:visual:update"
+
+volumes:
+  mlcp-node-modules:

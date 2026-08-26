@@ -1,0 +1,199 @@
+---
+import S01LearningJourney from '../../components/react/S01LearningJourney';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { s01InstanceTerms, s01Lenses, s01Outcomes, s01Stops } from '../../lib/s01-journey';
+---
+
+<SiteLayout
+  title="Sesión 1"
+  description="Recorrido visual e interactivo de la primera sesión de ML Ciencias Planetarias."
+  noindex
+>
+  <div class="s01-session-shell">
+    <section class="site-shell s01-instrument" aria-label="Recorrido visual de la sesión 1">
+      <S01LearningJourney client:load />
+    </section>
+
+    <noscript>
+      <section class="site-shell s01-fallback" aria-labelledby="s01-fallback-title">
+        <p class="eyebrow">Sesión 1 · lectura lineal</p>
+        <h2 id="s01-fallback-title">Siete decisiones conectadas</h2>
+        <ol>
+          {
+            s01Stops.map((stop) => (
+              <li>
+                <h3>{stop.title}</h3>
+                <p>
+                  <strong>La ruta llega aquí:</strong> {stop.arrival}
+                </p>
+                <p>{stop.explanation}</p>
+                <p>
+                  <strong>Esto nos lleva a:</strong> {stop.next}
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="s01-fallback-definitions">
+          <section aria-labelledby="s01-fallback-uses">
+            <h3 id="s01-fallback-uses">¿Qué podemos hacer con una observación?</h3>
+            <dl>
+              {
+                s01Outcomes.map((outcome) => (
+                  <div>
+                    <dt>{outcome.label}</dt>
+                    <dd>{outcome.definition}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </section>
+          <section aria-labelledby="s01-fallback-lenses">
+            <h3 id="s01-fallback-lenses">¿Qué aporta cada disciplina?</h3>
+            <dl>
+              {
+                s01Lenses.map((lens) => (
+                  <div>
+                    <dt>{lens.label}</dt>
+                    <dd>
+                      <strong>{lens.question}</strong> {lens.text}
+                    </dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </section>
+          <section aria-labelledby="s01-fallback-cycle">
+            <h3 id="s01-fallback-cycle">Objetos del ciclo mínimo</h3>
+            <dl>
+              {
+                s01InstanceTerms.map((term) => (
+                  <div>
+                    <dt>
+                      {term.label} · <code>{term.notation}</code>
+                    </dt>
+                    <dd>{term.definition}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </section>
+        </div>
+      </section>
+    </noscript>
+
+    <details class="site-shell s01-version-note">
+      <summary>Estado y procedencia</summary>
+      <p>
+        Esta es una versión interna y no indexada de S01. La interfaz es una reconstrucción
+        original; los extractos bibliográficos, el Excalidraw y las figuras privadas del vault no
+        forman parte del build.
+      </p>
+    </details>
+  </div>
+</SiteLayout>
+
+<style>
+  .s01-session-shell {
+    overflow: clip;
+    padding-top: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .s01-instrument {
+    padding-block: 0 var(--space-7);
+  }
+
+  .s01-fallback {
+    padding-block: var(--space-8);
+    border-top: var(--line);
+  }
+
+  .s01-fallback h2 {
+    max-width: 14ch;
+  }
+
+  .s01-fallback ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5) var(--space-7);
+    margin-top: var(--space-7);
+    padding-left: 1.3rem;
+  }
+
+  .s01-fallback h3 {
+    margin-bottom: var(--space-2);
+    font-size: var(--step-1);
+  }
+
+  .s01-fallback p {
+    margin: 0;
+    color: var(--ink-700);
+  }
+
+  .s01-fallback-definitions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-7);
+    margin-top: var(--space-8);
+    padding-top: var(--space-7);
+    border-top: var(--line);
+  }
+
+  .s01-fallback-definitions > section:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .s01-fallback-definitions dl {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .s01-fallback-definitions dt {
+    font-weight: 750;
+  }
+
+  .s01-fallback-definitions dd {
+    margin: var(--space-1) 0 0;
+    color: var(--ink-700);
+  }
+
+  .s01-version-note {
+    padding-block: var(--space-5);
+    border-top: var(--line);
+    color: var(--ink-700);
+  }
+
+  .s01-version-note summary {
+    width: fit-content;
+    color: var(--ink-700);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    cursor: pointer;
+  }
+
+  .s01-version-note p {
+    max-width: 68ch;
+    margin: var(--space-4) 0 0;
+  }
+
+  @media (min-width: 80rem) and (orientation: landscape) {
+    .s01-instrument {
+      width: min(100% - 2rem, 118rem);
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .s01-session-shell {
+      padding-top: var(--space-3);
+    }
+
+    .s01-instrument {
+      width: 100%;
+    }
+
+    .s01-fallback ol,
+    .s01-fallback-definitions {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
