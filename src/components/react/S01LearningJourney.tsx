@@ -56,10 +56,14 @@ import {
 import { withBase } from '../../lib/urls';
 import './s01-learning-journey.css';
 
-const paradigmOptions: ReadonlyArray<{ id: S01Paradigm; label: string }> = [
-  { id: 'supervised', label: 'Objetivo por instancia' },
-  { id: 'unsupervised', label: 'Sin objetivo etiquetado' },
-  { id: 'reinforcement', label: 'Acción + recompensa' },
+const paradigmOptions: ReadonlyArray<{
+  id: S01Paradigm;
+  label: string;
+  shortLabel: string;
+}> = [
+  { id: 'supervised', label: 'Objetivo por instancia', shortLabel: 'Supervisado' },
+  { id: 'unsupervised', label: 'Sin objetivo etiquetado', shortLabel: 'No supervisado' },
+  { id: 'reinforcement', label: 'Acción + recompensa', shortLabel: 'Por refuerzo' },
 ];
 
 const paradigmDescriptions: Record<S01Paradigm, string> = {
@@ -537,113 +541,132 @@ function SignalScene({ state, scenario, dispatch }: SceneProps) {
   }
 
   return (
-    <section className="s01-scene s01-scene--signal" aria-labelledby="s01-signal-title">
+    <section className="s01-scene s01-scene--signal" aria-labelledby="s01-signal-map-title">
       <div className="s01-scene__graphic">
         <header className="s01-graphic-intro">
-          <p className="s01-mini-label">La representación ya está definida</p>
-          <h4>Tres señales abren tres rutas de aprendizaje</h4>
+          <p className="s01-mini-label">Después · pregunta por la señal</p>
+          <h4 id="s01-signal-map-title">La estrategia cambia según la información disponible</h4>
+          <p>
+            Una misma observación puede seguir rutas distintas. La pregunta y lo que acompaña a cada
+            instancia indican cómo puede aprender el sistema.
+          </p>
+          <div className="s01-signal-question" aria-label="Desarrollo de la pregunta">
+            <span>La pregunta se desarrolla así</span>
+            <strong>qué buscamos → qué tenemos → cómo aprendemos</strong>
+          </div>
         </header>
-        <svg viewBox="0 0 760 350" aria-hidden="true" focusable="false">
-          <title id="s01-signal-svg-title">Tres señales de aprendizaje</title>
-          <desc id="s01-signal-svg-desc">
-            Una instancia se ramifica hacia un objetivo por instancia, datos sin objetivo etiquetado
-            o acciones con consecuencias y recompensa. Después de responder se resalta la ruta del
-            escenario.
-          </desc>
-          <g className="s01-signal-trunk">
-            <path d="M92 174 H235" />
-            <circle cx="80" cy="174" r="38" />
-            <text x="80" y="169" textAnchor="middle">
-              ¿qué señal
-            </text>
-            <text x="80" y="189" textAnchor="middle">
-              existe?
-            </text>
-          </g>
+        <div className="s01-signal-map" role="group" aria-label="Tres señales de aprendizaje">
+          <svg viewBox="0 0 760 350" aria-hidden="true" focusable="false">
+            <title id="s01-signal-svg-title">Tres señales de aprendizaje</title>
+            <desc id="s01-signal-svg-desc">
+              Una pregunta se ramifica hacia un objetivo por instancia, datos sin objetivo
+              etiquetado o acciones con consecuencias y recompensa.
+            </desc>
+            <g className="s01-signal-trunk">
+              <path d="M130 174 H235" />
+              <circle cx="80" cy="174" r="50" />
+              <text x="80" y="169" textAnchor="middle">
+                ¿qué buscamos
+              </text>
+              <text x="80" y="189" textAnchor="middle">
+                y qué tenemos?
+              </text>
+            </g>
+            {paradigmOptions.map((option, index) => {
+              const y = 70 + index * 105;
+              const active = guessed !== null && scenario.paradigm === option.id;
+              const selected = selectedParadigmId === option.id;
+              return (
+                <g
+                  className="s01-signal-branch"
+                  data-active={active}
+                  data-selected={selected}
+                  key={option.id}
+                >
+                  <path d={`M235 174 C300 174 300 ${y} 365 ${y} H466`} />
+                  <path
+                    className="s01-signal-shape"
+                    d={
+                      option.id === 'supervised'
+                        ? `M500 ${y - 34} H680 V${y + 34} H500 Z`
+                        : option.id === 'unsupervised'
+                          ? `M590 ${y - 43} L680 ${y} L590 ${y + 43} L500 ${y} Z`
+                          : `M590 ${y - 44} L668 ${y - 22} L680 ${y + 32} L590 ${y + 45} L500 ${y + 32} L512 ${y - 22} Z`
+                    }
+                  />
+                </g>
+              );
+            })}
+          </svg>
           {paradigmOptions.map((option, index) => {
             const y = 70 + index * 105;
-            const active = guessed !== null && scenario.paradigm === option.id;
             return (
-              <g className="s01-signal-branch" data-active={active} key={option.id}>
-                <path d={`M235 174 C300 174 300 ${y} 365 ${y} H466`} />
-                <path
-                  className="s01-signal-shape"
-                  d={
-                    option.id === 'supervised'
-                      ? `M500 ${y - 34} H680 V${y + 34} H500 Z`
-                      : option.id === 'unsupervised'
-                        ? `M590 ${y - 43} L680 ${y} L590 ${y + 43} L500 ${y} Z`
-                        : `M590 ${y - 44} L668 ${y - 22} L680 ${y + 32} L590 ${y + 45} L500 ${y + 32} L512 ${y - 22} Z`
-                  }
-                />
-                <text x="590" y={y - 4} textAnchor="middle">
-                  {option.label}
-                </text>
-                <text className="s01-branch-caption" x="590" y={y + 18} textAnchor="middle">
-                  {option.id === 'supervised'
-                    ? 'supervisado'
-                    : option.id === 'unsupervised'
-                      ? 'no supervisado'
-                      : 'por refuerzo'}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
-      </div>
-      <div className="s01-scene__interaction s01-challenge">
-        <div>
-          <p className="s01-mini-label">Ahora · identifica qué guía el aprendizaje</p>
-          <h4 id="s01-signal-title">¿Qué señal está disponible en esta ruta?</h4>
-          <p>{scenario.prompt}</p>
-        </div>
-        <div className="s01-choice-grid" aria-label="Posibles señales de aprendizaje">
-          {paradigmOptions.map((option) => (
-            <button
-              type="button"
-              key={option.id}
-              aria-pressed={guessed === option.id}
-              onClick={() => dispatch({ type: 'guess-signal', paradigm: option.id })}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-        <p
-          className="s01-feedback"
-          data-status={guessed === null ? 'idle' : correct ? 'correct' : 'repair'}
-          aria-live="polite"
-        >
-          {guessed === null
-            ? 'Elige la señal antes de revelar el paradigma.'
-            : correct
-              ? `Sí. La información disponible conduce a ${scenario.paradigmLabel.toLowerCase()}: ${paradigmDescriptions[scenario.paradigm]}.`
-              : `Revisa la información disponible: esta ruta conduce a ${scenario.paradigmLabel.toLowerCase()}, porque ${paradigmDescriptions[scenario.paradigm]}.`}
-        </p>
-        <div className="s01-paradigm-card-links" aria-label="Abrir definición de cada paradigma">
-          <div className="s01-paradigm-card-links__intro">
-            <p className="s01-mini-label">Tres formas de recibir la señal</p>
-            <p>Abre una tarjeta para distinguir qué información guía cada ruta.</p>
-          </div>
-          <div className="s01-paradigm-card-links__grid">
-            {s01ParadigmDefinitions.map((item, index) => (
               <button
                 ref={(node) => {
-                  paradigmButtons.current[item.id] = node;
+                  paradigmButtons.current[option.id] = node;
                 }}
                 type="button"
-                className="s01-paradigm-card-link"
-                key={item.id}
-                aria-label={`${item.label}. Abrir definición`}
-                aria-pressed={selectedParadigmId === item.id}
-                onClick={() => openParadigm(item.id)}
+                className={`s01-signal-node s01-signal-node--${option.id}`}
+                key={option.id}
+                style={
+                  {
+                    '--signal-left': '77.6%',
+                    '--signal-top': `${(y / 350) * 100}%`,
+                  } as CSSProperties
+                }
+                aria-label={`${s01ParadigmDefinitions.find((item) => item.id === option.id)?.label ?? option.shortLabel}. Abrir definición`}
+                aria-pressed={selectedParadigmId === option.id}
+                data-selected={selectedParadigmId === option.id}
+                onClick={() => openParadigm(option.id)}
               >
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <strong>{item.label}</strong>
-                <small>{item.question}</small>
+                <span>{option.label}</span>
+                <small>{option.shortLabel}</small>
+              </button>
+            );
+          })}
+          <p className="s01-signal-map__instruction">
+            Haz clic en un cajón para abrir su definición.
+          </p>
+        </div>
+      </div>
+      <div className="s01-scene__interaction s01-signal-interaction">
+        <div className="s01-signal-interaction__prompt">
+          <p className="s01-mini-label">Ahora · lleva la pregunta a esta ruta</p>
+          <h4 id="s01-signal-title">¿Qué señal está disponible en esta ruta?</h4>
+          <p>{scenario.prompt}</p>
+          <p className="s01-signal-interaction__logic">
+            <strong>La secuencia:</strong> pregunta → información disponible → estrategia de
+            aprendizaje.
+          </p>
+        </div>
+        <div className="s01-signal-interaction__decision">
+          <p className="s01-mini-label">Predice antes de revelar la ruta</p>
+          <div className="s01-choice-grid" aria-label="Posibles señales de aprendizaje">
+            {s01ParadigmDefinitions.map((item, index) => (
+              <button
+                type="button"
+                key={item.id}
+                aria-pressed={guessed === item.id}
+                onClick={() => dispatch({ type: 'guess-signal', paradigm: item.id })}
+              >
+                {paradigmOptions[index]?.label ?? item.label}
               </button>
             ))}
           </div>
+          <p
+            className="s01-feedback"
+            data-status={guessed === null ? 'idle' : correct ? 'correct' : 'repair'}
+            aria-live="polite"
+          >
+            {guessed === null
+              ? 'Elige la señal antes de revelar el paradigma.'
+              : correct
+                ? `Sí. La información disponible conduce a ${scenario.paradigmLabel.toLowerCase()}: ${paradigmDescriptions[scenario.paradigm]}.`
+                : `Revisa la información disponible: esta ruta conduce a ${scenario.paradigmLabel.toLowerCase()}, porque ${paradigmDescriptions[scenario.paradigm]}.`}
+          </p>
+          <p className="s01-signal-card-hint">
+            Los cajones del mapa abren la tarjeta con la definición formal y el ejemplo astronómico.
+          </p>
         </div>
       </div>
       {selectedParadigm !== null && (

@@ -19,6 +19,18 @@ test('weaves an astronomy route through its signal and task map', async ({ page 
     page.getByText('Predice la señal disponible para revelar este tramo de la ruta.'),
   ).toBeVisible();
 
+  const mapParadigm = page.getByRole('button', { name: 'No supervisado. Abrir definición' });
+  await expect(mapParadigm).toBeVisible();
+  await mapParadigm.click();
+  const paradigmDefinition = page.getByText(
+    /Paradigma en el que las instancias no traen un objetivo/i,
+  );
+  await expect(paradigmDefinition).toBeHidden();
+  await page.getByRole('button', { name: 'Voltear: ver definición' }).click();
+  await expect(paradigmDefinition).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(mapParadigm).toBeFocused();
+
   await page.getByRole('button', { name: 'Sin objetivo etiquetado' }).click();
   await expect(page.getByText(/conduce a no supervisado/i)).toBeVisible();
 

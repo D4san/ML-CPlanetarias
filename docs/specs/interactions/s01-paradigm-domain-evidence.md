@@ -25,7 +25,10 @@ los datos puede cambiar el dominio; la comparación entre ajuste y datos no vist
 ## Tarjetas de paradigma
 
 La parada **Señal y paradigma** mantiene el reto de identificar la señal para la ruta astronómica
-activa. Debajo aparecen tres tarjetas independientes:
+activa. El mapa formula la decisión como una secuencia: `qué buscamos → qué tenemos → cómo
+aprendemos`. Los tres cajones que salen de la pregunta son controles nativos; al hacer clic en uno,
+se abre su tarjeta de definición delante del recorrido. Así la interacción pertenece al mapa y no
+aparece como un bloque paralelo desconectado.
 
 | Paradigma | Señal formal | Ejemplo astronómico |
 | --- | --- | --- |
@@ -35,7 +38,8 @@ activa. Debajo aparecen tres tarjetas independientes:
 
 La tarjeta muestra primero la pregunta que orienta el paradigma. Al voltearla, entrega una
 definición formal, el ejemplo y el alcance. La elección del paradigma sigue dependiendo de la señal,
-no de usar una red neuronal.
+no de usar una red neuronal. El reto inferior pide anticipar la ruta para el caso astronómico antes
+de revelar la respuesta; los cajones del mapa quedan disponibles para consultar el concepto después.
 
 ## Mapa conceptual
 
@@ -85,7 +89,7 @@ sola un mecanismo físico ni validez universal.
 
 ## Matriz de pruebas
 
-- [ ] las tres tarjetas de paradigma abren, voltean, cierran y restauran foco;
+- [ ] los tres cajones del mapa abren, voltean, cierran y restauran foco en sus tarjetas de paradigma;
 - [ ] el mapa muestra la cadena, las tres ramas y la lista de paradas;
 - [ ] sintético/observado cambia el énfasis sin ocultar la explicación;
 - [ ] el gráfico de dominio muestra puntos, barras de error y cobertura faltante;

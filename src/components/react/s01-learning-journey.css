@@ -1035,6 +1035,11 @@
   stroke: #78bdd9;
 }
 
+.s01-signal-trunk text {
+  font-size: 12px !important;
+  font-weight: 650;
+}
+
 .s01-signal-shape {
   fill: rgb(81 68 201 / 0.08);
   stroke: #7569d7;
@@ -1054,10 +1059,193 @@
   stroke: #d0c8ff;
 }
 
+.s01-signal-branch[data-selected='true'] .s01-signal-shape {
+  fill: rgb(112 213 216 / 0.2);
+  stroke: var(--data-soft);
+  stroke-width: 2;
+}
+
 .s01-branch-caption {
   fill: #ae9dff !important;
   font-family: var(--font-mono) !important;
   font-size: 11px !important;
+}
+
+.s01-signal-map {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 16rem;
+  aspect-ratio: 760 / 350;
+  margin-top: var(--space-3);
+}
+
+.s01-signal-map > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+}
+
+.s01-signal-node {
+  position: absolute;
+  z-index: 2;
+  top: var(--signal-top);
+  left: var(--signal-left);
+  display: grid;
+  width: 24%;
+  min-height: 4.25rem;
+  align-content: center;
+  gap: 0.18rem;
+  padding: 0.55rem 0.7rem;
+  border: 0;
+  border-radius: 0.55rem;
+  color: var(--paper-200);
+  background: transparent;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  isolation: isolate;
+  overflow: visible;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.s01-signal-node--unsupervised {
+  min-height: 5.2rem;
+}
+
+.s01-signal-node--reinforcement {
+  min-height: 5.35rem;
+}
+
+.s01-signal-node::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: '';
+  border-radius: 0.55rem;
+  background: rgb(81 68 201 / 0.08);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.s01-signal-node--unsupervised::before {
+  border-radius: 0;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.s01-signal-node--reinforcement::before {
+  border-radius: 0;
+  clip-path: polygon(15% 0, 85% 0, 100% 50%, 85% 100%, 15% 100%, 0 50%);
+}
+
+.s01-signal-node span {
+  position: relative;
+  z-index: 1;
+  color: var(--white);
+  font-size: clamp(0.7rem, 1.25vw, 0.92rem);
+  font-weight: 750;
+  line-height: 1.12;
+}
+
+.s01-signal-node small {
+  position: relative;
+  z-index: 1;
+  color: #ae9dff;
+  font-family: var(--font-mono);
+  font-size: clamp(0.58rem, 1vw, 0.72rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.s01-signal-node:hover,
+.s01-signal-node[data-selected='true'] {
+  color: var(--white);
+  background: transparent;
+  transform: translate(-50%, -50%) scale(1.02);
+}
+
+.s01-signal-node:hover::before,
+.s01-signal-node[data-selected='true']::before {
+  background: rgb(112 213 216 / 0.18);
+}
+
+.s01-signal-node:focus-visible {
+  outline: 2px solid var(--data-soft);
+  outline-offset: 0.25rem;
+}
+
+.s01-signal-map__instruction {
+  position: absolute;
+  right: 4%;
+  bottom: 0;
+  margin: 0;
+  color: var(--paper-300);
+  font-size: 0.68rem;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.s01-signal-question {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: var(--space-3);
+  padding: 0.65rem 0.8rem;
+  border-left: 2px solid var(--model-soft);
+  background: rgb(81 68 201 / 0.11);
+}
+
+.s01-signal-question span {
+  color: var(--model-soft);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.s01-signal-question strong {
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.12;
+}
+
+.s01-signal-interaction {
+  align-items: start;
+}
+
+.s01-signal-interaction__prompt,
+.s01-signal-interaction__decision {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.s01-signal-interaction__prompt > p:not(.s01-mini-label),
+.s01-signal-interaction__decision > p:not(.s01-mini-label) {
+  margin: 0;
+}
+
+.s01-signal-interaction__logic {
+  padding: 0.6rem 0.7rem;
+  border-left: 2px solid var(--data-soft);
+  background: rgb(0 0 0 / 0.13);
+  color: var(--paper-300) !important;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.s01-signal-interaction__logic strong {
+  color: var(--data-soft);
+}
+
+.s01-signal-card-hint {
+  color: var(--paper-300) !important;
+  font-size: 0.74rem;
+  line-height: 1.35;
 }
 
 .s01-challenge,
@@ -3106,71 +3294,6 @@ button.s01-algorithm-tree__task:focus-visible {
   font-size: 1.35rem;
 }
 
-/* Signal cards: the choice identifies the route; the card supplies the formal meaning. */
-.s01-paradigm-card-links {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-3);
-  padding-top: var(--space-3);
-  border-top: 1px solid rgb(255 255 255 / 0.1);
-}
-
-.s01-paradigm-card-links__intro p:last-child {
-  margin: 0;
-  color: var(--paper-300);
-  font-size: 0.84rem;
-}
-
-.s01-paradigm-card-links__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-2);
-}
-
-.s01-paradigm-card-link {
-  display: grid;
-  min-height: 6.5rem;
-  align-content: start;
-  gap: 0.22rem;
-  padding: 0.75rem;
-  border: 1px solid rgb(174 157 255 / 0.48);
-  border-radius: var(--radius-sm);
-  color: var(--paper-100);
-  background: rgb(81 68 201 / 0.1);
-  text-align: left;
-  cursor: pointer;
-  transition:
-    border-color var(--duration-fast) var(--ease-out),
-    background var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out);
-}
-
-.s01-paradigm-card-link span {
-  color: #ae9dff;
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-}
-
-.s01-paradigm-card-link strong {
-  color: var(--white);
-  font-size: 0.9rem;
-}
-
-.s01-paradigm-card-link small {
-  color: var(--paper-300);
-  font-size: 0.72rem;
-  line-height: 1.35;
-}
-
-.s01-paradigm-card-link:hover,
-.s01-paradigm-card-link:focus-visible,
-.s01-paradigm-card-link[aria-pressed='true'] {
-  border-color: var(--data-soft);
-  background: rgb(112 213 216 / 0.16);
-  outline: none;
-  transform: translateY(-0.12rem);
-}
-
 /* Family scene: make the finite-sample ambiguity visible before asking for the count. */
 .s01-learning-flow__header > div:first-child > p:last-child {
   max-width: 38rem;
@@ -4033,6 +4156,20 @@ button.s01-algorithm-tree__task:focus-visible {
     padding: var(--space-2);
   }
 
+  .s01-signal-map {
+    min-height: 15rem;
+  }
+
+  .s01-signal-node {
+    width: 30%;
+    padding-inline: 0.45rem;
+  }
+
+  .s01-signal-map__instruction {
+    right: 2%;
+    font-size: 0.62rem;
+  }
+
   .s01-outcome-node {
     width: 2.5rem;
   }
@@ -4255,7 +4392,6 @@ button.s01-algorithm-tree__task:focus-visible {
 }
 
 @media (max-width: 62rem) {
-  .s01-paradigm-card-links__grid,
   .s01-domain-definitions {
     grid-template-columns: 1fr;
   }

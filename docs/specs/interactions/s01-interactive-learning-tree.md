@@ -85,6 +85,12 @@ frente de una tarjeta con el término y una pregunta de anticipación; la defini
 ejemplo astronómico permanecen ocultos hasta que el lector activa `Voltear`. Cerrar o pulsar
 `Escape` devuelve el foco al control de origen.
 
+En la tercera parada, los tres cajones que salen de `¿qué buscamos y qué tenemos?` son también los
+controles de las tarjetas de paradigma. El mapa conserva el hilo causal y cada cajón abre el frente
+de `Supervisado`, `No supervisado` o `Por refuerzo`; `Voltear` revela la definición formal y el
+ejemplo astronómico. El reto de la ruta permanece debajo como una decisión breve: primero se predice
+la señal disponible y después se consulta la definición que la explica.
+
 Después, la interfaz pregunta `¿Qué aporta cada disciplina?`. Las tres cajas son un
 selector de lente disciplinar, no tres respuestas equivalentes a los cinco verbos. Cada lente
 muestra primero su pregunta de trabajo y después una definición formalizada. ML conserva
