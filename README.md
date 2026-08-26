@@ -3,8 +3,10 @@
 Fundación de un sitio educativo extremadamente interactivo para **enseñar ML en ciencias planetarias y enseñar a enseñarlo**. El repositorio separa con rigor el diseño privado en Obsidian, los paquetes de trabajo y el producto web reproducible.
 
 La infraestructura usa Astro estático y React solo para islas interactivas. El código se versiona en
-el repositorio privado [D4san/ML-CPlanetarias](https://github.com/D4san/ML-CPlanetarias); el despliegue
-público y la licencia siguen abiertos.
+el repositorio privado [D4san/ML-CPlanetarias](https://github.com/D4san/ML-CPlanetarias) y el prototipo
+se sirve públicamente en [d4san.github.io/ML-CPlanetarias](https://d4san.github.io/ML-CPlanetarias/).
+Cada push a `main` reconstruye y publica el sitio mediante GitHub Pages. La licencia del curso sigue
+pendiente de decisión.
 
 ## Inicio rápido
 
@@ -83,4 +85,5 @@ La skill local `$develop-mlcp-web` orquesta estos contratos. `AGENTS.md` conserv
 
 ## Estado
 
-El sitio y sus herramientas están en fase de infraestructura. S01 continúa como paquete interno de diseño y no se convierte ni publica automáticamente.
+El sitio y sus herramientas siguen en fase de infraestructura. S01 está disponible como prototipo
+público para revisión; conserva sus avisos de estado interno hasta completar la revisión editorial.

@@ -40,4 +40,11 @@ Los artefactos efímeros viven en `output/playwright/`; solo los golden snapshot
 
 CI valida Node fijado, `npm ci`, calidad, tests, build raíz y build bajo `/preview`. Los navegadores funcionales alternativos pueden correr semanalmente.
 
-No existe workflow de despliegue. Publicar requiere una orden separada, remoto y URL confirmados, licencia decidida, `site`/`base` correctos, gates completos y verificación posterior de la URL.
+`.github/workflows/deploy-pages.yml` publica el build estático en GitHub Pages después de cada push a
+`main` y también permite ejecución manual. El workflow construye con `BASE_PATH=/ML-CPlanetarias`
+y `SITE_URL=https://d4san.github.io`, sube `dist/` como artefacto y despliega al entorno
+`github-pages`. La URL pública verificada es
+`https://d4san.github.io/ML-CPlanetarias/`; la sesión 1 vive en `/sistema/`.
+
+Una nueva publicación requiere gates completos, `site`/`base` correctos y verificación posterior de
+la URL. La visibilidad del repositorio y la licencia se gestionan por separado del sitio publicado.
