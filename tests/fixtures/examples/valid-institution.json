@@ -1,0 +1,11 @@
+{
+  "kind": "example-source-fixture",
+  "id": "nasa-exoplanet-archive",
+  "source_type": "institutional-source",
+  "title": "NASA Exoplanet Archive",
+  "institution": "NASA Exoplanet Science Institute",
+  "url": "https://exoplanetarchive.ipac.caltech.edu/",
+  "status": "pendiente",
+  "claim": "No se incorpora todavía una afirmación; la ficha espera lectura atómica.",
+  "location": "pendiente de lectura atómica"
+}

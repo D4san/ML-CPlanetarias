@@ -1,0 +1,90 @@
+{
+  "id": "mlcp-s01-fixture",
+  "identity": { "id": "mlcp", "title": "ML Ciencias Planetarias" },
+  "defaults": {
+    "interactionMode": "interactive",
+    "teacherMode": false,
+    "defaultView": "presentation"
+  },
+  "enabledSessionIds": ["S01"],
+  "references": {
+    "ref-g": {
+      "id": "ref-g",
+      "title": "Manual de ML",
+      "authors": ["Autora de prueba"],
+      "year": 2024,
+      "url": "https://example.test/manual"
+    }
+  },
+  "concepts": {
+    "concept-generalizacion": {
+      "id": "concept-generalizacion",
+      "term": "Generalización",
+      "definition": "Desempeño en instancias no vistas.",
+      "sources": ["ref-g"]
+    }
+  },
+  "examples": {
+    "example-spectrum": {
+      "id": "example-spectrum",
+      "question": "¿Qué salida queremos producir?",
+      "domain": "Exoplanetas",
+      "representation": "Espectro observado",
+      "task": "Estimar un parámetro",
+      "interpretation": "La salida responde a la pregunta definida.",
+      "limits": "El caso es ilustrativo y no sustituye una medición.",
+      "sourceIds": ["ref-g"]
+    }
+  },
+  "sessions": {
+    "S01": {
+      "id": "S01",
+      "title": "Sesión 1",
+      "summary": "Pregunta y formulación de ML.",
+      "objectives": ["Separar pregunta, tarea y familia."],
+      "bibliography": {
+        "id": "s01-bibliography",
+        "title": "Materiales de S01",
+        "items": [{ "id": "s01-reading", "title": "Lectura inicial", "referenceIds": ["ref-g"] }]
+      },
+      "stationIds": ["question"],
+      "stations": {
+        "question": {
+          "id": "question",
+          "title": "Pregunta",
+          "purpose": "Definir la salida antes del modelo.",
+          "unitIds": ["s01-question-opening"],
+          "hash": "pregunta"
+        }
+      },
+      "units": {
+        "s01-question-opening": {
+          "id": "s01-question-opening",
+          "function": "opening",
+          "title": "La pregunta",
+          "idea": "El problema empieza con una salida útil.",
+          "content": "La unidad de análisis y la salida deben quedar explícitas.",
+          "exampleIds": ["example-spectrum"],
+          "conceptIds": ["concept-generalizacion"]
+        }
+      },
+      "routes": {
+        "spectrum": { "id": "spectrum", "label": "Espectro" }
+      },
+      "enabledRouteIds": ["spectrum"],
+      "defaultRouteId": "spectrum",
+      "provenance": {
+        "origin": "obsidian",
+        "source_vault": "DASAN",
+        "source_note": "01 Temas/Academia/Maestría/ML Ciencias Planetarias/01 Sesiones/S01.md",
+        "source_heading": "Guion"
+      },
+      "editorial": {
+        "status": "drafting",
+        "visibility": "internal",
+        "publish_ready": false,
+        "rights": { "status": "original", "note": "Fixture sintético para pruebas." }
+      }
+    }
+  }
+}

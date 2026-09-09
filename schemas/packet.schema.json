@@ -3,16 +3,7 @@
   "$id": "https://mlcp.local/schemas/packet.schema.json",
   "title": "Paquete de entrada MLCP",
   "type": "object",
-  "required": [
-    "id",
-    "kind",
-    "status",
-    "source_vault",
-    "source_note",
-    "source_heading",
-    "visibility",
-    "publish_ready"
-  ],
+  "required": ["id", "kind", "status", "source_heading", "visibility", "publish_ready"],
   "properties": {
     "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$" },
     "kind": {
@@ -23,12 +14,19 @@
         "concept-bundle",
         "exercise",
         "notebook",
-        "figure"
+        "figure",
+        "example-research-package"
       ]
     },
     "status": { "enum": ["intake", "drafting", "reviewed", "published", "returned"] },
+    "origin": { "enum": ["obsidian", "repo"] },
     "source_vault": { "type": "string", "minLength": 1 },
     "source_note": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?!/)(?!file:).+"
+    },
+    "source_path": {
       "type": "string",
       "minLength": 1,
       "pattern": "^(?![A-Za-z]:[\\\\/])(?!/)(?!file:).+"
@@ -40,5 +38,53 @@
     "visibility": { "enum": ["internal", "public"] },
     "publish_ready": { "type": "boolean" }
   },
+  "allOf": [
+    {
+      "if": {
+        "required": ["origin"],
+        "properties": { "origin": { "const": "repo" } }
+      },
+      "then": {
+        "required": ["source_path"],
+        "properties": { "source_path": {} },
+        "not": {
+          "anyOf": [
+            {
+              "required": ["source_vault"],
+              "properties": { "source_vault": {} }
+            },
+            {
+              "required": ["source_note"],
+              "properties": { "source_note": {} }
+            }
+          ]
+        }
+      },
+      "else": {
+        "if": {
+          "required": ["origin"],
+          "properties": { "origin": { "const": "obsidian" } }
+        },
+        "then": {
+          "required": ["source_vault", "source_note"],
+          "properties": {
+            "source_vault": {},
+            "source_note": {}
+          },
+          "not": {
+            "required": ["source_path"],
+            "properties": { "source_path": {} }
+          }
+        },
+        "else": {
+          "required": ["source_vault", "source_note"],
+          "properties": {
+            "source_vault": {},
+            "source_note": {}
+          }
+        }
+      }
+    }
+  ],
   "additionalProperties": true
 }

@@ -1,0 +1,81 @@
+{
+  "id": "mlcp-s00-fixture",
+  "identity": { "id": "mlcp", "title": "ML Ciencias Planetarias" },
+  "defaults": {
+    "interactionMode": "direct",
+    "teacherMode": true,
+    "defaultView": "reading"
+  },
+  "enabledSessionIds": ["S00"],
+  "references": {
+    "ref-guide": {
+      "id": "ref-guide",
+      "title": "Guía de configuración",
+      "url": "https://example.test/guide"
+    }
+  },
+  "concepts": {
+    "concept-question": {
+      "id": "concept-question",
+      "term": "Pregunta científica",
+      "definition": "Salida que se quiere comprender o producir.",
+      "sources": ["ref-guide"]
+    }
+  },
+  "examples": {
+    "example-web": {
+      "id": "example-web",
+      "question": "¿Cómo se recorre el curso?",
+      "domain": "Curso",
+      "representation": "Sesión y estación",
+      "task": "Navegar",
+      "interpretation": "La configuración selecciona el contenido disponible.",
+      "limits": "La navegación no prueba aprendizaje.",
+      "sourceIds": ["ref-guide"]
+    }
+  },
+  "sessions": {
+    "S00": {
+      "id": "S00",
+      "title": "Introducción",
+      "summary": "Propósito y navegación del curso.",
+      "objectives": ["Recorrer una sesión sin seleccionar una ruta científica."],
+      "bibliography": {
+        "id": "s00-bibliography",
+        "title": "Materiales de S00",
+        "items": [{ "id": "s00-guide", "title": "Guía del fork", "referenceIds": ["ref-guide"] }]
+      },
+      "stationIds": ["welcome"],
+      "stations": {
+        "welcome": {
+          "id": "welcome",
+          "title": "Bienvenida",
+          "purpose": "Presentar el recorrido.",
+          "unitIds": ["s00-welcome-opening"]
+        }
+      },
+      "units": {
+        "s00-welcome-opening": {
+          "id": "s00-welcome-opening",
+          "function": "opening",
+          "title": "Cómo usar la página",
+          "idea": "La navegación hace visible el estado del curso.",
+          "content": "Las sesiones y sus unidades tienen un orden estable.",
+          "exampleIds": ["example-web"],
+          "conceptIds": ["concept-question"]
+        }
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/FORK_CONFIGURATION.md",
+        "source_heading": "Configuración"
+      },
+      "editorial": {
+        "status": "drafting",
+        "visibility": "internal",
+        "publish_ready": false,
+        "rights": { "status": "original", "note": "Fixture sintético para pruebas." }
+      }
+    }
+  }
+}

@@ -752,14 +752,6 @@ export type S01InstanceTermId = (typeof s01InstanceTerms)[number]['id'];
 
 export const s01Lenses = [
   {
-    id: 'ai',
-    label: 'IA',
-    title: 'Sistema, entorno y objetivo',
-    notation: 'sistema · entorno · objetivo',
-    question: '¿Qué salida produce un sistema para un objetivo y en qué entorno se usa?',
-    text: 'En esta sesión usamos IA para nombrar el campo y los sistemas que, ante objetivos definidos por personas, generan predicciones, recomendaciones o decisiones que influyen en un entorno real o virtual. Pueden combinar representación, razonamiento, búsqueda, aprendizaje y generación; no todos aprenden de datos.',
-  },
-  {
     id: 'statistics',
     label: 'Estadística',
     title: 'Datos, variabilidad y evidencia',
@@ -774,6 +766,14 @@ export const s01Lenses = [
     notation: 'E · T · P',
     question: '¿Qué experiencia puede mejorar el desempeño en una tarea medible?',
     text: 'Un programa aprende cuando, respecto a una clase de tareas T y una medida de desempeño P, mejora su desempeño gracias a una experiencia E. Esa experiencia puede ser ejemplos, datos no etiquetados o interacción, y la mejora debe comprobarse con una evaluación.',
+  },
+  {
+    id: 'ai',
+    label: 'IA',
+    title: 'Sistema, entorno y objetivo',
+    notation: 'sistema · entorno · objetivo',
+    question: '¿Qué salida produce un sistema para un objetivo y en qué entorno se usa?',
+    text: 'En esta sesión usamos IA para nombrar el campo y los sistemas que, ante objetivos definidos por personas, generan predicciones, recomendaciones o decisiones que influyen en un entorno real o virtual. Pueden combinar representación, razonamiento, búsqueda, aprendizaje y generación; no todos aprenden de datos.',
   },
 ] as const;
 

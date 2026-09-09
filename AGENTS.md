@@ -53,8 +53,21 @@ El `inbox/` puede contener el diseño teórico detallado que alimenta la web, pe
 
 - Obsidian/DASAN conserva la planeación pedagógica, el grafo de conceptos, los guiones completos, las decisiones y las fuentes privadas.
 - Este repo conserva el aterrizaje reproducible y el material que pueda convertirse en producto.
+- `docs/planning/agent-execution/BOARD.md` conserva el estado operativo de las tareas.
+- `docs/planning/agent-execution/BITACORA.md` conserva el recorrido de trabajo: quién hizo qué, qué se decidió, qué ideas quedan abiertas y qué debe ocurrir después.
 - `source_note` y `source_heading` son obligatorios para cualquier paquete que venga de Obsidian.
 - Las rutas compartidas deben ser relativas al vault. La ruta absoluta local se resuelve solo desde `config/obsidian.local.yaml`, que está ignorado por Git.
+
+## Espacio de trabajo y bitácora
+
+Cada tarea debe dejar una entrada en [BITACORA.md](docs/planning/agent-execution/BITACORA.md), además de su evidencia específica cuando la tarea la requiera.
+
+- Al comenzar, registrar fecha, tarea, responsable, alcance y archivos reservados.
+- Al avanzar, registrar resultados, comandos o comprobaciones relevantes, decisiones y problemas encontrados.
+- Al cerrar, registrar el estado propuesto, la evidencia, la persona o agente que debe revisar y la siguiente acción.
+- Las ideas se registran como propuestas abiertas. Solo se convierten en requisito, cambio de alcance o decisión cuando se actualiza el documento que tiene autoridad para ello.
+- `BOARD.md` sigue siendo la autoridad del estado (`pendiente`, `en curso`, `entregada`, `aceptada`, `devuelta`, `bloqueada` o `no autorizada`); la bitácora explica cómo se llegó a ese estado.
+- No registrar credenciales, datos privados, copias de libros ni información personal. Enlazar rutas y evidencias del repositorio.
 
 ## Reglas para agentes
 

@@ -83,6 +83,16 @@ schemas/ + scripts/             contratos ejecutables
 
 La skill local `$develop-mlcp-web` orquesta estos contratos. `AGENTS.md` conserva las invariantes de mayor autoridad.
 
+## Evolución del curso
+
+- [Plan ejecutable para agentes: tareas, dependencias y criterios de aceptación](docs/planning/agent-execution/README.md)
+- [Primera retroalimentación: requisitos y fases](docs/planning/FEEDBACK-01.md)
+- [Propuesta de configuración, estructura y flujos con agentes](docs/architecture/COURSE_EVOLUTION.md)
+
+El piloto S01 incorpora bibliografía inicial, subslides en Pregunta e Instancia y modalidades
+configurables para el tutor. Consulta la [guía de configuración para forks](docs/guides/FORK_CONFIGURATION.md).
+Los documentos de evolución distinguen este piloto del trabajo pendiente.
+
 ## Estado
 
 El sitio y sus herramientas siguen en fase de infraestructura. S01 está disponible como prototipo

@@ -1,0 +1,10 @@
+{
+  "kind": "example-source-fixture",
+  "id": "kepler-dv-timeseries-2016",
+  "source_type": "mission-dataset-documentation",
+  "title": "Data Validation Time Series File: Description of File Format and Content",
+  "url": "https://archive.stsci.edu/files/live/sites/mast/files/home/missions-and-data/kepler/_documents/DVTimeSeries-Description.pdf",
+  "status": "verificado",
+  "claim": "El documento se usa únicamente para el flujo de datos y TCE descrito en su ubicación leída.",
+  "location": "PDF pp. 5–6, §1 Introduction"
+}

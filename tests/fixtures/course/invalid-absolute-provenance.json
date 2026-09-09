@@ -1,0 +1,71 @@
+{
+  "id": "invalid-absolute-provenance",
+  "identity": { "id": "mlcp", "title": "ML Ciencias Planetarias" },
+  "defaults": {
+    "interactionMode": "interactive",
+    "teacherMode": false,
+    "defaultView": "presentation"
+  },
+  "enabledSessionIds": ["S00"],
+  "references": {
+    "ref": { "id": "ref", "title": "Fuente", "url": "https://example.test/ref" }
+  },
+  "concepts": {},
+  "examples": {},
+  "examples": {
+    "example": {
+      "id": "example",
+      "question": "Pregunta",
+      "domain": "Exoplanetas",
+      "representation": "Dato",
+      "task": "Describir",
+      "interpretation": "Interpretación",
+      "limits": "Límite",
+      "sourceIds": ["ref"]
+    }
+  },
+  "sessions": {
+    "S00": {
+      "id": "S00",
+      "title": "Introducción",
+      "summary": "Fixture inválido.",
+      "objectives": ["Probar procedencia."],
+      "bibliography": {
+        "id": "bib",
+        "title": "Bibliografía",
+        "items": [{ "id": "item", "title": "Fuente", "referenceIds": ["ref"] }]
+      },
+      "stationIds": ["welcome"],
+      "stations": {
+        "welcome": {
+          "id": "welcome",
+          "title": "Bienvenida",
+          "purpose": "Prueba",
+          "unitIds": ["unit"]
+        }
+      },
+      "units": {
+        "unit": {
+          "id": "unit",
+          "function": "opening",
+          "title": "Unidad",
+          "idea": "Idea",
+          "content": "Contenido",
+          "exampleIds": ["example"],
+          "conceptIds": []
+        }
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "E:\\privado\\S00.md",
+        "source_heading": "Invalido"
+      },
+      "editorial": {
+        "status": "drafting",
+        "visibility": "internal",
+        "publish_ready": false,
+        "rights": { "status": "original", "note": "Fixture." }
+      }
+    }
+  }
+}

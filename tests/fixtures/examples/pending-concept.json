@@ -1,0 +1,10 @@
+{
+  "kind": "example-record-fixture",
+  "id": "s01-conceptual-pending",
+  "source_type": "conceptual-example",
+  "status": "pendiente",
+  "publish_ready": false,
+  "sourceIds": [],
+  "claim": "Ejemplo didáctico propio sin fuente externa validada.",
+  "next_action": "Definir si requiere una fuente y registrar la decisión antes de promoción."
+}

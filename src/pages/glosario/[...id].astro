@@ -1,7 +1,9 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 
+import { courseConfig } from '../../../config/course.config';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getConceptBacklinks } from '../../lib/concept-links';
 import { withBase } from '../../lib/urls';
 
 export async function getStaticPaths() {
@@ -10,18 +12,13 @@ export async function getStaticPaths() {
     getCollection('sessions'),
     getCollection('exercises'),
   ]);
-  return concepts.map((entry) => ({
-    params: { id: entry.id },
-    props: {
-      entry,
-      sessions: sessions.filter((session) =>
-        session.data.concepts.some((concept) => concept.id === entry.id),
-      ),
-      exercises: exercises.filter((exercise) =>
-        exercise.data.concepts.some((concept) => concept.id === entry.id),
-      ),
-    },
-  }));
+  return concepts.map((entry) => {
+    const backlinks = getConceptBacklinks(entry.id, sessions, exercises, courseConfig);
+    return {
+      params: { id: entry.id },
+      props: { entry, ...backlinks },
+    };
+  });
 }
 
 interface Props {

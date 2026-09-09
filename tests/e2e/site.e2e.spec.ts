@@ -8,38 +8,36 @@ test.beforeEach(async ({ page }) => {
   expect(pageErrors).toEqual([]);
 });
 
-test('explores the full pedagogical chain and resets', async ({ page }) => {
-  await expect(page.getByRole('heading', { name: /Pensar el problema/i, level: 1 })).toBeVisible();
+test('presenta el alcance y dirige a los dos destinos principales', async ({ page }) => {
+  await expect(
+    page.getByRole('heading', {
+      name: 'Comprender el problema antes de elegir el modelo.',
+      level: 1,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Tres líneas que avanzan juntas.' }),
+  ).toBeVisible();
 
-  const explorer = page.locator('[data-ready="true"][data-active-stage]');
-  await expect(explorer).toHaveAttribute('data-active-stage', 'question');
+  await page.getByRole('link', { name: /Ver sesiones/ }).click();
+  await expect(page).toHaveURL(/\/sesiones\/$/);
+  await expect(page.getByRole('heading', { name: 'ML, IA y métodos estadísticos' })).toBeVisible();
 
-  await page.getByRole('button', { name: '9. Transferencia docente' }).click();
-  await expect(explorer).toHaveAttribute('data-active-stage', 'transfer');
-  await expect(page.getByText('Etapa 9 de 9')).toBeVisible();
-
-  await page.getByRole('button', { name: 'Reiniciar' }).click();
-  await expect(explorer).toHaveAttribute('data-active-stage', 'question');
+  await page.goto('./');
+  await page.getByRole('link', { name: /Abrir glosario/ }).click();
+  await expect(page).toHaveURL(/\/glosario\/$/);
+  await expect(page.getByRole('heading', { name: 'El glosario público está vacío' })).toBeVisible();
 });
 
 test('lists S01 honestly and reports the remaining public empty states', async ({ page }) => {
-  await page.getByRole('link', { name: 'Sesiones', exact: true }).click();
+  const mainNav = page.getByRole('navigation', { name: 'Navegación principal' });
+  await mainNav.getByRole('link', { name: 'Sesiones', exact: true }).click();
   await expect(page).toHaveURL(/\/sesiones\/$/);
   await expect(page.getByRole('heading', { name: 'ML, IA y métodos estadísticos' })).toBeVisible();
   await expect(page.getByText('Prototipo interno', { exact: true })).toBeVisible();
   await expect(page.getByText(/Las colecciones públicas siguen vacías/i)).toBeVisible();
 
-  await page.getByRole('link', { name: 'Glosario' }).click();
+  await mainNav.getByRole('link', { name: 'Glosario', exact: true }).click();
   await expect(page).toHaveURL(/\/glosario\/$/);
   await expect(page.getByRole('heading', { name: 'El glosario público está vacío' })).toBeVisible();
-});
-
-test('supports keyboard navigation inside the learning path', async ({ page }) => {
-  const first = page.getByRole('button', { name: '1. Pregunta científica' });
-  await first.focus();
-  await page.keyboard.press('ArrowRight');
-
-  const second = page.getByRole('button', { name: '2. Datos y representación' });
-  await expect(second).toBeFocused();
-  await expect(second).toHaveAttribute('aria-pressed', 'true');
 });

@@ -3,7 +3,6 @@ import { expect, test } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
   await page.goto('./');
   await page.evaluate(() => document.fonts.ready);
-  await expect(page.locator('[data-ready="true"]')).toBeVisible();
   const dimensions = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
     content: document.documentElement.scrollWidth,
@@ -15,21 +14,8 @@ test('home initial state', async ({ page }) => {
   await expect(page).toHaveScreenshot('home-initial.png', { fullPage: true });
 });
 
-test('learning path transfer state', async ({ page }) => {
-  // Isolate the component from the sticky desktop header during its element capture.
-  await page.addStyleTag({
-    content:
-      '.site-header { position: static !important; } .skip-link { display: none !important; }',
-  });
-  await page.locator('.skip-link').evaluate((element) => element.remove());
-  await page.getByRole('button', { name: '9. Transferencia docente' }).click();
-  const explorer = page.locator('[data-active-stage="transfer"]');
-  await expect(explorer).toBeVisible();
-  await expect(explorer).toHaveScreenshot('learning-path-transfer.png');
-});
-
 test('S01 journey question state', async ({ page }) => {
-  await page.goto('./sistema/');
+  await page.goto('./sistema/#pregunta');
   await page.evaluate(() => document.fonts.ready);
   await page.addStyleTag({
     content:
@@ -42,7 +28,7 @@ test('S01 journey question state', async ({ page }) => {
 });
 
 test('S01 concept map overview', async ({ page }) => {
-  await page.goto('./sistema/');
+  await page.goto('./sistema/#pregunta');
   await page.evaluate(() => document.fonts.ready);
   await page.getByRole('button', { name: 'Ver mapa completo' }).click();
   await expect(page.locator('.s01-overview')).toHaveScreenshot('s01-concept-map.png');
@@ -64,23 +50,24 @@ test('S01 projector narrative across all stops', async ({ page }, testInfo) => {
   await page.evaluate(() => document.fonts.ready);
 
   const stops = [
-    ['pregunta', '1. Pregunta y uso'],
-    ['instancia', '2. Instancia y representación'],
-    ['senal', '3. Señal y paradigma'],
-    ['tarea', '4. Tarea y salida'],
-    ['familia', '5. Familia y aprendizaje'],
-    ['dominio', '6. Datos y dominio'],
-    ['evidencia', '7. Evidencia y límites'],
+    ['pregunta', '1. Pregunta y uso', null],
+    ['instancia', '2. Instancia y representación', null],
+    ['senal', '3. Señal y paradigma', '2. Tres paradigmas'],
+    ['tarea', '4. Tarea y salida', '2. Árbol de salidas'],
+    ['familia', '5. Familia y aprendizaje', '2. Reglas y aprendizaje'],
+    ['dominio', '6. Datos y dominio', '2. Cambio de condiciones'],
+    ['evidencia', '7. Evidencia y límites', '2. Capacidad y generalización'],
   ] as const;
 
-  for (const [id, label] of stops) {
+  for (const [id, label, partLabel] of stops) {
     await page.getByRole('button', { name: label }).click();
+    if (partLabel) await page.getByRole('button', { name: partLabel }).click();
     await expect(page).toHaveScreenshot(`s01-projector-${id}.png`, { fullPage: false });
   }
 });
 
 test('S01 flipped prediction card', async ({ page }) => {
-  await page.goto('./sistema/');
+  await page.goto('./sistema/#pregunta/salidas');
   await page.evaluate(() => document.fonts.ready);
   await page.addStyleTag({
     content: '.s01-outcome-card__stage { transition: none !important; }',
@@ -91,7 +78,7 @@ test('S01 flipped prediction card', async ({ page }) => {
 });
 
 test('S01 flipped task definition card', async ({ page }) => {
-  await page.goto('./sistema/#tarea');
+  await page.goto('./sistema/#tarea/salidas');
   await page.evaluate(() => document.fonts.ready);
   await page.addStyleTag({
     content: '.s01-outcome-card__stage { transition: none !important; }',
@@ -117,6 +104,7 @@ test('S01 journey evidence and limit state', async ({ page }) => {
   await page.locator('.skip-link').evaluate((element) => element.remove());
   const journey = page.locator('.s01-journey[data-ready="true"]');
   await page.getByRole('button', { name: '7. Evidencia y límites' }).click();
+  await page.getByRole('button', { name: '3. Afirmación defendible' }).click();
   await page.getByRole('button', { name: 'Excesiva' }).click();
   await page
     .getByRole('button', {

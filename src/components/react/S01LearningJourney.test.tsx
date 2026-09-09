@@ -7,7 +7,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import S01LearningJourney from './S01LearningJourney';
 
 beforeEach(() => {
-  window.history.replaceState(null, '', '/sistema/');
+  window.history.replaceState(null, '', '/sistema/#pregunta');
 });
 
 describe('S01LearningJourney', () => {
@@ -20,17 +20,12 @@ describe('S01LearningJourney', () => {
     expect(
       screen.getByRole('heading', { name: '¿Qué queremos responder con los datos?' }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: '¿Qué podemos hacer con una observación?' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: '¿Qué aporta cada disciplina?' }),
-    ).toBeInTheDocument();
     expect(screen.getByText('Ver una respuesta orientadora')).toBeInTheDocument();
     expect(screen.queryByText('Pregunta del guion')).not.toBeInTheDocument();
     expect(screen.queryByText('Qué debe quedar')).not.toBeInTheDocument();
     expect(screen.getByText('Llega aquí')).toBeInTheDocument();
     expect(screen.getByText('Sigue hacia')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: '3. Tres disciplinas' }));
     expect(screen.getByText('Experiencia, tarea y desempeño')).toBeInTheDocument();
     expect(
       screen.getByText('¿Qué experiencia puede mejorar el desempeño en una tarea medible?'),
@@ -41,13 +36,14 @@ describe('S01LearningJourney', () => {
     expect(
       screen.getByText('¿Qué podemos aprender de los datos y con qué incertidumbre?'),
     ).toBeInTheDocument();
-    expect(window.location.hash).toBe('');
+    expect(window.location.hash).toBe('#pregunta/disciplinas');
   });
 
   it('opens each initial use on its front and reveals the definition only after flipping', async () => {
     const user = userEvent.setup();
     render(<S01LearningJourney />);
 
+    await user.click(screen.getByRole('button', { name: '2. Cinco salidas' }));
     const origin = screen.getByRole('button', { name: 'Predecir. Abrir tarjeta' });
     await user.click(origin);
 
@@ -69,19 +65,21 @@ describe('S01LearningJourney', () => {
 
     await user.click(screen.getByRole('button', { name: 'Catálogo → estructura' }));
     await user.click(screen.getByRole('button', { name: '2. Instancia y representación' }));
+    await user.click(screen.getByRole('button', { name: '3. Ajustar y usar' }));
 
     expect(
       screen.getByLabelText(
         /D contiene representaciones x sub i sin objetivo por fila; z sub i es el grupo/i,
       ),
     ).toHaveClass('s01-math--block');
-    expect(screen.getAllByText(/Aquí no se entrega yᵢ por instancia/i)).toHaveLength(2);
+    expect(screen.getAllByText(/Aquí no se entrega yᵢ por instancia/i)).toHaveLength(1);
     expect(
       screen.getByRole('heading', { name: 'La notación separa ajustar de usar' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Ajuste')).toBeInTheDocument();
     expect(screen.getByText('Uso')).toBeInTheDocument();
 
+    await user.click(screen.getByRole('button', { name: '2. De observación a salida' }));
     const origin = screen.getByRole('button', { name: 'representación. Abrir definición' });
     await user.click(origin);
     const definition = screen.getByText(/Variables o estructuras que describen una instancia/i);
@@ -101,13 +99,12 @@ describe('S01LearningJourney', () => {
 
     await user.click(screen.getByRole('button', { name: 'Catálogo → estructura' }));
     await user.click(screen.getByRole('button', { name: '3. Señal y paradigma' }));
+    await user.click(screen.getByRole('button', { name: '3. La ruta activa' }));
 
-    expect(
-      screen.getByText('Predice la señal disponible para revelar este tramo de la ruta.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Predice antes de revelar la ruta')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Sin objetivo etiquetado' }));
     expect(screen.getByText(/conduce a no supervisado/i)).toBeInTheDocument();
-    expect(window.location.hash).toBe('#senal');
+    expect(window.location.hash).toBe('#senal/ruta');
   });
 
   it('opens a formal card for each learning paradigm', async () => {
@@ -115,6 +112,7 @@ describe('S01LearningJourney', () => {
     render(<S01LearningJourney />);
 
     await user.click(screen.getByRole('button', { name: '3. Señal y paradigma' }));
+    await user.click(screen.getByRole('button', { name: '2. Tres paradigmas' }));
 
     for (const label of ['Supervisado', 'No supervisado', 'Por refuerzo']) {
       expect(
@@ -140,6 +138,7 @@ describe('S01LearningJourney', () => {
     render(<S01LearningJourney />);
 
     await user.click(screen.getByRole('button', { name: '4. Tarea y salida' }));
+    await user.click(screen.getByRole('button', { name: '3. Tres niveles' }));
     expect(
       screen.getByRole('heading', { name: 'Tres niveles, tres decisiones' }),
     ).toBeInTheDocument();
@@ -154,6 +153,7 @@ describe('S01LearningJourney', () => {
     render(<S01LearningJourney />);
 
     await user.click(screen.getByRole('button', { name: '4. Tarea y salida' }));
+    await user.click(screen.getByRole('button', { name: '2. Árbol de salidas' }));
 
     for (const label of [
       'Regresión',
@@ -186,11 +186,13 @@ describe('S01LearningJourney', () => {
     render(<S01LearningJourney />);
 
     await user.click(screen.getByRole('button', { name: '4. Tarea y salida' }));
+    await user.click(screen.getByRole('button', { name: '2. Árbol de salidas' }));
     expect(document.querySelectorAll('.s01-algorithm-tree__branch')).toHaveLength(6);
     expect(screen.getAllByText(/random forest/i)).toHaveLength(2);
     expect(screen.getByText('contextual bandit')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: '5. Familia y aprendizaje' }));
+    await user.click(screen.getByRole('button', { name: '3. Sesgo inductivo' }));
     await user.click(screen.getByRole('button', { name: 'Familia cerrada: A / B / C' }));
     expect(screen.getByText(/obliga al caso A\+B/i)).toBeInTheDocument();
     await user.click(
@@ -204,18 +206,22 @@ describe('S01LearningJourney', () => {
     render(<S01LearningJourney />);
 
     await user.click(screen.getByRole('button', { name: '5. Familia y aprendizaje' }));
+    await user.click(screen.getByRole('button', { name: '2. Reglas y aprendizaje' }));
     await user.click(screen.getByRole('button', { name: 'Reglas explícitas' }));
     expect(screen.getByText('El conocimiento se escribe antes de clasificar.')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: '3. Sesgo inductivo' }));
     await user.click(
       screen.getByRole('button', { name: 'Familia abierta: añadir híbrido o abstención' }),
     );
     expect(screen.getByText(/familia abierta conserva una salida híbrida/i)).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: '6. Datos y dominio' }));
+    await user.click(screen.getByRole('button', { name: '3. Diagnóstico y transferencia' }));
     await user.click(screen.getByRole('button', { name: 'Observado' }));
     expect(screen.getByText('respuesta instrumental')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: '7. Evidencia y límites' }));
+    await user.click(screen.getByRole('button', { name: '3. Afirmación defendible' }));
     await user.click(screen.getByRole('button', { name: 'Excesiva' }));
     await user.click(
       screen.getByRole('button', {
@@ -223,6 +229,42 @@ describe('S01LearningJourney', () => {
       }),
     );
     expect(screen.getByText(/todavía no prueba mecanismo físico/i)).toBeInTheDocument();
+  });
+
+  it('keeps five slides in the rail and exposes every subslide as a control', async () => {
+    const user = userEvent.setup();
+    render(<S01LearningJourney />);
+
+    const journey = document.querySelector('[data-ready="true"]');
+    const rail = screen.getByRole('navigation', { name: 'Diapositivas de S01' });
+
+    expect(journey).toHaveAttribute('data-slide-count', '22');
+    expect(journey).toHaveAttribute('data-active-slide', '1');
+    expect(rail.querySelectorAll('li[data-visible="true"]')).toHaveLength(5);
+    expect(within(rail).getByText('01.1')).toBeInTheDocument();
+    expect(within(rail).getByText('01.2')).toBeInTheDocument();
+    expect(within(rail).getByText('01.3')).toBeInTheDocument();
+    expect(
+      within(rail).getByRole('button', {
+        name: 'Subslide 2 · Pregunta · Cinco salidas',
+      }),
+    ).toBeInTheDocument();
+
+    await user.click(
+      within(rail).getByRole('button', {
+        name: 'Subslide 3 · Pregunta · Tres disciplinas',
+      }),
+    );
+    expect(window.location.hash).toBe('#pregunta/disciplinas');
+    expect(journey).toHaveAttribute('data-active-slide', '3');
+    expect(rail.querySelectorAll('li[data-visible="true"]')).toHaveLength(5);
+
+    await user.click(within(rail).getByRole('button', { name: '7. Evidencia y límites' }));
+    expect(window.location.hash).toBe('#evidencia');
+    expect(journey).toHaveAttribute('data-active-slide', '19');
+    expect(rail.querySelectorAll('li[data-visible="true"]')).toHaveLength(5);
+    expect(rail.querySelectorAll('li[data-side="left"]')).toHaveLength(9);
+    expect(rail.querySelectorAll('li[data-side="right"]')).toHaveLength(8);
   });
 
   it('switches between presentation and linear reading while preserving the active stop', async () => {
@@ -257,7 +299,12 @@ describe('S01LearningJourney', () => {
       'presentation',
     );
     expect(window.location.search).toBe('');
-    expect(screen.getByRole('heading', { name: 'Datos y dominio' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: '3. Diagnóstico y transferencia' }));
+    expect(
+      screen.getByRole('heading', {
+        name: '¿Qué tendría que coincidir para transferir el modelo?',
+      }),
+    ).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Ver mapa completo' }));
     expect(
@@ -269,7 +316,7 @@ describe('S01LearningJourney', () => {
 
     await user.click(screen.getByRole('button', { name: 'Reiniciar' }));
     expect(
-      screen.getByRole('heading', { name: '¿Qué queremos responder con los datos?' }),
+      screen.getByRole('heading', { name: 'Dos libros para orientar el recorrido' }),
     ).toBeInTheDocument();
     expect(window.location.hash).toBe('');
   });
@@ -309,17 +356,39 @@ describe('S01LearningJourney', () => {
     expect(screen.getByRole('heading', { name: 'Familia y aprendizaje' })).toBeInTheDocument();
   });
 
-  it('moves through the thread with arrow, home and end keys', async () => {
+  it('moves through the flat thread with arrow, home and end keys', async () => {
     const user = userEvent.setup();
     render(<S01LearningJourney />);
 
     const first = screen.getByRole('button', { name: '1. Pregunta y uso' });
     first.focus();
     await user.keyboard('{ArrowRight}');
-    expect(screen.getByRole('button', { name: '2. Instancia y representación' })).toHaveFocus();
+    expect(
+      screen.getByRole('button', { name: 'Subslide 2 · Pregunta · Cinco salidas' }),
+    ).toHaveFocus();
     await user.keyboard('{End}');
-    expect(screen.getByRole('button', { name: '7. Evidencia y límites' })).toHaveFocus();
+    expect(
+      screen.getByRole('button', { name: 'Subslide 3 · Evidencia · Afirmación defendible' }),
+    ).toHaveFocus();
     await user.keyboard('{Home}');
-    expect(first).toHaveFocus();
+    expect(screen.getByRole('button', { name: '0. Bibliografía de S01' })).toHaveFocus();
+  });
+
+  it('returns to bibliography at the first content boundary and stops at the final unit', async () => {
+    const user = userEvent.setup();
+    render(<S01LearningJourney />);
+
+    await user.click(screen.getByRole('button', { name: '← Anterior' }));
+    expect(window.location.hash).toBe('#bibliografia');
+    expect(
+      screen.getByRole('heading', { name: 'Dos libros para orientar el recorrido' }),
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Siguiente →' }));
+    for (let index = 0; index < 20; index += 1) {
+      await user.click(screen.getByRole('button', { name: 'Siguiente →' }));
+    }
+    expect(window.location.hash).toBe('#evidencia/afirmacion');
+    expect(screen.getByRole('button', { name: 'Siguiente →' })).toBeDisabled();
   });
 });

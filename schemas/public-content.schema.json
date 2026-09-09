@@ -8,8 +8,6 @@
     "summary",
     "kind",
     "status",
-    "source_vault",
-    "source_note",
     "source_heading",
     "visibility",
     "publish_ready",
@@ -26,12 +24,19 @@
       "minLength": 1,
       "pattern": "^(?![A-Za-z]:[\\\\/])(?!/)(?!file:).+"
     },
+    "origin": { "enum": ["obsidian", "repo"] },
+    "source_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?!/)(?!file:).+"
+    },
     "source_heading": { "type": "string", "minLength": 1 },
     "source_block": { "type": ["string", "null"] },
     "source_refs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
     "visibility": { "const": "public" },
     "publish_ready": { "const": true },
     "concepts": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "aliases": { "type": "array", "items": { "type": "string", "minLength": 1 } },
     "rights": {
       "type": "object",
       "required": ["status", "note"],
@@ -43,5 +48,23 @@
       "additionalProperties": false
     }
   },
+  "oneOf": [
+    {
+      "required": ["origin", "source_path"],
+      "properties": {
+        "origin": { "const": "repo" },
+        "source_path": { "type": "string" }
+      },
+      "not": { "required": ["source_note"], "properties": { "source_note": {} } }
+    },
+    {
+      "required": ["source_vault", "source_note"],
+      "properties": {
+        "source_vault": { "type": "string" },
+        "source_note": { "type": "string" }
+      },
+      "not": { "required": ["source_path"], "properties": { "source_path": {} } }
+    }
+  ],
   "additionalProperties": true
 }

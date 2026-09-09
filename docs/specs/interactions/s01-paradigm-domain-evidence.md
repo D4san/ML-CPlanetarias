@@ -44,12 +44,17 @@ de revelar la respuesta; los cajones del mapa quedan disponibles para consultar 
 ## Mapa conceptual
 
 La vista de panorama usa `@xyflow/react` para dibujar la cadena `pregunta → instancia → señal → tarea
-→ familia → dominio → evidencia` y las tres ramas de señal. Los nodos principales son controles de
-teclado que devuelven a la parada correspondiente. El mapa no reemplaza el hilo de siete paradas:
-la lista de respaldo permanece visible para lectura lineal, lectores de pantalla y pantallas pequeñas.
+→ familia → dominio → evidencia` y las tres ramas de señal. En la subslide de paradigmas, el mapa
+se construye con tres capas accionables: pregunta, información disponible y rutas de aprendizaje.
+Los nodos principales son controles de teclado que devuelven a la parada correspondiente. El mapa no
+reemplaza el hilo de siete paradas: la lista de respaldo permanece visible para lectura lineal,
+lectores de pantalla y pantallas pequeñas.
 
-Estado determinista: nodos sin arrastre ni conexión por parte del lector; el mapa permite desplazarse
-horizontalmente en pantallas estrechas y abrir una parada con clic, Enter o barra espaciadora.
+Estado determinista: la construcción inicia en `0/3` capas y no comienza con una animación automática.
+`Construir siguiente capa`, los tres botones de capa y `Ver mapa completo` revelan la continuidad
+pregunta → información → paradigmas. Los nodos no se arrastran ni se conectan; permanecen consultables
+como controles, mientras la tercera capa los resalta y permite abrirlos con clic, Enter o barra
+espaciadora. El mapa permite desplazarse horizontalmente en pantallas estrechas.
 
 ## Dominio: sintético frente a observado
 
@@ -82,6 +87,8 @@ sola un mecanismo físico ni validez universal.
 
 - Las tarjetas son botones nativos, revelan la definición solo después de voltear y restauran el foco.
 - Los gráficos tienen título y descripción; las listas y textos repiten la distinción semántica.
+- La construcción guiada expone su capa actual en un resumen `aria-live`, permite saltar a una capa,
+  mostrar el mapa completo y reiniciar sin depender de la animación.
 - El mapa tiene un respaldo de paradas; los controles de React Flow no son necesarios para seguir la
   narración.
 - Las figuras son originales y esquemáticas. No contienen resultados observacionales ni sustituyen
@@ -90,6 +97,7 @@ sola un mecanismo físico ni validez universal.
 ## Matriz de pruebas
 
 - [ ] los tres cajones del mapa abren, voltean, cierran y restauran foco en sus tarjetas de paradigma;
+- [ ] la construcción guiada revela las tres capas, permite mostrar todo y reiniciar;
 - [ ] el mapa muestra la cadena, las tres ramas y la lista de paradas;
 - [ ] sintético/observado cambia el énfasis sin ocultar la explicación;
 - [ ] el gráfico de dominio muestra puntos, barras de error y cobertura faltante;

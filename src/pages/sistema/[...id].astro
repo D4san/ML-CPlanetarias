@@ -1,0 +1,45 @@
+---
+import { courseConfig } from '../../../config/course.config';
+import S01SessionPage from '../../components/S01SessionPage.astro';
+import { isSessionAvailable } from '../../lib/course-availability';
+import { withBase } from '../../lib/urls';
+
+export function getStaticPaths() {
+  if (!isSessionAvailable(courseConfig, 'S01')) return [];
+
+  return [
+    { params: { id: undefined }, props: { alias: false } },
+    { params: { id: 's01' }, props: { alias: true } },
+  ];
+}
+
+const { alias } = Astro.props;
+const target = withBase('/sistema/');
+---
+
+{
+  alias ? (
+    <>
+      <html lang="es">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width" />
+          <meta name="robots" content="noindex, nofollow" />
+          <meta http-equiv="refresh" content={`0; url=${target}`} />
+          <link rel="canonical" href={target} />
+          <title>Sesión 1 · {courseConfig.identity.title}</title>
+          <script is:inline define:vars={{ target }}>
+            window.location.replace(`${target}${window.location.hash}`);
+          </script>
+        </head>
+        <body>
+          <p>
+            <a href={target}>Continuar a la sesión 1</a>
+          </p>
+        </body>
+      </html>
+    </>
+  ) : (
+    <S01SessionPage />
+  )
+}

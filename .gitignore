@@ -27,3 +27,6 @@ test-results/
 
 # Directorio auxiliar con su propio repositorio; no forma parte del sitio.
 ML-Exoplanets/
+
+# Local Netlify folder
+.netlify

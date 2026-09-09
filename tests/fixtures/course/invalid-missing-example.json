@@ -1,0 +1,59 @@
+{
+  "id": "invalid-missing-example",
+  "identity": { "id": "mlcp", "title": "ML Ciencias Planetarias" },
+  "defaults": {
+    "interactionMode": "interactive",
+    "teacherMode": false,
+    "defaultView": "presentation"
+  },
+  "enabledSessionIds": ["S01"],
+  "references": {
+    "ref": { "id": "ref", "title": "Fuente", "url": "https://example.test/ref" }
+  },
+  "concepts": {},
+  "examples": {},
+  "sessions": {
+    "S01": {
+      "id": "S01",
+      "title": "Sesión inválida",
+      "summary": "Fixture inválido.",
+      "objectives": ["Probar referencias faltantes."],
+      "bibliography": {
+        "id": "bib",
+        "title": "Bibliografía",
+        "items": [{ "id": "item", "title": "Fuente", "referenceIds": ["ref"] }]
+      },
+      "stationIds": ["station"],
+      "stations": {
+        "station": {
+          "id": "station",
+          "title": "Estación",
+          "purpose": "Prueba",
+          "unitIds": ["unit"]
+        }
+      },
+      "units": {
+        "unit": {
+          "id": "unit",
+          "function": "opening",
+          "title": "Unidad",
+          "idea": "Idea",
+          "content": "Contenido",
+          "exampleIds": ["missing-example"],
+          "conceptIds": []
+        }
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/fixture.md",
+        "source_heading": "Prueba"
+      },
+      "editorial": {
+        "status": "drafting",
+        "visibility": "internal",
+        "publish_ready": false,
+        "rights": { "status": "original", "note": "Fixture." }
+      }
+    }
+  }
+}

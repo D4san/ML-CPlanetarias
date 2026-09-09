@@ -1,0 +1,170 @@
+# Manifiesto de auditoría de la familia de miniaturas de S01.
+id: s01-instance-card-miniatures
+type: conceptual
+unit: S01 / instancia / tarjetas de flujo
+case: 'Cinco etapas de la cadena Instancia, dos marcas auxiliares y tres salidas según la ruta spectrum, catalog o followup'
+purpose: 'Reconocer la función cualitativa de cada etapa sin convertir la miniatura en fórmula, medición o leyenda'
+tool_process: 'imagegen requerido por I-04; F03 auditó nueve PNG preexistentes sin regenerarlos porque OPENAI_API_KEY no está configurada'
+generation_method: imagegen
+style_family: 'MLCP editorial line-art v1'
+background_mode: transparent-alpha
+alpha_status: passed
+
+assets:
+  - id: s01-instance-miniature
+    role: instance
+    file: public/images/s01/instance-miniatures/instance.png
+    purpose: 'Identificar la instancia astronómica que entra a la cadena'
+    width: 1774
+    height: 887
+    weight_bytes: 351782
+    sha256: e83f7016232ced0c9904f75e5259903b00aa61079eda5e5e0ddb43a9a4002b12
+    alt: 'Miniatura conceptual de una instancia astronómica formada por una estrella, un planeta y una órbita'
+    caption: 'Iconografía conceptual de la instancia de S01; no representa un sistema observado concreto ni una escala física'
+    provenance: 'Archivo preexistente del repositorio, sintetizado desde la ficha I-04; el registro histórico de generación no está disponible en F03'
+    rights_status: hold
+    review_status: blocked
+  - id: s01-observation-miniature
+    role: observation
+    file: public/images/s01/instance-miniatures/observation.png
+    purpose: 'Identificar la observación o el registro cualitativo disponible para el método'
+    width: 1774
+    height: 887
+    weight_bytes: 143915
+    sha256: 60e7788a5b74d49f921d19dc9266868ad43ffb4e67a49090b6e85c3d66b52016
+    alt: 'Miniatura conceptual de una señal observada como un trazo con puntos de muestreo'
+    caption: 'Iconografía conceptual de una observación; no contiene valores medidos, ejes ni unidades'
+    provenance: 'Archivo preexistente del repositorio, sintetizado desde la ficha I-04; el registro histórico de generación no está disponible en F03'
+    rights_status: hold
+    review_status: blocked
+  - id: s01-representation-miniature
+    role: representation
+    file: public/images/s01/instance-miniatures/representation.png
+    purpose: 'Identificar la transformación de observación a representación'
+    width: 1774
+    height: 887
+    weight_bytes: 204435
+    sha256: c96cdbe2c387c32284b3db669ccf2297472108c2802039956ee0f589dc22849e
+    alt: 'Miniatura conceptual de una representación abstracta mediante barras y marcas de variables'
+    caption: 'Iconografía conceptual de una representación; no codifica magnitudes, unidades ni una tabla real'
+    provenance: 'Archivo preexistente del repositorio, sintetizado desde la ficha I-04; el registro histórico de generación no está disponible en F03'
+    rights_status: hold
+    review_status: blocked
+  - id: s01-model-miniature
+    role: model
+    file: public/images/s01/instance-miniatures/model.png
+    purpose: 'Identificar el modelo como transformación entre entrada y salida'
+    width: 1774
+    height: 887
+    weight_bytes: 220085
+    sha256: 4b4474dd1241398c56bb8fdb109f67bba37a2ad630714f73ac7cb1922f4cd829
+    alt: 'Miniatura conceptual de un modelo como contenedor que transforma una entrada en una salida'
+    caption: 'Iconografía conceptual del modelo; no demuestra entrenamiento, causalidad ni desempeño'
+    provenance: 'Archivo preexistente del repositorio, sintetizado desde la ficha I-04; el registro histórico de generación no está disponible en F03'
+    rights_status: hold
+    review_status: blocked
+  - id: s01-target-miniature
+    role: target
+    file: public/images/s01/instance-miniatures/target.png
+    purpose: 'Identificar el objetivo disponible durante el ajuste supervisado'
+    width: 1774
+    height: 887
+    weight_bytes: 141083
+    sha256: 89d018c9d58669e98612c4e6e4fe675ff6d9be4161e28108824dedcb9cd99e4f
+    alt: 'Miniatura conceptual de un objetivo asociado a una señal de aprendizaje supervisado'
+    caption: 'Iconografía conceptual del objetivo; no representa una etiqueta observada ni una variable con unidades'
+    provenance: 'Archivo preexistente del repositorio, sintetizado desde la ficha I-04; el registro histórico de generación no está disponible en F03'
+    rights_status: hold
+    review_status: blocked
+  - id: s01-signal-miniature
+    role: signal
+    file: public/images/s01/instance-miniatures/signal.png
+    purpose: 'Identificar una señal de aprendizaje distinta del objetivo observado'
+    width: 1774
+    height: 887
+    weight_bytes: 137603
+    sha256: ee2d5ccad32c121b6a767505bab2b7d011a71b1f1c484b8243218848ed240e71
+    alt: 'Miniatura conceptual de una señal auxiliar separada de la representación principal'
+    caption: 'Iconografía conceptual de una señal de aprendizaje; su significado depende de la ruta y del texto accesible'
+    provenance: 'Archivo preexistente del repositorio, sintetizado desde la ficha I-04; el registro histórico de generación no está disponible en F03'
+    rights_status: hold
+    review_status: blocked
+  - id: s01-output-spectrum-miniature
+    role: output-spectrum
+    file: public/images/s01/instance-miniatures/output-spectrum.png
+    purpose: 'Identificar la salida cualitativa de la ruta de espectro'
+    width: 2172
+    height: 724
+    weight_bytes: 105159
+    sha256: e185031a1b338024c60d2b81210572a05f8b1c6c334443798edd8b1caa7e5703
+    alt: 'Miniatura conceptual de una flecha que conduce desde una entrada hacia una salida puntual'
+    caption: 'Iconografía conceptual de una salida de la ruta de espectro; no representa una abundancia medida'
+    provenance: 'Archivo preexistente del repositorio, sintetizado desde la ficha I-04; el registro histórico de generación no está disponible en F03'
+    rights_status: hold
+    review_status: blocked
+  - id: s01-output-catalog-miniature
+    role: output-catalog
+    file: public/images/s01/instance-miniatures/output-catalog.png
+    purpose: 'Identificar dos grupos abstractos como salida cualitativa de catálogo'
+    width: 1774
+    height: 887
+    weight_bytes: 261100
+    sha256: 2f66f0aecd03a2c7c031477086caaa5007108e0307dd86341b1f1045e623aa85
+    alt: 'Miniatura conceptual de dos grupos abstractos que representan una salida de catálogo'
+    caption: 'Iconografía conceptual de grupo o rareza; requiere interpretación externa y no afirma una clasificación real'
+    provenance: 'Archivo preexistente del repositorio, sintetizado desde la ficha I-04; el registro histórico de generación no está disponible en F03'
+    rights_status: hold
+    review_status: blocked
+  - id: s01-output-followup-miniature
+    role: output-followup
+    file: public/images/s01/instance-miniatures/output-followup.png
+    purpose: 'Identificar una acción cualitativa de seguimiento seleccionada desde un estado'
+    width: 1774
+    height: 887
+    weight_bytes: 167982
+    sha256: f555d04b8164e585984d3cdfc7b10e5fe278302a8a3db7036c054a5824dc8303
+    alt: 'Miniatura conceptual de una trayectoria que conduce a una acción de seguimiento'
+    caption: 'Iconografía conceptual de una acción de seguimiento; su utilidad depende de la recompensa declarada'
+    provenance: 'Archivo preexistente del repositorio, sintetizado desde la ficha I-04; el registro histórico de generación no está disponible en F03'
+    rights_status: hold
+    review_status: blocked
+
+provenance:
+  origin: repo
+  source_path: docs/guides/VISUAL_ASSET_GUIDE.md
+  source_heading: I-04 · Familia de miniaturas para tarjetas y estaciones
+  source_refs:
+    - src/components/react/S01Pilot.tsx
+    - src/components/react/s01/InstanceScene.tsx
+  transformation: 'PNG preexistentes auditados en F03; no hubo regeneración ni transformación en esta ronda'
+  units: null
+  seed: null
+
+rights:
+  status: hold
+  note: 'Los archivos estaban en el worktree, pero no está disponible el registro histórico de generación, el prompt ni la autorización explícita de promoción'
+
+limits:
+  - 'Iconografía conceptual; no representa observaciones, entrenamiento, métricas, predicciones ni clases físicas'
+  - 'Las etiquetas, fórmulas y flechas críticas permanecen en HTML/SVG'
+  - 'El canal alfa se comprobó en las cuatro esquinas de cada archivo; falta validar el render integrado en todos los tamaños'
+
+review:
+  status: blocked
+  inspected_at: 2026-09-08
+  blocker: 'OPENAI_API_KEY no está configurada; falta regenerar con imagegen o confirmar la procedencia histórica antes de promover'
+  contexts:
+    - intrinsic-size
+    - transparent-corners
+    - dark-surface
+    - light-surface
+    - 1920x1080
+    - 1440x900
+    - 1024x768
+    - 390x844
+    - 390x480
+  findings:
+    - 'Los nueve PNG preexistentes usan RGBA y alfa 0 en las cuatro esquinas'
+    - 'La revisión clara/oscura y responsive conserva la composición; output-spectrum, output-followup, signal y algunos detalles amarillos pierden fuerza sobre --paper-50'
+    - 'Ningún archivo contiene texto técnico, ejes, unidades, ecuaciones ni resultados'
+    - 'La procedencia histórica, los derechos y la comprobación de contraste en la tarjeta integrada quedan pendientes'

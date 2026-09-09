@@ -4,6 +4,7 @@ import '../styles/global.css';
 
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import { courseConfig } from '../../config/course.config';
 
 interface Props {
   title?: string;
@@ -12,12 +13,13 @@ interface Props {
 }
 
 const {
-  title = 'ML Ciencias Planetarias',
-  description = 'Curso interactivo y reproducible de machine learning para ciencias planetarias.',
+  title = courseConfig.identity.title,
+  description = courseConfig.identity.description ??
+    'Curso interactivo y reproducible de machine learning para ciencias planetarias.',
   noindex = false,
 } = Astro.props;
 const fullTitle =
-  title === 'ML Ciencias Planetarias' ? title : `${title} · ML Ciencias Planetarias`;
+  title === courseConfig.identity.title ? title : `${title} · ${courseConfig.identity.title}`;
 ---
 
 <!doctype html>

@@ -1,0 +1,148 @@
+---
+import S00LearningJourney from './react/S00LearningJourney';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getS00Parts, s00BibliographyReferences, s00Units } from '../lib/s00-content';
+import type { CourseConfig } from '../lib/course-config';
+
+interface Props {
+  config: CourseConfig;
+}
+
+const { config } = Astro.props;
+---
+
+<SiteLayout
+  title="Sesión 0 · De los mundos a los datos"
+  description="Introducción interna al aprendizaje automático para exoplanetas: de la pregunta científica a la evidencia condicionada."
+  noindex
+>
+  <div class="s00-session-shell">
+    <section class="site-shell s00-instrument" aria-label="Recorrido de la sesión 0">
+      <S00LearningJourney config={config} client:load />
+    </section>
+
+    <noscript>
+      <section class="site-shell s00-fallback" aria-labelledby="s00-fallback-title">
+        <p class="eyebrow">Sesión 0 · lectura lineal</p>
+        <h1 id="s00-fallback-title">De los mundos a los datos</h1>
+        <p>
+          Esta introducción conecta una pregunta sobre exoplanetas con su medición, representación,
+          tarea de ML, evaluación e interpretación. Puede leerse sin instalar herramientas.
+        </p>
+        <section aria-labelledby="s00-fallback-bibliography">
+          <h2 id="s00-fallback-bibliography">Fuentes de entrada</h2>
+          <ul>
+            {
+              s00BibliographyReferences.map((reference) => (
+                <li>
+                  <strong>{reference.title}</strong>
+                  {reference.location && <span> · {reference.location}</span>}
+                  <p>{reference.didacticFunction}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+        <ol>
+          {
+            s00Units.map((unit, unitIndex) => (
+              <li id={`s00-fallback-${unit.id}`}>
+                <p class="eyebrow">
+                  {unit.groupLabel} · {unit.partLabel}
+                </p>
+                <p>
+                  <strong>Subpantallas:</strong>{' '}
+                  {getS00Parts(unit.id)
+                    .map(
+                      (part, partIndex) =>
+                        `${String(unitIndex + 1).padStart(2, '0')}.${partIndex + 1} ${part.label}`,
+                    )
+                    .join(' · ')}
+                </p>
+                <h2>{unit.title}</h2>
+                <p>
+                  <strong>Pregunta:</strong> {unit.question}
+                </p>
+                <p>
+                  <strong>Idea:</strong> {unit.idea}
+                </p>
+                <p>{unit.content}</p>
+                <p>
+                  <strong>Interpretación:</strong> {unit.interpretation}
+                </p>
+                <p>
+                  <strong>Límite:</strong> {unit.limits}
+                </p>
+                <aside>
+                  <strong>Precaución:</strong> {unit.caution.distinction} {unit.caution.consequence}
+                </aside>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="s00-fallback__status">
+          S00 es una preparación interna con status: drafting, visibility: internal, publish_ready:
+          false y rights: pending. Esta página no promueve el paquete a contenido público.
+        </p>
+      </section>
+    </noscript>
+  </div>
+</SiteLayout>
+
+<style>
+  .s00-session-shell {
+    overflow: clip;
+    padding-top: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .s00-instrument {
+    padding-block: 0 var(--space-7);
+  }
+
+  .s00-fallback {
+    padding-block: var(--space-8);
+    border-top: var(--line);
+  }
+
+  .s00-fallback h1 {
+    max-width: 16ch;
+  }
+
+  .s00-fallback > p,
+  .s00-fallback li,
+  .s00-fallback aside {
+    max-width: 72ch;
+  }
+
+  .s00-fallback section {
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: var(--line);
+  }
+
+  .s00-fallback ul,
+  .s00-fallback ol {
+    display: grid;
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+  }
+
+  .s00-fallback li p {
+    margin-bottom: var(--space-2);
+    color: var(--ink-700);
+  }
+
+  .s00-fallback aside {
+    margin-top: var(--space-3);
+    padding: var(--space-3);
+    border-left: 0.3rem solid var(--limit);
+    background: var(--paper-200);
+  }
+
+  .s00-fallback__status {
+    padding-top: var(--space-5);
+    border-top: var(--line);
+    color: var(--ink-700);
+    font-size: var(--step--1);
+  }
+</style>

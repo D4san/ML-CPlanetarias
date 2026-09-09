@@ -1,21 +1,44 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 
+import { courseConfig } from '../../../config/course.config';
+import S00SessionPage from '../../components/S00SessionPage.astro';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { isSessionAvailable } from '../../lib/course-availability';
 
 export async function getStaticPaths() {
   const sessions = await getCollection('sessions');
-  return sessions.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+  const publicPaths = sessions
+    .filter((entry) => isSessionAvailable(courseConfig, entry.data.session))
+    .map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+  const internalPaths = isSessionAvailable(courseConfig, 'S00')
+    ? [{ params: { id: 's00' }, props: { internalS00: true as const } }]
+    : [];
+  return [...internalPaths, ...publicPaths];
 }
 
 interface Props {
-  entry: CollectionEntry<'sessions'>;
+  entry?: CollectionEntry<'sessions'>;
+  internalS00?: boolean;
 }
 
-const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { entry, internalS00 } = Astro.props;
+
+if (internalS00) {
+  // S00 is an internal prototype and intentionally bypasses the public collection boundary.
+} else if (!entry) {
+  throw new Error('La ruta de sesión no tiene una entrada válida.');
+}
+
+const Content = entry ? (await render(entry)).Content : null;
 ---
 
-<ArticleLayout {...entry.data}>
-  <Content />
-</ArticleLayout>
+{
+  internalS00 ? (
+    <S00SessionPage config={courseConfig} />
+  ) : entry && Content ? (
+    <ArticleLayout {...entry.data}>
+      <Content />
+    </ArticleLayout>
+  ) : null
+}

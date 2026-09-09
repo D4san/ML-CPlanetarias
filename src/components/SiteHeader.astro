@@ -1,13 +1,12 @@
 ---
 import BrandMark from './BrandMark.astro';
+import { courseConfig } from '../../config/course.config';
 import { withBase } from '../lib/urls';
 
 const currentPath = Astro.url.pathname;
 const links = [
   { href: '/sesiones/', label: 'Sesiones' },
   { href: '/glosario/', label: 'Glosario' },
-  { href: '/ejercicios/', label: 'Ejercicios' },
-  { href: '/sistema/', label: 'S01' },
 ];
 
 function active(href: string) {
@@ -17,9 +16,9 @@ function active(href: string) {
 
 <header class="site-header">
   <div class="site-shell header-inner">
-    <a class="brand" href={withBase('/')} aria-label="ML Ciencias Planetarias, inicio">
+    <a class="brand" href={withBase('/')} aria-label={`${courseConfig.identity.title}, inicio`}>
       <BrandMark />
-      <span><strong>ML</strong> Ciencias Planetarias</span>
+      <span><strong>ML</strong> {courseConfig.identity.title.replace(/^ML\s+/, '')}</span>
     </a>
     <nav aria-label="Navegación principal">
       <ul>
@@ -71,7 +70,7 @@ function active(href: string) {
 
   .brand strong {
     display: block;
-    color: var(--data);
+    color: var(--ink-800);
     font-family: var(--font-mono);
     font-size: 0.7rem;
     letter-spacing: 0.15em;

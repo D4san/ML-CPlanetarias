@@ -35,6 +35,29 @@ con un borde de seguridad pequeño. Una parada puede requerir desplazamiento ver
 interacción lo exige, pero su relación principal debe entenderse dentro del primer cuadro 16:9. El
 modo `Lectura` conserva su escala editorial y una medida centrada más estrecha.
 
+El carril de presentación compartido (`SlideRail`) recibe la secuencia plana de cada sesión y
+presenta cinco tarjetas desarrolladas alrededor de la activa; el resto queda apilado en los bordes.
+Las entradas pueden declarar partes internas para hacer visible la estructura de una estación. La
+sesión conserva el contenido, el estado pedagógico y sus rutas; el carril conserva la composición,
+el foco, el teclado y la adaptación móvil. S01 usa este contrato para distribuir Pregunta e
+Instancia en subslides explícitas, según `docs/specs/interactions/s01-pilot-subslides.md`.
+Los esquemas conservan su relación de aspecto para alinear flechas y controles; las ilustraciones
+del flujo comparten texto aplicado a la ruta.
+
+### Ilustraciones cualitativas e iconos
+
+Los dibujitos, miniaturas e iconos que representan objetos, escenas o metáforas siguen la familia
+`MLCP editorial line-art v1` y se producen mediante `$imagegen`. La familia usa línea limpia, formas
+planas reconocibles, detalle mínimo pero legible a tamaño pequeño, composición centrada y objetos
+consistentes entre variantes. Los roles de color se refuerzan con forma, posición, patrón o texto
+externo.
+
+Cuando un asset solicite transparencia, el archivo es RGBA con canal alfa real. El exterior del
+dibujo queda transparente y se comprueba sobre una superficie clara y otra oscura. No se dibuja un
+tablero cuadriculado para representar transparencia ni se hornean rectángulos, retículas, bordes,
+halos o sombras que funcionen como fondo. Texto exacto, ecuaciones, cifras, ejes, leyendas y flechas
+críticas permanecen en HTML/SVG accesible; la ilustración aporta la relación cualitativa.
+
 ## Movimiento
 
 Toda transición explica continuidad, cambio de estado o relación espacial. Preferir `transform` y `opacity`; evitar animar layout. Mantener duraciones breves y reversibles. Bajo `prefers-reduced-motion: reduce`, eliminar desplazamientos y conservar de inmediato el estado final y toda la información.

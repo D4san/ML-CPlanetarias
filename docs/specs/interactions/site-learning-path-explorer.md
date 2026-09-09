@@ -1,11 +1,17 @@
 ---
 id: site-learning-path-explorer
-status: implemented
-page: /
+status: deferred
+page: futura página de orientación del curso
 packet_id: COURSE-CONTEXT-MLCP
 ---
 
 # Explorador de la cadena pedagógica
+
+## Estado actual
+
+La portada actual funciona como entrada editorial breve con el alcance del curso y enlaces a
+`Sesiones` y `Glosario`. Esta interacción queda especificada para una futura página de orientación;
+no forma parte de la navegación principal vigente.
 
 ## Pregunta del lector
 

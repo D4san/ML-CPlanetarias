@@ -15,7 +15,7 @@ for (const route of ['./', './sesiones/', './sistema/']) {
 }
 
 test('has no automated WCAG A/AA violations on the flipped S01 use card', async ({ page }) => {
-  await page.goto('./sistema/');
+  await page.goto('./sistema/#pregunta/salidas');
   await page.getByRole('button', { name: 'Predecir. Abrir tarjeta' }).click();
   await page.getByRole('button', { name: 'Voltear: ver definición' }).click();
 
@@ -29,7 +29,7 @@ test('has no automated WCAG A/AA violations on the flipped S01 use card', async 
 test('has no automated WCAG A/AA violations on the formal-cycle definition card', async ({
   page,
 }) => {
-  await page.goto('./sistema/#instancia');
+  await page.goto('./sistema/#instancia/flujo');
   await page.getByRole('button', { name: 'representación. Abrir definición' }).click();
   await page.getByRole('button', { name: 'Voltear: ver definición' }).click();
 
@@ -41,7 +41,7 @@ test('has no automated WCAG A/AA violations on the formal-cycle definition card'
 });
 
 test('has no automated WCAG A/AA violations on the task definition card', async ({ page }) => {
-  await page.goto('./sistema/#tarea');
+  await page.goto('./sistema/#tarea/salidas');
   await page.getByRole('button', { name: 'Regresión. Abrir definición' }).click();
   await page.getByRole('button', { name: 'Voltear: ver definición' }).click();
 

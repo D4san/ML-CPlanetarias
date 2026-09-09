@@ -2,9 +2,16 @@
 import { getCollection } from 'astro:content';
 
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import { courseConfig } from '../../../config/course.config';
+import { isSessionAvailable } from '../../lib/course-availability';
 import { withBase } from '../../lib/urls';
 
-const sessions = (await getCollection('sessions')).sort((a, b) => a.data.order - b.data.order);
+const sessions = (await getCollection('sessions'))
+  .filter((session) => isSessionAvailable(courseConfig, session.data.session))
+  .sort((a, b) => a.data.order - b.data.order);
+const showS00 = isSessionAvailable(courseConfig, 'S00');
+const showS01 = isSessionAvailable(courseConfig, 'S01');
+const showInternalSessions = showS00 || showS01;
 ---
 
 <SiteLayout
@@ -21,18 +28,46 @@ const sessions = (await getCollection('sessions')).sort((a, b) => a.data.order -
   </header>
   <section class="site-shell" aria-label="Listado de sesiones">
     <ol class="collection-list">
-      <li class="session-preview">
-        <span class="eyebrow">S01 · en desarrollo</span>
-        <div>
-          <span class="status-tag">Prototipo interno</span>
-          <h2><a href={withBase('/sistema/')}>ML, IA y métodos estadísticos</a></h2>
-          <p>
-            Construye el recorrido desde la pregunta científica hasta los datos, la señal, la tarea,
-            la familia de modelo, la evaluación y sus límites.
-          </p>
-          <a class="text-link" href={withBase('/sistema/')}>Explorar la sesión 1</a>
-        </div>
-      </li>
+      {
+        showS00 && (
+          <li class="session-preview session-preview--s00">
+            <span class="eyebrow">S00 · introducción</span>
+            <div>
+              <span class="status-tag">Orientación interna</span>
+              <h2>
+                <a href={withBase('/sesiones/s00/')}>Leer el curso, configurar el fork</a>
+              </h2>
+              <p>
+                Una entrada guiada a la cadena científica, las vistas del curso y la procedencia de
+                una adaptación reproducible.
+              </p>
+              <a class="text-link" href={withBase('/sesiones/s00/')}>
+                Explorar la sesión 0
+              </a>
+            </div>
+          </li>
+        )
+      }
+      {
+        showS01 && (
+          <li class="session-preview">
+            <span class="eyebrow">S01 · en desarrollo</span>
+            <div>
+              <span class="status-tag">Prototipo interno</span>
+              <h2>
+                <a href={withBase('/sistema/')}>ML, IA y métodos estadísticos</a>
+              </h2>
+              <p>
+                Construye el recorrido desde la pregunta científica hasta los datos, la señal, la
+                tarea, la familia de modelo, la evaluación y sus límites.
+              </p>
+              <a class="text-link" href={withBase('/sistema/')}>
+                Explorar la sesión 1
+              </a>
+            </div>
+          </li>
+        )
+      }
       {
         sessions.map((session) => (
           <li>
@@ -50,8 +85,9 @@ const sessions = (await getCollection('sessions')).sort((a, b) => a.data.order -
     {
       sessions.length === 0 && (
         <p class="sessions-public-note">
-          Las colecciones públicas siguen vacías. S01 se lista aquí como prototipo interno mientras
-          continúa la revisión editorial.
+          {showInternalSessions
+            ? `Las colecciones públicas siguen vacías. ${showS00 && showS01 ? 'S00 y S01' : showS00 ? 'S00' : 'S01'} se listan aquí como prototipos internos mientras continúa la revisión editorial.`
+            : 'Las colecciones públicas siguen vacías y todavía no hay sesiones habilitadas para mostrar.'}
         </p>
       )
     }

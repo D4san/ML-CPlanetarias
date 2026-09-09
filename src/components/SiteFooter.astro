@@ -1,23 +1,24 @@
 ---
 import { withBase } from '../lib/urls';
+import { courseConfig } from '../../config/course.config';
 ---
 
 <footer class="site-footer">
   <div class="site-shell footer-grid">
     <div>
-      <p class="footer-title">ML Ciencias Planetarias</p>
+      <p class="footer-title">{courseConfig.identity.title}</p>
       <p>Material reproducible para comprender, aplicar y volver a enseñar.</p>
     </div>
     <div>
-      <span class="status-tag">S01 en revisión</span>
-      <p><a href={withBase('/sistema/')}>Abrir la sesión 1</a></p>
+      <a href={withBase('/sesiones/')}>Sesiones</a>
+      <a href={withBase('/glosario/')}>Glosario</a>
     </div>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    margin-top: var(--space-9);
+    margin-top: var(--space-7);
     padding-block: var(--space-7);
     border-top: var(--line);
     color: var(--paper-100);
@@ -31,6 +32,9 @@ import { withBase } from '../lib/urls';
   }
 
   .footer-grid > div:last-child {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
     justify-self: end;
   }
 
@@ -49,12 +53,6 @@ import { withBase } from '../lib/urls';
 
   a {
     color: var(--data-soft);
-  }
-
-  .status-tag {
-    color: var(--paper-100);
-    background: rgb(255 255 255 / 0.06);
-    border-color: rgb(255 255 255 / 0.18);
   }
 
   @media (max-width: 42rem) {

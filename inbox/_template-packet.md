@@ -1,10 +1,12 @@
 ---
 id:
-# Valores: session, session-packet, concept, concept-bundle, exercise, notebook o figure.
+# Valores: session, session-packet, concept, concept-bundle, exercise, notebook, figure o example-research-package.
 kind: session
 status: intake
+origin: obsidian
 source_vault: DASAN
 source_note:
+source_path:
 source_heading:
 source_block:
 concepts: []
@@ -32,14 +34,15 @@ Teoría, ecuaciones, guion, preguntas, decisiones, gráficos o instrucciones.
 
 ## Procedencia y límites
 
-- Fuente en Obsidian:
+- Origen (`obsidian` o `repo`):
+- Fuente en Obsidian (`source_note`) o ruta del repositorio (`source_path`):
 - Fuentes bibliográficas:
 - Material que no se debe publicar:
 - Supuestos y límites científicos:
 
 ## Revisión
 
-- [ ] `source_note` resuelve al archivo correcto.
+- [ ] La procedencia usa solo la variante correspondiente: `source_note` para Obsidian o `source_path` para repo.
 - [ ] Los conceptos están enlazados.
 - [ ] Las ecuaciones y gráficos tienen procedencia.
 - [ ] La visibilidad está decidida.
