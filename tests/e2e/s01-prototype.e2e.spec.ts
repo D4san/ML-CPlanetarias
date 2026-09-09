@@ -194,13 +194,14 @@ test('loads the ImageGen miniature family in the Instancia cards', async ({ page
     }),
   );
 
+  const assetPrefix = new URL(page.url()).pathname.split('/sistema/')[0];
   expect(loaded.map((item) => item.source)).toEqual([
-    '/images/s01/instance-miniatures/instance.png',
-    '/images/s01/instance-miniatures/observation.png',
-    '/images/s01/instance-miniatures/representation.png',
-    '/images/s01/instance-miniatures/model.png',
-    '/images/s01/instance-miniatures/output-spectrum.png',
-    '/images/s01/instance-miniatures/target.png',
+    `${assetPrefix}/images/s01/instance-miniatures/instance.png`,
+    `${assetPrefix}/images/s01/instance-miniatures/observation.png`,
+    `${assetPrefix}/images/s01/instance-miniatures/representation.png`,
+    `${assetPrefix}/images/s01/instance-miniatures/model.png`,
+    `${assetPrefix}/images/s01/instance-miniatures/output-spectrum.png`,
+    `${assetPrefix}/images/s01/instance-miniatures/target.png`,
   ]);
   expect(
     loaded.every((item) => item.complete && item.naturalWidth > 0),
