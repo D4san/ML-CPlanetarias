@@ -40,7 +40,7 @@ H03 es opcional y requiere autorización expresa. La creación de este plan no c
 | [G03](tasks/G03.md) | Ensayar un fork limpio y cerrar su guía                         | G02, F04                          | pendiente                | Sin asignar         | —         |
 | [H01](tasks/H01.md) | Ejecutar la matriz integrada de calidad                         | F04, G03, D04                     | pendiente                | Sin asignar         | —         |
 | [H02](tasks/H02.md) | Revisar la entrega y cerrar la matriz de requisitos             | H01                               | pendiente                | Sin asignar         | —         |
-| [H03](tasks/H03.md) | Publicar solo tras instrucción expresa y verificar el sitio     | H02                               | no autorizada (opcional) | Sin asignar         | —         |
+| [H03](tasks/H03.md) | Publicar solo tras instrucción expresa y verificar el sitio     | H02                               | entregada                | Codex integrador    | [evidence/H03.md](evidence/H03.md) |
 
 ## Reservas de archivos y ejecución
 
@@ -51,7 +51,7 @@ Completar en A01 y actualizar al asignar cada lote.
 | Contratos/ADR/protocolos          | Sin asignar             | —                  | Liberada tras A03/B01 |
 | Configuración/esquemas            | Codex integrador        | —                  | Liberada tras B04 |
 | Contenedor/datos S01              | Codex integrador        | F04                | Liberada tras B02/E07; integración pendiente |
-| Páginas/índices/backlinks         | Codex integrador        | —                  | S00/S01 integradas como prototipos; promoción pública pendiente |
+| Páginas/índices/backlinks         | Codex integrador        | —                  | S00/S01 integradas como prototipos; publicación técnica verificada; promoción editorial pendiente |
 | Tokens/estilos globales           | Codex integrador        | —                  | Liberada tras B02/F02 |
 | Skills/espejos/validador          | Codex integrador        | —                  | Reservada D04 |
 | dist, preview y output/playwright | Sin asignar             | Builds y pruebas   | Sin reservar |
@@ -98,6 +98,8 @@ H01 prueba el conjunto; H02 revisa la evidencia y cierra las filas. Las sesiones
 - C03 deja la infraestructura de ejemplos lista con integración pendiente; F04 debe ensamblar ejemplos y precauciones revisadas en las unidades.
 - F01 queda aceptada para preparación interna: la bibliografía de Géron/Kelleher y los casos primarios de RL/ExoGAN quedaron localizados; permanecen límites de transferencia, derechos, assets y revisión editorial.
 - E07 y G02 quedan aceptadas para los motores comunes de S01 y S00; F01 queda aceptada para preparación interna. F03 dejó una entrega parcial revisable, bloqueada por la ausencia de `OPENAI_API_KEY`, la procedencia histórica y los derechos; F04, G03 y H01–H02 siguen pendientes por dependencias de contenido, integración o revisión.
-- H03 espera instrucción expresa de publicación; no bloquea el cierre de implementación H02.
+- H03 recibió instrucción expresa de publicación; la publicación técnica quedó verificada en GitHub
+  Pages y su evidencia está en `evidence/H03.md`. No sustituye la revisión editorial de H02 ni la
+  revisión de derechos.
 
 La disponibilidad de Docker se vuelve a comprobar cuando corresponda. El fallo histórico del piloto no demuestra que el entorno futuro seguirá bloqueado.

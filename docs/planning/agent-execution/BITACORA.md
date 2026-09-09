@@ -182,6 +182,27 @@ No se deben registrar aquí credenciales, datos privados, copias de libros, info
 - **Siguiente acción:** revisión humana del paquete y de los assets; después decidir si la sesión
   pasa a contenido publicable y regenerar las baselines visuales en Linux.
 
+### 2026-09-09 — Publicación técnica en GitHub Pages (H03)
+
+- **Tarea o frente:** H03, publicación autorizada y verificación del sitio real.
+- **Responsable:** Codex integrador.
+- **Tipo:** cierre propuesto.
+- **Alcance y archivos:** todo el estado local autorizado por el usuario quedó incluido en el commit
+  `0e497fc`; esta ronda añade `docs/planning/agent-execution/evidence/H03.md` y actualiza `BOARD.md`.
+- **Resultado:** `main` recibió el commit `0e497fc` y el workflow de GitHub Pages construyó y publicó
+  el sitio bajo `/ML-CPlanetarias`. S00 quedó accesible con el enlace profundo `#pregunta/senal`,
+  numeración `01.1`, `01.2`, `01.3` y el hero/plots rasterizados.
+- **Evidencia:** workflow `34397202433` con build y deploy aprobados; HTTP `200` para home, S00,
+  S01 habilitada, glosario y hero PNG; HTTP `404` para `/sesiones/s01/`; árbol de accesibilidad del
+  enlace profundo confirma la subpantalla `01.2 · Señal`.
+- **Ideas y decisiones:** la instrucción explícita habilitó commit, push y publicación en GitHub Pages.
+  Netlify queda fuera del alcance. La ruta pública refleja el prototipo integrado, mientras el estado
+  editorial de S00 sigue bajo revisión.
+- **Bloqueos:** el gate visual Linux sigue pendiente por `dockerDesktopLinuxEngine`; derechos,
+  promoción editorial y ocho espejos protegidos de skills siguen pendientes.
+- **Siguiente acción:** revisión humana de derechos y contenido; repetir el gate visual Linux cuando el
+  entorno lo permita. H02 mantiene su revisión independiente.
+
 ## Ideas abiertas
 
 Estas ideas no son todavía requisitos ni cambios aprobados:
