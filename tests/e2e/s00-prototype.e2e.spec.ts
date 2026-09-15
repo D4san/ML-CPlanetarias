@@ -36,9 +36,11 @@ test.describe('S00 introducción científica', () => {
     ).toBeVisible();
 
     await page.goto('./sesiones/s00/#datos/catalogo');
-    await expect(page.getByRole('option', { name: /Observación/ })).toBeVisible();
-    await page.getByRole('option', { name: /Catálogo/ }).click();
-    await expect(page.locator('.s00-data-detail')).toContainText('¿Qué unidad cuenta cada fila');
+    await expect(page.getByRole('tab', { name: /Observación/ })).toBeVisible();
+    await page.getByRole('tab', { name: /Catálogo/ }).click();
+    await expect(page.locator('.s00-data-detail')).toContainText(
+      '¿Qué unidad estadística cuenta cada fila',
+    );
     expect(pageErrors).toEqual([]);
   });
 

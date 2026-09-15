@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -439,5 +439,36 @@ describe('S00 journey', () => {
       screen.getByText(/Evaluar con PR-AUC, Brier score y cobertura bayesiana/i),
     ).toBeVisible();
     expect(screen.getByText(/Reportar accuracy engañosa en clases desbalanceadas/i)).toBeVisible();
+  });
+
+  it('opens interactive flashcard modal, cycles cards with keyboard and closes with Escape', async () => {
+    const user = userEvent.setup();
+    window.location.hash = '#ciencias-planetarias/origen';
+
+    render(<S00LearningJourney config={courseConfig} />);
+
+    // Click on the pillar miniature trigger button to open flashcard
+    const triggerBtn = screen.getByRole('button', {
+      name: /Ficha ampliada/i,
+    });
+    expect(triggerBtn).toBeVisible();
+    await user.click(triggerBtn);
+
+    // Modal is rendered with role="dialog" and aria-modal="true"
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toBeInTheDocument();
+    expect(within(dialog).getByRole('heading', { name: /Origen y formación/i })).toBeVisible();
+    expect(screen.getByText(/Pilares de Ciencias Planetarias/i)).toBeVisible();
+    expect(within(dialog).getByText(/PILAR ACTIVO/i)).toBeVisible();
+
+    // Navigate to next card with ArrowRight
+    fireEvent.keyDown(window, { key: 'ArrowRight' });
+    expect(
+      within(dialog).getByRole('heading', { name: /Estructura y composición/i }),
+    ).toBeVisible();
+
+    // Close with Escape key
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });

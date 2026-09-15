@@ -11,6 +11,7 @@ import {
   getS00SlideHash,
   getS00SlideIndex,
   getS00SlideIndexFromHash,
+  getS00FlashcardCollection,
   getS00SlideNumber,
   s00Bibliography,
   s00BibliographyReferences,
@@ -2414,6 +2415,222 @@ function BranchTriadDiagram({
   );
 }
 
+function S00FlashcardModal({
+  collectionKey,
+  activeCardId,
+  onClose,
+  onSelectCard,
+}: {
+  collectionKey: 'pillars' | 'modalities' | 'datacards' | 'verbs' | 'impact';
+  activeCardId: string;
+  onClose: () => void;
+  onSelectCard: (id: string) => void;
+}) {
+  const cards = useMemo(() => getS00FlashcardCollection(collectionKey), [collectionKey]);
+  const activeIndex = Math.max(
+    0,
+    cards.findIndex((c) => c.id === activeCardId),
+  );
+  const card = cards[activeIndex] ?? cards[0];
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      } else if (e.key === 'ArrowLeft') {
+        const prev = cards[(activeIndex - 1 + cards.length) % cards.length];
+        if (prev) onSelectCard(prev.id);
+      } else if (e.key === 'ArrowRight') {
+        const next = cards[(activeIndex + 1) % cards.length];
+        if (next) onSelectCard(next.id);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [activeIndex, cards, onClose, onSelectCard]);
+
+  if (!card) return null;
+
+  const prevIdx = (activeIndex - 1 + cards.length) % cards.length;
+  const nextIdx = (activeIndex + 1) % cards.length;
+  const prevCard = cards[prevIdx] ?? card;
+  const nextCard = cards[nextIdx] ?? card;
+
+  return (
+    <div
+      className="s00-flashcard-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="flashcard-title"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="s00-flashcard-container" data-tone={card.tone}>
+        <header className="s00-flashcard-header">
+          <div className="s00-flashcard-header__meta">
+            <span className="s00-flashcard-badge">{card.badge}</span>
+            <span className="s00-flashcard-collection-title">{card.collectionTitle}</span>
+          </div>
+          <div className="s00-flashcard-header__title-row">
+            <h2 id="flashcard-title" className="s00-flashcard-title">
+              {card.title}
+            </h2>
+            <button
+              type="button"
+              className="s00-flashcard-close-btn"
+              onClick={onClose}
+              aria-label="Cerrar ficha interactiva"
+            >
+              ✕
+            </button>
+          </div>
+          <p className="s00-flashcard-subtitle">{card.subtitle}</p>
+        </header>
+
+        <div className="s00-flashcard-body">
+          <div className="s00-flashcard-visual">
+            <div className="s00-flashcard-img-wrap">
+              <img
+                src={assetUrl(card.miniatureSrc)}
+                alt={card.miniatureAlt}
+                className="s00-flashcard-img"
+                width="480"
+                height="240"
+              />
+            </div>
+            {card.formula && (
+              <div className="s00-flashcard-formula-card">
+                <span className="s00-formula-tag">Expresión matemática / Formalismo</span>
+                <code className="s00-formula-code">{card.formula}</code>
+                {card.formulaDescription && (
+                  <p className="s00-formula-desc">{card.formulaDescription}</p>
+                )}
+              </div>
+            )}
+            <p className="s00-flashcard-caption">{card.miniatureCaption}</p>
+          </div>
+
+          <div className="s00-flashcard-dossier">
+            <div className="s00-flashcard-quadrant s00-flashcard-quadrant--concept">
+              <span className="s00-quadrant-label">Concepto y física del proceso</span>
+              <p>{card.physicalConcept}</p>
+            </div>
+
+            {card.observableVsInference && (
+              <div className="s00-flashcard-quadrant s00-flashcard-quadrant--contrast">
+                <div className="s00-contrast-item">
+                  <span className="s00-quadrant-sublabel">📡 Observable / Medición:</span>
+                  <p>{card.observableVsInference.observable}</p>
+                </div>
+                <div className="s00-contrast-item">
+                  <span className="s00-quadrant-sublabel">🔬 Inferencia / Propiedad:</span>
+                  <p>{card.observableVsInference.inference}</p>
+                </div>
+              </div>
+            )}
+
+            <div className="s00-flashcard-quadrant s00-flashcard-quadrant--ml">
+              <span className="s00-quadrant-label">Rol computacional de Machine Learning</span>
+              <p>{card.mlRole}</p>
+            </div>
+
+            <div className="s00-flashcard-quadrant s00-flashcard-quadrant--instrumentation">
+              <span className="s00-quadrant-label">Instrumentos, misiones y fuentes</span>
+              <p>{card.instrumentsOrData}</p>
+            </div>
+
+            <div className="s00-flashcard-quadrant s00-flashcard-quadrant--limit">
+              <span className="s00-quadrant-label">⚠️ Límite epistemológico y riesgo de sesgo</span>
+              <p>{card.riskOrLimit}</p>
+            </div>
+
+            {card.studyOrProvenance && (
+              <div className="s00-flashcard-quadrant s00-flashcard-quadrant--study">
+                <span className="s00-quadrant-label">Procedencia bibliográfica</span>
+                <p className="s00-study-authors">
+                  <strong>{card.studyOrProvenance.authors}</strong> ({card.studyOrProvenance.year})
+                </p>
+                <p className="s00-study-paper-title">{card.studyOrProvenance.title}</p>
+                <div className="s00-study-links">
+                  {card.studyOrProvenance.url && (
+                    <a
+                      href={card.studyOrProvenance.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="s00-badge-link"
+                    >
+                      {card.studyOrProvenance.journal || 'Artículo DOI'} ↗
+                    </a>
+                  )}
+                  {card.studyOrProvenance.archiveUrl && (
+                    <a
+                      href={card.studyOrProvenance.archiveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="s00-badge-link"
+                    >
+                      Datos ({card.studyOrProvenance.archiveName}) ↗
+                    </a>
+                  )}
+                  {card.studyOrProvenance.codeUrl && (
+                    <a
+                      href={card.studyOrProvenance.codeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="s00-badge-link"
+                    >
+                      Código ({card.studyOrProvenance.codeName}) ↗
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <footer className="s00-flashcard-footer">
+          <button
+            type="button"
+            className="s00-flashcard-nav-btn"
+            onClick={() => onSelectCard(prevCard.id)}
+            aria-label={`Anterior: ${prevCard.title}`}
+          >
+            ← {prevCard.title}
+          </button>
+
+          <div className="s00-flashcard-dots" role="tablist" aria-label="Seleccionar ficha">
+            {cards.map((c, idx) => (
+              <button
+                key={c.id}
+                type="button"
+                className={`s00-flashcard-dot ${idx === activeIndex ? 'is-active' : ''}`}
+                onClick={() => onSelectCard(c.id)}
+                aria-label={`Ficha ${idx + 1}: ${c.title}`}
+                aria-selected={idx === activeIndex}
+              />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="s00-flashcard-nav-btn"
+            onClick={() => onSelectCard(nextCard.id)}
+            aria-label={`Siguiente: ${nextCard.title}`}
+          >
+            {nextCard.title} →
+          </button>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
 function VisualFrame({
   unit,
   part,
@@ -2452,6 +2669,22 @@ function VisualFrame({
   const interactive = !compact;
   const visualFocus = part?.visualFocus ?? 'overview';
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [flashcardState, setFlashcardState] = useState<{
+    isOpen: boolean;
+    collection: 'pillars' | 'modalities' | 'datacards' | 'verbs' | 'impact';
+    cardId: string;
+  }>({ isOpen: false, collection: 'pillars', cardId: '' });
+
+  const openFlashcard = (
+    collection: 'pillars' | 'modalities' | 'datacards' | 'verbs' | 'impact',
+    cardId: string,
+  ) => {
+    setFlashcardState({ isOpen: true, collection, cardId });
+  };
+
+  const closeFlashcard = () => {
+    setFlashcardState((prev) => ({ ...prev, isOpen: false }));
+  };
 
   const renderContent = () => {
     if (unit.visualKind === 'hero') {
@@ -2765,13 +2998,34 @@ function VisualFrame({
               </div>
               <div className="s00-pillar-dossier__title-row">
                 <h3 id={`pillar-title-${activePillar.id}`}>{activePillar.question}</h3>
+                <button
+                  type="button"
+                  className="s00-flashcard-trigger-btn"
+                  onClick={() => openFlashcard('pillars', activePillar.id)}
+                  title="Ampliar ficha técnica con ilustración conceptual"
+                >
+                  <img
+                    src={assetUrl(activePillar.miniatureSrc)}
+                    alt=""
+                    aria-hidden="true"
+                    className="s00-btn-miniature-thumb"
+                    width="24"
+                    height="24"
+                  />
+                  <span>Ficha ampliada 🔍</span>
+                </button>
               </div>
               <p className="s00-pillar-dossier__definition">{activePillar.physicalDefinition}</p>
             </div>
 
             <div className="s00-pillar-dossier__body">
               <div className="s00-pillar-visual-preview">
-                <div className="s00-pillar-miniature-card">
+                <button
+                  type="button"
+                  className="s00-pillar-miniature-card s00-pillar-miniature-btn"
+                  onClick={() => openFlashcard('pillars', activePillar.id)}
+                  title="Haz clic para ampliar la ficha técnica"
+                >
                   <img
                     src={assetUrl(activePillar.miniatureSrc)}
                     alt={`Ilustración conceptual de ${activePillar.title}`}
@@ -2782,8 +3036,9 @@ function VisualFrame({
                   />
                   <div className="s00-pillar-miniature-info">
                     <span className="s00-miniature-formula">{activePillar.formula}</span>
+                    <span className="s00-miniature-action-badge">Ampliar ficha 🔍</span>
                   </div>
-                </div>
+                </button>
               </div>
 
               <div className="s00-pillar-dossier__processes">
@@ -3100,6 +3355,22 @@ function VisualFrame({
                   <h3>{activeModality.title}</h3>
                 </div>
                 <div className="s00-measurement-dossier__actions">
+                  <button
+                    type="button"
+                    className="s00-flashcard-trigger-btn"
+                    onClick={() => openFlashcard('modalities', activeModality.id)}
+                    title="Ampliar ficha técnica de la técnica observacional"
+                  >
+                    <img
+                      src={assetUrl(activeModality.miniatureSrc)}
+                      alt=""
+                      aria-hidden="true"
+                      className="s00-btn-miniature-thumb"
+                      width="24"
+                      height="24"
+                    />
+                    <span>Ficha técnica 🔍</span>
+                  </button>
                   <span className="s00-dossier-symbol">{activeModality.symbol}</span>
                 </div>
               </div>
@@ -3230,8 +3501,28 @@ function VisualFrame({
           {selected && (
             <article className="s00-data-detail" aria-live={interactive ? 'polite' : undefined}>
               <div className="s00-data-detail__header">
-                <span className="s00-stage-tag">{selected.number} · ETAPA DE DATOS</span>
-                <h3>{selected.title}</h3>
+                <div className="s00-data-detail__title-row">
+                  <div>
+                    <span className="s00-stage-tag">{selected.number} · ETAPA DE DATOS</span>
+                    <h3>{selected.title}</h3>
+                  </div>
+                  <button
+                    type="button"
+                    className="s00-flashcard-trigger-btn"
+                    onClick={() => openFlashcard('datacards', selected.id)}
+                    title="Ampliar ficha técnica del ciclo de datos"
+                  >
+                    <img
+                      src={assetUrl(selected.miniatureSrc)}
+                      alt=""
+                      aria-hidden="true"
+                      className="s00-btn-miniature-thumb"
+                      width="24"
+                      height="24"
+                    />
+                    <span>Ficha técnica 🔍</span>
+                  </button>
+                </div>
                 <p className="s00-stage-subtitle">{selected.kicker}</p>
               </div>
 
@@ -3240,7 +3531,12 @@ function VisualFrame({
                 <div className="s00-stage-schematic-wrap">
                   <DataLandscapeSchematic cardId={selected.id} />
                 </div>
-                <div className="s00-stage-miniature-card">
+                <button
+                  type="button"
+                  className="s00-stage-miniature-card s00-stage-miniature-btn"
+                  onClick={() => openFlashcard('datacards', selected.id)}
+                  title="Haz clic para ampliar la ficha técnica"
+                >
                   <img
                     src={assetUrl(selected.miniatureSrc)}
                     alt={`Miniatura conceptual: ${selected.title}`}
@@ -3252,7 +3548,8 @@ function VisualFrame({
                   <span className="s00-stage-miniature-caption">
                     {selected.diagramDetail.description}
                   </span>
-                </div>
+                  <span className="s00-stage-miniature-action">Ficha técnica 🔍</span>
+                </button>
               </div>
 
               {/* Scientific Properties Grid */}
@@ -3343,8 +3640,28 @@ function VisualFrame({
           {selected && (
             <article className="s00-verb-workbench" aria-live={interactive ? 'polite' : undefined}>
               <div className="s00-verb-workbench__header">
-                <span className="s00-stage-tag">{selected.number} · VERBO COMPUTABLE</span>
-                <h3>{selected.label}</h3>
+                <div className="s00-verb-workbench__title-row">
+                  <div>
+                    <span className="s00-stage-tag">{selected.number} · VERBO COMPUTABLE</span>
+                    <h3>{selected.label}</h3>
+                  </div>
+                  <button
+                    type="button"
+                    className="s00-flashcard-trigger-btn"
+                    onClick={() => openFlashcard('verbs', selected.id)}
+                    title="Ampliar ficha técnica del verbo de Machine Learning"
+                  >
+                    <img
+                      src={assetUrl(selected.miniatureSrc)}
+                      alt=""
+                      aria-hidden="true"
+                      className="s00-btn-miniature-thumb"
+                      width="24"
+                      height="24"
+                    />
+                    <span>Ficha técnica 🔍</span>
+                  </button>
+                </div>
                 <p className="s00-stage-subtitle">{selected.kicker}</p>
               </div>
 
@@ -3353,7 +3670,12 @@ function VisualFrame({
                 <div className="s00-stage-schematic-wrap">
                   <MLVerbSchematic verbId={selected.id} />
                 </div>
-                <div className="s00-stage-miniature-card">
+                <button
+                  type="button"
+                  className="s00-stage-miniature-card s00-stage-miniature-btn"
+                  onClick={() => openFlashcard('verbs', selected.id)}
+                  title="Haz clic para ampliar la ficha técnica"
+                >
                   <img
                     src={assetUrl(selected.miniatureSrc)}
                     alt={`Miniatura de acción: ${selected.label}`}
@@ -3365,7 +3687,8 @@ function VisualFrame({
                   <span className="s00-stage-miniature-caption">
                     {selected.diagramDetail.description}
                   </span>
-                </div>
+                  <span className="s00-stage-miniature-action">Ficha técnica 🔍</span>
+                </button>
               </div>
 
               {/* Mathematical Formulation Box */}
@@ -3477,7 +3800,13 @@ function VisualFrame({
             })}
           </div>
 
-          {selected && <ImpactDetail item={selected} compact={compact} />}
+          {selected && (
+            <ImpactDetail
+              item={selected}
+              compact={compact}
+              onOpenFlashcard={(id) => openFlashcard('impact', id)}
+            />
+          )}
         </div>
       );
     }
@@ -3642,12 +3971,70 @@ function VisualFrame({
     );
   };
 
-  return <>{renderContent()}</>;
+  return (
+    <>
+      {renderContent()}
+      {flashcardState.isOpen && (
+        <S00FlashcardModal
+          collectionKey={flashcardState.collection}
+          activeCardId={flashcardState.cardId}
+          onClose={closeFlashcard}
+          onSelectCard={(id) => setFlashcardState((prev) => ({ ...prev, cardId: id }))}
+        />
+      )}
+    </>
+  );
 }
 
-function ImpactDetail({ item, compact }: { item: S00ImpactCase; compact: boolean }) {
+function ImpactDetail({
+  item,
+  compact,
+  onOpenFlashcard,
+}: {
+  item: S00ImpactCase;
+  compact: boolean;
+  onOpenFlashcard?: (id: string) => void;
+}) {
   return (
     <article className="s00-impact-detail" aria-live={compact ? undefined : 'polite'}>
+      <div className="s00-impact-preview-bar">
+        <button
+          type="button"
+          className="s00-impact-miniature-card"
+          onClick={() => onOpenFlashcard?.(item.id)}
+          title="Ampliar ficha técnica del estudio publicado"
+        >
+          <img
+            src={assetUrl(item.miniatureSrc)}
+            alt={`Miniatura del estudio: ${item.title}`}
+            className="s00-impact-miniature-img"
+            loading="lazy"
+            width="200"
+            height="100"
+          />
+          <span className="s00-impact-miniature-action">
+            <span>Ficha del paper</span> 🔍
+          </span>
+        </button>
+        <div className="s00-impact-preview-summary">
+          <div className="s00-impact-preview-meta">
+            <span className="s00-stage-tag">{item.number} · ESTUDIO ARBITRADO</span>
+            <span className="s00-impact-mission-badge">{item.mission}</span>
+          </div>
+          <h4>{item.title}</h4>
+          <p className="s00-impact-preview-journal">
+            Publicación arbitrada ({item.study?.year}): {item.study?.journal}
+          </p>
+        </div>
+        <button
+          type="button"
+          className="s00-flashcard-trigger-btn"
+          onClick={() => onOpenFlashcard?.(item.id)}
+        >
+          <span>Ficha de impacto 🔍</span>
+        </button>
+      </div>
+
       <div className="s00-impact-detail__grid">
         <div className="s00-impact-detail__col">
           <div className="s00-impact-detail__section">
@@ -3758,7 +4145,7 @@ function BranchDetail({ branch, compact }: { branch: S00Branch; compact: boolean
         <h3>{branch.question}</h3>
       </div>
 
-      <div className="s00-branch-detail__grid">
+      <dl className="s00-branch-detail__grid">
         <div className="s00-branch-prop-card">
           <dt>Producto concreto entregable</dt>
           <dd>{branch.product}</dd>
@@ -3767,7 +4154,7 @@ function BranchDetail({ branch, compact }: { branch: S00Branch; compact: boolean
           <dt>Responsabilidad epistemológica</dt>
           <dd>{branch.responsibility}</dd>
         </div>
-      </div>
+      </dl>
 
       {/* Toolchain Badges */}
       <div className="s00-branch-tools-section">

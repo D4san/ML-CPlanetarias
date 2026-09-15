@@ -437,6 +437,28 @@ No se deben registrar aquí credenciales, datos privados, copias de libros, info
 - **Evidencia:** ejecución limpia de `check` y `build`, commit y push en GitHub `origin/main`.
 - **Siguiente acción:** despliegue de GitHub Actions en GitHub Pages y dictado de la sesión por el docente.
 
+### 2026-09-15 · Sistema de miniaturas conceptuales y fichas técnicas interactivas (flashcards) para S00
+
+- **Tarea o frente:** Enriquecimiento visual e interactivo de S00 mediante miniaturas de línea editorial y fichas técnicas ampliables (flashcards).
+- **Responsable:** Agente Antigravity.
+- **Tipo:** avance y entrega.
+- **Alcance y archivos:**
+  - scripts/generate-s00-miniatures.py: generador procedural de 27 miniaturas vectoriales y conceptuales de línea editorial v1 (pilares, modalidades, ciclo de datos, verbos ML, papers de impacto y ramas curriculares).
+  - public/images/s00/miniatures/: 27 activos PNG en alta resolución (1774x887, canal alfa puro, paleta institucional teal #2dd4bf, índigo #818cf8, ámbar #fbbf24, esmeralda #34d399 y coral #f87171).
+  - src/lib/s00-content.ts: modelos de datos, interfaz S00Flashcard y función getS00FlashcardCollection() para colecciones pillars, modalities, datacards, verbs e impact.
+  - src/components/react/S00LearningJourney.tsx: componente modal accesible S00FlashcardModal (WAI-ARIA dialog, atajos Escape/flechas, bloqueo de scroll), botones de activación y tarjetas miniaturas interactivas en estaciones 02, 04, 05, 06 y 07. Corrección de estructura <dl> para tarjetas de ramas.
+  - src/components/react/s00-learning-journey.css: estilos de overlay, cuadrantes de dossier técnico, botones con miniaturas, dots de navegación y adaptabilidad móvil.
+  - src/components/react/S00LearningJourney.test.tsx y tests/e2e/s00-prototype.e2e.spec.ts: pruebas unitarias y e2e con cobertura completa.
+- **Resultado:**
+  - 27 miniaturas conceptuales generadas y validadas visualmente sin perturbar el flujo narrativo principal.
+  - El usuario puede explorar en profundidad cada concepto, técnica u observación mediante un clic o atajo de teclado, accediendo a fórmulas, observable vs inferencia, rol de ML, fuentes de datos y límites físicos.
+  - Comprobaciones limpias: `npm run check` (0 errores), `npm run test:unit` (107/107 pruebas pasando, 73.17% branch coverage), `npm run build` (generación estática limpia), `npm run test:e2e` (39/39 pruebas pasando, WCAG A/AA conforme).
+- **Evidencia:**
+  - Pruebas unitarias: 107/107 pasando (src/components/react/S00LearningJourney.test.tsx).
+  - Pruebas E2E y accesibilidad: 39/39 pasando (tests/e2e, tests/a11y, tests/motion).
+  - Capturas en navegador real: public/images/s00/flashcard-modal-preview.png, public/images/s00/station-05-miniature-preview.png, public/images/s00/station-07-impact-preview.png.
+- **Siguiente acción:** Revisión por el docente/usuario para valorar la experiencia interactiva en clase.
+
 ## Ideas abiertas
 
 
