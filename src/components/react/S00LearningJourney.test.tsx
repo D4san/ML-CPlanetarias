@@ -122,8 +122,8 @@ describe('S00 journey', () => {
     const rail = screen.getByRole('navigation', { name: 'Diapositivas de S00' });
 
     expect(document.querySelector('.slide-rail__caption')).not.toBeInTheDocument();
-    expect(journey).toHaveAttribute('data-slide-count', '42');
-    expect(rail.querySelectorAll('.slide-rail__index')).toHaveLength(42);
+    expect(journey).toHaveAttribute('data-slide-count', '38');
+    expect(rail.querySelectorAll('.slide-rail__index')).toHaveLength(38);
     expect(screen.getByText('01.1')).toBeInTheDocument();
     expect(screen.getByText('01.2')).toBeInTheDocument();
     expect(screen.getByText('01.3')).toBeInTheDocument();
@@ -199,48 +199,12 @@ describe('S00 journey', () => {
     expect(screen.getByText(/Degeneración composicional/i)).toBeVisible();
   });
 
-  it('renders continuous formulation pipeline and active dossier with case comparisons on station 03', async () => {
-    const user = userEvent.setup();
-    window.history.replaceState(null, '', '/sesiones/s00/#acotar');
-    render(<S00LearningJourney config={courseConfig} />);
-
-    expect(
-      screen.getByRole('heading', { name: 'Acotar la curiosidad cambia la tarea' }),
-    ).toBeVisible();
-    expect(
-      screen.getByText(/“¿Hay planetas habitables\?” es una conversación de campo/i),
-    ).toBeVisible();
-
-    // All 4 stages must be present in the continuous pipeline
-    expect(screen.getByRole('tab', { name: /Curiosidad/i })).toBeVisible();
-    expect(screen.getByRole('tab', { name: /Unidad de análisis/i })).toBeVisible();
-    expect(screen.getByRole('tab', { name: /Salida computable/i })).toBeVisible();
-    expect(screen.getByRole('tab', { name: /Criterio de uso/i })).toBeVisible();
-
-    // Active stage dossier on 03.1 is Curiosidad
-    expect(screen.getByText(/03\.01/i)).toBeVisible();
-    expect(screen.getByText(/De la ambición científica al fenómeno observable/i)).toBeVisible();
-    expect(screen.getByText(/Detección en grandes sondeos fotométricos/i)).toBeVisible();
-    expect(screen.getByText(/Kepler \/ TESS \/ PLATO/i)).toBeVisible();
-    expect(screen.getByText(/Espectroscopía y caracterización atmosférica/i)).toBeVisible();
-    expect(screen.getByText(/⚠️ Antipatrón común/i)).toBeVisible();
-
-    // Switch to Salida computable tab
-    await user.click(screen.getByRole('tab', { name: /Salida computable/i }));
-    expect(window.location.hash).toBe('#acotar/salida');
-    expect(screen.getByText(/03\.03/i)).toBeVisible();
-    expect(screen.getByText(/El objeto matemático que devuelve el modelo/i)).toBeVisible();
-    expect(screen.getByText(/Probabilidad de tránsito genuino/i)).toBeVisible();
-    expect(screen.getByText(/Robovetter \/ Astronet/i)).toBeVisible();
-    expect(screen.getByText(/Posterior de parámetros atmosféricos/i)).toBeVisible();
-  });
-
-  it('renders all 4 observational modalities and active scientific dossier on station 04', async () => {
+  it('renders unified observational modalities, narrative box, and 4-lens cards on station 03', async () => {
     const user = userEvent.setup();
     window.history.replaceState(null, '', '/sesiones/s00/#medicion/espectro');
     render(<S00LearningJourney config={courseConfig} />);
 
-    // Slide header on 04.3 is the active part label
+    // Slide header on 03.3 is the active part label
     expect(screen.getByRole('heading', { name: 'Espectro' })).toBeVisible();
 
     // All 4 connected modalities in the top track
@@ -253,26 +217,74 @@ describe('S00 journey', () => {
     expect(screen.getByText(/Fusión multifísica:/i)).toBeVisible();
     expect(screen.getByText(/Densidad media ρ̄/i)).toBeVisible();
 
-    // Active dossier for Espectro (04.3)
+    // Active dossier for Espectro
     expect(screen.getByText(/Modalidad 03 \/ 04/i)).toBeVisible();
     expect(
-      screen.getByRole('heading', { name: 'Espectro de transmisión y emisión' }),
+      screen.getByRole('heading', { name: /Espectroscopía de transmisión y emisión/i }),
     ).toBeVisible();
-    expect(screen.getByText(/D\(λ\) = \[Rp² \+ 2 Rp h\(λ\)\] \/ R★²/i)).toBeVisible();
-    expect(screen.getByText(/Telescopio Espacial James Webb \(JWST/i)).toBeVisible();
-    expect(screen.getByText(/Neural Posterior Estimation/i)).toBeVisible();
-    expect(screen.getByText(/Degeneración entre nubes\/aerosoles opacos planos/i)).toBeVisible();
+    expect(
+      screen.getAllByLabelText(/Espectroscopía de transmisión y emisión/i)[0],
+    ).toBeInTheDocument();
 
-    // Switch to Velocidad radial (04.2)
+    // Narrative box with scientific intention
+    expect(screen.getByText(/🧭 Intención científica e hipótesis/i)).toBeVisible();
+    expect(
+      screen.getByText(/¿De qué están compuestas las atmósferas exoplanetarias/i),
+    ).toBeVisible();
+    expect(screen.getByText(/Identificar especies químicas/i)).toBeVisible();
+
+    // 4 dynamic lenses
+    expect(screen.getByRole('tab', { name: /1\. Física & Instrumento/i })).toBeVisible();
+    expect(screen.getByRole('tab', { name: /2\. Tensor & Unidad ML/i })).toBeVisible();
+    expect(screen.getByRole('tab', { name: /3\. Inferencia & Salida/i })).toBeVisible();
+    expect(screen.getByRole('tab', { name: /4\. Decisión & Límites/i })).toBeVisible();
+
+    // Default lens is 'fisica': shows detector observable and physical parameter
+    expect(screen.getByText(/📡 Observable registrado \(Detector\)/i)).toBeVisible();
+    expect(screen.getByText(/Telescopio Espacial James Webb \(JWST/i)).toBeVisible();
+
+    // Switch to 'datos' lens (Tensor & Unidad ML)
+    await user.click(screen.getByRole('tab', { name: /2\. Tensor & Unidad ML/i }));
+    expect(screen.getByText(/📊 Unidad de análisis \/ Instancia x_i/i)).toBeVisible();
+    expect(screen.getByText(/Par de vectores espectrales/i)).toBeVisible();
+    expect(screen.getByText(/🧱 Estructura tensorial y resolución/i)).toBeVisible();
+    expect(screen.getByText(/🛡️ Prevención de fuga de información/i)).toBeVisible();
+
+    // Switch to 'modelo' lens (Inferencia & Salida)
+    await user.click(screen.getByRole('tab', { name: /3\. Inferencia & Salida/i }));
+    expect(screen.getByText(/📐 Salida matemática computable/i)).toBeVisible();
+    expect(screen.getByText(/Neural Posterior Estimation/i)).toBeVisible();
+    expect(screen.getByText(/Función de pérdida \/ Objetivo:/i)).toBeVisible();
+
+    // Switch to 'decision' lens (Decisión & Límites)
+    await user.click(screen.getByRole('tab', { name: /4\. Decisión & Límites/i }));
+    expect(screen.getByText(/🎯 Decisión operacional/i)).toBeVisible();
+    expect(screen.getByText(/Criterio de seguimiento:/i)).toBeVisible();
+    expect(screen.getByText(/⚠️ Antipatrón común/i)).toBeVisible();
+    expect(screen.getByText(/🛑 Límite físico y degeneración observacional/i)).toBeVisible();
+    expect(screen.getByText(/Degeneración nubes-metalicidad/i)).toBeVisible();
+    expect(screen.getByText(/Criterio de paso científico:/i)).toBeVisible();
+
+    // Switch to Velocidad radial modality
     await user.click(screen.getByRole('tab', { name: /Velocidad radial/i }));
     expect(window.location.hash).toBe('#medicion/radial');
     expect(screen.getByText(/Modalidad 02 \/ 04/i)).toBeVisible();
-    expect(screen.getByText(/K = \(2πG\/P\)\^\(1\/3\)/i)).toBeVisible();
+    expect(screen.getAllByLabelText(/Velocidad radial/i)[0]).toBeInTheDocument();
+
+    // Switch back to 'fisica' lens to verify instruments on the new modality
+    await user.click(screen.getByRole('tab', { name: /1\. Física & Instrumento/i }));
     expect(screen.getByText(/ESPRESSO \(VLT/i)).toBeVisible();
-    expect(screen.getByText(/Procesos Gaussianos \(GP\)/i)).toBeVisible();
   });
 
-  it('renders data landscape stages and properties on station 05', async () => {
+  it('redirects legacy #acotar hash to unified station 03 #medicion/transito', () => {
+    window.history.replaceState(null, '', '/sesiones/s00/#acotar');
+    render(<S00LearningJourney config={courseConfig} />);
+    expect(
+      screen.getByRole('heading', { name: 'Formular la observación: de la intención a la señal' }),
+    ).toBeVisible();
+  });
+
+  it('renders data landscape stages and properties on station 04', async () => {
     const user = userEvent.setup();
     window.history.replaceState(null, '', '/sesiones/s00/#datos');
     render(<S00LearningJourney config={courseConfig} />);
@@ -288,7 +300,7 @@ describe('S00 journey', () => {
     expect(screen.getByRole('tab', { name: /Entrenamiento/i })).toBeVisible();
     expect(screen.getByRole('tab', { name: /Salida/i })).toBeVisible();
 
-    // Default stage 05.1 is Observación cruda
+    // Default stage 04.1 is Observación cruda
     expect(screen.getByText(/01 · ETAPA DE DATOS/i)).toBeVisible();
     expect(screen.getByText(/Formulación matemática/i)).toBeVisible();
     expect(screen.getByText(/x_i = \[F\(t_1\)/i)).toBeVisible();
@@ -304,7 +316,7 @@ describe('S00 journey', () => {
     expect(screen.getByText(/Modelo físico analítico sobremuestreado/i)).toBeVisible();
   });
 
-  it('renders 5 ML verbs and benchmark contrast on station 06', async () => {
+  it('renders 5 ML verbs and benchmark contrast on station 05', async () => {
     const user = userEvent.setup();
     window.history.replaceState(null, '', '/sesiones/s00/#ml');
     render(<S00LearningJourney config={courseConfig} />);
@@ -318,7 +330,7 @@ describe('S00 journey', () => {
     expect(screen.getByRole('tab', { name: /Describir/i })).toBeVisible();
     expect(screen.getByRole('tab', { name: /Priorizar/i })).toBeVisible();
 
-    // Default verb on 06.1 is Detectar
+    // Default verb on 05.1 is Detectar
     expect(screen.getByText(/01 · VERBO COMPUTABLE/i)).toBeVisible();
     expect(screen.getByText(/Línea base astronómica clásica/i)).toBeVisible();
     expect(screen.getByText(/Intervención de Machine Learning/i)).toBeVisible();
@@ -333,7 +345,7 @@ describe('S00 journey', () => {
     expect(screen.getByText(/Inferencia Basada en Simulación/i)).toBeVisible();
   });
 
-  it('renders published impact cases, metrics, and academic links on station 07', async () => {
+  it('renders published impact cases, metrics, and academic links on station 06', async () => {
     const user = userEvent.setup();
     window.history.replaceState(null, '', '/sesiones/s00/#impacto');
     render(<S00LearningJourney config={courseConfig} />);
@@ -352,7 +364,7 @@ describe('S00 journey', () => {
     expect(screen.getByRole('tab', { name: /Validación estadística/i })).toBeVisible();
     expect(screen.getByRole('tab', { name: /Vetting automatizado/i })).toBeVisible();
 
-    // Default case 07.1 is AstroNet: check study links
+    // Default case 06.1 is AstroNet: check study links
     expect(screen.getByText(/Shallue, C\. J\., & Vanderburg, A\./i)).toBeVisible();
     expect(
       screen.getByRole('link', { name: /DOI: 10\.3847\/1538-3881\/aa9e09/i }),
@@ -369,7 +381,7 @@ describe('S00 journey', () => {
     expect(screen.getByText(/Tamayo, D\./i)).toBeVisible();
   });
 
-  it('renders curricular triad diagram and branch toolchains on station 08', async () => {
+  it('renders curricular triad diagram and branch toolchains on station 07', async () => {
     const user = userEvent.setup();
     window.history.replaceState(null, '', '/sesiones/s00/#ramas');
     render(<S00LearningJourney config={courseConfig} />);
@@ -381,7 +393,7 @@ describe('S00 journey', () => {
     expect(screen.getByRole('tab', { name: /Teoría formal ML/i })).toBeVisible();
     expect(screen.getByRole('tab', { name: /Aplicación reproducible/i })).toBeVisible();
 
-    // Default branch 08.1 is Problemas astronómicos
+    // Default branch 07.1 is Problemas astronómicos
     expect(screen.getByText(/Producto concreto entregable/i)).toBeVisible();
     expect(screen.getByText(/Responsabilidad epistemológica/i)).toBeVisible();
     expect(screen.getByText(/Ecosistema Python del curso:/i)).toBeVisible();
@@ -400,7 +412,7 @@ describe('S00 journey', () => {
     expect(screen.getByText('Scikit-learn')).toBeVisible();
   });
 
-  it('renders methodological pipeline and epistemological covenant on station 09', async () => {
+  it('renders methodological pipeline and epistemological covenant on station 08', async () => {
     const user = userEvent.setup();
     window.history.replaceState(null, '', '/sesiones/s00/#cierre');
     render(<S00LearningJourney config={courseConfig} />);

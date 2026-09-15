@@ -72,7 +72,7 @@ test.describe('S00 introducción científica', () => {
     await page.goto('./sesiones/s00/#impacto/stability');
     await expect(page.locator('.s00-journey')).toHaveAttribute('data-active-part', 'stability');
     await expect(page.getByRole('heading', { name: 'Estabilidad orbital' })).toBeVisible();
-    await expect(page.getByRole('button', { name: '07.2 · Estabilidad orbital' })).toBeVisible();
+    await expect(page.getByRole('button', { name: '06.2 · Estabilidad orbital' })).toBeVisible();
   });
 });
 

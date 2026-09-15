@@ -480,7 +480,29 @@ No se deben registrar aquí credenciales, datos privados, copias de libros, info
   - Pruebas unitarias: 107/107 superadas con cobertura de ramas al 72.71%.
   - Pruebas E2E y accesibilidad: 39/39 superadas.
   - `npm run check`: 0 errores, 0 advertencias en 96 archivos.
-- **Siguiente acción:** despliegue automático en GitHub Pages tras git push.
+### 2026-09-15 · Unificación narrativa de las paradas 3 y 4 en Estación 03 y tarjetas dinámicas de análisis en S00
+
+- **Tarea o frente:** Unificación conceptual y enriquecimiento narrativo de la Estación 03 de S00 («Formular la observación: de la intención a la señal»), consolidando las 9 estaciones en 8 y las 42 diapositivas en 38.
+- **Responsable:** Agente Antigravity.
+- **Tipo:** cierre y entrega técnica.
+- **Alcance y archivos:**
+  - `src/lib/s00-content.ts`: reestructuración de unidades (de 9 a 8), fusión de `s00-acotar` y `s00-medicion` en `s00-medicion` («03 · observar · Formular la observación»), ampliación de interfaces y tipado para `S00MeasurementModality` incorporando narrativa científica continua, intención física, unidad ML, tensor, inferencia, función de pérdida, decisión operativa y límites físicos; preservación de retrocompatibilidad de hashes (`#acotar` redirige a `#medicion/transito`).
+  - `src/components/react/S00LearningJourney.tsx`: vista unificada de la Estación 03 que articula pregunta científica, caja narrativa contextual, visualizador esquemático SVG interactivo (tránsito, velocidad radial, espectroscopía, imagen directa) y selector de 4 lentes analíticas dinámicas («📡 Física & Instrumento», «🔢 Tensor & Unidad ML», «🤖 Inferencia & Salida», «🎯 Decisión & Límites») con accesibilidad WAI-ARIA estricta (`tablist`, `tab`, `tabpanel`).
+  - `src/components/react/s00-learning-journey.css`: estilos de caja narrativa con borde acentuado, pestañas de lentes analíticas y tarjetas dinámicas con paletas cromáticas diferenciadas por dimensión epistemológica.
+  - `src/lib/s00-content.test.ts`: actualización de pruebas de integridad de diapositivas (38 slides, 8 unidades, etiquetas y hashes retrocompatibles).
+  - `src/components/react/S00LearningJourney.test.tsx`: pruebas unitarias de renderizado de modalidades, diagramas SVG, conmutación de lentes y redirección de `#acotar`.
+  - `tests/e2e/s00-prototype.e2e.spec.ts`: actualización de selectores por renumeración de estaciones (06.2 Estabilidad orbital).
+  - `docs/specs/interactions/s00-pilot.md`: sincronización de especificación de interacciones con el modelo de 8 estaciones y 38 diapositivas.
+- **Resultado:**
+  - Se eliminó el solapamiento pedagógico entre acotar y medir: la intención científica y la señal observable quedan conectadas orgánicamente en cada una de las 4 modalidades observacionales principales.
+  - La navegación es más concisa, fluida y coherente, reduciendo la fricción sin perder profundidad técnica gracias a las 4 lentes interactivas.
+  - Se garantiza plena accesibilidad (WCAG 2.2 AA) en todos los modos (presentación, lectura y actividades).
+  - Todos los gates de calidad superados: `npm run check` (0 errores, 0 warnings, 0 hints en 96 archivos), `npm run test:unit` (19/19 archivos, 107/107 pruebas pasadas), `npm run build` y `npm run build:subpath` limpios, y `npm run test:e2e` (39/39 pruebas superadas en Chromium, a11y y reduced-motion).
+- **Evidencia:**
+  - Pruebas unitarias: 107/107 pruebas superadas en Vitest.
+  - Pruebas E2E y accesibilidad: 39/39 pruebas superadas en Playwright.
+  - Astro check y ESLint: 0 errores.
+- **Siguiente acción:** Revisión y aprobación del usuario para commit y push a GitHub.
 
 ## Ideas abiertas
 

@@ -20,7 +20,6 @@ import {
   s00ConceptCards,
   s00Concepts,
   s00DataCards,
-  s00FormulationStages,
   s00Glossary,
   s00ImpactCases,
   s00MLVerbs,
@@ -197,471 +196,6 @@ function ImageLightbox({
         </div>
       </div>
     </div>
-  );
-}
-
-function CuriosityScopeDiagram() {
-  return (
-    <svg
-      viewBox="0 0 580 130"
-      className="s00-schematic-svg"
-      role="img"
-      aria-label="Diagrama de acotación: del cosmos abierto al observable de tránsito"
-    >
-      <defs>
-        <linearGradient id="curiosity-star-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#fde047" />
-          <stop offset="100%" stopColor="#f59e0b" />
-        </linearGradient>
-        <radialGradient id="curiosity-planet-grad" cx="40%" cy="40%" r="60%">
-          <stop offset="0%" stopColor="#38bdf8" />
-          <stop offset="100%" stopColor="#0f172a" />
-        </radialGradient>
-        <marker id="arrow-cyan" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-          <path d="M1,1 L7,4 L1,7 Z" fill="#38bdf8" />
-        </marker>
-      </defs>
-
-      <g transform="translate(10, 15)">
-        <rect
-          width="140"
-          height="100"
-          rx="8"
-          fill="rgba(15, 23, 42, 0.7)"
-          stroke="#1e293b"
-          strokeWidth="1"
-        />
-        <circle cx="35" cy="35" r="3" fill="#94a3b8" opacity="0.6" />
-        <circle cx="70" cy="25" r="4" fill="#38bdf8" opacity="0.8" />
-        <circle cx="110" cy="40" r="2.5" fill="#e2e8f0" opacity="0.5" />
-        <circle cx="45" cy="70" r="3.5" fill="#f59e0b" opacity="0.7" />
-        <circle cx="95" cy="65" r="4" fill="#94a3b8" opacity="0.7" />
-        <text x="70" y="88" fill="#94a3b8" fontSize="10" fontWeight="600" textAnchor="middle">
-          Universo de objetos
-        </text>
-      </g>
-
-      <path
-        d="M158,65 L200,65"
-        stroke="#38bdf8"
-        strokeWidth="2"
-        strokeDasharray="3 3"
-        markerEnd="url(#arrow-cyan)"
-      />
-      <text x="180" y="52" fill="#38bdf8" fontSize="9" textAnchor="middle">
-        Foco físico
-      </text>
-
-      <g transform="translate(210, 15)">
-        <rect
-          width="170"
-          height="100"
-          rx="8"
-          fill="rgba(15, 23, 42, 0.7)"
-          stroke="#38bdf8"
-          strokeWidth="1.5"
-        />
-        <circle cx="70" cy="50" r="24" fill="url(#curiosity-star-grad)" opacity="0.9" />
-        <circle
-          cx="78"
-          cy="50"
-          r="7"
-          fill="url(#curiosity-planet-grad)"
-          stroke="#090d16"
-          strokeWidth="1.5"
-        />
-        <line
-          x1="10"
-          y1="50"
-          x2="160"
-          y2="50"
-          stroke="#38bdf8"
-          strokeWidth="1"
-          strokeDasharray="2 2"
-          opacity="0.4"
-        />
-        <text x="125" y="44" fill="#e2e8f0" fontSize="9" fontWeight="600">
-          Rp / R★
-        </text>
-        <text x="85" y="88" fill="#cbd5e1" fontSize="10" fontWeight="600" textAnchor="middle">
-          Alineación visual
-        </text>
-      </g>
-
-      <path d="M388,65 L430,65" stroke="#38bdf8" strokeWidth="2" markerEnd="url(#arrow-cyan)" />
-      <text x="410" y="52" fill="#38bdf8" fontSize="9" textAnchor="middle">
-        Observable
-      </text>
-
-      <g transform="translate(438, 15)">
-        <rect
-          width="132"
-          height="100"
-          rx="8"
-          fill="rgba(8, 47, 73, 0.5)"
-          stroke="#0284c7"
-          strokeWidth="1.5"
-        />
-        <text
-          x="66"
-          y="38"
-          fill="#38bdf8"
-          fontSize="13"
-          fontWeight="700"
-          textAnchor="middle"
-          fontFamily="monospace"
-        >
-          ΔF/F★ ≈ (Rp/R★)²
-        </text>
-        <path
-          d="M20,62 L45,62 Q55,62 60,74 Q66,74 72,62 L112,62"
-          stroke="#38bdf8"
-          strokeWidth="2"
-          fill="none"
-        />
-        <text x="66" y="88" fill="#bae6fd" fontSize="10" fontWeight="600" textAnchor="middle">
-          Caída de brillo ~0.01%
-        </text>
-      </g>
-    </svg>
-  );
-}
-
-function UnitDiscretizationDiagram() {
-  return (
-    <svg
-      viewBox="0 0 580 130"
-      className="s00-schematic-svg"
-      role="img"
-      aria-label="Diagrama de discretización de unidad: de serie continua a vector de entrenamiento"
-    >
-      <defs>
-        <marker id="arrow-amber" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-          <path d="M1,1 L7,4 L1,7 Z" fill="#f59e0b" />
-        </marker>
-      </defs>
-
-      <g transform="translate(10, 15)">
-        <rect
-          width="150"
-          height="100"
-          rx="8"
-          fill="rgba(15, 23, 42, 0.7)"
-          stroke="#1e293b"
-          strokeWidth="1"
-        />
-        <path
-          d="M15,48 L30,45 L45,52 L60,47 L75,54 L90,46 L105,53 L120,49 L135,51"
-          stroke="#94a3b8"
-          strokeWidth="1.5"
-          fill="none"
-        />
-        <text x="75" y="74" fill="#94a3b8" fontSize="9" textAnchor="middle">
-          Curva de 4 años
-        </text>
-        <text x="75" y="88" fill="#cbd5e1" fontSize="10" fontWeight="600" textAnchor="middle">
-          ~70,000 cadencias
-        </text>
-      </g>
-
-      <path d="M168,65 L210,65" stroke="#f59e0b" strokeWidth="2" markerEnd="url(#arrow-amber)" />
-      <text x="190" y="48" fill="#f59e0b" fontSize="9" textAnchor="middle">
-        Doblar en fase
-      </text>
-      <text x="190" y="59" fill="#f59e0b" fontSize="8" textAnchor="middle">
-        t mod P
-      </text>
-
-      <g transform="translate(220, 15)">
-        <rect
-          width="160"
-          height="100"
-          rx="8"
-          fill="rgba(15, 23, 42, 0.7)"
-          stroke="#f59e0b"
-          strokeWidth="1.5"
-        />
-        <circle cx="35" cy="40" r="2" fill="#fde047" opacity="0.6" />
-        <circle cx="50" cy="42" r="2" fill="#fde047" opacity="0.6" />
-        <circle cx="65" cy="55" r="2" fill="#f59e0b" />
-        <circle cx="80" cy="62" r="2.5" fill="#f59e0b" />
-        <circle cx="95" cy="54" r="2" fill="#f59e0b" />
-        <circle cx="110" cy="41" r="2" fill="#fde047" opacity="0.6" />
-        <circle cx="125" cy="39" r="2" fill="#fde047" opacity="0.6" />
-        <path
-          d="M25,41 Q60,41 70,58 Q80,64 90,58 Q100,41 135,41"
-          stroke="#f59e0b"
-          strokeWidth="1.5"
-          fill="none"
-          opacity="0.8"
-        />
-        <text x="80" y="88" fill="#fde68a" fontSize="10" fontWeight="600" textAnchor="middle">
-          Tránsito centrado
-        </text>
-      </g>
-
-      <path d="M388,65 L428,65" stroke="#f59e0b" strokeWidth="2" markerEnd="url(#arrow-amber)" />
-      <text x="408" y="52" fill="#f59e0b" fontSize="9" textAnchor="middle">
-        Muestreo
-      </text>
-
-      <g transform="translate(436, 15)">
-        <rect
-          width="134"
-          height="100"
-          rx="8"
-          fill="rgba(69, 26, 3, 0.4)"
-          stroke="#b45309"
-          strokeWidth="1.5"
-        />
-        <text
-          x="67"
-          y="36"
-          fill="#fbbf24"
-          fontSize="12"
-          fontWeight="700"
-          textAnchor="middle"
-          fontFamily="monospace"
-        >
-          x_i ∈ ℝ²⁰¹
-        </text>
-        <g transform="translate(18, 48)">
-          {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90].map((x, i) => (
-            <rect
-              key={i}
-              x={x}
-              y={i >= 3 && i <= 6 ? 6 : 0}
-              width="7"
-              height={i >= 3 && i <= 6 ? 14 : 20}
-              rx="1.5"
-              fill={i >= 3 && i <= 6 ? '#f59e0b' : '#78350f'}
-            />
-          ))}
-        </g>
-        <text x="67" y="88" fill="#fef3c7" fontSize="10" fontWeight="600" textAnchor="middle">
-          1 instancia = 1 fila
-        </text>
-      </g>
-    </svg>
-  );
-}
-
-function OutputDistributionDiagram() {
-  return (
-    <svg
-      viewBox="0 0 580 130"
-      className="s00-schematic-svg"
-      role="img"
-      aria-label="Diagrama de salida computable: score de clasificación o posterior de parámetros"
-    >
-      <defs>
-        <linearGradient id="score-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#38bdf8" />
-          <stop offset="100%" stopColor="#10b981" />
-        </linearGradient>
-        <marker id="arrow-purple" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-          <path d="M1,1 L7,4 L1,7 Z" fill="#a855f7" />
-        </marker>
-      </defs>
-
-      <g transform="translate(10, 15)">
-        <rect
-          width="130"
-          height="100"
-          rx="8"
-          fill="rgba(15, 23, 42, 0.7)"
-          stroke="#1e293b"
-          strokeWidth="1"
-        />
-        <rect x="25" y="32" width="80" height="26" rx="4" fill="#1e293b" stroke="#334155" />
-        <text x="65" y="49" fill="#94a3b8" fontSize="11" fontFamily="monospace" textAnchor="middle">
-          x_i (TCE)
-        </text>
-        <text x="65" y="88" fill="#cbd5e1" fontSize="10" fontWeight="600" textAnchor="middle">
-          Observable estructurado
-        </text>
-      </g>
-
-      <path d="M148,65 L190,65" stroke="#a855f7" strokeWidth="2" markerEnd="url(#arrow-purple)" />
-      <text x="170" y="52" fill="#a855f7" fontSize="9" textAnchor="middle">
-        f_θ(x)
-      </text>
-
-      <g transform="translate(200, 15)">
-        <rect
-          width="180"
-          height="100"
-          rx="8"
-          fill="rgba(88, 28, 135, 0.3)"
-          stroke="#7e22ce"
-          strokeWidth="1.5"
-        />
-        <text x="90" y="34" fill="#c084fc" fontSize="11" fontWeight="700" textAnchor="middle">
-          Score: P(Planeta | x)
-        </text>
-        <rect
-          x="20"
-          y="44"
-          width="140"
-          height="18"
-          rx="4"
-          fill="#0f172a"
-          stroke="#475569"
-          strokeWidth="1"
-        />
-        <rect x="22" y="46" width="130" height="14" rx="3" fill="url(#score-grad)" />
-        <text x="90" y="57" fill="#090d16" fontSize="10" fontWeight="800" textAnchor="middle">
-          ŷ = 0.942 (94.2%)
-        </text>
-        <text x="90" y="88" fill="#e9d5ff" fontSize="10" fontWeight="600" textAnchor="middle">
-          Probabilidad calibrada
-        </text>
-      </g>
-
-      <path d="M388,65 L428,65" stroke="#a855f7" strokeWidth="2" markerEnd="url(#arrow-purple)" />
-      <text x="408" y="52" fill="#a855f7" fontSize="9" textAnchor="middle">
-        o Posterior
-      </text>
-
-      <g transform="translate(436, 15)">
-        <rect
-          width="134"
-          height="100"
-          rx="8"
-          fill="rgba(15, 23, 42, 0.7)"
-          stroke="#a855f7"
-          strokeWidth="1"
-        />
-        <path
-          d="M15,62 Q50,62 67,35 Q84,62 119,62"
-          stroke="#c084fc"
-          strokeWidth="2"
-          fill="rgba(192, 132, 252, 0.15)"
-        />
-        <circle cx="67" cy="35" r="3" fill="#38bdf8" />
-        <text x="67" y="74" fill="#f8fafc" fontSize="9" fontFamily="monospace" textAnchor="middle">
-          θ̂ ± σ_θ
-        </text>
-        <text x="67" y="88" fill="#e9d5ff" fontSize="10" fontWeight="600" textAnchor="middle">
-          Incertidumbre real
-        </text>
-      </g>
-    </svg>
-  );
-}
-
-function UsageFunnelDiagram() {
-  return (
-    <svg
-      viewBox="0 0 580 130"
-      className="s00-schematic-svg"
-      role="img"
-      aria-label="Diagrama de criterio de uso: embudo de priorización para telescopios"
-    >
-      <defs>
-        <marker id="arrow-emerald" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-          <path d="M1,1 L7,4 L1,7 Z" fill="#10b981" />
-        </marker>
-      </defs>
-
-      <g transform="translate(10, 15)">
-        <rect
-          width="120"
-          height="100"
-          rx="8"
-          fill="rgba(15, 23, 42, 0.7)"
-          stroke="#1e293b"
-          strokeWidth="1"
-        />
-        <text
-          x="60"
-          y="38"
-          fill="#94a3b8"
-          fontSize="14"
-          fontWeight="800"
-          textAnchor="middle"
-          fontFamily="monospace"
-        >
-          ~100,000
-        </text>
-        <text x="60" y="55" fill="#64748b" fontSize="9" textAnchor="middle">
-          Eventos crudos
-        </text>
-        <text x="60" y="88" fill="#cbd5e1" fontSize="10" fontWeight="600" textAnchor="middle">
-          Catálogo Kepler/TESS
-        </text>
-      </g>
-
-      <path d="M138,65 L180,65" stroke="#10b981" strokeWidth="2" markerEnd="url(#arrow-emerald)" />
-      <text x="160" y="48" fill="#10b981" fontSize="9" textAnchor="middle">
-        Filtro ML
-      </text>
-      <text x="160" y="58" fill="#10b981" fontSize="8" textAnchor="middle">
-        Score &gt; 0.85
-      </text>
-
-      <g transform="translate(190, 15)">
-        <rect
-          width="120"
-          height="100"
-          rx="8"
-          fill="rgba(6, 78, 59, 0.4)"
-          stroke="#059669"
-          strokeWidth="1.5"
-        />
-        <text
-          x="60"
-          y="38"
-          fill="#34d399"
-          fontSize="14"
-          fontWeight="800"
-          textAnchor="middle"
-          fontFamily="monospace"
-        >
-          ~2,400
-        </text>
-        <text x="60" y="55" fill="#a7f3d0" fontSize="9" textAnchor="middle">
-          Candidatos fiables
-        </text>
-        <text x="60" y="88" fill="#6ee7b7" fontSize="10" fontWeight="600" textAnchor="middle">
-          -97% falsos positivos
-        </text>
-      </g>
-
-      <path d="M318,65 L360,65" stroke="#10b981" strokeWidth="2" markerEnd="url(#arrow-emerald)" />
-      <text x="340" y="48" fill="#10b981" fontSize="9" textAnchor="middle">
-        Priorización
-      </text>
-      <text x="340" y="58" fill="#10b981" fontSize="8" textAnchor="middle">
-        Magnitud
-      </text>
-
-      <g transform="translate(370, 15)">
-        <rect
-          width="200"
-          height="100"
-          rx="8"
-          fill="rgba(15, 23, 42, 0.8)"
-          stroke="#10b981"
-          strokeWidth="1.5"
-        />
-        <g transform="translate(15, 24)">
-          <circle cx="16" cy="16" r="14" fill="#065f46" />
-          <text x="16" y="21" fill="#34d399" fontSize="13" textAnchor="middle">
-            🔭
-          </text>
-          <text x="40" y="14" fill="#f8fafc" fontSize="11" fontWeight="700">
-            HARPS / ESPRESSO / JWST
-          </text>
-          <text x="40" y="28" fill="#a7f3d0" fontSize="10">
-            25 noches asignadas
-          </text>
-        </g>
-        <text x="100" y="88" fill="#6ee7b7" fontSize="10" fontWeight="600" textAnchor="middle">
-          Retorno optimizado
-        </text>
-      </g>
-    </svg>
   );
 }
 
@@ -2677,6 +2211,9 @@ function VisualFrame({
     collection: 'pillars' | 'modalities' | 'datacards' | 'verbs' | 'impact';
     cardId: string;
   }>({ isOpen: false, collection: 'pillars', cardId: '' });
+  const [measurementLens, setMeasurementLens] = useState<
+    'fisica' | 'datos' | 'modelo' | 'decision'
+  >('fisica');
 
   const openFlashcard = (
     collection: 'pillars' | 'modalities' | 'datacards' | 'verbs' | 'impact',
@@ -3091,185 +2628,6 @@ function VisualFrame({
       );
     }
 
-    if (unit.visualKind === 'question-lab') {
-      const stages = unit.formulationStages ?? s00FormulationStages;
-      const activeStageId = stages.some((s) => s.id === visualFocus) ? visualFocus : 'curiosidad';
-      const activeStage =
-        stages.find((s) => s.id === activeStageId) ?? stages[0] ?? s00FormulationStages[0];
-      if (!activeStage) return null;
-      const activeStageIndex = stages.findIndex((s) => s.id === activeStage.id);
-
-      return (
-        <div className="s00-visual s00-visual--formulation" data-active-stage={activeStage.id}>
-          {/* Pipeline continuo de las 4 decisiones metodológicas */}
-          <div className="s00-formulation-pipeline">
-            <div className="s00-formulation-pipeline__header">
-              <div className="s00-formulation-pipeline__badge">
-                <span className="s00-formulation-dot" aria-hidden="true" />
-                <span>Cadena de formulación metodológica</span>
-              </div>
-              <p className="s00-formulation-pipeline__hint">
-                Cuatro decisiones antes del algoritmo: acotar la curiosidad fija el dataset, la
-                salida y la utilidad.
-              </p>
-            </div>
-
-            <div
-              className="s00-formulation-stepper"
-              role={interactive ? 'tablist' : undefined}
-              aria-label="Etapas de formulación de la tarea de ML"
-            >
-              {stages.map((stage, index) => {
-                const isActive = stage.id === activeStage.id;
-                const isPast = index < activeStageIndex;
-                const stepButton = (
-                  <>
-                    <div className="s00-formulation-step__status">
-                      <span className="s00-formulation-step__num">
-                        {isPast ? '✓' : stage.number}
-                      </span>
-                      <span className="s00-formulation-step__pill">{stage.visualDetail.badge}</span>
-                    </div>
-                    <strong className="s00-formulation-step__name">{stage.stepName}</strong>
-                    <span className="s00-formulation-step__sub">{stage.subtitle}</span>
-                  </>
-                );
-
-                return interactive ? (
-                  <button
-                    type="button"
-                    key={stage.id}
-                    role="tab"
-                    aria-selected={isActive}
-                    className={`s00-formulation-step ${isActive ? 'is-active' : ''} ${isPast ? 'is-past' : ''}`}
-                    data-tone={stage.tone}
-                    onClick={() => {
-                      const targetSlideIdx = getS00SlideIndex('s00-acotar', index);
-                      if (targetSlideIdx >= 0) onSelectSlide?.(targetSlideIdx);
-                    }}
-                  >
-                    {stepButton}
-                  </button>
-                ) : (
-                  <div
-                    key={stage.id}
-                    className={`s00-formulation-step ${isActive ? 'is-active' : ''} ${isPast ? 'is-past' : ''}`}
-                    data-tone={stage.tone}
-                  >
-                    {stepButton}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Dossier activo de la etapa */}
-          <article className="s00-formulation-dossier" data-tone={activeStage.tone}>
-            <div className="s00-formulation-dossier__header">
-              <div className="s00-formulation-dossier__kicker">
-                <span>03.{activeStage.number}</span>
-                <span>Paso {activeStage.number} de 04</span>
-                <span className="s00-dossier-tag">{activeStage.stepName}</span>
-              </div>
-              <h3>{activeStage.title}</h3>
-              <p className="s00-formulation-dossier__subtitle">{activeStage.subtitle}</p>
-
-              <div className="s00-formulation-decision">
-                <span className="s00-decision-tag">Decisión metodológica</span>
-                <p>{activeStage.decision}</p>
-              </div>
-            </div>
-
-            {/* Diagrama visual interactivo de transformación */}
-            <div className="s00-formulation-schematic">
-              <div className="s00-formulation-schematic__header">
-                <span className="s00-schematic-badge">{activeStage.visualDetail.badge}</span>
-                {activeStage.visualDetail.formula && (
-                  <div className="s00-schematic-formula-wrap">
-                    <MathExpression
-                      tex={activeStage.visualDetail.formula}
-                      label={activeStage.stepName}
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className="s00-schematic-canvas">
-                {activeStage.id === 'curiosidad' && <CuriosityScopeDiagram />}
-                {activeStage.id === 'unidad' && <UnitDiscretizationDiagram />}
-                {activeStage.id === 'salida' && <OutputDistributionDiagram />}
-                {activeStage.id === 'uso' && <UsageFunnelDiagram />}
-              </div>
-
-              <div className="s00-schematic-flow">
-                <div className="s00-schematic-flow__col">
-                  <span className="s00-flow-label">Entrada</span>
-                  <p>{activeStage.visualDetail.inputLabel}</p>
-                </div>
-                <div className="s00-schematic-flow__col s00-schematic-flow__col--arrow">
-                  <span className="s00-flow-arrow" aria-hidden="true">
-                    ➔
-                  </span>
-                  <p>{activeStage.visualDetail.transformationLabel}</p>
-                </div>
-                <div className="s00-schematic-flow__col">
-                  <span className="s00-flow-label">Resultado computable</span>
-                  <p>{activeStage.visualDetail.outputLabel}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Contraste de dos casos reales en paralelo */}
-            <div className="s00-formulation-cases">
-              <div className="s00-formulation-case s00-formulation-case--detection">
-                <div className="s00-formulation-case__top">
-                  <span className="s00-case-badge">Caso Detección</span>
-                  <span className="s00-case-mission">{activeStage.caseDetection.mission}</span>
-                </div>
-                <h4>{activeStage.caseDetection.title}</h4>
-                <p className="s00-case-desc">{activeStage.caseDetection.description}</p>
-                <div className="s00-case-instance">
-                  <strong>Instancia o formulación:</strong>
-                  <p>{activeStage.caseDetection.instance}</p>
-                </div>
-              </div>
-
-              <div className="s00-formulation-case s00-formulation-case--char">
-                <div className="s00-formulation-case__top">
-                  <span className="s00-case-badge">Caso Caracterización</span>
-                  <span className="s00-case-mission">
-                    {activeStage.caseCharacterization.mission}
-                  </span>
-                </div>
-                <h4>{activeStage.caseCharacterization.title}</h4>
-                <p className="s00-case-desc">{activeStage.caseCharacterization.description}</p>
-                <div className="s00-case-instance">
-                  <strong>Instancia o formulación:</strong>
-                  <p>{activeStage.caseCharacterization.instance}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Pie: Antipatrón y Criterio de validación */}
-            <div className="s00-formulation-footer">
-              <div className="s00-formulation-pitfall">
-                <span className="s00-pitfall-tag">⚠️ Antipatrón común</span>
-                <p>{activeStage.commonPitfall}</p>
-              </div>
-              <div className="s00-formulation-gate">
-                <span className="s00-gate-tag">✓ Criterio de paso</span>
-                <p>{activeStage.validationGate}</p>
-              </div>
-            </div>
-          </article>
-
-          <p className="s00-visual__annotation">
-            pregunta científica → unidad de dato → salida computable → criterio de uso
-          </p>
-        </div>
-      );
-    }
-
     if (unit.visualKind === 'measurement') {
       const modalities = unit.measurementModalities ?? s00MeasurementModalities;
       const activeModality =
@@ -3290,9 +2648,10 @@ function VisualFrame({
           {/* Sistema de 4 modalidades observacionales conectadas */}
           <div className="s00-measurement-system">
             <div className="s00-measurement-header">
-              <span className="s00-measurement-badge">Modalidades observacionales</span>
+              <span className="s00-measurement-badge">Formular la observación</span>
               <span className="s00-measurement-prompt">
-                El instrumento determina qué señal se registra y qué física se puede inferir
+                De la intención científica al observable físico y la unidad de datos para Machine
+                Learning
               </span>
             </div>
 
@@ -3307,7 +2666,9 @@ function VisualFrame({
                   <>
                     <div className="s00-measurement-tab__top">
                       <span className="s00-measurement-tab__num">{mod.number}</span>
-                      <span className="s00-measurement-tab__symbol">{mod.symbol}</span>
+                      <span className="s00-measurement-tab__symbol">
+                        <MathExpression tex={mod.symbol} label={mod.title} />
+                      </span>
                     </div>
                     <span className="s00-measurement-tab__title">{mod.title}</span>
                     <span className="s00-measurement-tab__tag">
@@ -3343,7 +2704,7 @@ function VisualFrame({
               })}
             </div>
 
-            {/* Barra de fusión física: cómo se combinan las modalidades */}
+            {/* Barra de síntesis física: articulación entre modalidades */}
             <div className="s00-measurement-fusion-bar">
               <span className="s00-fusion-label">Fusión multifísica:</span>
               <div className="s00-fusion-chain">
@@ -3360,8 +2721,9 @@ function VisualFrame({
             </div>
           </div>
 
-          {/* Dossier científico activo de la modalidad */}
+          {/* Dossier científico unificado de la modalidad */}
           <article className="s00-measurement-dossier" data-tone={activeModality.tone}>
+            {/* Cabecera del dossier con títulos y acción de ficha técnica */}
             <div className="s00-measurement-dossier__header">
               <div className="s00-measurement-dossier__title-row">
                 <div className="s00-measurement-dossier__title-group">
@@ -3373,7 +2735,7 @@ function VisualFrame({
                     type="button"
                     className="s00-flashcard-trigger-btn"
                     onClick={() => openFlashcard('modalities', activeModality.id)}
-                    title="Ampliar ficha técnica de la técnica observacional"
+                    title="Ampliar ficha técnica y metodológica completa"
                   >
                     <img
                       src={assetUrl(activeModality.miniatureSrc)}
@@ -3385,16 +2747,37 @@ function VisualFrame({
                     />
                     <span>Ficha técnica 🔍</span>
                   </button>
-                  <span className="s00-dossier-symbol">{activeModality.symbol}</span>
                 </div>
               </div>
               <p className="s00-dossier-subtitle">{activeModality.subtitle}</p>
 
-              {/* Ecuación rectora del observable */}
+              {/* Narrativa central articulada */}
+              <div className="s00-measurement-narrative-box">
+                <span className="s00-narrative-tag">🧭 Intención científica e hipótesis</span>
+                <p className="s00-narrative-text">{activeModality.narrativeLead}</p>
+                <div className="s00-narrative-intention">
+                  <p>
+                    <strong>Pregunta científica:</strong>{' '}
+                    {activeModality.scientificIntention.question}
+                  </p>
+                  <p>
+                    <strong>Motivación física:</strong>{' '}
+                    {activeModality.scientificIntention.physicalMotivation}
+                  </p>
+                </div>
+              </div>
+
+              {/* Ecuación rectora del observable con KaTeX */}
               <div className="s00-measurement-equation-card">
                 <div className="s00-equation-card__header">
-                  <span className="s00-equation-tag">Ecuación rectora del observable</span>
-                  <code className="s00-equation-code">{activeModality.governingEquation}</code>
+                  <span className="s00-equation-tag">Ecuación física rectora</span>
+                  <div className="s00-equation-math">
+                    <MathExpression
+                      tex={activeModality.governingEquation}
+                      label={activeModality.title}
+                      block
+                    />
+                  </div>
                 </div>
                 <p className="s00-equation-desc">{activeModality.equationDescription}</p>
               </div>
@@ -3417,49 +2800,208 @@ function VisualFrame({
               </div>
             </div>
 
-            {/* Contraste riguroso: Observable crudo vs Parámetro inferido */}
-            <div className="s00-measurement-contrast-grid">
-              <div className="s00-contrast-col s00-contrast-col--observable">
-                <div className="s00-contrast-col__header">
-                  <span className="s00-contrast-badge">📡 Observable registrado (Instrumento)</span>
-                </div>
-                <p>{activeModality.rawObservable}</p>
+            {/* Selector de Tarjetas Dinámicas de Profundización */}
+            {/* Selector de Tarjetas Dinámicas de Profundización */}
+            <div className="s00-measurement-lens-section">
+              <div
+                className="s00-measurement-lens-tabs"
+                role="tablist"
+                aria-label="Dimensiones de análisis de la modalidad"
+              >
+                <button
+                  type="button"
+                  id="s00-lens-tab-fisica"
+                  role="tab"
+                  aria-selected={measurementLens === 'fisica'}
+                  aria-controls="s00-lens-panel"
+                  tabIndex={measurementLens === 'fisica' ? 0 : -1}
+                  className={`s00-lens-tab ${measurementLens === 'fisica' ? 'is-active' : ''}`}
+                  onClick={() => setMeasurementLens('fisica')}
+                >
+                  📡 1. Física & Instrumento
+                </button>
+                <button
+                  type="button"
+                  id="s00-lens-tab-datos"
+                  role="tab"
+                  aria-selected={measurementLens === 'datos'}
+                  aria-controls="s00-lens-panel"
+                  tabIndex={measurementLens === 'datos' ? 0 : -1}
+                  className={`s00-lens-tab ${measurementLens === 'datos' ? 'is-active' : ''}`}
+                  onClick={() => setMeasurementLens('datos')}
+                >
+                  🔢 2. Tensor & Unidad ML
+                </button>
+                <button
+                  type="button"
+                  id="s00-lens-tab-modelo"
+                  role="tab"
+                  aria-selected={measurementLens === 'modelo'}
+                  aria-controls="s00-lens-panel"
+                  tabIndex={measurementLens === 'modelo' ? 0 : -1}
+                  className={`s00-lens-tab ${measurementLens === 'modelo' ? 'is-active' : ''}`}
+                  onClick={() => setMeasurementLens('modelo')}
+                >
+                  🤖 3. Inferencia & Salida
+                </button>
+                <button
+                  type="button"
+                  id="s00-lens-tab-decision"
+                  role="tab"
+                  aria-selected={measurementLens === 'decision'}
+                  aria-controls="s00-lens-panel"
+                  tabIndex={measurementLens === 'decision' ? 0 : -1}
+                  className={`s00-lens-tab ${measurementLens === 'decision' ? 'is-active' : ''}`}
+                  onClick={() => setMeasurementLens('decision')}
+                >
+                  🎯 4. Decisión & Límites
+                </button>
               </div>
 
-              <div className="s00-contrast-col s00-contrast-col--parameter">
-                <div className="s00-contrast-col__header">
-                  <span className="s00-contrast-badge">🔬 Parámetro físico inferido (Modelo)</span>
-                </div>
-                <p>{activeModality.inferredParameter}</p>
-              </div>
-            </div>
+              {/* Contenido dinámico de la lente activa */}
+              <div
+                id="s00-lens-panel"
+                className="s00-measurement-lens-panel"
+                role="tabpanel"
+                aria-labelledby={`s00-lens-tab-${measurementLens}`}
+                tabIndex={0}
+              >
+                {measurementLens === 'fisica' && (
+                  <div className="s00-lens-grid s00-lens-grid--physics">
+                    <div className="s00-lens-card s00-lens-card--observable">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">
+                          📡 Observable registrado (Detector)
+                        </span>
+                      </div>
+                      <p>{activeModality.rawObservable}</p>
+                    </div>
 
-            {/* Instrumentos reales y Oportunidad de Machine Learning */}
-            <div className="s00-measurement-context-grid">
-              <div className="s00-context-col s00-context-col--instruments">
-                <div className="s00-context-col__header">
-                  <span className="s00-context-tag">🔭 Misiones e instrumentos reales</span>
-                </div>
-                <p>{activeModality.instruments}</p>
-              </div>
+                    <div className="s00-lens-card s00-lens-card--parameter">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">
+                          🔬 Parámetro físico inferido (Física)
+                        </span>
+                      </div>
+                      <p>{activeModality.inferredParameter}</p>
+                    </div>
 
-              <div className="s00-context-col s00-context-col--ml">
-                <div className="s00-context-col__header">
-                  <span className="s00-context-tag">🤖 Rol de Machine Learning</span>
-                </div>
-                <p>{activeModality.mlRole}</p>
-              </div>
-            </div>
+                    <div className="s00-lens-card s00-lens-card--instruments s00-lens-card--full">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">
+                          🔭 Misiones e instrumentos reales
+                        </span>
+                      </div>
+                      <p>{activeModality.instruments}</p>
+                    </div>
+                  </div>
+                )}
 
-            {/* Límite físico y degeneración observacional */}
-            <div className="s00-measurement-limit-banner">
-              <span className="s00-limit-tag">⚠️ Límite físico y degeneración observacional</span>
-              <p>{activeModality.physicalLimit}</p>
+                {measurementLens === 'datos' && (
+                  <div className="s00-lens-grid s00-lens-grid--data">
+                    <div className="s00-lens-card s00-lens-card--unit">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">
+                          📊 Unidad de análisis / Instancia x_i
+                        </span>
+                      </div>
+                      <p>{activeModality.mlUnitFormulation.instanceDefinition}</p>
+                    </div>
+
+                    <div className="s00-lens-card s00-lens-card--tensor">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">
+                          🧱 Estructura tensorial y resolución
+                        </span>
+                      </div>
+                      <p>{activeModality.mlUnitFormulation.tensorStructure}</p>
+                    </div>
+
+                    <div className="s00-lens-card s00-lens-card--leakage s00-lens-card--full">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">
+                          🛡️ Prevención de fuga de información (Data Leakage)
+                        </span>
+                      </div>
+                      <p>{activeModality.mlUnitFormulation.leakagePrevention}</p>
+                    </div>
+                  </div>
+                )}
+
+                {measurementLens === 'modelo' && (
+                  <div className="s00-lens-grid s00-lens-grid--model">
+                    <div className="s00-lens-card s00-lens-card--math">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">
+                          📐 Salida matemática computable
+                        </span>
+                      </div>
+                      <div className="s00-lens-math-wrap">
+                        <MathExpression
+                          tex={activeModality.mlOutput.mathematicalForm}
+                          label="Salida matemática"
+                          block
+                        />
+                      </div>
+                      <p className="s00-lens-card__sub">{activeModality.mlOutput.outputType}</p>
+                    </div>
+
+                    <div className="s00-lens-card s00-lens-card--role">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">
+                          🤖 Rol del modelo de Machine Learning
+                        </span>
+                      </div>
+                      <p>{activeModality.mlOutput.mlRole}</p>
+                      <div className="s00-lens-loss-tag">
+                        <strong>Función de pérdida / Objetivo:</strong>{' '}
+                        {activeModality.mlOutput.typicalLossOrAlgorithm}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {measurementLens === 'decision' && (
+                  <div className="s00-lens-grid s00-lens-grid--decision">
+                    <div className="s00-lens-card s00-lens-card--action">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">🎯 Decisión operacional</span>
+                      </div>
+                      <p>{activeModality.operationalUse.action}</p>
+                      <div className="s00-lens-criterion">
+                        <strong>Criterio de seguimiento:</strong>{' '}
+                        {activeModality.operationalUse.followupCriterion}
+                      </div>
+                    </div>
+
+                    <div className="s00-lens-card s00-lens-card--pitfall">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">⚠️ Antipatrón común</span>
+                      </div>
+                      <p>{activeModality.operationalUse.commonPitfall}</p>
+                    </div>
+
+                    <div className="s00-lens-card s00-lens-card--limit s00-lens-card--full">
+                      <div className="s00-lens-card__header">
+                        <span className="s00-lens-card__badge">
+                          🛑 Límite físico y degeneración observacional
+                        </span>
+                      </div>
+                      <p>{activeModality.physicalLimit}</p>
+                      <div className="s00-lens-gate">
+                        <strong>Criterio de paso científico:</strong>{' '}
+                        {activeModality.operationalUse.validationGate}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </article>
 
           <p className="s00-visual__annotation">
-            observable registrado (instrumento) ≠ parámetro físico inferido (modelo)
+            pregunta científica → geometría instrumental → observable crudo → tensor ML → decisión y
+            seguimiento
           </p>
         </div>
       );

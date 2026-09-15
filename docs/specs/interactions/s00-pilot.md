@@ -33,9 +33,9 @@ ofrecer tres modos equivalentes: Presentación, Lectura y Actividades. Presentac
 vez; Lectura conserva todo el argumento, referencias y límites en HTML; Actividades separa las
 producciones del estudiante.
 
-La vista inicial de Presentación abre en la primera estación, **Mundo**, con la pregunta guía, el
+La vista inicial de Presentación abre en la primera estación, **Partir de una pregunta**, con la pregunta guía, el
 subtítulo «Una señal débil, una pregunta científica, una cadena de decisiones» y una instrucción
-de orientación. El contenido estático de las nueve estaciones aparece también en Lectura y en el
+de orientación. El contenido estático de las ocho estaciones aparece también en Lectura y en el
 resumen lineal.
 
 ### Primer cuadro horizontal
@@ -57,45 +57,46 @@ reorganiza a flujo vertical sin perder la cadena.
 ## Secuencia de estaciones
 
 El carril reutiliza la composición de `SlideRail`: cinco tarjetas desarrolladas alrededor de la
-activa y las restantes apiladas en los bordes. S00 conserva nueve estaciones conceptuales como
-spine, pero la Presentación se recorre mediante subpantallas jerárquicas (`01.1`, `01.2`, …) para
+activa y las restantes apiladas en los bordes. S00 articula ocho estaciones conceptuales como
+spine, y la Presentación se recorre mediante subpantallas jerárquicas (`01.1`, `01.2`, …) para
 dar protagonismo a cada objeto, señal, dato o decisión. La cantidad de subpantallas es irregular y
 depende de la información que necesita cada estación.
 
 | Orden | Estación | Pregunta de control | Ejemplo mínimo | Salida visible |
 | ---: | --- | --- | --- | --- |
-| 1 | Mundo | ¿Qué objeto o sistema queremos comprender? | Un exoplaneta y su estrella | Unidad de análisis propuesta |
-| 2 | Pregunta | ¿Qué propiedad o evento queremos conocer? | ¿Hay un tránsito compatible con un planeta? | Pregunta acotada |
-| 3 | Medición | ¿Qué magnitud llega del instrumento? | Flujo que cambia con el tiempo | Magnitud y unidad declaradas |
-| 4 | Dato | ¿Cómo se conserva y de dónde proviene? | Curva observacional, catálogo o inyección | Origen y estructura |
-| 5 | Representación | ¿Qué forma permite trabajar con la señal? | Serie temporal, espectro o imagen | Forma elegida y pérdida posible |
-| 6 | Tarea | ¿Qué verbo describe la salida? | Detectar, clasificar, estimar, describir o priorizar | Verbo y salida |
-| 7 | Modelo | ¿Qué familia aproxima la tarea? | Clasificador, regresor, agrupamiento o surrogate | Modelo como hipótesis de trabajo |
-| 8 | Evaluación | ¿Frente a qué comparación y con qué métrica? | Línea base, recuperación, error o calibración | Evidencia de desempeño |
-| 9 | Interpretación | ¿Qué afirmación permite y qué límite conserva? | Candidato, estimación o ranking con validación pendiente | Conclusión acotada |
+| 1 | Partir de una pregunta | ¿Qué fenómeno astronómico origina la señal? | Un tránsito exoplanetario frente a su estrella | Señal observacional cruda y pregunta guía |
+| 2 | Qué buscan las ciencias planetarias | ¿Qué propiedad física o evolutiva queremos inferir? | Origen, estructura, evolución o habitabilidad | Pilar disciplinar identificado |
+| 3 | Formular la observación | ¿Cómo conecta la intención científica con la señal y el tensor de ML? | Fotometría de tránsito, velocidad radial, espectro, imagen directa | Observable, tensor ML, salida inferida y límites operativos |
+| 4 | Datos observacionales, simulación y catálogo | ¿Cómo se conserva el dato y cómo se estructura el entrenamiento? | Curva observacional, catálogo derivado o forward model | Estructura de tensores, balance y particiones |
+| 5 | El rol de ML | ¿Qué verbo y tarea aproxima el problema? | Detectar, clasificar, estimar, describir o priorizar | Verbo formulado y función de pérdida |
+| 6 | Casos de impacto | ¿Dónde marca diferencia ML frente al método clásico? | Tránsitos Kepler, estabilidad dinámica, espectros JWST | Contraste riguroso, métrica y validación física |
+| 7 | Las tres ramas | ¿Cómo se articulan ciencia, teoría y código? | Problema astronómico, teoría estadística, software reproducible | Conexión metodológica |
+| 8 | Síntesis y cierre | ¿Cómo se evalúa la cadena completa y qué límites conserva? | Diagnóstico integral, falsos positivos, sesgo inductivo | Salida condicionada y transferencia docente |
 
 La Presentación distribuye las partes así:
 
 | Estación | Subpantallas visibles | Cantidad |
 | --- | --- | ---: |
-| 01 · Mundo | Mundo, Señal, Pregunta guía | 3 |
-| 02 · Campo | Origen, Estructura, Evolución, Habitabilidad | 4 |
-| 03 · Acotar | Curiosidad, Unidad, Salida, Uso | 4 |
-| 04 · Medición | Tránsito, Velocidad radial, Espectro, Imagen | 4 |
-| 05 · Datos | Observación, Catálogo, Simulación, Entrenamiento, Salida | 5 |
-| 06 · ML | Detectar, Clasificar, Estimar, Describir, Priorizar | 5 |
-| 07 · Impacto | Curvas de luz, Estabilidad orbital, Atmósfera, Alto contraste, Validación, Candidatos | 6 |
-| 08 · Ramas | Problema astronómico, Teoría formal ML, Aplicación reproducible | 3 |
-| 09 · Cierre | Pregunta, Medición, Dato, Representación, Tarea, Evaluación, Límite | 7 |
+| 01 · Partir de una pregunta | Mundo físico y señal, Una señal débil y ruidosa, La pregunta guía del curso | 3 |
+| 02 · Qué buscan las ciencias planetarias | Origen y formación, Estructura interna y composición, Evolución e interacción, Habitabilidad y biofirmas | 4 |
+| 03 · Formular la observación | Tránsito fotométrico, Velocidad radial espectroscópica, Espectroscopía de transmisión y emisión, Imagen directa de alto contraste | 4 |
+| 04 · Datos observacionales, simulación y catálogo | Observación cruda y calibrada, Catálogo derivado y series temporales, Simulación física y forward modeling, Conjunto de entrenamiento y balance, Salida del modelo | 5 |
+| 05 · El rol de ML | Detectar señales débiles, Clasificar morfologías y candidatos, Estimar parámetros físicos, Describir poblaciones y estructuras, Priorizar seguimiento escaso | 5 |
+| 06 · Casos de impacto | Clasificación de curvas de luz, Estabilidad orbital y dinámica, Caracterización atmosférica, Procesamiento de imágenes de alto contraste, Validación estadística vs. confirmación física, Generación de catálogos de candidatos | 6 |
+| 07 · Las tres ramas | Problema astronómico, Teoría formal ML, Aplicación reproducible | 3 |
+| 08 · Síntesis: la cadena completa | Pregunta científica, Medición física, Dato y representación, Tarea de ML, Modelo y aprendizaje, Evaluación rigurosa, Interpretación y límites | 7 |
 
 La primera subpantalla de cada estación (`x.1`) presenta exclusivamente el foco conceptual en un
 único panel centrado a pantalla completa. La subpantalla siguiente (`x.2`) unifica el desarrollo
 visual inicial con los controles de esa parte, dedicando todo el espacio a la escena interactiva.
+En la estación 03, la experiencia integra cuatro lentes dinámicas (Física & Instrumento, Tensor &
+Unidad ML, Inferencia & Salida, Decisión & Límites) que permiten profundizar sin fragmentar la narrativa.
 Cada subpantalla posterior conserva su elemento protagonista a pantalla completa con su visual,
 pregunta, límite y actividad. Anterior/Siguiente, las tarjetas del rail, los botones de partes y la
-URL recorren el mismo orden plano subyacente de 42 subpantallas. La URL jerárquica conserva el nombre
+URL recorren el mismo orden plano subyacente de 38 subpantallas (incluida la bibliografía). La URL jerárquica conserva el nombre
 de estación para la primera parte (`#pregunta`) y añade el identificador de parte para las siguientes
-(`#pregunta/senal`). Un estado inválido conserva una salida útil y anuncia la estación activa.
+(`#pregunta/senal`). Los hashes anteriores (como `#acotar`) se resuelven de forma compatible hacia
+su modalidad correspondiente. Un estado inválido conserva una salida útil y anuncia la estación activa.
 
 ## Interacciones necesarias
 

@@ -237,12 +237,33 @@ export interface S00MeasurementModality {
   subtitle: string;
   symbol: string;
   tone: 'question' | 'data' | 'model' | 'decision';
+  narrativeLead: string;
+  scientificIntention: {
+    question: string;
+    physicalMotivation: string;
+  };
   governingEquation: string;
   equationDescription: string;
   rawObservable: string;
   inferredParameter: string;
   instruments: string;
-  mlRole: string;
+  mlUnitFormulation: {
+    instanceDefinition: string;
+    tensorStructure: string;
+    leakagePrevention: string;
+  };
+  mlOutput: {
+    mathematicalForm: string;
+    outputType: string;
+    mlRole: string;
+    typicalLossOrAlgorithm: string;
+  };
+  operationalUse: {
+    action: string;
+    followupCriterion: string;
+    commonPitfall: string;
+    validationGate: string;
+  };
   physicalLimit: string;
   miniatureSrc: string;
   diagramDetail: {
@@ -953,23 +974,57 @@ export const s00MeasurementModalities: readonly S00MeasurementModality[] = [
     id: 'transito',
     number: '01',
     title: 'Tránsito fotométrico',
-    subtitle: 'Variación temporal del brillo aparente',
-    symbol: 'ΔF(t)',
+    subtitle: 'Variación temporal del flujo estelar aparente',
+    symbol: '\\Delta F(t)',
     tone: 'data',
     miniatureSrc: s00VisualAssets.miniatures.medicionTransito,
-    governingEquation: 'ΔF / F★ ≈ (Rp / R★)²',
+    narrativeLead:
+      'La fotometría de tránsito convierte el eclipse geométrico de un exoplaneta frente a su estrella en una serie temporal de brillo relativo. La disminución de flujo delimita el radio planetario relativo y el periodo orbital, mientras que la unidad de análisis para Machine Learning extrae ventanas temporales en fase para clasificar candidatos sin confundirlos con binarias eclipsantes o variabilidad estelar.',
+    scientificIntention: {
+      question:
+        '¿Qué planetas cruzan la línea de visión de su estrella y qué tamaño relativo poseen?',
+      physicalMotivation:
+        'Detectar caídas periódicas en la curva de luz estelar causadas por el bloqueo del disco planetario.',
+    },
+    governingEquation:
+      '\\frac{\\Delta F}{F_\\star} \\approx \\left(\\frac{R_p}{R_\\star}\\right)^2, \\quad P^2 = \\frac{4\\pi^2 a^3}{G(M_\\star + M_p)}',
     equationDescription:
-      'La fracción de luz bloqueada durante el tránsito es proporcional a la razón geométrica entre las áreas del disco planetario y la fotosfera estelar.',
+      'La fracción de luz bloqueada mide directamente la razón geométrica entre las áreas del planeta y de la fotosfera estelar; la periodicidad fija el semieje mayor orbital mediante la tercera ley de Kepler.',
     rawObservable:
-      'Serie temporal de flujo fotométrico normalizado registrado por un detector CCD/CMOS en función del tiempo.',
+      'Serie temporal de flujo fotométrico normalizado x_i(t) registrada por detectores CCD/CMOS con ruido fotónico, deriva térmica y modulación por manchas estelares.',
     inferredParameter:
       'Radio planetario relativo (Rp/R★), periodo orbital P, inclinación i, semieje mayor a/R★ y parámetro de impacto b.',
     instruments:
-      'Telescopios espaciales Kepler, K2, TESS, CHEOPS, y la futura misión europea PLATO.',
-    mlRole:
-      'Redes convolucionales 1D y modelos de atención para clasificar eventos de cruce de umbral (TCEs), filtrado de artefactos térmicos e identificación de tránsitos débiles sumergidos en ruido.',
+      'Telescopios espaciales Kepler, K2, TESS, CHEOPS y la futura misión europea PLATO.',
+    mlUnitFormulation: {
+      instanceDefinition:
+        'Threshold Crossing Event (TCE): serie temporal doblada al periodo P y centrada en fase cero, estandarizada en dos vistas complementarias.',
+      tensorStructure:
+        'Vector global de 201 puntos (órbita completa) y vector local de 61 puntos (detalle del tránsito): x_i ∈ ℝ²⁶².',
+      leakagePrevention:
+        'Partición estricta a nivel de estrella o sistema (KIC/TIC ID): ninguna observación de la misma diana estelar debe compartirse entre entrenamiento y prueba.',
+    },
+    mlOutput: {
+      mathematicalForm: '\\hat{y} = P(\\text{Planeta} \\mid \\mathbf{x}_i) \\in [0, 1]',
+      outputType:
+        'Probabilidad calibrada de candidato genuino frente a falso positivo instrumental o astrofísico.',
+      mlRole:
+        'Redes neuronales convolucionales 1D (AstroNet) y modelos de atención para clasificar señales débiles cerca del umbral de detección (SNR ~ 7).',
+      typicalLossOrAlgorithm:
+        'Entropía cruzada binaria ponderada o focal loss para mitigar el severo desbalance de clases (~1:100).',
+    },
+    operationalUse: {
+      action:
+        'Filtrar y priorizar candidatos para campañas de confirmación espectroscópica desde observatorios terrestres.',
+      followupCriterion:
+        'Asignar noches de telescopio en HARPS o ESPRESSO solo a dianas con score alto y bajo riesgo de contaminación.',
+      commonPitfall:
+        'Tratar la serie temporal cruda sin doblar en fase o medir precisión global (accuracy) ignorando el 99% de falsos positivos.',
+      validationGate:
+        'Recuperación demostrada sobre tránsitos inyectados sintéticamente en curvas de luz reales con tasa de falso descubrimiento < 5%.',
+    },
     physicalLimit:
-      'Degeneración geométrica con binarias eclipsantes rasantes o fuentes de fondo no resueltas (blended binaries), y deformación de la profundidad por manchas estelares activas.',
+      'La fotometría de tránsito mide exclusivamente radio, no masa; binarias eclipsantes rasantes y estrellas de fondo contaminantes imitan caídas planetarias.',
     diagramDetail: {
       badge: 'Fotometría diferencial',
       description: 'Curva de luz normalizada con ingreso, fondo plano y egreso',
@@ -979,23 +1034,58 @@ export const s00MeasurementModalities: readonly S00MeasurementModality[] = [
     id: 'radial',
     number: '02',
     title: 'Velocidad radial',
-    subtitle: 'Desplazamiento Doppler por tirón gravitatorio',
-    symbol: 'Δvr(t)',
+    subtitle: 'Bamboleo Doppler estelar por tirón gravitatorio reflejo',
+    symbol: '\\Delta v_r(t)',
     tone: 'question',
     miniatureSrc: s00VisualAssets.miniatures.medicionRadial,
-    governingEquation: 'K = (2πG/P)^(1/3) · (Mp sin i) / (M★ + Mp)^(2/3) · 1/√(1 - e²)',
+    narrativeLead:
+      'La espectrometría Doppler mide el movimiento reflejo de la estrella alrededor del baricentro del sistema. Al rastrear el desplazamiento Doppler de miles de líneas de absorción atómica, cuantifica la masa mínima del planeta y su excentricidad orbital. El rol principal de Machine Learning radica en separar la señal kepleriana del ruido estelar magnético originado por manchas y convección granulada.',
+    scientificIntention: {
+      question:
+        '¿Cuál es la masa dinámica de los planetas y qué arquitectura orbital describe el sistema?',
+      physicalMotivation:
+        'Medir la atracción gravitacional que el cuerpo ejerce sobre su estrella anfitriona a lo largo del tiempo.',
+    },
+    governingEquation:
+      'K = \\left(\\frac{2\\pi G}{P}\\right)^{1/3} \\frac{M_p \\sin i}{(M_\\star + M_p)^{2/3}} \\frac{1}{\\sqrt{1 - e^2}}',
     equationDescription:
-      'La semi-amplitud de la velocidad radial estelar K cuantifica el bamboleo reflejo inducido por la masa planetaria Mp proyectada en la visual.',
+      'La semiamplitud de velocidad K cuantifica el tirón gravitatorio y escala linealmente con la masa mínima proyectada Mp sin i e inversamente con la masa estelar.',
     rawObservable:
-      'Desplazamiento Doppler periódico de miles de líneas espectrales de absorción estelar, medido en velocidad de línea de visión (m/s o cm/s).',
+      'Desplazamiento Doppler de miles de líneas espectrales, medido en velocidad de línea de visión vr(t) con precisión de cm/s, e índices de actividad cromosférica (Ca II H&K, H-alfa).',
     inferredParameter:
-      'Masa mínima planetaria (Mp sin i), excentricidad orbital e, argumento del periastro ω y masa dinámica combinada con tránsitos.',
+      'Masa mínima Mp sin i, excentricidad orbital e, argumento del periastro ω y masa dinámica combinada con tránsitos.',
     instruments:
-      'Espectrógrafos de ultra-alta estabilidad térmica y de vacío: ESPRESSO (VLT, precisión ~10 cm/s), HARPS (La Silla), HARPS-N (La Palma), HIRES (Keck), NEID (Kitt Peak).',
-    mlRole:
-      'Modelos de Procesos Gaussianos (GP) con núcleos cuasi-periódicos para disentrelazar la oscilación planetaria del ruido estelar magnético (manchas, fáculas y convección granulada).',
+      'Espectrógrafos ultraestables de vacío: ESPRESSO (VLT, precisión ~10 cm/s), HARPS (La Silla), HARPS-N (La Palma), HIRES (Keck), NEID (Kitt Peak).',
+    mlUnitFormulation: {
+      instanceDefinition:
+        'Secuencia temporal irregular de velocidades radiales y perfiles de correlación cruzada (CCF): (t_k, v_k, σ_k, FWHM_k, BIS_k).',
+      tensorStructure:
+        'Matriz de series temporales heterogéneas con muestreo escaso y condicionado por visibilidad estacional.',
+      leakagePrevention:
+        'Validación cruzada por bloques temporales para no interpolar series temporales con autocorrelación estelar.',
+    },
+    mlOutput: {
+      mathematicalForm:
+        "f_\\theta(t) = v_{\\text{Kepler}}(t; \\boldsymbol{\\theta}) + \\mathcal{GP}(0, k_{\\text{estelar}}(t, t'))",
+      outputType:
+        'Posterior marginal sobre parámetros orbitales y descomposición de señal instrumental frente a actividad estelar.',
+      mlRole:
+        'Modelos de Procesos Gaussianos (GP) con núcleos cuasi-periódicos para disentrelazar la oscilación planetaria del ruido magnético estelar.',
+      typicalLossOrAlgorithm:
+        'Máxima verosimilitud marginal (log marginal likelihood) e inferencia variacional bayesiana.',
+    },
+    operationalUse: {
+      action:
+        'Confirmar candidatos de tránsito midiendo masa y descartando impostores de masa estelar.',
+      followupCriterion:
+        'Obtener masa dinámica con precisión > 3-5 sigma para fijar la densidad media planetaria ρ̄.',
+      commonPitfall:
+        'Ajustar una órbita circular pura sin modelar la rotación estelar diferencial, interpretando la actividad estelar como un planeta super-Tierra.',
+      validationGate:
+        'Persistencia de la semiamplitud K en múltiples longitudes de onda (prueba cromática: las órbitas planetarias son acromáticas; la actividad estelar depende del color).',
+    },
     physicalLimit:
-      'Inclinación orbital i indeterminada sin tránsitos o astrometría (límite de masa mínima Mp sin i); la variabilidad convectiva estelar impone una barrera física de ~10-30 cm/s.',
+      'Indeterminación de la inclinación i (Mp sin i es una cota inferior sin tránsitos); la convección y granulación estelar imponen un piso de ruido físico de ~10-20 cm/s.',
     diagramDetail: {
       badge: 'Espectrometría Doppler',
       description: 'Curva senoidal de velocidad orbital con desfase hacia el azul y rojo',
@@ -1004,24 +1094,59 @@ export const s00MeasurementModalities: readonly S00MeasurementModality[] = [
   {
     id: 'espectro',
     number: '03',
-    title: 'Espectro de transmisión y emisión',
-    subtitle: 'Distribución de fotones por longitud de onda y opacidad atmosférica',
-    symbol: 'F(λ)',
+    title: 'Espectroscopía de transmisión y emisión',
+    subtitle: 'Huella molecular, perfiles térmicos y opacidad atmosférica',
+    symbol: 'D(\\lambda)',
     tone: 'model',
     miniatureSrc: s00VisualAssets.miniatures.medicionEspectro,
-    governingEquation: 'D(λ) = [Rp² + 2 Rp h(λ)] / R★²,   h(λ) ∝ (kB T) / (μ g)',
+    narrativeLead:
+      'Durante el tránsito, la luz estelar filtra el anillo superior de la atmósfera planetaria. Las moléculas de gas absorben fotones a longitudes de onda específicas, haciendo que el radio aparente del planeta crezca en dichas frecuencias. La espectroscopía de transmisión mide esta variación cromática minúscula, revelando la composición química (agua, metano, dióxido de carbono) y la presencia de nubes o brumas.',
+    scientificIntention: {
+      question:
+        '¿De qué están compuestas las atmósferas exoplanetarias y qué perfiles térmicos o de nubes las caracterizan?',
+      physicalMotivation:
+        'Identificar especies químicas, razones elementales (C/O, metalicidad) y biofirmas o fotoquímica en la envoltura gaseosa.',
+    },
+    governingEquation:
+      'D(\\lambda) = \\frac{R_p^2 + 2 R_p h(\\lambda)}{R_\\star^2}, \\quad h(\\lambda) \\approx \\frac{k_B T_{\\text{eq}}}{\\mu g} \\ln\\left(\\frac{\\kappa(\\lambda) P_{\\text{base}}}{\\dots}\\right)',
     equationDescription:
-      'La profundidad de tránsito varía con la longitud de onda λ según la absorción de los gases atmosféricos, modulada por la altura de escala de presión h.',
+      'La profundidad cromática D(λ) depende del radio base y de la altura de escala atmosférica h, proporcional a la temperatura e inversamente proporcional al peso molecular medio μ.',
     rawObservable:
-      'Flujo espectral calibrado F(λ) o espectro de transmisión (Rp/R★)² medido en cientos o miles de canales discretos de longitud de onda (UV, óptico e infrarrojo).',
+      'Espectro 1D de profundidad de tránsito en función de la longitud de onda (Rp(λ)/R★)² con barras de error fotométricas en cientos de bins espectrales.',
     inferredParameter:
-      'Abundancias químicas moleculares (H₂O, CO₂, CH₄, CO, NH₃), perfil térmico T(P), peso molecular medio μ, presencia de nubes/aerosoles y metalicidad.',
+      'Abundancias moleculares relativas (H₂O, CO₂, CH₄, CO, SO₂), temperatura de equilibrio Teq, presión de cima de nubes Pcloud y metalicidad atmosférica.',
     instruments:
-      'Telescopio Espacial James Webb (JWST: NIRSpec, MIRI, NIRISS), Telescopio Espacial Hubble (WFC3, STIS), futuros observatorios espaciales Ariel (ESA) y terrestres gigantes (ELT/ANDES).',
-    mlRole:
-      'Redes neuronales profundas y aproximaciones variacionales (Neural Posterior Estimation / SBI) como emuladores de transferencia radiativa para acelerar retrievals bayesianos de días a milisegundos.',
+      'Telescopio Espacial James Webb (JWST: NIRSpec, MIRI, NIRISS), Hubble (WFC3), y futuras misiones dedicadas Ariel (ESA) y HWO (NASA).',
+    mlUnitFormulation: {
+      instanceDefinition:
+        'Par de vectores espectrales: longitud de onda, profundidad y error calibrado (λ_b, d_b, σ_b) ∈ ℝ^(B×3).',
+      tensorStructure:
+        'Vectores 1D de longitud B ~ 100-2000 canales espectrales continuos o discretizados.',
+      leakagePrevention:
+        'Separación de espectros sintéticos de entrenamiento por física base para evitar memorización de rejillas de opacidad cerradas.',
+    },
+    mlOutput: {
+      mathematicalForm:
+        'p(\\boldsymbol{\\theta} \\mid \\mathbf{d}) \\approx q_\\phi(\\boldsymbol{\\theta} \\mid \\mathbf{d}), \\quad \\boldsymbol{\\theta} = (\\log X_{\\text{H}_2\\text{O}}, \\log X_{\\text{CO}_2}, T_0, P_{\\text{cloud}})',
+      outputType:
+        'Distribución posterior multivariada aproximada o intervalos de credibilidad bayesianos al 68% y 95%.',
+      mlRole:
+        'Neural Posterior Estimation (NPE) y Normalizing Flows como emuladores de transferencia radiativa para reducir el tiempo de inferencia de días a milisegundos.',
+      typicalLossOrAlgorithm:
+        'Divergencia Kullback-Leibler o Maximum Mean Discrepancy para entrenamiento condicional amortizado.',
+    },
+    operationalUse: {
+      action:
+        'Inversión atmosférica rápida (atmospheric retrieval) para explorar escenarios de desgasificación y química de equilibrio.',
+      followupCriterion:
+        'Confirmar detecciones moleculares de alta significancia (> 3 sigma bayesiana) y seleccionar bandas para observación en tiempo de director (DDT).',
+      commonPitfall:
+        'Asumir atmósferas claras y sobreajustar abundancias moleculares en presencia de capas de aerosoles opacas no modeladas.',
+      validationGate:
+        'Validación cruzada contra códigos de transferencia radiativa estándar (TauREx, PLATON, petitRADTRANS) en pruebas ciegas de la comunidad.',
+    },
     physicalLimit:
-      'Degeneración entre nubes/aerosoles opacos planos y bajas abundancias químicas (espectros aplanados o mudos); escasez severa de fotones en mundos templados de radio terrestre.',
+      'Degeneración nubes-metalicidad: un manto nuboso plano atenúa las líneas moleculares de forma indistinguible de una atmósfera con baja escala de altura o alto peso molecular medio μ.',
     diagramDetail: {
       badge: 'Espectroscopía de transmisión',
       description: 'Profundidad de absorción con bandas moleculares de agua y dióxido de carbono',
@@ -1031,23 +1156,56 @@ export const s00MeasurementModalities: readonly S00MeasurementModality[] = [
     id: 'imagen',
     number: '04',
     title: 'Imagen directa y alto contraste',
-    subtitle: 'Estructura espacial y fotometría directa separando planeta y estrella',
+    subtitle: 'Resolución espacial, contraste extremo y separación de fotones',
     symbol: 'I(x, y)',
     tone: 'decision',
     miniatureSrc: s00VisualAssets.miniatures.medicionImagen,
-    governingEquation: 'C(λ) = Fp(λ) / F★(λ) ~ 10⁻⁴ (infrarrojo joven) a 10⁻¹⁰ (óptico terrestre)',
+    narrativeLead:
+      'La imagen directa busca resolver los fotones emitidos por el planeta separándolos espacialmente del inmenso halo de su estrella anfitriona. Requiere coronografía para tapar el brillo estelar y óptica adaptativa extrema para corregir la turbulencia atmosférica. Machine Learning interviene como filtro espacial y temporal avanzado, modelando la respuesta del instrumento (speckles cuasi-estáticos) para descubrir compañeros débiles en órbitas exteriores.',
+    scientificIntention: {
+      question:
+        '¿Qué planetas masivos orbitan a gran distancia (> 5-50 UA) y cómo emiten su radiación térmica?',
+      physicalMotivation:
+        'Resolver el planeta como una fuente puntual separada espacialmente de su estrella y rastrear su órbita por astrometría directa.',
+    },
+    governingEquation:
+      'C(\\lambda) = \\frac{F_p(\\lambda)}{F_\\star(\\lambda)} \\sim 10^{-4} \\text{ (infrarrojo térmico joven)} \\;\\text{a}\\; 10^{-10} \\text{ (óptico terrestre)}',
     equationDescription:
-      'El contraste de flujo C(λ) mide la diferencia de brillo angular entre la estrella central y el planeta fuera del radio de difracción estelar.',
+      'El contraste de brillo C(λ) mide la diferencia de fotones entre la estrella central y el planeta fuera del radio angular de difracción θ ~ 1.22 λ/D.',
     rawObservable:
-      'Matriz 2D de intensidades espaciales I(x, y) procesada mediante coronografía y óptica adaptativa extrema.',
+      'Cubo de imágenes astronómicas 2D I(x, y, t, λ) obtenidas con óptica adaptativa, dominadas por speckles cuasi-estáticos del tren óptico.',
     inferredParameter:
-      'Luminosidad térmica directa del planeta, separación proyectada en unidades astronómicas, temperatura efectiva Tef, gravedad superficial y dinámica de discos.',
+      'Luminosidad térmica Lbol, temperatura efectiva Teff, separación angular proyectada ρ, ángulo de posición P.A. y arquitectura de discos circunestelares.',
     instruments:
-      'VLT/SPHERE, Gemini Planet Imager (GPI), Subaru/SCExAO, Keck/NIRC2, y futuras misiones como Roman Space Telescope (Coronagraph Instrument).',
-    mlRole:
-      'Algoritmos de sustracción de speckles cuasi-estáticos basados en PCA no lineal, autoencoders convolucionales y modelos probabilísticos para detectar fuentes tenues sumergidas en el halo estelar.',
+      'VLT/SPHERE, Gemini Planet Imager (GPI), Subaru/SCExAO, Keck/NIRC2 y el futuro Coronógrafo del Telescopio Espacial Nancy Grace Roman.',
+    mlUnitFormulation: {
+      instanceDefinition:
+        'Parches locales de píxeles o secuencias multitemporales de imágenes rotadas según el ángulo paraláctico (Angular Differential Imaging).',
+      tensorStructure: 'Tensores 3D o 4D de intensidad: X ∈ ℝ^(N_frames × H × W).',
+      leakagePrevention:
+        'Entrenamiento con inyecciones sintéticas de planetas artificiales preservando la distribución real de speckles no comunes (NCPA).',
+    },
+    mlOutput: {
+      mathematicalForm: '\\hat{S}(x, y) = I(x, y) - \\hat{I}_{\\text{halo, speckles}}(x, y)',
+      outputType:
+        'Mapa de contraste residual o probabilidad pixel a pixel de albergar una fuente puntual astrofísica no correlacionada.',
+      mlRole:
+        'Autoencoders convolucionales, PCA no lineal y modelos generativos para sintetizar y restar el patrón instrumental de speckles.',
+      typicalLossOrAlgorithm:
+        'Error cuadrático medio con regularización de dispersión (norma L1) para preservar fuentes puntuales no redundantes.',
+    },
+    operationalUse: {
+      action:
+        'Detectar candidatos a planetas gigantes y enanas marrones en órbitas exteriores y realizar astrometría multianual.',
+      followupCriterion:
+        'Confirmar movimiento propio común con la estrella anfitriona en observaciones separadas por varios años.',
+      commonPitfall:
+        'Interpretar un speckle quasi-estático brillante y persistente como un exoplaneta real, o suprimir el flujo planetario por sobre-sustracción.',
+      validationGate:
+        'Curvas de contraste 5-sigma validadas mediante inyección y recuperación ciega de fuentes sintéticas a diferentes separaciones angulares.',
+    },
     physicalLimit:
-      'Límite de difracción angular θ ~ 1.22 λ/D y speckles de aberración óptica no común (NCPA); sesgo hacia planetas gigantes gaseosos muy jóvenes (>10-100 Myr) y distantes (>5-50 UA).',
+      'El ángulo de trabajo interior (Inner Working Angle, IWA ~ 2-3 λ/D) hace invisible cualquier planeta cercano a la estrella; la tecnología actual solo detecta planetas gigantes muy jóvenes y calientes (> 1 MJup, < 100 Myr).',
     diagramDetail: {
       badge: 'Coronografía de alto contraste',
       description: 'Atenuación estelar central con anillo de difracción y detección puntual',
@@ -1780,80 +1938,52 @@ export const s00Units: readonly S00Unit[] = [
     ),
   },
   {
-    id: 's00-acotar',
-    groupLabel: '03 · formular',
-    title: 'Acotar la curiosidad cambia la tarea',
-    partLabel: 'Pregunta → salida',
-    tone: 'question',
-    function: 'bridge',
-    shortLabel: 'Acotar',
-    question: '¿Qué debe quedar decidido antes de escoger un modelo?',
-    idea: 'Una buena pregunta fija una unidad, una observación, una salida y un criterio de utilidad.',
-    content:
-      '“¿Hay planetas habitables?” es una conversación de campo. “¿Qué señales son compatibles con un tránsito en estas curvas de luz y cuáles priorizamos para revisión?” ya declara una unidad, un dato, una salida y un siguiente paso. El mismo mundo puede producir tareas distintas según la pregunta.',
-    interpretation:
-      'La tarea de ML aparece después de una decisión científica sobre qué significa una respuesta útil.',
-    limits:
-      'Acotar la pregunta no resuelve el ruido, el sesgo de selección, la línea base ni la validación independiente.',
-    conceptIds: ['representacion', 'tarea-salida', 'evaluacion-limite'],
-    visualKind: 'question-lab',
-    visualAlt:
-      'Tres tarjetas enlazadas muestran cómo una pregunta amplia se transforma en unidad de análisis, salida y criterio.',
-    visualCaption:
-      'La pregunta se vuelve computable cuando declara qué cuenta como instancia y qué salida permite actuar.',
-    formulationStages: s00FormulationStages,
-    caution: caution(
-      's00-question-is-not-task',
-      'La pregunta científica y la tarea de aprendizaje se necesitan, pero no son la misma frase.',
-      'Saltar de una pregunta amplia al nombre de un algoritmo.',
-      'La salida queda sin interpretación y la evaluación no puede responder si el sistema sirve.',
-    ),
-    teacherPrompt: prompt(
-      's00-acotar-docente',
-      'diagnostic',
-      'Reescribe una pregunta amplia de exoplanetas con unidad, dato, salida y uso.',
-      'No evaluar el modelo todavía; revisar primero si la salida responde a la pregunta propuesta.',
-    ),
-  },
-  {
     id: 's00-medicion',
-    groupLabel: '04 · observar',
-    title: 'Toda inferencia comienza con una medición',
-    partLabel: 'Instrumento → señal',
+    groupLabel: '03 · observar',
+    title: 'Formular la observación: de la intención a la señal',
+    partLabel: 'Intención → Instrumento → Señal',
     tone: 'data',
-    function: 'science',
+    function: 'bridge',
     shortLabel: 'Medición',
-    question: '¿Qué propiedad física se vuelve visible en cada observación?',
-    idea: 'El instrumento y la geometría de observación determinan qué señal puede aparecer y qué incertidumbre la acompaña.',
+    question:
+      '¿Cómo se transforma una intención científica en un observable y una unidad computable?',
+    idea: 'Una pregunta astronómica exige una geometría de observación, un instrumento físico y una unidad de análisis que preserve la física de la señal sin introducir artefactos.',
     content:
-      'Un tránsito modifica el brillo aparente; la velocidad radial registra movimiento a lo largo de la línea de visión; un espectro distribuye señal por longitud de onda; una imagen conserva estructura espacial. La medición no entrega directamente radio, masa o atmósfera: ofrece una relación que debe modelarse.',
+      'La curiosidad científica (“¿qué planetas transitan?”, “¿qué atmósfera los cubre?”) no alimenta directamente una red neuronal. Primero exige acotar el fenómeno físico, elegir una geometría instrumental (tránsito, Doppler, espectro, alto contraste) y estructurar una unidad de datos que declare qué cuenta como instancia y qué salida computable guía la decisión.',
     interpretation:
-      'Pensar en el instrumento antes del modelo ayuda a separar observables, parámetros físicos y artefactos.',
+      'Acotar la intención y modelar la medición impiden saltar a ciegas de una idea vaga a un algoritmo sin datos ni límites.',
     limits:
-      'El esquema resume modalidades. Cada instrumento tiene calibración, resolución, cobertura, ruido y metadatos que deben documentarse en una práctica real.',
-    conceptIds: ['transito', 'velocidad-radial', 'espectro', 'senal-ruido'],
+      'Cada modalidad observacional impone sesgos de selección, límites de difracción, degeneraciones físicas y ruido que ningún modelo puede suprimir por decreto.',
+    conceptIds: [
+      'transito',
+      'velocidad-radial',
+      'espectro',
+      'representacion',
+      'tarea-salida',
+      'senal-ruido',
+    ],
     visualKind: 'measurement',
     visualAlt:
-      'Cuatro modalidades observacionales se conectan con sus señales: brillo-tiempo, desplazamiento-tiempo, flujo-longitud de onda e imagen espacial.',
+      'Cuatro modalidades observacionales articulan la intención científica, la física del instrumento, el observable y la unidad de datos para Machine Learning.',
     visualCaption:
-      'La pregunta física se encuentra con la medición a través de una geometría y un instrumento concretos.',
+      'De la intención al dato computable: el instrumento fija la física de la señal y la unidad de análisis estructura el aprendizaje.',
     measurementModalities: s00MeasurementModalities,
     caution: caution(
-      's00-observable-is-not-parameter',
-      'Un observable es una medición relacionada con una propiedad; no es la propiedad completa.',
-      'Nombrar masa, composición o habitabilidad como si fueran columnas directas de cualquier observación.',
-      'La inferencia oculta supuestos y no permite discutir incertidumbre ni degeneración.',
+      's00-observable-and-unit-are-chosen',
+      'La señal observada y la unidad de análisis son decisiones científicas con consecuencias directas en el aprendizaje.',
+      'Creer que el instrumento entrega parámetros físicos directos o que el algoritmo compensa una mala formulación.',
+      'Se confunden observables con propiedades inferidas y se arriesgan sesgos y fugas de datos irreversibles.',
     ),
     teacherPrompt: prompt(
       's00-medicion-docente',
       'diagnostic',
-      '¿Qué mide el instrumento y qué propiedad queremos inferir a partir de esa señal?',
-      'Pedir dos verbos distintos: registrar para el observable e inferir para el parámetro.',
+      'Identifica la intención científica, el observable registrado y la unidad de datos que entra al modelo.',
+      'Pedir que separen la propiedad que interesa de la señal que el instrumento realmente produce.',
     ),
   },
   {
     id: 's00-datos',
-    groupLabel: '05 · representar',
+    groupLabel: '04 · representar',
     title: 'Datos astronómicos no son una sola cosa',
     partLabel: 'Paisaje de datos',
     tone: 'data',
@@ -1890,7 +2020,7 @@ export const s00Units: readonly S00Unit[] = [
   },
   {
     id: 's00-ml',
-    groupLabel: '06 · ubicar',
+    groupLabel: '05 · ubicar',
     title: 'Cinco verbos para ubicar ML',
     partLabel: 'Tarea y salida',
     tone: 'model',
@@ -1926,7 +2056,7 @@ export const s00Units: readonly S00Unit[] = [
   },
   {
     id: 's00-impacto',
-    groupLabel: '07 · contrastar',
+    groupLabel: '06 · contrastar',
     title: '¿Qué desbloquea ML?',
     partLabel: 'Galería de impacto',
     tone: 'decision',
@@ -1962,7 +2092,7 @@ export const s00Units: readonly S00Unit[] = [
   },
   {
     id: 's00-ramas',
-    groupLabel: '08 · conectar',
+    groupLabel: '07 · conectar',
     title: 'Tres ramas, una misma pregunta',
     partLabel: 'Curso conectado',
     tone: 'transfer',
@@ -1998,7 +2128,7 @@ export const s00Units: readonly S00Unit[] = [
   },
   {
     id: 's00-cierre',
-    groupLabel: '09 · cerrar',
+    groupLabel: '08 · cerrar',
     title: 'La salida del modelo es evidencia condicionada',
     partLabel: 'Transferencia',
     tone: 'limit',
@@ -2058,17 +2188,11 @@ export const s00Parts: Readonly<Record<string, readonly S00Part[]>> = {
     { id: 'evolucion', label: 'Evolución', visualFocus: 'evolucion' },
     { id: 'habitabilidad', label: 'Habitabilidad', visualFocus: 'habitabilidad' },
   ],
-  's00-acotar': [
-    { id: 'curiosidad', label: 'Curiosidad', visualFocus: 'curiosidad' },
-    { id: 'unidad', label: 'Unidad', visualFocus: 'unidad' },
-    { id: 'salida', label: 'Salida', visualFocus: 'salida' },
-    { id: 'uso', label: 'Uso', visualFocus: 'uso' },
-  ],
   's00-medicion': [
     { id: 'transito', label: 'Tránsito', visualFocus: 'transito' },
     { id: 'radial', label: 'Velocidad radial', visualFocus: 'radial' },
     { id: 'espectro', label: 'Espectro', visualFocus: 'espectro' },
-    { id: 'imagen', label: 'Imagen', visualFocus: 'imagen' },
+    { id: 'imagen', label: 'Imagen directa', visualFocus: 'imagen' },
   ],
   's00-datos': [
     { id: 'observacion', label: 'Observación', visualFocus: 'observacion' },
@@ -2195,8 +2319,11 @@ export function getS00SlideIndexFromHash(hash: string): number | null {
   if (normalized === null) return null;
   if (normalized === '') return 1;
   if (normalized === 'bibliografia') return 0;
-  const [unitHash, partId, extra] = normalized.split('/');
-  if (!unitHash || extra !== undefined) return null;
+  const [rawUnitHash, rawPartId, extra] = normalized.split('/');
+  if (!rawUnitHash || extra !== undefined) return null;
+  // Compatibilidad con hashes previos de acotar
+  const unitHash = rawUnitHash === 'acotar' ? 'medicion' : rawUnitHash;
+  const partId = rawUnitHash === 'acotar' ? 'transito' : rawPartId;
   const unit = s00Units.find((item) => item.id.replace(/^s00-/, '') === unitHash);
   if (!unit) return null;
   const partIndex = partId ? getS00Parts(unit.id).findIndex((part) => part.id === partId) : 0;
@@ -2242,25 +2369,25 @@ export function getS00FlashcardCollection(
       return s00MeasurementModalities.map((m) => ({
         id: m.id,
         collectionId: 'modalities' as const,
-        collectionTitle: 'Técnicas Observacionales de Medición',
+        collectionTitle: 'Técnicas Observacionales y Formulación',
         number: m.number,
         title: m.title,
         subtitle: m.subtitle,
-        badge: `04.${m.number} · TÉCNICA OBSERVACIONAL`,
+        badge: `03.${m.number} · TÉCNICA OBSERVACIONAL`,
         tone: m.tone,
         miniatureSrc: m.miniatureSrc,
         miniatureAlt: `Esquema instrumental de ${m.title}`,
         miniatureCaption: m.diagramDetail.description,
-        physicalConcept: m.equationDescription,
+        physicalConcept: `${m.scientificIntention.physicalMotivation} ${m.equationDescription}`,
         formula: m.governingEquation,
-        formulaDescription: m.equationDescription,
+        formulaDescription: `Observable: ${m.rawObservable} → Parámetro: ${m.inferredParameter}`,
         observableVsInference: {
           observable: m.rawObservable,
           inference: m.inferredParameter,
         },
-        mlRole: m.mlRole,
+        mlRole: `${m.mlOutput.mlRole} Instancia: ${m.mlUnitFormulation.instanceDefinition}`,
         instrumentsOrData: m.instruments,
-        riskOrLimit: m.physicalLimit,
+        riskOrLimit: `${m.physicalLimit} Antipatrón: ${m.operationalUse.commonPitfall}`,
       }));
 
     case 'datacards':
@@ -2271,7 +2398,7 @@ export function getS00FlashcardCollection(
         number: d.number,
         title: d.title,
         subtitle: d.kicker,
-        badge: `05.${d.number} · ETAPA DEL DATO`,
+        badge: `04.${d.number} · ETAPA DEL DATO`,
         tone: d.tone,
         miniatureSrc: d.miniatureSrc,
         miniatureAlt: `Representación del dato astronómico: ${d.title}`,
@@ -2296,7 +2423,7 @@ export function getS00FlashcardCollection(
         number: v.number,
         title: v.verb,
         subtitle: v.label,
-        badge: `06.${v.number} · VERBO COMPUTABLE`,
+        badge: `05.${v.number} · VERBO COMPUTABLE`,
         tone: v.tone,
         miniatureSrc: v.miniatureSrc,
         miniatureAlt: `Esquema computacional del verbo ${v.verb}`,
@@ -2321,7 +2448,7 @@ export function getS00FlashcardCollection(
         number: c.number,
         title: c.title,
         subtitle: c.mission,
-        badge: `07.${c.number} · CASO PUBLICADO · ${c.figure}`,
+        badge: `06.${c.number} · CASO PUBLICADO · ${c.figure}`,
         tone: c.tone,
         miniatureSrc: c.miniatureSrc,
         miniatureAlt: `Esquema de estudio arbitrado: ${c.title}`,

@@ -16,7 +16,7 @@ import {
 
 describe('S00 scientific content', () => {
   it('flattens bibliography and uneven station parts for the shared SlideRail', () => {
-    expect(s00Slides).toHaveLength(42);
+    expect(s00Slides).toHaveLength(38);
     expect(s00Slides[0]).toMatchObject({
       id: 's00-bibliografia',
       partLabel: 'Fuentes',
@@ -32,14 +32,13 @@ describe('S00 scientific content', () => {
     expect(getS00SlideNumber(s00Slides[2]!)).toBe('01.2');
     expect(getS00SlideNumber(s00Slides[3]!)).toBe('01.3');
     expect(getS00SlideNumber(s00Slides[4]!)).toBe('02.1');
-    expect(s00Units).toHaveLength(9);
+    expect(s00Units).toHaveLength(8);
     expect(getS00Parts('s00-pregunta')).toHaveLength(3);
     expect(getS00Parts('s00-datos')).toHaveLength(5);
     expect(getS00Parts('s00-cierre')).toHaveLength(7);
     expect(s00Units.map((unit) => unit.shortLabel)).toEqual([
       'Mundo',
       'Campo',
-      'Acotar',
       'Medición',
       'Datos',
       'Verbos',
@@ -56,6 +55,8 @@ describe('S00 scientific content', () => {
     expect(getS00SlideIndexFromHash('')).toBe(1);
     expect(getS00SlideIndexFromHash('#ramas')).toBe(getS00SlideIndex('s00-ramas'));
     expect(getS00SlideIndexFromHash('#ramas/teoria')).toBe(getS00SlideIndex('s00-ramas', 1));
+    expect(getS00SlideIndexFromHash('#acotar')).toBe(getS00SlideIndex('s00-medicion'));
+    expect(getS00SlideIndexFromHash('#acotar/salida')).toBe(getS00SlideIndex('s00-medicion'));
     expect(getS00SlideIndexFromHash('#missing')).toBeNull();
     expect(getS00SlideIndexFromHash('#pregunta/missing')).toBeNull();
   });
@@ -85,7 +86,7 @@ describe('S00 scientific content', () => {
     ).toBe(true);
     expect(s00ConceptCards.find((c) => c.id === 'representacion')?.codeRepo?.url).toBeTruthy();
 
-    // Measurement modalities (Station 04)
+    // Measurement modalities (Station 03 - Observar y Formular)
     expect(s00MeasurementModalities).toHaveLength(4);
     expect(s00MeasurementModalities.map((m) => m.id)).toEqual([
       'transito',
@@ -100,8 +101,21 @@ describe('S00 scientific content', () => {
           m.rawObservable &&
           m.inferredParameter &&
           m.instruments &&
-          m.mlRole &&
-          m.physicalLimit,
+          m.physicalLimit &&
+          m.narrativeLead &&
+          m.scientificIntention?.question &&
+          m.scientificIntention?.physicalMotivation &&
+          m.mlUnitFormulation?.instanceDefinition &&
+          m.mlUnitFormulation?.tensorStructure &&
+          m.mlUnitFormulation?.leakagePrevention &&
+          m.mlOutput?.mathematicalForm &&
+          m.mlOutput?.outputType &&
+          m.mlOutput?.mlRole &&
+          m.mlOutput?.typicalLossOrAlgorithm &&
+          m.operationalUse?.action &&
+          m.operationalUse?.followupCriterion &&
+          m.operationalUse?.commonPitfall &&
+          m.operationalUse?.validationGate,
       ),
     ).toBe(true);
     expect(s00Units.find((u) => u.id === 's00-medicion')?.measurementModalities).toHaveLength(4);
