@@ -350,6 +350,56 @@
   max-width: 13rem;
   padding-top: 0.2rem;
   text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--s00-muted);
+}
+
+.s00-scene__nav-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.s00-scene__header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.s00-scene-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  background: rgba(45, 212, 191, 0.1);
+  border: 1px solid rgba(45, 212, 191, 0.35);
+  color: #2dd4bf;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.s00-scene-nav-btn:hover:not(:disabled) {
+  background: rgba(45, 212, 191, 0.25);
+  border-color: #2dd4bf;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(45, 212, 191, 0.25);
+}
+
+.s00-scene-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--s00-muted);
 }
 
 .s00-scene__depth {
@@ -2838,10 +2888,12 @@
 .s00-branch-orbit {
   position: absolute;
   inset: 5% 11%;
-  border: 1px solid rgb(112 213 216 / 0.15);
+  border: 1px solid rgb(112 213 216 / 0.05);
   border-radius: 50%;
   transform: rotate(-12deg);
   pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
 }
 
 .s00-science-orbit::before,
@@ -2849,7 +2901,7 @@
 .s00-science-orbit::after,
 .s00-branch-orbit::after {
   position: absolute;
-  border: 1px solid rgb(182 169 255 / 0.18);
+  border: 1px solid rgb(182 169 255 / 0.06);
   border-radius: 50%;
   content: '';
 }
@@ -4723,6 +4775,19 @@
   border-top: 1px solid var(--s00-line);
 }
 
+.s00-journey[data-display-mode='presentation'] .s00-journey__footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 90;
+  background: rgba(7, 18, 26, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin-top: auto;
+  padding: 0.65rem 1.25rem;
+  border-top: 1px solid rgba(112, 213, 216, 0.25);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+}
+
 .s00-state-summary {
   max-width: 65ch;
   margin: 0;
@@ -5735,8 +5800,125 @@
   display: block;
 }
 
-/* Interactive Miniature Buttons */
-.s00-pillar-miniature-btn,
+/* Interactive Miniature Buttons & Showcases */
+.s00-pillar-visual-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.s00-pillar-miniature-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 0.85rem 1.25rem;
+  background: rgba(5, 15, 24, 0.75);
+  border: 1px solid rgba(112, 213, 216, 0.22);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  text-align: center;
+}
+
+.s00-pillar-miniature-card:hover {
+  border-color: var(--s00-teal, #2dd4bf);
+  background: rgba(10, 28, 40, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(45, 212, 191, 0.15);
+}
+
+.s00-pillar-miniature-stage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.s00-pillar-miniature-img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 140px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
+}
+
+.s00-pillar-miniature-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.65rem;
+}
+
+.s00-miniature-formula-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.85rem;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+}
+
+.s00-dossier-formula-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--s00-teal, #2dd4bf);
+}
+
+.s00-formula-math-display,
+.s00-closure-formula-display,
+.s00-schematic-formula-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+  padding: 0.2rem 0;
+}
+
+/* KaTeX Math Expression Global Typography */
+.math-expression {
+  display: inline-block;
+  color: inherit;
+  font-size: 1rem;
+}
+
+.math-expression--block {
+  display: block;
+  width: 100%;
+  text-align: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+.math-expression .katex-display {
+  margin: 0.3rem 0;
+}
+
+.math-expression .katex {
+  color: #f1f5f9;
+  font-size: 1.05em;
+  text-rendering: geometricPrecision;
+}
+
 .s00-stage-miniature-btn {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -5752,7 +5934,6 @@
   width: 100%;
 }
 
-.s00-pillar-miniature-btn:hover,
 .s00-stage-miniature-btn:hover {
   border-color: rgba(45, 212, 191, 0.5);
   background: rgba(45, 212, 191, 0.06);

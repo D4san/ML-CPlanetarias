@@ -459,6 +459,29 @@ No se deben registrar aquí credenciales, datos privados, copias de libros, info
   - Capturas en navegador real: public/images/s00/flashcard-modal-preview.png, public/images/s00/station-05-miniature-preview.png, public/images/s00/station-07-impact-preview.png.
 - **Siguiente acción:** Revisión por el docente/usuario para valorar la experiencia interactiva en clase.
 
+### 2026-09-15 · Corrección de renderizado matemático (KaTeX), centrado de miniaturas y navegación continua en presentación para S00
+
+- **Tarea o frente:** Corrección visual y funcional de S00: renderizado KaTeX de fórmulas LaTeX, centrado geométrico de ilustraciones de pilares, visibilidad persistente del botón Siguiente y navegación por teclado en presentación.
+- **Responsable:** Agente Antigravity.
+- **Tipo:** cierre y entrega.
+- **Alcance y archivos:**
+  - `src/components/react/MathExpression.tsx`: nuevo componente React que renderiza fórmulas TeX usando `katex.renderToString` con soporte inline/block y `throwOnError: false`.
+  - `src/components/react/S00LearningJourney.tsx`: integración de `MathExpression` en dossiers de pilares, modales de flashcards, esquemas de formulación y pasos de cierre; botones de navegación de diapositivas en la cabecera de escena y oyente de teclado (`ArrowRight`/`ArrowLeft`, `PageUp`/`PageDown`) en modo presentación con guardia de modales.
+  - `src/components/react/s00-learning-journey.css`: footer en modo presentación con `position: sticky; bottom: 0; z-index: 90;` y fondo difuminado de alto contraste para visibilidad garantizada sin importar la altura del viewport; atenuación de órbitas decorativas `.s00-science-orbit` para evitar interferencia visual con tarjetas; centrado y encuadre de miniaturas en tarjetas con `.s00-pillar-miniature-card`.
+  - `scripts/generate-s00-miniatures.py`: corrección de coordenadas espaciales en los 4 pilares planetarios (origen, estructura, evolución, habitabilidad) centrando todas las figuras geométricas en el lienzo `[0, 10] x [0, 5]`.
+  - `public/images/s00/miniatures/*.png`: regeneración de los 27 activos PNG en alta resolución.
+  - `src/lib/s00-content.ts`: saneamiento de sintaxis LaTeX (eliminación de caracteres no estándar o advertencias KaTeX como `\star`, `\hat{y}`).
+- **Resultado:**
+  - Todas las fórmulas matemáticas de S00 ahora se renderizan tipográficamente con KaTeX de forma nítida y accesible.
+  - Las miniaturas de los pilares planetarios se visualizan perfectamente centradas en sus marcos de tarjeta interactiva.
+  - Los controles de navegación («← Anterior» y «Siguiente →») quedan permanentemente visibles y accesibles en modo presentación (sticky footer + botones de cabecera de escena + atajos de teclado de flechas).
+  - Verificaciones completas: `npm run check` (0 errores, 0 warnings), `npm run test:unit` (19 archivos, 107 pruebas pasadas al 100%), `npm run build` y `npm run build:subpath` exitosos, `npm run test:e2e` (39/39 pruebas superadas en Chromium, a11y WCAG A/AA y reduced-motion).
+- **Evidencia:**
+  - Pruebas unitarias: 107/107 superadas con cobertura de ramas al 72.71%.
+  - Pruebas E2E y accesibilidad: 39/39 superadas.
+  - `npm run check`: 0 errores, 0 advertencias en 96 archivos.
+- **Siguiente acción:** despliegue automático en GitHub Pages tras git push.
+
 ## Ideas abiertas
 
 

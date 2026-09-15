@@ -833,7 +833,7 @@ export const s00FormulationStages: readonly S00FormulationStage[] = [
       inputLabel: 'Ambición amplia: «¿Hay planetas habitables en la galaxia?»',
       transformationLabel: 'Foco en observable físico: variación fotométrica o absorción espectral',
       outputLabel: 'Pregunta acotada: «¿Qué señales son compatibles con un tránsito de radio Rp?»',
-      formula: 'ΔF / F★ ≈ (Rp / R★)²',
+      formula: '\\Delta F / F_\\star \\approx (R_p / R_\\star)^2',
     },
   },
   {
@@ -869,7 +869,7 @@ export const s00FormulationStages: readonly S00FormulationStage[] = [
       inputLabel: 'Serie temporal continua de 4 años (~70,000 puntos en Kepler)',
       transformationLabel: 'Segmentación en épocas, doblado en fase P y re-muestreo uniforme',
       outputLabel: 'Instancia tabular/tensorial: xi = (f₁, f₂, ..., fD)',
-      formula: 'xi ∈ ℝ^D,   Var(ft) ~ σ_CDPP²',
+      formula: 'x_i \\in \\mathbb{R}^D, \\quad \\mathrm{Var}(f_t) \\sim \\sigma_{\\mathrm{CDPP}}^2',
     },
   },
   {
@@ -905,7 +905,7 @@ export const s00FormulationStages: readonly S00FormulationStage[] = [
       inputLabel: 'Representación latente extraída de la medición',
       transformationLabel: 'Cálculo de función de pérdida y optimización estadística',
       outputLabel: 'Predicción estructurada con incertidumbre cuantificada',
-      formula: 'ŷ = P(y = 1 | x),   θ̂ ± σ_θ',
+      formula: '\\hat{y} = P(y = 1 \\mid x), \\quad \\hat{\\theta} \\pm \\sigma_\\theta',
     },
   },
   {
@@ -943,7 +943,7 @@ export const s00FormulationStages: readonly S00FormulationStage[] = [
       inputLabel: 'Población masiva de candidatos (~10⁵ eventos fotométricos)',
       transformationLabel: 'Aplicación de umbral de corte y función de costo asimétrica',
       outputLabel: 'Lista priorizada para confirmación espectroscópica (~10² dianas)',
-      formula: 'Score(x) > τ_operativo ⟹ Envío a telescopio',
+      formula: '\\mathrm{Score}(x) > \\tau_{\\mathrm{operativo}} \\implies \\text{Seguimiento}',
     },
   },
 ];
@@ -1596,7 +1596,7 @@ export const s00ClosureSteps: readonly S00ClosureStep[] = [
     epistemologicalRisk:
       'Tratar ambiciones abstractas como problemas directos de optimización matemática.',
     s01Bridge: 'S01 formaliza la relación entre el sistema físico y el problema de decisión.',
-    formula: 'Mundo \\longrightarrow Pregunta física acotada',
+    formula: '\\text{Mundo} \\longrightarrow \\text{Pregunta física acotada}',
     tone: 'question',
   },
   {

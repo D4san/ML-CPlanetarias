@@ -44,6 +44,7 @@ import {
   referenceMeta,
 } from './CourseContent';
 import { ConceptTerm } from './ConceptTerm';
+import { MathExpression } from './MathExpression';
 import SlideRail from './SlideRail';
 import './course-content.css';
 import './s00-learning-journey.css';
@@ -2507,7 +2508,9 @@ function S00FlashcardModal({
             {card.formula && (
               <div className="s00-flashcard-formula-card">
                 <span className="s00-formula-tag">Expresión matemática / Formalismo</span>
-                <code className="s00-formula-code">{card.formula}</code>
+                <div className="s00-formula-math-display">
+                  <MathExpression tex={card.formula} label={card.title} block />
+                </div>
                 {card.formulaDescription && (
                   <p className="s00-formula-desc">{card.formulaDescription}</p>
                 )}
@@ -3024,19 +3027,25 @@ function VisualFrame({
                   type="button"
                   className="s00-pillar-miniature-card s00-pillar-miniature-btn"
                   onClick={() => openFlashcard('pillars', activePillar.id)}
-                  title="Haz clic para ampliar la ficha técnica"
+                  title={`Haz clic para ampliar la ficha técnica de ${activePillar.title}`}
+                  aria-label={`Ficha técnica y matemática de ${activePillar.title}`}
                 >
-                  <img
-                    src={assetUrl(activePillar.miniatureSrc)}
-                    alt={`Ilustración conceptual de ${activePillar.title}`}
-                    className="s00-pillar-miniature-img"
-                    loading="lazy"
-                    width="280"
-                    height="140"
-                  />
+                  <div className="s00-pillar-miniature-stage">
+                    <img
+                      src={assetUrl(activePillar.miniatureSrc)}
+                      alt={`Ilustración conceptual de ${activePillar.title}`}
+                      className="s00-pillar-miniature-img"
+                      loading="lazy"
+                      width="360"
+                      height="180"
+                    />
+                  </div>
                   <div className="s00-pillar-miniature-info">
-                    <span className="s00-miniature-formula">{activePillar.formula}</span>
-                    <span className="s00-miniature-action-badge">Ampliar ficha 🔍</span>
+                    <div className="s00-miniature-formula-wrap">
+                      <span className="s00-dossier-formula-label">Formalismo físico</span>
+                      <MathExpression tex={activePillar.formula} label={activePillar.title} block />
+                    </div>
+                    <span className="s00-miniature-action-badge">Ampliar ficha conceptual 🔍</span>
                   </div>
                 </button>
               </div>
@@ -3176,7 +3185,12 @@ function VisualFrame({
               <div className="s00-formulation-schematic__header">
                 <span className="s00-schematic-badge">{activeStage.visualDetail.badge}</span>
                 {activeStage.visualDetail.formula && (
-                  <code className="s00-schematic-formula">{activeStage.visualDetail.formula}</code>
+                  <div className="s00-schematic-formula-wrap">
+                    <MathExpression
+                      tex={activeStage.visualDetail.formula}
+                      label={activeStage.stepName}
+                    />
+                  </div>
                 )}
               </div>
 
@@ -3938,7 +3952,9 @@ function VisualFrame({
 
             <div className="s00-closure-formula-box">
               <span className="s00-formula-label">Principio formal rector:</span>
-              <code className="s00-formula-code">{activeStep.formula}</code>
+              <div className="s00-closure-formula-display">
+                <MathExpression tex={activeStep.formula} label={activeStep.title} block />
+              </div>
             </div>
 
             <div className="s00-closure-grid">
@@ -4557,6 +4573,41 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
   }, [settings.defaultView]);
 
   useEffect(() => {
+    if (displayMode !== 'presentation') return;
+
+    function handleGlobalKeyDown(event: KeyboardEvent) {
+      const hasModal = !!document.querySelector('[role="dialog"]');
+      if (hasModal) return;
+
+      const activeEl = document.activeElement;
+      const isInput =
+        activeEl instanceof HTMLInputElement ||
+        activeEl instanceof HTMLTextAreaElement ||
+        activeEl?.getAttribute('role') === 'textbox';
+      if (isInput) return;
+
+      if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+        event.preventDefault();
+        setActiveIndex((curr) => {
+          const next = Math.min(curr + 1, s00Slides.length - 1);
+          updateHash(next);
+          return next;
+        });
+      } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+        event.preventDefault();
+        setActiveIndex((curr) => {
+          const prev = Math.max(curr - 1, 0);
+          updateHash(prev);
+          return prev;
+        });
+      }
+    }
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [displayMode]);
+
+  useEffect(() => {
     setSelectedDataCardId(
       activeUnit?.visualKind === 'data-landscape' ? activeVisualFocus : 'observacion',
     );
@@ -4757,7 +4808,36 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
                         {activeSlide.partIndex === 0 ? activeUnit.title : activePart.label}
                       </h2>
                     </div>
-                    <span className="s00-scene__status">explorar · nombrar · limitar</span>
+                    <div className="s00-scene__nav-group">
+                      <span className="s00-scene__status">explorar · nombrar · limitar</span>
+                      {displayMode === 'presentation' && (
+                        <div
+                          className="s00-scene__header-nav"
+                          aria-label="Navegación de diapositivas"
+                        >
+                          <button
+                            type="button"
+                            className="s00-scene-nav-btn s00-scene-nav-btn--prev"
+                            onClick={() => selectSlide(activeIndex - 1)}
+                            disabled={activeIndex === 0}
+                            aria-label="Diapositiva anterior"
+                            title="Diapositiva anterior (←)"
+                          >
+                            ← Anterior
+                          </button>
+                          <button
+                            type="button"
+                            className="s00-scene-nav-btn s00-scene-nav-btn--next"
+                            onClick={() => selectSlide(activeIndex + 1)}
+                            disabled={activeIndex === s00Slides.length - 1}
+                            aria-label="Diapositiva siguiente"
+                            title="Diapositiva siguiente (→)"
+                          >
+                            Siguiente →
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <VisualFrame
                     unit={activeUnit}

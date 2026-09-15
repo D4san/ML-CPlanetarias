@@ -441,80 +441,83 @@ def generate_branch_aplicacion():
 # ----------------------------------------------------
 
 def generate_pillar_origen():
-    """02.1 Pilar Origen: Disco protoplanetario, líneas de hielo y agregación de polvo."""
+    """02.1 Pilar Origen: Disco protoplanetario, líneas de hielo y agregación de polvo centrados."""
     fig, ax = create_blank_canvas()
 
-    # Central young protostar
-    ax.plot(3.0, 2.5, marker='o', markersize=22, color=AMBER)
-    ax.plot(3.0, 2.5, marker='o', markersize=14, color='#fef08a')
+    # Central young protostar centered around (4.6, 2.5)
+    cx, cy = 4.6, 2.5
+    ax.plot(cx, cy, marker='o', markersize=22, color=AMBER)
+    ax.plot(cx, cy, marker='o', markersize=14, color='#fef08a')
 
     # Protoplanetary disk rings (concentric ellipses)
     for a, b, col, ls in [
-        (2.2, 0.7, TEAL, '-'),
-        (3.5, 1.1, CYAN, '-'),
-        (4.8, 1.5, INDIGO, '--'),  # Ice line / gap
-        (6.0, 1.9, PURPLE, '-')
+        (1.8, 0.6, TEAL, '-'),
+        (2.7, 0.9, CYAN, '-'),
+        (3.6, 1.2, INDIGO, '--'),  # Ice line / gap
+        (4.3, 1.45, PURPLE, '-')
     ]:
-        ellipse = Ellipse((3.0, 2.5), a * 2, b * 2, angle=-12,
+        ellipse = Ellipse((cx, cy), a * 2, b * 2, angle=-10,
                           fill=False, edgecolor=col, linewidth=2.5, linestyle=ls, alpha=0.85)
         ax.add_patch(ellipse)
 
     # Dust grain agglomeration / planetesimal forming in the gap
-    ax.plot(6.6, 2.0, marker='o', markersize=12, color=EMERALD, markeredgecolor=TEAL, markeredgewidth=2)
+    px, py = cx + 2.7, cy - 0.5
+    ax.plot(px, py, marker='o', markersize=12, color=EMERALD, markeredgecolor=TEAL, markeredgewidth=2)
     # Infalling dust particles
     for dx, dy in [(-0.3, 0.2), (0.3, -0.15), (-0.2, -0.25), (0.25, 0.2)]:
-        ax.plot(6.6 + dx, 2.0 + dy, '.', color=AMBER, markersize=7)
+        ax.plot(px + dx, py + dy, '.', color=AMBER, markersize=7)
 
     # Inflow arrows
-    ax.annotate('', xy=(6.6, 2.0), xytext=(7.5, 2.3),
+    ax.annotate('', xy=(px, py), xytext=(px + 0.9, py + 0.3),
                 arrowprops=dict(arrowstyle="->", color=CYAN, lw=2.0))
-    ax.annotate('', xy=(6.6, 2.0), xytext=(5.8, 1.7),
+    ax.annotate('', xy=(px, py), xytext=(px - 0.8, py - 0.3),
                 arrowprops=dict(arrowstyle="->", color=CYAN, lw=2.0))
 
     # Ice line label indicator (dashed line with cold marker)
-    ax.plot([4.8, 4.8], [3.6, 4.4], color=INDIGO, linewidth=1.5, linestyle=':')
-    ax.plot(4.8, 4.4, marker='*', markersize=10, color=CYAN)
+    ax.plot([cx - 2.0, cx - 2.0], [cy + 1.1, cy + 1.9], color=INDIGO, linewidth=1.5, linestyle=':')
+    ax.plot(cx - 2.0, cy + 1.9, marker='*', markersize=10, color=CYAN)
 
     save_canvas(fig, 's00-pillar-origen.png')
 
 
 def generate_pillar_estructura():
-    """02.2 Pilar Estructura: Corte transversal de exoplaneta diferenciado en capas."""
+    """02.2 Pilar Estructura: Corte transversal equilibrado de exoplaneta diferenciado en capas."""
     fig, ax = create_blank_canvas()
 
-    cx, cy = 4.8, 2.5
+    cx, cy = 3.8, 2.5
     # Outer gaseous atmosphere envelope
-    env = Circle((cx, cy), 2.2, fill=False, edgecolor=CYAN, linewidth=3.0, linestyle='--', alpha=0.9)
+    env = Circle((cx, cy), 2.1, fill=False, edgecolor=CYAN, linewidth=3.0, linestyle='--', alpha=0.9)
     ax.add_patch(env)
 
     # High pressure water / ice mantle layer
-    ocean = Circle((cx, cy), 1.6, fill=False, edgecolor=TEAL, linewidth=4.0)
+    ocean = Circle((cx, cy), 1.5, fill=False, edgecolor=TEAL, linewidth=4.0)
     ax.add_patch(ocean)
 
     # Silicate rocky mantle layer
-    mantle = Circle((cx, cy), 1.0, fill=False, edgecolor=INDIGO, linewidth=5.0)
+    mantle = Circle((cx, cy), 0.95, fill=False, edgecolor=INDIGO, linewidth=5.0)
     ax.add_patch(mantle)
 
     # Metallic iron/nickel core
-    core = Circle((cx, cy), 0.45, fill=True, color=AMBER)
+    core = Circle((cx, cy), 0.42, fill=True, color=AMBER)
     ax.add_patch(core)
 
     # Radial cutaway wedge on the right side
-    wedge_x = [cx, cx + 2.2 * np.cos(np.deg2rad(30)), cx + 2.2 * np.cos(np.deg2rad(-30)), cx]
-    wedge_y = [cy, cy + 2.2 * np.sin(np.deg2rad(30)), cy + 2.2 * np.sin(np.deg2rad(-30)), cy]
+    wedge_x = [cx, cx + 2.1 * np.cos(np.deg2rad(30)), cx + 2.1 * np.cos(np.deg2rad(-30)), cx]
+    wedge_y = [cy, cy + 2.1 * np.sin(np.deg2rad(30)), cy + 2.1 * np.sin(np.deg2rad(-30)), cy]
     ax.plot(wedge_x, wedge_y, color=MUTED, linewidth=1.5, linestyle=':')
 
     # Layer callout bars on the right
-    ax.plot([7.2, 8.8], [3.7, 3.7], color=CYAN, linewidth=3.0)      # Atmósfera H/He
-    ax.plot([7.2, 8.8], [2.9, 2.9], color=TEAL, linewidth=3.0)      # Océano / H2O
-    ax.plot([7.2, 8.8], [2.1, 2.1], color=INDIGO, linewidth=3.0)    # Manto silicatos
-    ax.plot([7.2, 8.8], [1.3, 1.3], color=AMBER, linewidth=3.0)     # Núcleo Fe-Ni
+    bx1, bx2 = 6.8, 8.8
+    ax.plot([bx1, bx2], [3.7, 3.7], color=CYAN, linewidth=3.0)      # Atmósfera H/He
+    ax.plot([bx1, bx2], [2.9, 2.9], color=TEAL, linewidth=3.0)      # Océano / H2O
+    ax.plot([bx1, bx2], [2.1, 2.1], color=INDIGO, linewidth=3.0)    # Manto silicatos
+    ax.plot([bx1, bx2], [1.3, 1.3], color=AMBER, linewidth=3.0)     # Núcleo Fe-Ni
 
     # Connectors from planet to bars
-    ax.plot([cx + 1.9, 7.2], [cy + 1.1, 3.7], color=CYAN, linewidth=1.2, linestyle=':')
-    ax.plot([cx + 1.4, 7.2], [cy + 0.7, 2.9], color=TEAL, linewidth=1.2, linestyle=':')
-    ax.plot([cx + 0.85, 7.2], [cy + 0.4, 2.1], color=INDIGO, linewidth=1.2, linestyle=':')
-    ax.plot([cx + 0.35, 7.2], [cy, 1.3], color=AMBER, linewidth=1.2, linestyle=':')
+    ax.plot([cx + 1.8, bx1], [cy + 1.0, 3.7], color=CYAN, linewidth=1.2, linestyle=':')
+    ax.plot([cx + 1.3, bx1], [cy + 0.65, 2.9], color=TEAL, linewidth=1.2, linestyle=':')
+    ax.plot([cx + 0.8, bx1], [cy + 0.35, 2.1], color=INDIGO, linewidth=1.2, linestyle=':')
+    ax.plot([cx + 0.35, bx1], [cy, 1.3], color=AMBER, linewidth=1.2, linestyle=':')
 
     save_canvas(fig, 's00-pillar-estructura.png')
 
@@ -524,18 +527,18 @@ def generate_pillar_evolucion():
     fig, ax = create_blank_canvas()
 
     # Host star emitting high-energy irradiation
-    ax.plot(1.8, 2.5, marker='o', markersize=26, color=AMBER)
+    ax.plot(2.0, 2.5, marker='o', markersize=26, color=AMBER)
     for angle in np.linspace(0, 2 * np.pi, 12, endpoint=False):
-        ax.plot([1.8 + 0.4 * np.cos(angle), 1.8 + 0.7 * np.cos(angle)],
+        ax.plot([2.0 + 0.4 * np.cos(angle), 2.0 + 0.7 * np.cos(angle)],
                 [2.5 + 0.4 * np.sin(angle), 2.5 + 0.7 * np.sin(angle)],
                 color=AMBER, linewidth=2.0)
 
     # High-energy UV/X-ray irradiation beam towards planet
-    ax.plot([2.6, 5.0], [2.8, 3.0], color=RED, linewidth=2.0, linestyle=':')
-    ax.plot([2.6, 5.0], [2.2, 2.0], color=RED, linewidth=2.0, linestyle=':')
+    ax.plot([2.8, 5.0], [2.8, 3.0], color=RED, linewidth=2.0, linestyle=':')
+    ax.plot([2.8, 5.0], [2.2, 2.0], color=RED, linewidth=2.0, linestyle=':')
 
     # Planet experiencing atmospheric stripping
-    px, py = 5.6, 2.5
+    px, py = 5.5, 2.5
     planet = Circle((px, py), 0.7, fill=True, color=TEAL)
     ax.add_patch(planet)
 
@@ -563,16 +566,16 @@ def generate_pillar_habitabilidad():
     fig, ax = create_blank_canvas()
 
     # Host star
-    ax.plot(1.5, 2.5, marker='o', markersize=22, color=AMBER)
+    ax.plot(1.8, 2.5, marker='o', markersize=22, color=AMBER)
 
     # Habitable Zone (green emerald ring band)
-    hz_inner = Ellipse((1.5, 2.5), 5.4, 3.4, fill=False, edgecolor=EMERALD, linewidth=3.0, linestyle='--', alpha=0.7)
-    hz_outer = Ellipse((1.5, 2.5), 8.0, 4.8, fill=False, edgecolor=EMERALD, linewidth=3.0, linestyle='--', alpha=0.7)
+    hz_inner = Ellipse((1.8, 2.5), 5.4, 3.4, fill=False, edgecolor=EMERALD, linewidth=3.0, linestyle='--', alpha=0.7)
+    hz_outer = Ellipse((1.8, 2.5), 7.8, 4.8, fill=False, edgecolor=EMERALD, linewidth=3.0, linestyle='--', alpha=0.7)
     ax.add_patch(hz_inner)
     ax.add_patch(hz_outer)
 
     # Earth-analog temperate planet positioned in habitable zone
-    px, py = 5.0, 2.5
+    px, py = 5.2, 2.5
     planet = Circle((px, py), 0.65, fill=True, color='#0284c7')
     ax.add_patch(planet)
     # Continental patches / green vegetation
@@ -588,18 +591,18 @@ def generate_pillar_habitabilidad():
     ax.annotate('', xy=(px - 0.9, py), xytext=(px - 2.0, py),
                 arrowprops=dict(arrowstyle="->", color=AMBER, lw=3.0))
     # Outgoing infrared wavy line
-    ir_x = np.linspace(px + 0.9, px + 2.5, 40)
+    ir_x = np.linspace(px + 0.9, px + 2.3, 40)
     ir_y = py + 0.25 * np.sin(10 * (ir_x - px))
     ax.plot(ir_x, ir_y, color=PURPLE, linewidth=2.5)
-    ax.annotate('', xy=(px + 2.5, py), xytext=(px + 2.2, py),
+    ax.annotate('', xy=(px + 2.3, py), xytext=(px + 2.0, py),
                 arrowprops=dict(arrowstyle="->", color=PURPLE, lw=2.0))
 
     # Biomarker spectral signal indicator on far right
-    bx = np.linspace(7.2, 9.2, 60)
-    by = 3.6 - 0.6 * np.exp(-((bx - 7.8) / 0.18)**2) - 0.8 * np.exp(-((bx - 8.6) / 0.22)**2)
+    bx = np.linspace(7.6, 9.4, 60)
+    by = 3.6 - 0.6 * np.exp(-((bx - 8.2) / 0.18)**2) - 0.8 * np.exp(-((bx - 8.9) / 0.22)**2)
     ax.plot(bx, by, color=TEAL, linewidth=2.5)
-    ax.plot(7.8, 3.0, 'o', color=CYAN, markersize=6)     # O2 / O3
-    ax.plot(8.6, 2.8, 'o', color=EMERALD, markersize=6)  # CH4 / H2O
+    ax.plot(8.2, 3.0, 'o', color=CYAN, markersize=6)     # O2 / O3
+    ax.plot(8.9, 2.8, 'o', color=EMERALD, markersize=6)  # CH4 / H2O
 
     save_canvas(fig, 's00-pillar-habitabilidad.png')
 
