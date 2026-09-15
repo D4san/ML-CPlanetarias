@@ -13,20 +13,29 @@ test.describe('S00 introducción científica', () => {
     await expect(journey).toBeVisible();
     await expect(page.getByText(/^Ruta:$/)).toHaveCount(0);
     await expect(page.getByRole('heading', { name: 'De los mundos a los datos' })).toBeVisible();
-    await expect(page.getByAltText(/estrella con un planeta en tránsito/i)).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Un mundo se vuelve observable' }),
+    ).toBeVisible();
     await expect(page.getByText('01.1', { exact: true })).toBeVisible();
     await expect(page.getByText('01.2', { exact: true })).toBeVisible();
 
     await page.getByRole('button', { name: 'Siguiente →' }).click();
     await expect(page).toHaveURL(/\/sesiones\/s00\/#pregunta\/senal$/);
-    await expect(page.getByRole('heading', { name: 'Señal' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Conceptos' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: /Tránsito/i })).toBeVisible();
 
     await page.getByRole('button', { name: /Subslide 01\.3 · 01 · abrir/ }).click();
     await expect(page).toHaveURL(/\/sesiones\/s00\/#pregunta\/pregunta-guia$/);
     await expect(page.getByRole('heading', { name: 'Pregunta guía' })).toBeVisible();
+    await expect(page.getByAltText(/estrella con un planeta en tránsito/i)).toBeVisible();
 
     await page.goto('./sesiones/s00/#datos');
     await expect(page.locator('.s00-journey')).toHaveAttribute('data-active-part', 'observacion');
+    await expect(
+      page.getByRole('heading', { name: 'Datos astronómicos no son una sola cosa' }),
+    ).toBeVisible();
+
+    await page.goto('./sesiones/s00/#datos/catalogo');
     await expect(page.getByRole('option', { name: /Observación/ })).toBeVisible();
     await page.getByRole('option', { name: /Catálogo/ }).click();
     await expect(page.locator('.s00-data-detail')).toContainText('¿Qué unidad cuenta cada fila');

@@ -25,6 +25,7 @@ export type SlideRailProps<T extends SlideRailItem> = {
   getAriaLabel?: (slide: T, index: number) => string;
   isVisited?: (slide: T, index: number) => boolean;
   compactCaption?: boolean;
+  hideCaption?: boolean;
   className?: string;
 };
 
@@ -57,6 +58,7 @@ export default function SlideRail<T extends SlideRailItem>({
   getAriaLabel,
   isVisited,
   compactCaption = false,
+  hideCaption = false,
   className,
 }: SlideRailProps<T>) {
   const slideButtons = useRef<Array<HTMLButtonElement | null>>([]);
@@ -112,27 +114,29 @@ export default function SlideRail<T extends SlideRailItem>({
       </div>
 
       <nav aria-label={ariaLabel}>
-        <div className="slide-rail__caption">
-          <span className="slide-rail__count">
-            <span className="slide-rail__count-compact" aria-hidden="true">
-              {slideWindow.count} / {slides.length}
+        {!hideCaption && (
+          <div className="slide-rail__caption">
+            <span className="slide-rail__count">
+              <span className="slide-rail__count-compact" aria-hidden="true">
+                {slideWindow.count} / {slides.length}
+              </span>
+              <span className="slide-rail__count-full" aria-hidden={compactCaption}>
+                {slideWindow.count} destacadas · {slides.length} totales
+              </span>
             </span>
-            <span className="slide-rail__count-full" aria-hidden={compactCaption}>
-              {slideWindow.count} destacadas · {slides.length} totales
-            </span>
-          </span>
-          {compactCaption && (
-            <span className="slide-rail__count-a11y">
-              {slideWindow.count} diapositivas visibles de {slides.length}
-            </span>
-          )}
-          <strong>{activeLabel}</strong>
-          <small className="slide-rail__stack-summary">
-            {stackCounts.left > 0 ? `${stackCounts.left} en el borde izquierdo` : ''}
-            {stackCounts.left > 0 && stackCounts.right > 0 ? ' · ' : ''}
-            {stackCounts.right > 0 ? `${stackCounts.right} en el borde derecho` : ''}
-          </small>
-        </div>
+            {compactCaption && (
+              <span className="slide-rail__count-a11y">
+                {slideWindow.count} diapositivas visibles de {slides.length}
+              </span>
+            )}
+            <strong>{activeLabel}</strong>
+            <small className="slide-rail__stack-summary">
+              {stackCounts.left > 0 ? `${stackCounts.left} en el borde izquierdo` : ''}
+              {stackCounts.left > 0 && stackCounts.right > 0 ? ' · ' : ''}
+              {stackCounts.right > 0 ? `${stackCounts.right} en el borde derecho` : ''}
+            </small>
+          </div>
+        )}
 
         <div className="slide-rail__viewport">
           {stackCounts.left > 0 && (

@@ -200,10 +200,246 @@ No se deben registrar aquí credenciales, datos privados, copias de libros, info
   editorial de S00 sigue bajo revisión.
 - **Bloqueos:** el gate visual Linux sigue pendiente por `dockerDesktopLinuxEngine`; derechos,
   promoción editorial y ocho espejos protegidos de skills siguen pendientes.
-- **Siguiente acción:** revisión humana de derechos y contenido; repetir el gate visual Linux cuando el
-  entorno lo permita. H02 mantiene su revisión independiente.
+### 2026-09-14 — Ajuste de estaciones x.1 y unificación visual en x.2 (S00)
+
+- **Tarea o frente:** presentación interactiva S00.
+- **Responsable:** Antigravity.
+- **Tipo:** inicio.
+- **Alcance y archivos:** `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css`, pruebas de S00 y `docs/specs/interactions/s00-pilot.md`.
+- **Resultado:** se inicia el ajuste conservador instruido por el usuario: eliminar el doble panel en subpantallas `x.1` para dejar 1 panel a ancho completo con el foco conceptual de la estación, unificar el desarrollo visual que estaba a la izquierda en `x.1` dentro de `x.2`, y mantener intactas las subpantallas `x.2+n` (`x.3`, `x.4`, etc.) conservando las 42 subpantallas y hashes estables.
+- **Evidencia:** [implementation_plan.md](file:///C:/Users/User/.gemini/antigravity/brain/03a450ce-2fb3-4543-a147-1444bfc66787/implementation_plan.md).
+- **Ideas y decisiones:** mantener el conteo de 42 slides y los hashes `#pregunta`, `#campo`, etc. para preservar la compatibilidad con enlaces profundos y pruebas.
+- **Siguiente acción:** implementar el renderizado condicional en `S00LearningJourney.tsx`, ajustar CSS y enriquecer `x.2` en cada estación.
+
+### 2026-09-14 — Cierre: unificación visual en x.2 y foco de 1 panel en x.1 (S00)
+
+- **Tarea o frente:** presentación interactiva S00.
+- **Responsable:** Antigravity.
+- **Tipo:** cierre técnico.
+- **Alcance y archivos:** `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css`, `src/components/react/S00LearningJourney.test.tsx`, `tests/e2e/s00-prototype.e2e.spec.ts` y `docs/specs/interactions/s00-pilot.md`.
+- **Resultado:** se corrigieron todas las subpantallas `x.1` para mostrar exclusivamente 1 panel con la información conceptual de foco a pantalla completa (`.s00-focus--standalone`), eliminando la compresión de doble panel. El desarrollo visual y componentes interactivos iniciales se unificaron en la subpantalla `x.2` de cada estación (ej. hero con tránsito en `01.2`, origen con estructura en `02.2`, curiosidad con unidad en `03.2`, tránsito con velocidad radial en `04.2`, y pregunta con medición en `09.2`). Se conservaron intactas las 42 subpantallas existentes y su numeración (`01.1`–`09.7`), hashes y enlaces sin alterar `x.2+n`.
+- **Evidencia:**
+  - `npm run check`: 0 errores, 0 advertencias, 0 hints.
+  - `npm run test:unit`: 19 archivos y 98/98 tests unitarios pasados.
+  - `npm run build` y `npm run build:subpath`: completados con 8 páginas generadas con éxito.
+  - `npx playwright test tests/e2e/s00-prototype.e2e.spec.ts --project=functional-chromium`: 5/5 tests pasados.
+- **Ideas y decisiones:** la separación estricta entre subpantallas conceptuales puras (`x.1`) y subpantallas visuales interactivas (`x.2` en adelante) mejora la legibilidad pedagógica sin alterar el conteo ni la estructura de navegación.
+- **Siguiente acción:** revisión visual del usuario en el navegador local (`http://localhost:4321/sesiones/s00/`).
+
+### 2026-09-14 — Rediseño directo y cajas ampliables en la diapositiva de fuentes S00
+
+- **Tarea o frente:** presentación interactiva S00 (Diapositiva 0 · Bibliografía).
+- **Responsable:** Antigravity.
+- **Tipo:** cierre técnico.
+- **Alcance y archivos:** `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css`, `src/components/react/CourseContent.tsx` y `src/components/react/S00LearningJourney.test.tsx`.
+- **Resultado:** se corrigió el desbordamiento de la diapositiva 0 reemplazando el bloque estático duplicado por un diseño directo y recuadros ampliables (`s00-biblio-box`). Cada caja muestra en estado compacto el título del trabajo y su frase didáctica, permitiendo ampliar individual o masivamente para inspeccionar autoría completa, metadatos y el enlace externo original con scroll interno contenido. La cabecera se simplificó a un mensaje directo con conteo y acciones en bloque.
+- **Evidencia:** `npm run check` (0 errores, 0 warnings, 0 hints), 97 pruebas unitarias en Vitest con cobertura incrementada a 85.84% líneas, 7 pruebas Playwright (`functional-chromium`, `a11y` y WCAG A/AA).
+### 2026-09-14 — Corrección de ReferenceError: invalidHash is not defined en S00
+
+- **Tarea o frente:** presentación interactiva S00 (estabilidad SSR y enrutamiento por hash).
+- **Responsable:** Antigravity.
+- **Tipo:** cierre técnico.
+- **Alcance y archivos:** `src/components/react/S00LearningJourney.tsx` y `docs/planning/agent-execution/BITACORA.md`.
+- **Resultado:** se corrigió la excepción `ReferenceError: invalidHash is not defined` durante la renderización en el servidor Vite/Astro. Se restauró la declaración `const [invalidHash, setInvalidHash] = useState(false);` en `S00LearningJourney`, sincronizando el estado ante hashes desconocidos y limpiándolo al navegar o reiniciar. Se depuró la importación no utilizada `S00ConceptCard` y se validó que tanto SSR como el hot module reloading y el cliente carguen con código HTTP 200 sin errores en consola ni terminal.
+- **Evidencia:** `npm run check` (0 errores, 0 advertencias, 0 hints), 98/98 pruebas unitarias en Vitest, pruebas e2e y accesibilidad Playwright (`s00-prototype.e2e.spec.ts` y `s00.a11y.spec.ts`), y verificación HTTP 200 en servidor de desarrollo.
+### 2026-09-14 — Reorganización de subpantallas 01.1, 01.2 y 01.3 en S00 con tarjetas interactivas de conceptos y observaciones reales
+
+- **Tarea o frente:** presentación interactiva S00 (estación 1: «Mundo y preguntas»).
+- **Responsable:** Antigravity.
+- **Tipo:** cierre técnico y de contenido.
+- **Alcance y archivos:** `src/lib/s00-content.ts`, `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css`, `public/images/s00/s00-real-exoplanet.png`, `public/images/s00/s00-real-transit.png`, `public/images/s00/s00-real-representation.png`, `tests/e2e/s00-prototype.e2e.spec.ts`, `tests/motion/s00.motion.spec.ts`, `src/components/react/S00LearningJourney.test.tsx` y `src/layouts/SiteLayout.astro`.
+- **Resultado:**
+  - **Slide 01.1 («Mundo»):** presentación tipográfica a ancho completo (`.s00-opening-stage`), con el texto de partida de gran tamaño, pregunta rectora, idea fuerza, qué llevar y límites metodológicos, sin paneles dobles ni píldoras reducidas.
+  - **Slide 01.2 («Conceptos»):** sustitución del gráfico estático por tarjetas interactivas (`Exoplaneta`, `Tránsito`, `Representación`). Cada tarjeta conmuta imágenes de observaciones astronómicas reales (imagen directa de HR 8799 vía Keck AO, curva de Kepler-90i con inmersión de 420 ppm, y representación dual global/local para CNNs de Shallue & Vanderburg 2018), especificando target, instrumento, tipo de dato, límites físicos y enlaces directos a los artículos revisados por pares (Science, AJ, ApJ).
+  - **Slide 01.3 («Pregunta guía»):** reubicación de la ilustración hero de la estrella con tránsito y telescopio, acompañada de las tarjetas de pregunta rectora (*«¿Qué podemos aprender de un mundo que casi nunca podemos observar directamente?»*) y el marco epistemológico (*«mundo → medición → evidencia»*).
+- **Evidencia:**
+  - `npm run check`: 0 errores, 0 advertencias, 0 hints.
+  - `npm run test:unit`: 19 archivos, 98/98 tests unitarios pasados.
+  - `npm run build`: 8 páginas compiladas correctamente en `dist/`.
+  - `npx playwright test tests/e2e/s00-prototype.e2e.spec.ts tests/a11y/s00.a11y.spec.ts tests/motion/s00.motion.spec.ts --project=functional-chromium --project=a11y --project=reduced-motion`: 8/8 tests pasados (incluyendo navegación funcional, accesibilidad WCAG 2.2 AA y movimiento reducido).
+- **Ideas y decisiones:** mantener el hash `#pregunta/senal` para la diapositiva 1.2 garantiza compatibilidad con enlaces y marcadores previos, mientras su etiqueta visible «Conceptos» comunica con precisión el contenido interactivo.
+- **Siguiente acción:** revisión en navegador por parte del usuario.
+
+### 2026-09-14 — Limpieza de interfaz en S00 (eliminación de conteo técnico en riel y aviso de hash)
+
+- **Tarea o frente:** depuración de interfaz de usuario en S00.
+- **Responsable:** Antigravity.
+- **Tipo:** cierre técnico.
+- **Alcance y archivos:** `src/components/react/SlideRail.tsx`, `src/components/react/slide-rail.css`, `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css`, `src/components/react/SlideRail.test.tsx`, `src/components/react/S00LearningJourney.test.tsx` y `docs/planning/agent-execution/BITACORA.md`.
+- **Resultado:**
+  - Se eliminó la barra superior de información (`.slide-rail__caption`) en S00 pasando la propiedad `hideCaption` a `SlideRail`, suprimiendo los conteos técnicos (`5 DESTACADAS · 42 TOTALES`) y el rótulo redundante.
+  - Se ocultó visualmente el resumen de apilamiento lateral (`.slide-rail__stack-summary`) en la hoja base `slide-rail.css` manteniéndolo accesible para lectores de pantalla (`sr-only`), evitando que conteos internos aparezcan visualmente en cualquier sesión.
+  - Se suprimió el cartel de advertencia de hash (`s00-hash-notice`) y su estado asociado en `S00LearningJourney`, permitiendo que el recorrido resuelva la primera estación de forma silenciosa y fluida.
+- **Evidencia:**
+  - `npm run check`: 0 errores, 0 advertencias, 0 hints.
+  - `npm run test:unit`: 19 archivos, 98/98 pruebas unitarias superadas.
+  - Playwright (`functional-chromium`, `a11y`, `reduced-motion`): 8/8 pruebas superadas sin regresiones.
+  - `npm run build` y `npm run build:subpath`: compilación estática completada exitosamente.
+- **Siguiente acción:** comprobación visual final por parte del usuario.
+
+### 2026-09-14 — Paridad visual entre S00 y S01: tema inmersivo oscuro, layout full-bleed y reorganización de espacios
+
+- **Tarea o frente:** paridad visual e integración espacial de presentaciones (S00 y S01).
+- **Responsable:** Antigravity.
+- **Tipo:** cierre técnico y de experiencia visual.
+- **Alcance y archivos:** `src/layouts/SiteLayout.astro`, `src/styles/global.css`, `src/components/S00SessionPage.astro`, `src/components/S01SessionPage.astro`, `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css`, `src/components/react/S00LearningJourney.test.tsx` y `docs/planning/agent-execution/BITACORA.md`.
+- **Resultado:**
+  - **Eliminación del marco blanco**: `SiteLayout.astro` ahora soporta `theme="dark"` y `fullBleed={true}`, aplicando `body.theme-dark` y `body.layout-full-bleed`. El fondo claro de papel y la cabecera clara se sustituyeron por un fondo azul profundo nocturno integrado (`#071821` / `#0c2430`) con cabecera oscura traslúcida y tipografía de alto contraste.
+  - **Ancho completo full-bleed**: `.site-shell`, `.s00-journey` y `.s01-journey` toman el 100% del ancho disponible sin bandas laterales en pantallas panorámicas.
+  - **Reorganización espacial en S00**: se suprimió la división en 2 columnas comprimidas de la presentación. La apertura de la estación 1 (`01.1`) cuenta con un escenario dedicado (`.s00-opening-stage`) integrado en `.s00-scene-deck` que escala fluidamente con el viewport sin superponerse con el pie de diapositiva.
+  - **Cajón de profundidad colapsable**: en las subpantallas interactivas (`01.2`, `01.3`, etc.), la visualización astronómica y la tarjeta conceptual ocupan el área principal, mientras la información de marco conceptual, qué llevar y límites queda en un cajón desplegable inferior (`.s00-scene__depth`).
+- **Evidencia:**
+  - `npm run check`: 0 errores, 0 advertencias, 0 hints en 94 archivos Astro y TypeScript.
+  - `npm run test:unit`: 19/19 archivos, 98/98 pruebas unitarias pasadas con umbrales de cobertura cumplidos.
+  - Playwright: 24/24 pruebas funcionales Chromium superadas (`s00-prototype.e2e.spec.ts` y `s01-prototype.e2e.spec.ts`).
+  - Capturas de pantalla Playwright en resolución 1440x900 validando ausencia total de marco blanco y respiración del contenido.
+- **Siguiente acción:** revisión interactiva por parte del usuario en el navegador local.
+
+### 2026-09-14 — Alineación total del layout, escala y distribución de S00 con S01
+
+- **Tarea o frente:** paridad dimensional y jerarquía visual entre S00 y S01 solicitada por el usuario.
+- **Responsable:** Antigravity.
+- **Tipo:** cierre técnico y de experiencia de usuario.
+- **Alcance y archivos:** `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css`, `docs/planning/agent-execution/BITACORA.md`.
+- **Resultado:**
+  - **Eliminación de compresión central en S00**: se suprimieron las restricciones artificiales `max-width: 68rem` y `margin-inline: auto` en `.s00-opening-stage` y `.s00-focus--standalone`. El escenario central ahora ocupa el 100% del ancho disponible alineado con el riel superior, idéntico a `.s01-focus` de S01.
+  - **Jerarquía tipográfica y composición proporcional a S01**:
+    - Cabecera de escena con kicker `01 · ABRIR · PREGUNTA GUÍA` y subtítulo de llegada a la izquierda.
+    - Contador numérico monumental `01 / 09` en fuente monospace a la derecha (`clamp(3rem, 5vw, 4.5rem)`).
+    - Título `h2` imponente con tipografía display (`clamp(2rem, 3.4vw, 3.8rem)` y `line-height: 1.05`).
+    - Destacado de pregunta de partida (`clamp(1.25rem, 2vw, 1.85rem)`) con borde cian y fondo traslúcido.
+    - Cuerpos de texto y notas didácticas en escala amplia (`clamp(1rem, 1.15vw, 1.15rem)`) sin reducción forzada.
+  - **Eliminación de la degradación forzada en modo presentación**: se retiraron las reglas de la media query que encogían los textos a `1.2rem` y `0.78rem` en orientación horizontal y se liberó la altura forzada de `height: min(48rem, ...)` a `min-height`, permitiendo scroll y respiración natural.
+- **Evidencia:**
+  - `npm run check`: 0 errores, 0 advertencias, 0 hints.
+  - `npm run test:unit`: 98/98 pruebas pasadas.
+  - Playwright E2E: 24/24 pruebas funcionales pasadas (`s00-prototype.e2e.spec.ts` y `s01-prototype.e2e.spec.ts`).
+  - Capturas comparativas de pantalla en 1440×900: `s00_opening_new.png`, `s00_station_01_2_interactive.png`, `s00_fuentes.png` y `s01_new.png`.
+- **Siguiente acción:** confirmación de revisión por parte del usuario en el navegador local (`http://127.0.0.1:4321/sesiones/s00/`).
+
+### 2026-09-14 — Corrección de vacío visual y enriquecimiento científico en Estación 02 (S00)
+
+- **Tarea o frente:** enriquecimiento científico y corrección de diseño en Estación 02 (`s00-ciencias-planetarias`).
+- **Responsable:** Antigravity.
+- **Tipo:** cierre técnico.
+- **Alcance y archivos:** `src/lib/s00-content.ts`, `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css`, `src/components/react/S00LearningJourney.test.tsx`, `docs/planning/agent-execution/BITACORA.md`.
+- **Resultado:**
+  - **Estructura de datos enriquecida (`s00PlanetaryPillars`)**: se modelaron los 4 pilares científicos (Origen, Estructura, Evolución, Habitabilidad) con procesos físicos detallados, observables/misiones reales (ALMA, JWST, Kepler, TESS, ESPRESSO, Gaia, Parker Solar Probe, CHEOPS), tareas y roles concretos de Machine Learning (detección de subestructuras, emuladores de estabilidad N-cuerpos, retrievals atmosféricos acelerados, biofirmas y métricas no guiadas) y límites físicos o inferenciales.
+  - **Resolución del vacío visual en la diapositiva**: el contenedor ya no filtra ni oculta los demás pilares; despliega un mapa navegable del sistema planetario con los 4 pilares simultáneamente interconectados y destaca el nodo activo (`02.1` a `02.4`). Debajo, presenta el dossier técnico completo del pilar activo con diseño visual proporcionado y tarjetas temáticas.
+  - **Eliminación del texto vacío / redundante**: se reemplazó la concatenación de metadatos curriculares idénticos en el acordeón por la narrativa sustantiva real de la estación (`unit.content`), conservando los metadatos de apoyo plegados para consulta opcional.
+  - **Pruebas y gates**: suite de pruebas unitarias actualizada con test específico de la estación 02; gates Astro check, build y Playwright E2E ejecutados con éxito al 100%.
+- **Evidencia:**
+  - `npm run check`: 0 errores, 0 advertencias, 0 hints en 94 archivos.
+  - `npm run test:unit`: 19 suites pasadas, 99 pruebas pasadas (+1 prueba nueva para la estación 02).
+  - `npm run build`: 8 páginas estáticas compiladas limpiamente en 2.60s.
+  - `npx playwright test tests/e2e/s00-prototype.e2e.spec.ts`: 5/5 pruebas E2E pasadas.
+  - Capturas de validación visual: `s00_station02_origen_full.png` y `s00_station02_estructura.png`.
+- **Siguiente acción:** verificación visual directa del usuario en el navegador local (`http://localhost:4321/sesiones/s00/#ciencias-planetarias`).
+
+### 2026-09-14 — S00: Galería de datos científicos, lightbox y conceptualización de representación
+
+- **Tarea o frente:** S00 — Estación 01 (Subslide 01.2: Conceptos y representaciones de datos).
+- **Responsable:** Antigravity.
+- **Tipo:** cierre.
+- **Alcance y archivos:**
+  - `scripts/generate-s00-real-plots.py`: Generación de 4 gráficos científicos de alta resolución con estilo visual del curso.
+  - `public/images/s00/`: Incorporación de gráficos reales (`s00-real-exoplanet.png`, `s00-real-transit.png`, `s00-real-spectrum.png`, `s00-real-representation.png`).
+  - `src/lib/s00-content.ts`: Adición de metadatos de fuentes, archivo de datos, repositorios de código y nueva tarjeta "Espectro". Reescritura conceptual de "Representación" conectando señales astronómicas con tensores/vectores para ML.
+  - `src/components/react/S00LearningJourney.tsx`: Componente `ImageLightbox` accesible (tecla Esc, clic exterior, trampas de foco, enlaces directos a imagen completa) y ficha técnica rediseñada con enlaces a fuentes y archivos.
+  - `src/styles/s00-learning-journey.css`: Estilos para botones de zoom, enlaces a fuentes, modal lightbox con blur y soporte de `prefers-reduced-motion`.
+  - `src/components/react/S00LearningJourney.test.tsx`: Pruebas unitarias ampliadas cubriendo interacciones con el lightbox y navegación entre pestañas de datos.
+- **Resultado:** La galería de datos de la diapositiva 01.2 ahora presenta ejemplos reales de datos astronómicos con explicaciones pedagógicas claras sobre qué es una "representación" en Machine Learning, con visualización ampliada mediante lightbox y enlaces a los artículos y archivos de datos oficiales.
+- **Evidencia:**
+  - `npm.cmd run check`: 0 errores, 0 advertencias, 0 hints en 94 archivos.
+  - `npm.cmd run test:unit`: 19 suites pasadas, 100 pruebas pasadas, 70.52% cobertura de ramas (superando el umbral de 70%).
+  - `npm.cmd run build` & `npm.cmd run build:subpath`: Compilación estática limpia de 8 páginas en ambas configuraciones de base path.
+  - `npx playwright test`: 8/8 pruebas E2E, a11y (WCAG 2.2 AA) y reduced-motion pasadas.
+- **Siguiente acción:** Revisión y aprobación final del usuario.
+
+### 2026-09-14 — Continuidad, enriquecimiento visual y formulación metodológica en Estación 03 (S00)
+
+- **Tarea o frente:** corrección de discontinuidad secuencial, vacío visual y enriquecimiento metodológico/gráfico en Estación 03 (`s00-acotar` / `03 · formular`).
+- **Responsable:** Antigravity.
+- **Tipo:** cierre técnico.
+- **Alcance y archivos:** `src/lib/s00-content.ts`, `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css`, `src/components/react/S00LearningJourney.test.tsx`, `docs/planning/agent-execution/BITACORA.md`.
+- **Resultado:**
+  - **Pipeline continuo de formulación metodológica**: se sustituyó el filtrado restrictivo que rompía la secuencia (dejando pantallas vacías y etiquetas '01' erróneas) por un pipeline horizontal siempre visible en las 4 subdiapositivas (`03.1 Curiosidad` ➔ `03.2 Unidad de análisis` ➔ `03.3 Salida computable` ➔ `03.4 Criterio de uso`). Los pasos previos muestran marca de consolidación (`✓`), el paso activo tiene borde temático y pulso, y los pasos futuros permanecen accesibles e interactivos para navegación directa.
+  - **Dossier enriquecido de formulación**: cada etapa incluye una definición de decisión epistemológica, el antipatrón de riesgo común al omitirla, y dos casos exoplanetarios reales en paralelo: *Detección fotométrica* (Kepler / TESS / PLATO) vs. *Caracterización espectroscópica* (JWST / Ariel / HWO).
+  - **Diagramas esquemáticos SVG interactivos**: se añadieron 4 esquemas gráficos vectoriales originales en alta resolución:
+    - *Curiosidad*: de la inmensidad del campo estelar al foco de alineación de tránsito y su señal detectable ($\Delta F/F_\star$).
+    - *Unidad*: de la serie temporal continua de 4 años (~70,000 cadencias) al doblado en fase $P$ y discretización en vector $\mathbf{x}_i \in \mathbb{R}^{201}$.
+    - *Salida*: de la inferencia $f_\theta(\mathbf{x})$ a la barra de probabilidad calibrada $P(\text{Planeta}) = 94.2\%$ o posterior bayesiano $\hat{\boldsymbol{\theta}} \pm \boldsymbol{\sigma}_\theta$.
+    - *Uso*: embudo de retorno científico por hora de observación (de $10^5$ eventos crudos a 25 noches de telescopio asignadas en HARPS/ESPRESSO/JWST).
+- **Evidencia:**
+  - `npm run check`: 0 errores, 0 advertencias, 0 hints en 94 archivos.
+  - `npm run test:unit`: 19 suites pasadas, 100 pruebas pasadas (+1 prueba nueva para la estación 03).
+  - `npm run build`: 8 páginas estáticas compiladas limpiamente en 2.43s.
+  - `npx playwright test tests/e2e/s00-prototype.e2e.spec.ts --project=functional-chromium`: 5/5 pruebas E2E pasadas.
+  - Capturas de validación visual: `s00_station03_curiosidad_full.png` y `s00_station03_salida_full.png`.
+- **Siguiente acción:** verificación visual directa del usuario en el navegador local (`http://localhost:4321/sesiones/s00/#acotar`).
+
+### 2026-09-14 — Resolución de vacío visual, 4 modalidades observacionales conectadas y dossier astrofísico en Estación 04 (S00)
+
+- **Tarea o frente:** corrección de subdiapositiva vacía (04.3 Espectro) y enriquecimiento astrofísico/visual en Estación 04 (`s00-medicion` / `04 · observar`).
+- **Responsable:** Antigravity.
+- **Tipo:** cierre técnico.
+- **Alcance y archivos:** `src/lib/s00-content.ts`, `src/lib/s00-content.test.ts`, `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css`, `src/components/react/S00LearningJourney.test.tsx`, `docs/planning/agent-execution/BITACORA.md`.
+- **Resultado:**
+  - **Sistema persistente de 4 modalidades observacionales**: se eliminó el filtrado que dejaba la subdiapositiva 04.3 aislada con 85% de pantalla en negro. En su lugar, las 4 subdiapositivas (`04.1 Tránsito`, `04.2 Velocidad radial`, `04.3 Espectro`, `04.4 Imagen directa`) presentan la barra de 4 técnicas conectadas con selector interactivo y una barra de síntesis física que articula cómo se combinan: $\text{Tránsito }(R_p/R_\star) + \text{V. Radial }(M_p \sin i) \implies \bar{\rho}_p \text{ (densidad media)} \implies \text{Espectro }(\mu) + \text{Imagen (separación)}$.
+  - **Dossier astrofísico activo por técnica**: cada modalidad despliega su ecuación física rectora comentada, contraste explícito entre observable registrado por el detector vs. parámetro físico inferido, observatorios e instrumentos reales (Kepler/TESS, ESPRESSO/HARPS, JWST NIRSpec/MIRI, SPHERE/GPI), rol concreto de Machine Learning (redes 1D/TCEs, GPs cuasi-periódicos para variabilidad estelar, Neural Posterior Estimation para retrievals atmosféricos, PCA/autoencoders para sustracción de speckles) y advertencia de degeneración/límite físico.
+  - **4 Diagramas esquemáticos vectoriales SVG originales**:
+    - *Tránsito*: geometría de eclipse con cuerda de tránsito y oscurecimiento al limbo, junto a curva de luz diferencial con contactos $t_1, t_2, t_3, t_4$, profundidad $\delta = (R_p/R_\star)^2$ y duración $T_{14}$.
+    - *Velocidad radial*: bamboleo reflejo respecto al baricentro y curva senoidal Doppler con regiones de corrimiento al rojo/azul, semi-amplitud $K$ y periodo $P$.
+    - *Espectro*: filtrado selectivo a través del anillo atmosférico de altura de escala $h(\lambda) \propto T/(\mu g)$ y espectro de transmisión JWST con bandas moleculares de $\text{H}_2\text{O}$ ($1.4\,\mu\text{m}, 1.9\,\mu\text{m}$) y $\text{CO}_2$ ($4.3\,\mu\text{m}$) con barras de error observacionales sobre el continuo de nubes.
+    - *Imagen directa*: máscara coronográfica focal y óptica adaptativa extrema con ángulo de trabajo interno (IWA $\sim 2-3\,\lambda/D$), dark hole y detección puntual del compañero a separación angular proyectada ($0.45''$, $35\text{ UA}$).
+- **Evidencia:**
+  - `npm run check`: 0 errores, 0 advertencias, 0 hints en 94 archivos (Prettier, ESLint, Astro check, validación de contenido, ejemplos y skills).
+  - `npm run test:unit`: 19 suites pasadas, 101 pruebas pasadas (incluye nueva prueba para estación 04).
+  - `npm run build`: 8 páginas estáticas compiladas limpiamente en 2.29s.
+  - `npx playwright test tests/e2e/s00-prototype.e2e.spec.ts --project=functional-chromium`: 5/5 pruebas E2E pasadas.
+  - Capturas de validación visual completa: `s00_station04_espectro_full.png`, `s00_station04_transito_full.png`, `s00_station04_radial_full.png`, `s00_station04_imagen_full.png`.
+- **Siguiente acción:** verificación visual por parte del usuario en su navegador local (`http://localhost:4321/sesiones/s00/#medicion/espectro`).
+
+### 2026-09-15 — Renovación integral visual y narrativa pedagógica de estaciones 05 a 09 (S00)
+
+- **Tarea o frente:** Renovación de estaciones 05 (datos), 06 (ML), 07 (impacto), 08 (ramas) y 09 (cierre) en S00.
+- **Responsable:** Agente Antigravity.
+- **Tipo:** cierre técnico.
+- **Alcance y archivos:**
+  - `src/lib/s00-content.ts` (enriquecimiento formal de datos, DOIs, arXiv, repositorios de código, matrices de interdependencia y pasos de cierre).
+  - `src/components/react/S00LearningJourney.tsx` (despliegue de esquemas SVG interactivos, miniaturas de línea transparentes, matrices de contraste, dossiers y banners de límite epistemológico).
+  - `src/components/react/s00-learning-journey.css` (estilos para esquemas, miniaturas, cuadrículas de propiedades tensoriales, dossiers de impacto, nodos SVG accesibles y pipeline de cierre acumulativo).
+  - `src/components/react/S00LearningJourney.test.tsx` (cobertura ampliada para las 5 estaciones renovadas).
+  - `public/images/s00/miniatures/*.png` (13 miniaturas con transparencia real RGBA generadas bajo la guía visual).
+- **Resultado:**
+  - Se eliminó el 100% de los vacíos negros e imágenes raster problemáticas en las estaciones 05, 06, 07, 08 y 09.
+  - Se implementaron 10 nuevos esquemas SVG interactivos originales (5 etapas de datos en Estación 05 y 5 verbos computables en Estación 06).
+  - Se integraron 13 ilustraciones vectoriales de trazo fino (`MLCP editorial line-art v1`) con fondo transparente RGBA adaptadas al tema nocturno.
+  - La narrativa pedagógica se consolidó a lo largo del eje del curso: desde el fenómeno físico y la medición (01–04), hacia las representaciones de datos (05), los espacios y objetivos de ML (06), los casos de impacto real en astronomía con enlaces a DOIs y código (07), la articulación disciplinar (08) y el cierre metodológico acumulativo con contrato epistemológico (09).
+- **Evidencia:**
+  - `npm run check`: 0 errores, 0 advertencias, 0 hints en todo el repositorio.
+  - `npm run test:unit`: 19 suites pasadas, 106 pruebas unitarias pasadas (100%), cobertura global de ramas en 73.9% (superando el umbral de 70%).
+  - `npm run build`: compilación estática limpia de las 8 páginas del sitio en 2.25s.
+  - Capturas de auditoría visual en `presentation mode`: `s00_05_1_observacion.png`, `s00_05_2_catalogo.png`, `s00_06_1_detectar.png`, `s00_06_2_clasificar.png`, `s00_07_1_astronet.png`, `s00_08_1_astronomia.png`, `s00_09_1_cierre.png`, `s00_09_6_cierre.png`.
+- **Siguiente acción:** Presentación de resultados y recorrido visual en `walkthrough.md` al usuario.
+
+### 2026-09-15 — Preparación del guion docente para S00 y publicación del sitio en GitHub
+
+- **Tarea o frente:** entrega del guion de clase oral para Sesión 0 y publicación del sitio en GitHub.
+- **Responsable:** Antigravity.
+- **Tipo:** cierre.
+- **Alcance y archivos:** `src/lib/s00-content.ts`, `src/components/react/S00LearningJourney.tsx`, `docs/planning/agent-execution/BITACORA.md`.
+- **Resultado:**
+  - Se estructuró el guion de clase oral completo y secuenciado para impartir los 90 minutos de la Sesión 0 («De los mundos a los datos»), con aperturas textuales ("qué decir"), preguntas de interacción, manejo de misconcepciones y la cadena epistemológica del curso.
+  - Se corrigió el mapeo de interfaces en `getS00FlashcardCollection` dentro de `src/lib/s00-content.ts` y se limpió el código de renderizado en `src/components/react/S00LearningJourney.tsx`.
+  - Se superaron todas las pruebas de calidad: `npm run check` (0 errores, 0 warnings, 0 hints), 19 suites con 106 tests unitarios en Vitest (100% aprobados), `npm run build` y `npm run build:subpath`.
+  - Se consolidaron los cambios en `git` y se enviaron a `origin/main` para desplegar la versión web interactiva en GitHub Pages.
+- **Evidencia:** ejecución limpia de `check` y `build`, commit y push en GitHub `origin/main`.
+- **Siguiente acción:** despliegue de GitHub Actions en GitHub Pages y dictado de la sesión por el docente.
 
 ## Ideas abiertas
+
+
 
 Estas ideas no son todavía requisitos ni cambios aprobados:
 

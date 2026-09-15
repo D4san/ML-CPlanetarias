@@ -41,17 +41,18 @@ resumen lineal.
 ### Primer cuadro horizontal
 
 En orientación horizontal, la Presentación usa una superficie oscura inspirada en el piloto S01:
-fondo azul casi negro, texto claro, retícula y marcas orbitales muy sutiles, una figura amplia a la
-izquierda y un panel de foco a la derecha. La superficie ocupa al menos el 95 % del viewport desde
-1280 px; a 1920×1080, el título y la afirmación central rondan 18 px o más, el texto auxiliar
-15–16 px y los metadatos 13 px como mínimo. La relación principal mundo → señal → pregunta debe
-entenderse en el primer cuadro 16:9 sin depender de desplazamiento.
+fondo azul casi negro, texto claro, retícula y marcas orbitales muy sutiles. Para evitar la saturación
+y asegurar una lectura descansada, la primera subpantalla de cada estación (`x.1`) presenta un
+único panel centrado con el foco conceptual, la afirmación principal y la pregunta de partida.
+El desarrollo visual interactivo se despliega en las subpantallas siguientes (`x.2` en adelante),
+donde la escena visual integra la ilustración y los controles a pantalla completa. La superficie
+ocupa al menos el 95 % del viewport desde 1280 px; a 1920×1080, el título y la afirmación central
+rondan 18 px o más, el texto auxiliar 15–16 px y los metadatos 13 px como mínimo.
 
-La composición muestra una estrella y un planeta en tránsito, una curva de luz pequeña y un bloque
-de datos enlazados por flechas. La ilustración no contiene texto crítico, ejes, cifras ni una
-probabilidad que pueda confundirse con un resultado. El panel declara: «La salida del modelo es
-evidencia condicionada». En móvil y en Lectura la superficie se reorganiza a flujo vertical sin
-perder la cadena.
+En la estación inicial, la subpantalla `01.1` sitúa el marco conceptual de partida y la subpantalla
+`01.2` unifica la ilustración del sistema planetario con la curva de luz en tránsito. El panel
+declara: «La salida del modelo es evidencia condicionada». En móvil y en Lectura la superficie se
+reorganiza a flujo vertical sin perder la cadena.
 
 ## Secuencia de estaciones
 
@@ -87,13 +88,14 @@ La Presentación distribuye las partes así:
 | 08 · Ramas | Problema astronómico, Teoría formal ML, Aplicación reproducible | 3 |
 | 09 · Cierre | Pregunta, Medición, Dato, Representación, Tarea, Evaluación, Límite | 7 |
 
-La primera subpantalla de una estación conserva la composición de escena y foco cuando ayuda a
-orientar; las siguientes llevan su elemento protagonista a la escena completa. Cada subpantalla
-puede tener la visual, la pregunta, el límite y la actividad que necesita. Anterior/Siguiente, las
-tarjetas del rail, los botones de partes y la URL recorren el mismo orden plano subyacente. La URL
-jerárquica conserva el nombre de estación para la primera parte (`#pregunta`) y añade el identificador
-de parte para las siguientes (`#pregunta/senal`). Un estado inválido conserva una salida útil y
-anuncia la estación activa.
+La primera subpantalla de cada estación (`x.1`) presenta exclusivamente el foco conceptual en un
+único panel centrado a pantalla completa. La subpantalla siguiente (`x.2`) unifica el desarrollo
+visual inicial con los controles de esa parte, dedicando todo el espacio a la escena interactiva.
+Cada subpantalla posterior conserva su elemento protagonista a pantalla completa con su visual,
+pregunta, límite y actividad. Anterior/Siguiente, las tarjetas del rail, los botones de partes y la
+URL recorren el mismo orden plano subyacente de 42 subpantallas. La URL jerárquica conserva el nombre
+de estación para la primera parte (`#pregunta`) y añade el identificador de parte para las siguientes
+(`#pregunta/senal`). Un estado inválido conserva una salida útil y anuncia la estación activa.
 
 ## Interacciones necesarias
 

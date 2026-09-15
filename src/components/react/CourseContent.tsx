@@ -15,21 +15,21 @@ export interface SessionBibliographyProps extends SessionBibliographyContent {
   headingId?: string;
 }
 
-function referenceAuthor(reference: BibliographyReference): string {
+export function referenceAuthor(reference: BibliographyReference): string {
   const authors = reference.authors?.filter((author) => author.trim() !== '');
   return authors && authors.length > 0
     ? authors.join(', ')
     : (reference.institution ?? 'Autoría no declarada');
 }
 
-function referenceMeta(reference: BibliographyReference): string {
+export function referenceMeta(reference: BibliographyReference): string {
   return [reference.edition, reference.publisher, reference.year]
     .filter((value) => value !== undefined && String(value).trim() !== '')
     .map(String)
     .join(' · ');
 }
 
-function referenceHref(reference: BibliographyReference): string | null {
+export function referenceHref(reference: BibliographyReference): string | null {
   if (isSafeExternalHref(reference.url)) return reference.url;
   if (reference.doi?.trim()) {
     return `https://doi.org/${reference.doi.trim().replace(/^https?:\/\/doi.org\//, '')}`;

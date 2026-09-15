@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('S00 sigue siendo navegable con movimiento reducido', async ({ page }) => {
   await page.goto('./sesiones/s00/');
+  await expect(page.locator('.s00-journey')).toHaveAttribute('data-hydrated', 'true');
   await expect
     .poll(() => page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches))
     .toBe(true);

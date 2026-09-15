@@ -7,7 +7,9 @@ import {
   getS00SlideIndexFromHash,
   getS00SlideNumber,
   s00BibliographyReferences,
+  s00ConceptCards,
   s00Concepts,
+  s00MeasurementModalities,
   s00Slides,
   s00Units,
 } from './s00-content';
@@ -67,5 +69,41 @@ describe('S00 scientific content', () => {
     expect(s00Concepts.length).toBeGreaterThanOrEqual(10);
     expect(s00BibliographyReferences.length).toBeGreaterThanOrEqual(8);
     expect(s00BibliographyReferences.every((reference) => reference.didacticFunction)).toBe(true);
+
+    // Concept observation cards (Slide 01.2)
+    expect(s00ConceptCards).toHaveLength(4);
+    expect(s00ConceptCards.map((c) => c.id)).toEqual([
+      'exoplaneta',
+      'transito',
+      'espectro',
+      'representacion',
+    ]);
+    expect(
+      s00ConceptCards.every(
+        (c) => c.target && c.instrument && c.dataType && c.study?.doi && c.dataArchive?.url,
+      ),
+    ).toBe(true);
+    expect(s00ConceptCards.find((c) => c.id === 'representacion')?.codeRepo?.url).toBeTruthy();
+
+    // Measurement modalities (Station 04)
+    expect(s00MeasurementModalities).toHaveLength(4);
+    expect(s00MeasurementModalities.map((m) => m.id)).toEqual([
+      'transito',
+      'radial',
+      'espectro',
+      'imagen',
+    ]);
+    expect(
+      s00MeasurementModalities.every(
+        (m) =>
+          m.governingEquation &&
+          m.rawObservable &&
+          m.inferredParameter &&
+          m.instruments &&
+          m.mlRole &&
+          m.physicalLimit,
+      ),
+    ).toBe(true);
+    expect(s00Units.find((u) => u.id === 's00-medicion')?.measurementModalities).toHaveLength(4);
   });
 });

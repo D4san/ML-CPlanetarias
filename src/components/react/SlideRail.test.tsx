@@ -76,4 +76,19 @@ describe('SlideRail', () => {
     expect(onSelect).toHaveBeenLastCalledWith(demoSlides[2], 2);
     expect(screen.getByRole('button', { name: 'Subslide 3 · Pregunta · Lectura' })).toHaveFocus();
   });
+
+  it('omits the caption when hideCaption is enabled', () => {
+    render(
+      <SlideRail
+        slides={demoSlides}
+        activeIndex={0}
+        activeLabel="Demo"
+        ariaLabel="Diapositivas de demostración"
+        hideCaption
+        onSelect={vi.fn()}
+      />,
+    );
+
+    expect(document.querySelector('.slide-rail__caption')).not.toBeInTheDocument();
+  });
 });

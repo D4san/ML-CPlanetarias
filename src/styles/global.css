@@ -288,9 +288,73 @@ pre {
   font-size: 0.92rem;
 }
 
+body.theme-dark {
+  color: var(--white);
+  background:
+    radial-gradient(circle at 12% 4%, rgb(0 124 135 / 0.16), transparent 24rem),
+    radial-gradient(circle at 88% 20%, rgb(81 68 201 / 0.15), transparent 28rem),
+    linear-gradient(145deg, #071821, #0c2430 58%, #041118);
+}
+
+body.theme-dark::before {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, black, transparent 88%);
+}
+
+body.theme-dark .site-header {
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(7 24 33 / 0.92);
+}
+
+body.theme-dark .site-header .brand {
+  color: var(--white);
+}
+
+body.theme-dark .site-header .brand strong {
+  color: var(--data-soft);
+}
+
+body.theme-dark .site-header nav a {
+  color: var(--paper-300);
+}
+
+body.theme-dark .site-header nav a:hover,
+body.theme-dark .site-header nav a[aria-current='page'] {
+  color: var(--white);
+}
+
+body.layout-full-bleed .site-shell {
+  width: 100%;
+  max-width: 100%;
+  padding-inline: clamp(0.75rem, 2.5vw, 2.5rem);
+}
+
+body.layout-full-bleed .s00-session-shell,
+body.layout-full-bleed .s01-session-shell {
+  padding-top: clamp(0.5rem, 1.5vw, 1.5rem);
+}
+
+body.layout-full-bleed .s00-instrument,
+body.layout-full-bleed .s01-instrument {
+  padding-inline: 0;
+}
+
+body.layout-full-bleed .s00-journey,
+body.layout-full-bleed .s01-journey {
+  width: 100%;
+  max-width: 100%;
+}
+
 @media (max-width: 48rem) {
   .site-shell {
     width: min(100% - 1.25rem, var(--screen));
+  }
+
+  body.layout-full-bleed .site-shell {
+    width: 100%;
+    padding-inline: 0.75rem;
   }
 
   .collection-list li {
