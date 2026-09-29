@@ -504,6 +504,18 @@ No se deben registrar aquí credenciales, datos privados, copias de libros, info
   - Astro check y ESLint: 0 errores.
 - **Siguiente acción:** Revisión y aprobación del usuario para commit y push a GitHub.
 
+### 2026-09-29 — Publicar S02 y verificar Colab
+
+- **Tarea o frente:** alinear la práctica de regresión con la explicación de la lámina de cierre, listar S02 y publicar el sitio con un enlace verificable a Colab.
+- **Responsable:** Codex integrador.
+- **Tipo:** cierre técnico con acceso a Colab pendiente.
+- **Alcance y archivos:** notebook y presentación S02, índice de sesiones, specs de interacción, recursos visuales y prueba E2E. Se excluyeron del commit el paquete interno de `inbox/`, los CSV/JSON locales de consulta y los cambios previos ajenos a S02.
+- **Resultado:** commit `a28159d` publicado en `main`; Pages sirve el índice con S02 y la ruta `/sesiones/s02/`. La sesión permanece marcada como prototipo interno. El notebook usa una partición agrupada por `hostname`, y la lámina final presenta las métricas recalculadas con esa misma partición.
+- **Evidencia:** `npm run lint`, `npm run check:astro`, los validadores de contenido, ejemplos y skills, los builds raíz y de subruta, y `tests/e2e/s02-publication.e2e.spec.ts` pasaron. La comprobación en navegador confirmó la tarjeta S02 y la ruta publicada. Colab devuelve 404 anónimo porque el repositorio es privado.
+- **Decisiones:** conservar privado el repositorio completo; no exponer `inbox/` ni cambiar su visibilidad. El notebook fuente quedó sin salidas guardadas. La prueba de unidad global conserva dos fallos preexistentes de S00; el chequeo global de formato también encuentra artefactos temporales ajenos a S02.
+- **Bloqueo:** el enlace de Colab requiere permiso de GitHub o un destino público para el notebook. Crear un Gist público divulgaría el código y el material docente del notebook y requiere autorización específica.
+- **Siguiente acción:** solicitar autorización para publicar solo el notebook limpio como Gist público; entonces actualizar el enlace en la presentación, repetir la comprobación y publicar el cambio.
+
 ## Ideas abiertas
 
 
