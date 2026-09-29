@@ -1,0 +1,233 @@
+.s02-forest-explainer {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.65rem, 1vw, 1rem);
+}
+
+.s02-forest-explainer__card {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(0.55rem, 0.9vw, 0.85rem);
+  overflow: hidden;
+  padding: clamp(0.8rem, 1.15vw, 1.25rem);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.045);
+}
+
+.s02-forest-explainer__card-heading {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.s02-forest-explainer__card-heading span {
+  color: var(--data-soft);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), 0.78rem);
+  letter-spacing: 0.055em;
+}
+
+.s02-forest-explainer__card-heading h3 {
+  margin: 0;
+  color: var(--paper-50);
+  font-size: clamp(1.08rem, 1.28vw, 1.28rem);
+  line-height: 1.2;
+}
+
+.s02-forest-explainer__figure {
+  display: grid;
+  min-width: 0;
+  min-height: 10.5rem;
+  place-items: center;
+  margin: 0;
+  padding: 0.4rem 0.25rem;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: var(--radius-sm);
+  background: rgb(7 26 37 / 0.5);
+}
+
+.s02-forest-explainer__figure--prediction {
+  min-height: 9.5rem;
+}
+
+.s02-forest-explainer__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font-sans);
+  font-size: max(var(--s02-readable-floor), 12px);
+}
+
+.s02-forest-explainer__svg-heading {
+  fill: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), 12px);
+  font-weight: 700;
+}
+
+.s02-forest-explainer__svg-note {
+  fill: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), 11px);
+}
+
+.s02-forest-explainer__row-label {
+  fill: var(--paper-100);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), 11px);
+  font-weight: 700;
+}
+
+.s02-forest-explainer__case {
+  fill: rgb(112 213 216 / 0.12);
+  stroke: var(--s02-rule);
+  stroke-width: 1.5;
+}
+
+.s02-forest-explainer__case--repeated {
+  fill: rgb(240 138 124 / 0.16);
+  stroke: var(--s02-limit);
+}
+
+.s02-forest-explainer__case-text,
+.s02-forest-explainer__feature-text {
+  fill: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), 11px);
+  font-weight: 700;
+}
+
+.s02-forest-explainer__feature {
+  fill: rgb(255 255 255 / 0.06);
+  stroke: rgb(255 255 255 / 0.34);
+  stroke-width: 1.2;
+}
+
+.s02-forest-explainer__feature--chosen {
+  fill: rgb(112 213 216 / 0.18);
+  stroke: var(--s02-rule);
+}
+
+.s02-forest-explainer__arrow {
+  fill: none;
+  stroke: var(--paper-300);
+  stroke-linecap: round;
+  stroke-width: 1.8;
+}
+
+.s02-forest-explainer__arrow-head {
+  fill: none;
+  stroke: var(--paper-300);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.s02-forest-explainer__prediction {
+  fill: rgb(174 157 255 / 0.12);
+  stroke: var(--s02-branch);
+  stroke-width: 1.4;
+}
+
+.s02-forest-explainer__prediction--mean {
+  fill: rgb(112 213 216 / 0.18);
+  stroke: var(--s02-rule);
+  stroke-width: 1.8;
+}
+
+.s02-forest-explainer__prediction-value {
+  fill: var(--paper-50);
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.s02-forest-explainer__card > p {
+  margin: 0;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.9rem, 1vw, 1rem));
+  line-height: 1.45;
+}
+
+.s02-forest-explainer__definition {
+  padding: 0.65rem 0.75rem;
+  border-left: 3px solid var(--s02-limit);
+  color: var(--paper-100) !important;
+  background: rgb(240 138 124 / 0.08);
+}
+
+.s02-forest-explainer__definition strong {
+  color: var(--decision-soft);
+}
+
+@media (max-width: 48rem) {
+  .s02-forest-explainer {
+    height: auto;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .s02-forest-explainer__card {
+    gap: 0.8rem;
+  }
+
+  .s02-forest-explainer__figure {
+    min-height: 10rem;
+  }
+
+  .s02-forest-explainer__figure--prediction {
+    min-height: 9rem;
+  }
+}
+
+@media (max-height: 760px) and (min-width: 48.01rem) {
+  .s02-forest-explainer__card {
+    gap: 0.35rem;
+    padding: 0.45rem;
+  }
+
+  .s02-forest-explainer__card-heading {
+    gap: 0.15rem;
+  }
+
+  .s02-forest-explainer__card-heading span {
+    font-size: max(var(--s02-readable-floor), 0.72rem);
+  }
+
+  .s02-forest-explainer__card-heading h3 {
+    font-size: 1rem;
+    line-height: 1.1;
+  }
+
+  .s02-forest-explainer__figure {
+    min-height: 9.2rem;
+    padding: 0.2rem;
+  }
+
+  .s02-forest-explainer__figure--prediction {
+    min-height: 8.75rem;
+  }
+
+  .s02-forest-explainer__card > p {
+    font-size: max(var(--s02-readable-floor), 0.8125rem);
+    line-height: 1.2;
+  }
+
+  .s02-forest-explainer__svg {
+    font-size: max(var(--s02-readable-floor), 13px);
+  }
+
+  .s02-forest-explainer__svg-heading,
+  .s02-forest-explainer__row-label,
+  .s02-forest-explainer__case-text,
+  .s02-forest-explainer__feature-text {
+    font-size: max(var(--s02-readable-floor), 13px);
+  }
+
+  .s02-forest-explainer__svg-note {
+    font-size: max(var(--s02-readable-floor), 12px);
+  }
+}

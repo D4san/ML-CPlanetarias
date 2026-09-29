@@ -1,8 +1,8 @@
 /* Reusable presentation rail for session slide sequences. */
 .slide-rail {
   --slide-rail-accent: var(--data-soft);
-  --slide-rail-small: clamp(0.68rem, 0.62rem + 0.15vw, 0.88rem);
-  --slide-rail-control: clamp(0.78rem, 0.7rem + 0.18vw, 1rem);
+  --slide-rail-small: var(--presentation-metadata-size);
+  --slide-rail-control: var(--presentation-control-size);
   position: relative;
   margin-bottom: var(--space-5);
 }
@@ -44,7 +44,7 @@
   min-width: 0;
   overflow: hidden;
   color: var(--white);
-  font-size: 0.85rem;
+  font-size: var(--slide-rail-control);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -242,7 +242,7 @@
   overflow: hidden;
   color: var(--node-tone);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: var(--slide-rail-small);
   letter-spacing: 0.08em;
   text-overflow: ellipsis;
   text-transform: uppercase;
@@ -254,7 +254,7 @@
   align-self: start;
   overflow: hidden;
   color: var(--paper-100);
-  font-size: 0.78rem;
+  font-size: var(--slide-rail-control);
   line-height: 1.15;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -436,7 +436,7 @@
   .slide-rail__caption strong {
     grid-column: 1 / -1;
     grid-row: 1;
-    font-size: 0.8rem;
+    font-size: var(--slide-rail-control);
   }
 
   .slide-rail__caption span {

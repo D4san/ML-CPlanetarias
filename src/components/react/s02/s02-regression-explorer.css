@@ -1,0 +1,675 @@
+.s02-regression,
+.s02-regression-threshold {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  color: var(--paper-100);
+}
+
+.s02-regression__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(19rem, 0.92fr);
+  gap: clamp(0.55rem, 0.9vw, 0.95rem);
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.s02-regression__explanation,
+.s02-regression__figure,
+.s02-regression__data-card,
+.s02-regression-threshold__figure,
+.s02-regression-threshold__controls {
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: clamp(0.55rem, 0.8vw, 0.8rem);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.045);
+}
+
+.s02-regression__explanation {
+  display: grid;
+  align-content: start;
+  gap: clamp(0.45rem, 0.7vh, 0.65rem);
+  overflow-y: auto;
+}
+
+.s02-regression--fixed .s02-regression__explanation {
+  gap: 0.32rem;
+  padding: 0.5rem 0.65rem;
+}
+
+.s02-regression__explanation-block {
+  display: grid;
+  gap: 0.22rem;
+  min-width: 0;
+}
+
+.s02-regression__explanation h3,
+.s02-regression__data-card h3,
+.s02-regression-threshold__controls h3 {
+  margin: 0;
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.92rem, 0.98vw, 1.04rem));
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.s02-regression__explanation p,
+.s02-regression__data-card p {
+  margin: 0;
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), clamp(0.84rem, 0.9vw, 0.95rem));
+  line-height: 1.35;
+}
+
+.s02-regression__explanation strong,
+.s02-regression__data-card strong,
+.s02-regression-threshold strong {
+  color: var(--paper-50);
+}
+
+.s02-regression__explanation code,
+.s02-regression-threshold code {
+  color: var(--s02-rule);
+  font-weight: 700;
+}
+
+.s02-regression__math {
+  max-width: 100%;
+  margin: 0.06rem 0;
+  padding: 0.18rem 0.38rem;
+  overflow-x: auto;
+  border-left: 3px solid var(--s02-rule);
+  background: rgb(112 213 216 / 0.055);
+  font-size: max(var(--s02-readable-floor), 0.86rem);
+}
+
+.s02-regression__takeaway {
+  padding: 0.4rem 0.5rem;
+  border-left: 3px solid var(--s02-branch);
+  background: rgb(174 157 255 / 0.08);
+}
+
+.s02-regression__sse-block {
+  padding: 0.36rem 0.45rem;
+  border-left: 3px solid var(--s02-rule);
+  background: rgb(112 213 216 / 0.05);
+}
+
+.s02-regression__visual-column {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: clamp(0.42rem, 0.65vh, 0.6rem);
+  min-width: 0;
+  min-height: 0;
+}
+
+.s02-regression__figure {
+  display: grid;
+  grid-template-rows: auto minmax(8rem, 1fr) auto;
+  gap: 0.18rem;
+}
+
+.s02-regression__figure figcaption {
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.86rem, 0.92vw, 0.96rem));
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.s02-regression__plot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: visible;
+}
+
+.s02-regression__region--left {
+  fill: rgb(112 213 216 / 0.09);
+}
+
+.s02-regression__region--right {
+  fill: rgb(174 157 255 / 0.09);
+}
+
+.s02-regression__grid {
+  stroke: rgb(255 255 255 / 0.12);
+  stroke-width: 1;
+}
+
+.s02-regression__axis,
+.s02-regression__tick-mark {
+  stroke: rgb(255 255 255 / 0.62);
+  stroke-width: 1.5;
+}
+
+.s02-regression__tick,
+.s02-regression__point-label {
+  fill: var(--paper-200);
+  font-family: var(--font-mono);
+  font-size: 22px;
+}
+
+.s02-regression__cut-line {
+  stroke: var(--s02-limit);
+  stroke-dasharray: 6 5;
+  stroke-width: 3;
+}
+
+.s02-regression__step {
+  fill: none;
+  stroke: var(--s02-rule);
+  stroke-linejoin: round;
+  stroke-width: 6;
+}
+
+.s02-regression__median-line {
+  stroke: var(--s02-branch);
+  stroke-dasharray: 6 5;
+  stroke-width: 3;
+}
+
+.s02-regression__point {
+  fill: #ffab6b;
+  stroke: var(--ink-950);
+  stroke-width: 2;
+}
+
+.s02-regression__line-label,
+.s02-regression__median-label,
+.s02-regression__cut-label,
+.s02-regression__axis-label {
+  fill: var(--paper-50);
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 750;
+}
+
+.s02-regression__median-label {
+  fill: var(--decision-soft);
+}
+
+.s02-regression__cut-label {
+  fill: var(--s02-limit);
+}
+
+.s02-regression__axis-label {
+  font-size: 23px;
+}
+
+.s02-regression__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.22rem 0.65rem;
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), clamp(0.8rem, 0.84vw, 0.9rem));
+}
+
+.s02-regression__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+}
+
+.s02-regression__legend i {
+  display: inline-block;
+  width: 0.78rem;
+  height: 0.78rem;
+  flex: 0 0 auto;
+}
+
+.s02-regression__legend-point {
+  border-radius: 50%;
+  background: #ffab6b;
+}
+
+.s02-regression__legend-step {
+  height: 0.2rem !important;
+  background: var(--s02-rule);
+}
+
+.s02-regression__legend-median {
+  height: 0.2rem !important;
+  background: repeating-linear-gradient(90deg, var(--decision-soft) 0 5px, transparent 5px 8px);
+}
+
+.s02-regression__data-card {
+  display: grid;
+  align-content: start;
+  gap: 0.26rem;
+  padding: 0.42rem 0.5rem;
+}
+
+.s02-regression__data-card h3 {
+  font-size: max(var(--s02-readable-floor), 0.88rem);
+}
+
+.s02-regression__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), 0.82rem);
+  line-height: 1.2;
+  text-align: center;
+}
+
+.s02-regression__table th,
+.s02-regression__table td {
+  padding: 0.12rem 0.2rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.s02-regression__table thead th {
+  color: var(--s02-rule);
+  font-weight: 700;
+}
+
+.s02-regression__table tbody th {
+  color: var(--paper-50);
+  text-align: left;
+}
+
+.s02-regression__data-card p {
+  font-size: max(var(--s02-readable-floor), 0.82rem);
+  line-height: 1.25;
+}
+
+.s02-regression-threshold__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
+  gap: clamp(0.55rem, 0.9vw, 0.95rem);
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.s02-regression-threshold__visual-column {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0.35rem;
+  min-width: 0;
+  min-height: 0;
+}
+
+.s02-regression-threshold__figure {
+  display: grid;
+  grid-template-rows: auto minmax(10rem, 1fr) auto;
+  gap: 0.28rem;
+}
+
+.s02-regression-threshold__figure figcaption {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.s02-regression-threshold__figure figcaption strong {
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), 0.96rem);
+}
+
+.s02-regression-threshold__figure figcaption span,
+.s02-regression-threshold__note {
+  margin: 0;
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), 0.84rem);
+  line-height: 1.3;
+}
+
+.s02-regression-threshold__plot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: visible;
+}
+
+.s02-regression-threshold__region--L {
+  fill: rgb(112 213 216 / 0.12);
+}
+
+.s02-regression-threshold__region--R,
+.s02-regression-threshold__region--RL {
+  fill: rgb(174 157 255 / 0.09);
+}
+
+.s02-regression-threshold__region--RR {
+  fill: rgb(240 138 124 / 0.08);
+}
+
+.s02-regression-threshold__grid {
+  stroke: rgb(255 255 255 / 0.12);
+  stroke-width: 1;
+}
+
+.s02-regression-threshold__axis,
+.s02-regression-threshold__tick-mark {
+  stroke: rgb(255 255 255 / 0.62);
+  stroke-width: 1.5;
+}
+
+.s02-regression-threshold__tick,
+.s02-regression-threshold__point-label {
+  fill: var(--paper-200);
+  font-family: var(--font-mono);
+  font-size: 22px;
+}
+
+.s02-regression-threshold__cut {
+  stroke-width: 3;
+  stroke-dasharray: 6 5;
+}
+
+.s02-regression-threshold__cut--root {
+  stroke: var(--s02-limit);
+}
+
+.s02-regression-threshold__cut--second {
+  stroke: var(--decision-soft);
+}
+
+.s02-regression-threshold__step {
+  fill: none;
+  stroke: var(--s02-rule);
+  stroke-linejoin: round;
+  stroke-width: 6;
+}
+
+.s02-regression-threshold__point {
+  fill: #ffab6b;
+  stroke: var(--ink-950);
+  stroke-width: 2;
+}
+
+.s02-regression-threshold__mean-label,
+.s02-regression-threshold__axis-label {
+  fill: var(--paper-50);
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 750;
+}
+
+.s02-regression-threshold__axis-label {
+  font-size: 23px;
+}
+
+.s02-regression-threshold__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.7rem;
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), 0.82rem);
+}
+
+.s02-regression-threshold__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+}
+
+.s02-regression-threshold__legend i {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.2rem;
+  flex: 0 0 auto;
+}
+
+.s02-regression-threshold__legend-point {
+  width: 0.72rem !important;
+  height: 0.72rem !important;
+  border-radius: 50%;
+  background: #ffab6b;
+}
+
+.s02-regression-threshold__legend-step {
+  background: var(--s02-rule);
+}
+
+.s02-regression-threshold__legend-cut {
+  border-top: 2px dashed var(--s02-limit);
+}
+
+.s02-regression-threshold__controls {
+  display: grid;
+  align-content: start;
+  gap: 0.24rem;
+  overflow: visible;
+  padding: 0.45rem 0.55rem;
+}
+
+.s02-regression-threshold__controls button,
+.s02-regression-threshold__controls input {
+  font: inherit;
+}
+
+.s02-regression-threshold__controls button {
+  min-height: 2.1rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid rgb(255 255 255 / 0.24);
+  border-radius: var(--radius-sm);
+  color: var(--paper-50);
+  background: rgb(255 255 255 / 0.05);
+  font-size: max(var(--s02-readable-floor), 0.86rem);
+  font-weight: 750;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.s02-regression-threshold__controls button:hover:not(:disabled) {
+  border-color: var(--s02-rule);
+  color: var(--ink-950);
+  background: var(--s02-rule);
+}
+
+.s02-regression-threshold__controls button:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+.s02-regression-threshold__controls :focus-visible {
+  outline: 3px solid var(--decision-soft);
+  outline-offset: 3px;
+}
+
+.s02-regression-threshold__control-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+}
+
+.s02-regression-threshold__step-label {
+  margin: 0 0 0.1rem;
+  color: var(--data-soft);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), 0.78rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.s02-regression-threshold__reset {
+  min-height: 2.2rem !important;
+  white-space: nowrap;
+}
+
+.s02-regression-threshold__slider-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), 0.88rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.s02-regression-threshold__slider-label output {
+  color: var(--s02-rule);
+  font-family: var(--font-mono);
+}
+
+.s02-regression-threshold__slider {
+  width: 100%;
+  min-height: 1.25rem;
+  accent-color: var(--s02-rule);
+  cursor: pointer;
+}
+
+.s02-regression-threshold__slider:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.s02-regression-threshold__range-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--paper-300);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), 0.76rem);
+  line-height: 1.15;
+}
+
+.s02-regression-threshold__hint {
+  margin: 0;
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), 0.84rem);
+  line-height: 1.25;
+}
+
+.s02-regression-threshold__score {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.1rem 0.5rem;
+  align-items: baseline;
+  padding: 0.42rem 0.5rem;
+  border-left: 3px solid var(--decision-soft);
+  background: rgb(174 157 255 / 0.1);
+}
+
+.s02-regression-threshold__score span {
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), 0.82rem);
+  line-height: 1.2;
+}
+
+.s02-regression-threshold__score strong {
+  color: var(--paper-50);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), 1.15rem);
+}
+
+.s02-regression-threshold__score small {
+  grid-column: 1 / -1;
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), 0.78rem);
+  line-height: 1.2;
+}
+
+.s02-regression-threshold__fixed-root {
+  margin: 0;
+  padding: 0.3rem 0.42rem;
+  border-left: 3px solid var(--s02-limit);
+  background: rgb(240 138 124 / 0.06);
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), 0.82rem);
+  line-height: 1.3;
+}
+
+.s02-regression-threshold__leaf-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.s02-regression-threshold__leaf-list li {
+  display: grid;
+  align-content: start;
+  gap: 0.1rem;
+  min-width: 0;
+  padding: 0.28rem 0.32rem;
+  border: 1px solid rgb(255 255 255 / 0.15);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.035);
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), 0.78rem);
+  line-height: 1.25;
+}
+
+.s02-regression-threshold__leaf-list strong {
+  color: var(--paper-50);
+}
+
+.s02-regression-threshold__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 70rem) {
+  .s02-regression__layout {
+    grid-template-columns: minmax(0, 1.04fr) minmax(17rem, 0.96fr);
+  }
+
+  .s02-regression-threshold__layout {
+    grid-template-columns: minmax(0, 1.02fr) minmax(18rem, 0.98fr);
+  }
+}
+
+@media (max-width: 48rem) {
+  .s02-regression,
+  .s02-regression__layout,
+  .s02-regression-threshold,
+  .s02-regression-threshold__layout {
+    height: auto;
+  }
+
+  .s02-regression__layout,
+  .s02-regression-threshold__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .s02-regression__explanation,
+  .s02-regression-threshold__controls {
+    overflow: visible;
+  }
+
+  .s02-regression__visual-column {
+    grid-template-rows: minmax(20rem, auto) auto;
+  }
+
+  .s02-regression-threshold__visual-column {
+    grid-template-rows: minmax(20rem, auto) auto;
+  }
+
+  .s02-regression__data-card {
+    overflow-x: auto;
+  }
+
+  .s02-regression__table {
+    min-width: 33rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s02-regression-threshold * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

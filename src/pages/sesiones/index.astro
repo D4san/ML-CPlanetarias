@@ -11,7 +11,10 @@ const sessions = (await getCollection('sessions'))
   .sort((a, b) => a.data.order - b.data.order);
 const showS00 = isSessionAvailable(courseConfig, 'S00');
 const showS01 = isSessionAvailable(courseConfig, 'S01');
-const showInternalSessions = showS00 || showS01;
+const showS02Prototype = true;
+const showInternalSessions = showS00 || showS01 || showS02Prototype;
+const internalSessionLabel =
+  showS00 && showS01 ? 'S00, S01 y S02' : showS00 ? 'S00 y S02' : showS01 ? 'S01 y S02' : 'S02';
 ---
 
 <SiteLayout
@@ -69,6 +72,26 @@ const showInternalSessions = showS00 || showS01;
         )
       }
       {
+        showS02Prototype && (
+          <li class="session-preview session-preview--s02">
+            <span class="eyebrow">S02 · en desarrollo</span>
+            <div>
+              <span class="status-tag">Prototipo interno</span>
+              <h2>
+                <a href={withBase('/sesiones/s02/')}>Árboles de decisión y Random Forest</a>
+              </h2>
+              <p>
+                Explora criterios de división, regresión por hojas, sobreajuste y ensambles; la
+                práctica planetaria se abre en Colab.
+              </p>
+              <a class="text-link" href={withBase('/sesiones/s02/')}>
+                Explorar la sesión 2
+              </a>
+            </div>
+          </li>
+        )
+      }
+      {
         sessions.map((session) => (
           <li>
             <span class="eyebrow">{session.data.session}</span>
@@ -86,7 +109,7 @@ const showInternalSessions = showS00 || showS01;
       sessions.length === 0 && (
         <p class="sessions-public-note">
           {showInternalSessions
-            ? `Las colecciones públicas siguen vacías. ${showS00 && showS01 ? 'S00 y S01' : showS00 ? 'S00' : 'S01'} se listan aquí como prototipos internos mientras continúa la revisión editorial.`
+            ? `Las colecciones públicas siguen vacías. ${internalSessionLabel} se listan aquí como prototipos internos mientras continúa la revisión editorial.`
             : 'Las colecciones públicas siguen vacías y todavía no hay sesiones habilitadas para mostrar.'}
         </p>
       )

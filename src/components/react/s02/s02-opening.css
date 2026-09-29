@@ -1,0 +1,1571 @@
+.s02-journey__references {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+  min-height: 0;
+}
+
+.s02-journey__references > p:first-child {
+  margin: 0 0 0.65rem;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.82rem, 0.95vw, 1rem));
+}
+
+.s02-journey__references-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 0.4rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.s02-journey__references-list li {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 0.3fr) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgb(255 255 255 / 0.11);
+}
+
+.s02-journey__references-list span {
+  color: var(--s02-rule);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), clamp(0.82rem, 0.9vw, 0.92rem));
+  text-transform: uppercase;
+}
+
+.s02-journey__references-list a {
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.82rem, 0.98vw, 1rem));
+  line-height: 1.3;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.s02-journey__references small {
+  margin-top: 0.6rem;
+  color: var(--ink-500);
+  font-size: max(var(--s02-readable-floor), clamp(0.82rem, 0.9vw, 0.92rem));
+}
+
+.s02-planet-classifier {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+}
+
+.s02-planet-classifier__examples,
+.s02-planet-classifier__tree-stage {
+  display: grid;
+  min-height: 0;
+  align-content: stretch;
+  gap: clamp(0.3rem, 0.6vh, 0.55rem);
+}
+
+.s02-planet-classifier__examples {
+  grid-template-rows: auto minmax(5rem, 1fr) auto auto auto;
+}
+
+.s02-planet-classifier__example-heading,
+.s02-planet-classifier__stage-footer,
+.s02-planet-classifier__tree-footer {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.s02-planet-classifier__example-heading p,
+.s02-planet-classifier__stage-footer p,
+.s02-planet-classifier__caption {
+  margin: 0;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.78rem, 0.9vw, 0.92rem));
+  line-height: 1.3;
+}
+
+.s02-planet-classifier__example-heading > span {
+  flex: 0 0 auto;
+  color: var(--s02-rule);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), clamp(0.88rem, 1vw, 1rem));
+}
+
+.s02-planet-classifier__density-formula {
+  color: var(--s02-rule);
+  font-size: clamp(1.08rem, 1.28vw, 1.22rem);
+}
+
+.s02-planet-classifier__gallery {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.35rem, 0.8vw, 0.8rem);
+  min-height: 0;
+}
+
+.s02-planet-classifier__art {
+  min-width: 0;
+  min-height: 5rem;
+  border: 1px solid rgb(255 255 255 / 0.09);
+  border-radius: var(--radius-sm);
+  background-color: rgb(7 24 34 / 0.55);
+  background-repeat: no-repeat;
+  background-size: 400% auto;
+}
+
+.s02-planet-classifier__watermark {
+  position: absolute;
+  right: 0.65rem;
+  bottom: 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.12rem 0.35rem;
+  border-radius: 999px;
+  color: rgb(255 255 255 / 0.74);
+  background: rgb(4 17 25 / 0.38);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), clamp(0.62rem, 0.72vw, 0.72rem));
+  letter-spacing: 0.1em;
+  opacity: 0.78;
+}
+
+.s02-planet-classifier__watermark svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--data-soft);
+}
+
+.s02-planet-classifier__case-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.35rem, 0.8vw, 0.8rem);
+}
+
+.s02-planet-classifier__case {
+  min-width: 0;
+  padding: 0.2rem 0.5rem 0.25rem;
+  border-left: 2px solid var(--s02-rule);
+  background: rgb(255 255 255 / 0.035);
+}
+
+.s02-planet-classifier__case:nth-child(2) {
+  border-color: var(--s02-branch);
+}
+
+.s02-planet-classifier__case:nth-child(3) {
+  border-color: var(--decision);
+}
+
+.s02-planet-classifier__case:nth-child(4) {
+  border-color: var(--s02-limit);
+}
+
+.s02-planet-classifier__case h3 {
+  margin: 0 0 0.18rem;
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.77rem, 0.92vw, 0.95rem));
+  line-height: 1.2;
+}
+
+.s02-planet-classifier__case dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.08rem 0.45rem;
+  margin: 0;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.7rem, 0.78vw, 0.8rem));
+  line-height: 1.2;
+}
+
+.s02-planet-classifier__case dl div {
+  display: contents;
+}
+
+.s02-planet-classifier__case dt {
+  color: var(--ink-500);
+}
+
+.s02-planet-classifier__case dd {
+  margin: 0;
+  color: var(--paper-200);
+  font-variant-numeric: tabular-nums;
+}
+
+.s02-planet-classifier__stage-footer button,
+.s02-planet-classifier__tree-footer button {
+  flex: 0 0 auto;
+  min-height: 1.65rem;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--s02-rule);
+  border-radius: var(--radius-sm);
+  color: var(--ink-950);
+  background: var(--s02-rule);
+  cursor: pointer;
+  font-size: max(var(--s02-readable-floor), clamp(0.76rem, 0.88vw, 0.9rem));
+  font-weight: 750;
+  line-height: 1.15;
+}
+
+.s02-planet-classifier__caption {
+  color: var(--ink-500);
+  font-size: max(var(--s02-readable-floor), clamp(0.68rem, 0.76vw, 0.78rem));
+}
+
+.s02-planet-classifier__tree-stage {
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+}
+
+.s02-planet-classifier__tree-controls {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.s02-planet-classifier__tree-controls > p {
+  flex: 0 0 auto;
+  margin: 0;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.74rem, 0.86vw, 0.88rem));
+}
+
+.s02-planet-classifier__case-buttons {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.s02-planet-classifier__case-buttons button {
+  min-height: 1.85rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: var(--radius-sm);
+  color: var(--paper-200);
+  background: rgb(255 255 255 / 0.05);
+  cursor: pointer;
+  font-size: max(var(--s02-readable-floor), clamp(0.68rem, 0.78vw, 0.8rem));
+}
+
+.s02-planet-classifier__case-buttons button[aria-pressed='true'] {
+  border-color: var(--s02-branch);
+  color: var(--ink-950);
+  background: var(--s02-branch);
+  font-weight: 750;
+}
+
+.s02-planet-classifier__tree-scroll {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.s02-planet-classifier__tree {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 12rem;
+  overflow: visible;
+}
+
+.s02-planet-classifier__branch {
+  fill: none;
+  stroke: rgb(210 225 231 / 0.4);
+  stroke-width: 3;
+}
+
+.s02-planet-classifier__branch.is-active {
+  stroke: var(--s02-rule);
+  stroke-width: 5;
+}
+
+.s02-planet-classifier__branch-label {
+  fill: var(--paper-300);
+  font-family: var(--font-sans);
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.s02-planet-classifier__node rect {
+  fill: rgb(255 255 255 / 0.08);
+  stroke: rgb(255 255 255 / 0.35);
+  stroke-width: 2;
+}
+
+.s02-planet-classifier__node text,
+.s02-planet-classifier__leaf text {
+  fill: var(--paper-50);
+  font-family: var(--font-sans);
+  font-size: 30px;
+  font-weight: 750;
+}
+
+.s02-planet-classifier__node.is-active rect {
+  fill: rgb(112 213 216 / 0.2);
+  stroke: var(--s02-rule);
+}
+
+.s02-planet-classifier__leaf rect {
+  fill: rgb(255 255 255 / 0.035);
+  stroke: rgb(255 255 255 / 0.24);
+  stroke-width: 2;
+}
+
+.s02-planet-classifier__leaf.is-active rect {
+  fill: rgb(174 157 255 / 0.25);
+  stroke: var(--s02-branch);
+  stroke-width: 3;
+}
+
+.s02-planet-classifier__route {
+  min-height: 1.8rem;
+  margin: 0;
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), clamp(0.75rem, 0.86vw, 0.9rem));
+  line-height: 1.3;
+}
+
+.s02-planet-classifier__route strong {
+  color: var(--s02-rule);
+}
+
+.s02-planet-classifier__tree-footer {
+  padding-top: 0.2rem;
+  border-top: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.s02-planet-classifier__tree-footer button {
+  border-color: rgb(255 255 255 / 0.22);
+  color: var(--paper-100);
+  background: rgb(255 255 255 / 0.06);
+}
+
+.s02-planet-classifier__tree-footer small {
+  color: var(--ink-500);
+  font-size: max(var(--s02-readable-floor), clamp(0.68rem, 0.74vw, 0.76rem));
+  text-align: right;
+}
+
+.s02-planet-classifier :is(button):focus-visible {
+  outline: 3px solid var(--paper-50);
+  outline-offset: 2px;
+}
+
+.s02-information-gain {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0.55rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.s02-information-gain__visuals {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(19rem, 0.9fr);
+  gap: clamp(0.65rem, 1.1vw, 1.1rem);
+  min-height: 0;
+}
+
+.s02-information-gain__left,
+.s02-information-gain__readout {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  min-width: 0;
+  min-height: 0;
+}
+
+.s02-information-gain__readout {
+  position: static;
+  overflow-y: auto;
+  padding-right: 0.2rem;
+}
+
+.s02-information-gain__sample,
+.s02-information-gain__scores {
+  min-width: 0;
+  margin: 0;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.045);
+}
+
+.s02-information-gain__sample figcaption,
+.s02-information-gain__scores figcaption {
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.86rem, 0.98vw, 1rem));
+  font-weight: 700;
+}
+
+.s02-information-gain__sample-svg {
+  display: block;
+  width: 100%;
+  height: clamp(8.5rem, 18vh, 11rem);
+  overflow: visible;
+}
+
+.s02-information-gain__row-label,
+.s02-information-gain__tick-label,
+.s02-information-gain__axis-label,
+.s02-information-gain__cut-label,
+.s02-information-gain__bar-label,
+.s02-information-gain__bar-value {
+  fill: var(--paper-200);
+  font-family: var(--font-sans);
+  font-size: 15px;
+}
+
+.s02-information-gain__row-label,
+.s02-information-gain__axis-label {
+  font-weight: 700;
+}
+
+.s02-information-gain__axis,
+.s02-information-gain__tick,
+.s02-information-gain__score-axis {
+  stroke: rgb(255 255 255 / 0.4);
+  stroke-width: 1.5;
+}
+
+.s02-information-gain__cut {
+  stroke: var(--s02-limit);
+  stroke-dasharray: 6 5;
+  stroke-width: 3;
+}
+
+.s02-information-gain__cut-label {
+  fill: var(--s02-limit);
+  font-weight: 750;
+}
+
+.s02-information-gain__point--compact {
+  fill: var(--s02-rule);
+  stroke: var(--ink-950);
+  stroke-width: 2;
+}
+
+.s02-information-gain__point--wrapped {
+  fill: var(--decision);
+  stroke: var(--ink-950);
+  stroke-width: 2;
+}
+
+.s02-information-gain__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), clamp(0.82rem, 0.9vw, 0.92rem));
+}
+
+.s02-information-gain__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.s02-information-gain__legend-dot,
+.s02-information-gain__legend-square {
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 1px solid var(--ink-950);
+  background: var(--s02-rule);
+}
+
+.s02-information-gain__legend-dot {
+  border-radius: 50%;
+}
+
+.s02-information-gain__legend-square {
+  background: var(--decision);
+}
+
+.s02-information-gain__control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+}
+
+.s02-information-gain__control label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.85rem, 0.98vw, 1rem));
+  font-weight: 700;
+}
+
+.s02-information-gain__control output {
+  color: var(--s02-limit);
+  font-family: var(--font-mono);
+}
+
+.s02-information-gain__control input {
+  grid-column: 1;
+  width: 100%;
+  min-height: 1.8rem;
+  accent-color: var(--s02-limit);
+}
+
+.s02-information-gain__control button {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--s02-rule);
+  border-radius: var(--radius-sm);
+  color: var(--ink-950);
+  background: var(--s02-rule);
+  cursor: pointer;
+  font: inherit;
+  font-size: max(var(--s02-readable-floor), clamp(0.78rem, 0.92vw, 0.92rem));
+  font-weight: 750;
+}
+
+.s02-information-gain__control button:hover {
+  filter: brightness(1.08);
+}
+
+.s02-information-gain__control button:focus-visible {
+  outline: 3px solid var(--paper-50);
+  outline-offset: 2px;
+}
+
+.s02-information-gain__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.s02-information-gain__criteria {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.15rem 0.4rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.045);
+}
+
+.s02-information-gain__criteria legend {
+  grid-column: 1;
+  grid-row: 1;
+  padding: 0 0.15rem;
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.82rem, 0.95vw, 0.96rem));
+  font-weight: 700;
+}
+
+.s02-information-gain__criteria > div {
+  display: flex;
+  grid-column: 2;
+  grid-row: 1;
+  gap: 0.35rem;
+}
+
+.s02-information-gain__criteria button {
+  min-height: 1.8rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: var(--radius-sm);
+  color: var(--paper-100);
+  background: rgb(255 255 255 / 0.07);
+  cursor: pointer;
+  font-size: max(var(--s02-readable-floor), 0.82rem);
+}
+
+.s02-information-gain__criteria button[aria-pressed='true'] {
+  border-color: var(--s02-rule);
+  color: var(--ink-950);
+  background: var(--s02-rule);
+  font-weight: 750;
+}
+
+.s02-information-gain__metrics p {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0.38rem 0.45rem;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.045);
+}
+
+.s02-information-gain__metrics span {
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.82rem, 0.86vw, 0.9rem));
+  line-height: 1.22;
+}
+
+.s02-information-gain__metrics strong {
+  color: var(--paper-50);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), clamp(0.9rem, 1.08vw, 1.08rem));
+}
+
+.s02-information-gain__metrics .s02-information-gain__gain {
+  border-color: var(--s02-rule);
+  background: rgb(112 213 216 / 0.08);
+}
+
+.s02-information-gain__branches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.s02-information-gain__branches section {
+  min-width: 0;
+  padding: 0.45rem 0.6rem;
+  border-left: 2px solid var(--s02-branch);
+  background: rgb(255 255 255 / 0.04);
+}
+
+.s02-information-gain__branches h3 {
+  margin: 0 0 0.2rem;
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.82rem, 0.93vw, 0.95rem));
+}
+
+.s02-information-gain__branches p {
+  margin: 0;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.78rem, 0.86vw, 0.88rem));
+  line-height: 1.3;
+}
+
+.s02-information-gain__scores svg {
+  display: block;
+  width: 100%;
+  height: clamp(4rem, 8.5vh, 5.2rem);
+}
+
+.s02-information-gain__bar {
+  fill: rgb(174 157 255 / 0.68);
+}
+
+.s02-information-gain__bar.is-active {
+  fill: var(--s02-rule);
+  stroke: var(--paper-50);
+  stroke-width: 1.5;
+}
+
+.s02-information-gain__bar-value {
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), 13px);
+}
+
+.s02-information-gain__scores p {
+  margin: 0;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.8rem, 0.9vw, 0.92rem));
+  line-height: 1.3;
+}
+
+.s02-information-gain__definitions {
+  min-width: 0;
+  border: 1px solid var(--s02-rule);
+  border-left-width: 4px;
+  border-radius: var(--radius-sm);
+  background: rgb(112 213 216 / 0.1);
+}
+
+.s02-information-gain__definitions > summary {
+  display: flex;
+  min-height: 2.45rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.65rem;
+  color: var(--ink-950);
+  background: var(--s02-rule);
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+.s02-information-gain__definitions > summary::marker {
+  color: var(--ink-950);
+}
+
+.s02-information-gain__definitions > summary strong {
+  font-size: max(var(--s02-readable-floor), clamp(0.8rem, 0.94vw, 0.96rem));
+}
+
+.s02-information-gain__definitions > summary span {
+  padding-left: 0;
+  color: var(--ink-950);
+  font-size: max(var(--s02-readable-floor), clamp(0.68rem, 0.78vw, 0.8rem));
+  font-weight: 800;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.s02-information-gain__definitions > summary:hover {
+  filter: brightness(1.08);
+}
+
+.s02-information-gain__definitions > summary:focus-visible {
+  outline: 3px solid var(--paper-50);
+  outline-offset: 2px;
+}
+
+.s02-information-gain__definitions[open] {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: 0.3rem;
+  border-color: var(--decision);
+  border-left-width: 3px;
+  background: linear-gradient(145deg, var(--ink-950), var(--ink-900));
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 0.4);
+  overflow: hidden;
+}
+
+.s02-information-gain__definitions[open] > summary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  min-height: 2rem;
+  padding: 0.25rem 0.4rem;
+  color: var(--paper-50);
+  background: var(--ink-900);
+}
+
+.s02-information-gain__definitions[open] > summary::marker,
+.s02-information-gain__definitions[open] > summary span {
+  color: var(--s02-rule);
+}
+
+.s02-information-gain__definition-body {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0.35rem;
+  min-height: 0;
+  padding: 0.35rem;
+  overflow: hidden;
+}
+
+.s02-information-gain__definition-body[data-slider-enhanced='false'] {
+  display: block;
+  height: auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.s02-information-gain__definition-body > .s02-information-gain__definition-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: var(--s02-rule);
+  font-size: max(var(--s02-readable-floor), clamp(0.82rem, 0.9vw, 0.92rem));
+  font-weight: 750;
+}
+
+.s02-information-gain__definition-body[data-slider-enhanced='false']
+  .s02-information-gain__definition-progress {
+  display: none;
+}
+
+.s02-information-gain__definition-pages {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 0.75rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.s02-information-gain__definition-body[data-slider-enhanced='false']
+  .s02-information-gain__definition-pages {
+  grid-template-rows: none;
+  overflow: visible;
+}
+
+.s02-information-gain__definition-page {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.s02-information-gain__definition-body[data-slider-enhanced='false']
+  .s02-information-gain__definition-page {
+  overflow: visible;
+}
+
+.s02-information-gain__definition-page[hidden],
+.s02-information-gain__definition-controls[hidden] {
+  display: none;
+}
+
+.s02-information-gain__definition-page:last-child .s02-information-gain__comparison {
+  gap: 0.25rem;
+  padding: 0.1rem 0.45rem;
+}
+
+.s02-information-gain__definition-page:last-child
+  .s02-information-gain__comparison-formulas
+  > section {
+  gap: 0.25rem;
+  padding: 0.45rem;
+}
+
+.s02-information-gain__definition-page:last-child
+  .s02-information-gain__comparison-formulas
+  .s02-math--block {
+  margin-block: 0;
+  padding: 0.25rem 0.45rem;
+}
+
+.s02-information-gain__definition-controls {
+  display: grid;
+  grid-template-columns: auto minmax(4rem, 1fr) auto auto;
+  align-items: center;
+  gap: 0.35rem 0.65rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+}
+
+.s02-information-gain__definition-controls button {
+  min-height: 2rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid rgb(255 255 255 / 0.24);
+  border-radius: var(--radius-sm);
+  color: var(--paper-50);
+  background: rgb(255 255 255 / 0.07);
+  cursor: pointer;
+  font: inherit;
+  font-size: max(var(--s02-readable-floor), clamp(0.78rem, 0.88vw, 0.9rem));
+  font-weight: 700;
+}
+
+.s02-information-gain__definition-controls button:hover:not(:disabled) {
+  border-color: var(--s02-rule);
+  color: var(--s02-rule);
+}
+
+.s02-information-gain__definition-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.s02-information-gain__definition-controls button:focus-visible,
+.s02-information-gain__definition-controls input:focus-visible {
+  outline: 3px solid var(--paper-50);
+  outline-offset: 2px;
+}
+
+.s02-information-gain__definition-controls input {
+  width: 100%;
+  min-width: 0;
+  min-height: 1.5rem;
+  accent-color: var(--s02-rule);
+  cursor: pointer;
+}
+
+.s02-information-gain__definition-controls output {
+  color: var(--s02-rule);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), 0.86rem);
+  white-space: nowrap;
+}
+
+.s02-information-gain__slider-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.s02-information-gain__measure-grid,
+.s02-information-gain__comparison-formulas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.s02-information-gain__measure,
+.s02-information-gain__comparison-formulas > section {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 0.13);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.035);
+}
+
+.s02-information-gain__comparison {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  padding: 0.15rem 0.75rem 0.25rem;
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+}
+
+.s02-information-gain__definition-body h3,
+.s02-information-gain__comparison-formulas h4 {
+  margin: 0;
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.95rem, 1.05vw, 1.08rem));
+}
+
+.s02-information-gain__comparison-formulas h4 {
+  color: var(--s02-rule);
+}
+
+.s02-information-gain__definition-body p {
+  margin: 0;
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), clamp(0.875rem, 0.94vw, 1rem));
+  line-height: 1.4;
+}
+
+.s02-information-gain__definition-body .s02-information-gain__comparison-intuition {
+  padding: 0.25rem 0.45rem;
+  border-left: 2px solid var(--s02-rule);
+  background: rgb(255 255 255 / 0.035);
+  font-size: max(var(--s02-readable-floor), 0.79rem);
+  line-height: 1.22;
+}
+
+.s02-information-gain__search-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  counter-reset: s02-search-step;
+  list-style: none;
+}
+
+.s02-information-gain__search-steps li {
+  display: grid;
+  align-content: start;
+  gap: 0.1rem;
+  min-width: 0;
+  padding: 0.3rem 0.42rem;
+  border: 1px solid rgb(255 255 255 / 0.13);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.035);
+  counter-increment: s02-search-step;
+}
+
+.s02-information-gain__search-steps li::before {
+  color: var(--s02-rule);
+  content: counter(s02-search-step, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), 0.75rem);
+  font-weight: 750;
+}
+
+.s02-information-gain__search-steps strong {
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.77rem, 0.83vw, 0.85rem));
+}
+
+.s02-information-gain__search-steps span {
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), clamp(0.7rem, 0.75vw, 0.79rem));
+  line-height: 1.18;
+}
+
+.s02-information-gain__definition-body .s02-information-gain__example-note {
+  padding-top: 0.25rem;
+  font-size: max(var(--s02-readable-floor), 0.79rem);
+  line-height: 1.18;
+}
+
+.s02-information-gain__definition-body .math-expression {
+  display: block;
+  text-align: center;
+}
+
+.s02-information-gain__definition-body .s02-information-gain__math {
+  margin-block: 0.15rem;
+}
+
+.s02-information-gain__definition-body .s02-information-gain__weights,
+.s02-information-gain__definition-body .s02-information-gain__example-note {
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.82rem, 0.88vw, 0.94rem));
+}
+
+.s02-information-gain__definition-body .s02-information-gain__weights {
+  margin-top: 0.25rem;
+}
+
+.s02-information-gain__definition-body .s02-information-gain__example-note {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+}
+
+.s02-information-gain__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.s02-information-gain__intro {
+  max-width: 72ch;
+}
+
+.s02-information-gain__term {
+  display: inline;
+  padding: 0 0.08em;
+  border: 0;
+  border-radius: 0.12em;
+  color: var(--s02-rule);
+  background: transparent;
+  font: inherit;
+  font-weight: 800;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+.session-presentation .s02-information-gain__intro .s02-information-gain__term {
+  min-height: 0;
+  height: auto;
+  font-size: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
+}
+
+.s02-information-gain__term:hover {
+  color: var(--paper-50);
+  background: rgb(112 213 216 / 0.14);
+}
+
+.s02-information-gain__term:focus-visible {
+  outline: 2px solid var(--paper-50);
+  outline-offset: 2px;
+}
+
+.s02-information-gain__definition-dialog {
+  position: fixed;
+  inset: 0;
+  width: min(42rem, calc(100% - 2rem));
+  max-width: 42rem;
+  max-height: min(84vh, 44rem);
+  margin: auto;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  color: var(--paper-50);
+  background: transparent;
+}
+
+.s02-information-gain__definition-dialog::backdrop {
+  background: rgb(3 13 20 / 0.82);
+}
+
+.s02-information-gain__definition-card {
+  display: grid;
+  gap: 0.9rem;
+  max-height: min(84vh, 44rem);
+  overflow-y: auto;
+  padding: clamp(1rem, 2.5vw, 1.65rem);
+  border: 1px solid var(--decision);
+  border-left-width: 4px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(145deg, var(--ink-950), var(--ink-900));
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 0.45);
+}
+
+.s02-information-gain__definition-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.s02-information-gain__definition-header p {
+  margin: 0;
+  color: var(--s02-rule);
+  font-family: var(--font-mono);
+  font-size: var(--presentation-metadata-size);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.s02-information-gain__definition-close {
+  display: inline-flex;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: var(--radius-sm);
+  color: var(--paper-50);
+  background: rgb(255 255 255 / 0.08);
+  font: inherit;
+  font-size: var(--presentation-control-size);
+  cursor: pointer;
+}
+
+.s02-information-gain__definition-close > span:first-child {
+  font-size: 1.4em;
+  line-height: 0.8;
+}
+
+.s02-information-gain__definition-close:hover {
+  background: rgb(255 255 255 / 0.16);
+}
+
+.s02-information-gain__definition-close:focus-visible {
+  outline: 3px solid var(--s02-rule);
+  outline-offset: 2px;
+}
+
+.s02-information-gain__definition-card > h2 {
+  margin: 0;
+  color: var(--paper-50);
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+  line-height: 1.12;
+}
+
+.s02-information-gain__definition-description {
+  max-width: 66ch;
+  margin: 0;
+  color: var(--paper-200);
+  font-size: var(--presentation-support-size);
+  line-height: 1.45;
+}
+
+.s02-information-gain__concept-formulas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.s02-information-gain__concept-formulas--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.s02-information-gain__concept-formulas section {
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.045);
+}
+
+.s02-information-gain__concept-formulas h3 {
+  margin: 0;
+  color: var(--s02-rule);
+  font-size: var(--presentation-control-size);
+}
+
+.s02-information-gain__concept-math {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 0.45rem;
+  border-radius: 0.2rem;
+  color: var(--white);
+  background: rgb(255 255 255 / 0.08);
+  font-size: max(var(--s02-readable-floor), clamp(0.92rem, 1.4vw, 1.1rem));
+  line-height: 1.5;
+}
+
+.s02-information-gain__concept-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--paper-300);
+  font-size: var(--presentation-control-size);
+  line-height: 1.45;
+}
+
+.s02-information-gain__concept-limit {
+  padding-top: 0.65rem;
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+}
+
+@media (max-width: 42rem) {
+  .s02-information-gain__definition-dialog {
+    width: calc(100% - 1rem);
+    max-height: calc(100% - 1rem);
+  }
+
+  .s02-information-gain__definition-card {
+    max-height: calc(100dvh - 1rem);
+    gap: 0.75rem;
+    padding: 0.9rem;
+  }
+
+  .s02-information-gain__concept-formulas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .s02-information-gain__concept-note {
+    grid-column: 1;
+  }
+}
+
+@media (min-width: 49rem) and (max-height: 48rem) {
+  .s02-information-gain__visuals {
+    grid-template-columns: minmax(0, 0.95fr) minmax(19rem, 1.05fr);
+    gap: 0.5rem;
+  }
+
+  .s02-information-gain__left,
+  .s02-information-gain__readout {
+    gap: 0.15rem;
+  }
+
+  .s02-information-gain__readout {
+    gap: 0.1rem;
+  }
+
+  .s02-information-gain__criteria {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.1rem 0.3rem;
+    padding: 0.15rem 0.3rem;
+  }
+
+  .s02-information-gain__criteria legend {
+    font-size: max(var(--s02-readable-floor), 0.8125rem);
+  }
+
+  .s02-journey .s02-information-gain__criteria button {
+    min-height: 1.3rem;
+    padding: 0.1rem 0.3rem;
+    font-size: max(var(--s02-readable-floor), 0.8125rem);
+  }
+
+  .s02-information-gain__criteria > div {
+    gap: 0.2rem;
+  }
+
+  .s02-information-gain__sample,
+  .s02-information-gain__scores {
+    padding: 0.3rem 0.45rem;
+  }
+
+  .s02-information-gain__sample-svg {
+    height: 15vh;
+    min-height: 6.25rem;
+  }
+
+  .s02-information-gain__control {
+    gap: 0.1rem 0.4rem;
+  }
+
+  .s02-information-gain__control button {
+    min-height: 1.9rem;
+    padding: 0.25rem 0.45rem;
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+  }
+
+  .s02-information-gain__control input {
+    min-height: 1.2rem;
+  }
+
+  .s02-information-gain__metrics,
+  .s02-information-gain__branches {
+    gap: 0.2rem;
+  }
+
+  .s02-information-gain__metrics p,
+  .s02-information-gain__branches section {
+    padding: 0.15rem 0.25rem;
+  }
+
+  .s02-information-gain__metrics span,
+  .s02-information-gain__branches h3 {
+    font-size: max(var(--s02-readable-floor), 0.8125rem);
+  }
+
+  .s02-information-gain__branches p {
+    font-size: max(var(--s02-readable-floor), 0.8125rem);
+    line-height: 1.15;
+  }
+
+  .s02-information-gain__scores svg {
+    height: 7.8vh;
+    min-height: 3.5rem;
+  }
+
+  .s02-information-gain__scores p {
+    font-size: max(var(--s02-readable-floor), 0.8125rem);
+    line-height: 1.2;
+  }
+
+  .s02-information-gain__definition-body {
+    gap: 0.45rem;
+    padding: 0.25rem;
+  }
+
+  .s02-information-gain__definition-body p {
+    font-size: max(var(--s02-readable-floor), 0.875rem);
+    line-height: 1.3;
+  }
+
+  .s02-information-gain__measure-grid,
+  .s02-information-gain__comparison-formulas {
+    gap: 0.45rem;
+  }
+
+  .s02-information-gain__measure,
+  .s02-information-gain__comparison-formulas > section {
+    gap: 0.3rem;
+    padding: 0.45rem;
+  }
+
+  .s02-information-gain__definition-body .s02-math--block {
+    margin-block: 0.15rem;
+    padding: 0.35rem 0.45rem;
+    font-size: 1rem;
+  }
+
+  .s02-information-gain__definition-body .s02-information-gain__weights,
+  .s02-information-gain__definition-body .s02-information-gain__example-note {
+    font-size: max(var(--s02-readable-floor), 0.875rem);
+  }
+}
+
+@media (max-width: 48rem) {
+  .s02-journey__references-list,
+  .s02-information-gain__visuals {
+    grid-template-columns: 1fr;
+  }
+
+  .s02-journey__references {
+    height: auto;
+  }
+
+  .s02-journey__references-list li {
+    grid-template-columns: minmax(5rem, 0.35fr) minmax(0, 1fr);
+  }
+
+  .s02-planet-classifier {
+    height: auto;
+  }
+
+  .s02-planet-classifier__examples {
+    grid-template-rows: auto minmax(7rem, 10rem) auto auto auto;
+  }
+
+  .s02-planet-classifier__case-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .s02-planet-classifier__stage-footer,
+  .s02-planet-classifier__tree-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .s02-planet-classifier__tree-stage {
+    grid-template-rows: auto minmax(12rem, 1fr) auto auto;
+  }
+
+  .s02-planet-classifier__tree-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .s02-planet-classifier__tree-scroll {
+    overflow-x: auto;
+  }
+
+  .s02-planet-classifier__tree {
+    width: max(100%, 52rem);
+    height: auto;
+    min-height: 0;
+  }
+
+  .s02-planet-classifier__tree-footer small {
+    text-align: left;
+  }
+
+  .s02-information-gain__visuals {
+    gap: 0.75rem;
+  }
+
+  .s02-information-gain__measure-grid,
+  .s02-information-gain__comparison-formulas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .s02-information-gain__comparison {
+    padding-inline: 0;
+  }
+
+  .s02-information-gain__search-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .s02-information-gain__control {
+    grid-template-columns: 1fr;
+  }
+
+  .s02-information-gain__criteria {
+    grid-template-columns: 1fr;
+  }
+
+  .s02-information-gain__criteria legend,
+  .s02-information-gain__criteria > div {
+    grid-column: 1;
+  }
+
+  .s02-information-gain__criteria > div {
+    grid-row: 2;
+  }
+
+  .s02-information-gain__control button,
+  .s02-information-gain__control input {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .s02-information-gain__definitions[open] {
+    position: relative;
+    inset: auto;
+    display: block;
+    padding: 0;
+    overflow: visible;
+    box-shadow: none;
+  }
+
+  .s02-information-gain__definitions[open] > summary {
+    position: static;
+  }
+
+  .s02-information-gain__definitions[open] .s02-information-gain__definition-body {
+    overflow: visible;
+  }
+
+  .s02-information-gain__definition-body {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
+  .s02-information-gain__definition-pages {
+    display: grid;
+    grid-template-rows: none;
+    overflow: visible;
+  }
+
+  .s02-information-gain__definition-body[data-slider-enhanced='true'] {
+    display: block;
+  }
+
+  .s02-information-gain__definition-page {
+    overflow: visible;
+  }
+
+  .s02-information-gain__definition-controls {
+    grid-template-columns: auto minmax(3rem, 1fr) auto auto;
+    gap: 0.35rem;
+  }
+
+  .s02-information-gain__definition-controls button {
+    padding-inline: 0.45rem;
+  }
+}
+
+@media (min-width: 49rem) and (max-height: 48rem) {
+  .s02-information-gain__definitions > summary {
+    min-height: 2.1rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .s02-information-gain__definitions[open] {
+    padding: 0.2rem;
+  }
+
+  .s02-information-gain__definitions[open] > summary {
+    padding: 0.1rem 0.35rem;
+  }
+
+  .s02-information-gain__definition-body {
+    gap: 0.4rem;
+    padding: 0.25rem;
+  }
+
+  .s02-information-gain__measure-grid,
+  .s02-information-gain__comparison-formulas {
+    gap: 0.4rem;
+  }
+
+  .s02-information-gain__measure,
+  .s02-information-gain__comparison-formulas > section {
+    gap: 0.25rem;
+    padding: 0.45rem;
+  }
+
+  .s02-information-gain__comparison {
+    gap: 0.35rem;
+    padding-inline: 0.45rem;
+  }
+
+  .s02-information-gain__definition-body .s02-math--block {
+    margin-block: 0.1rem;
+    padding: 0.3rem 0.4rem;
+  }
+
+  .s02-planet-classifier__examples {
+    grid-template-rows: auto minmax(4rem, 1fr) auto auto auto;
+  }
+
+  .s02-planet-classifier__art {
+    min-height: 4rem;
+  }
+
+  .s02-planet-classifier__case {
+    padding: 0.12rem 0.35rem 0.18rem;
+  }
+
+  .s02-planet-classifier__case h3 {
+    font-size: max(var(--s02-readable-floor), 0.875rem);
+  }
+
+  .s02-planet-classifier__case dl {
+    font-size: max(var(--s02-readable-floor), 0.8125rem);
+  }
+
+  .s02-planet-classifier__caption {
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+  }
+
+  .s02-planet-classifier__tree {
+    min-height: 0;
+  }
+}

@@ -1,0 +1,238 @@
+---
+import S02LearningJourney from './react/S02LearningJourney';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { s02ColabUrl, s02Stops } from '../lib/s02-content';
+---
+
+<SiteLayout
+  title="Sesión 02 · Árboles de decisión y Random Forest"
+  description="Presentación interna e interactiva sobre árboles, bootstrap y Random Forest, con una práctica de regresión planetaria en Colab."
+  noindex
+  theme="dark"
+  fullBleed
+>
+  <div class="s02-session-shell">
+    <section class="site-shell s02-instrument" aria-label="Presentación de la sesión 02">
+      <S02LearningJourney client:load />
+    </section>
+
+    <noscript>
+      <section class="site-shell s02-fallback" aria-labelledby="s02-fallback-title">
+        <p class="eyebrow">Sesión 02 · lectura lineal</p>
+        <h2 id="s02-fallback-title">De las reglas al bosque</h2>
+        <p>
+          Un árbol pregunta si una variable queda a un lado de un umbral. Cada respuesta separa
+          ejemplos en ramas y cada hoja resume los ejemplos que recibe.
+        </p>
+        <h3>Datos sintéticos de la exploración</h3>
+        <p>
+          Los ejes son coordenadas inventadas; A y B son etiquetas de juguete. No son planetas ni
+          observaciones del NASA Exoplanet Archive.
+        </p>
+        <div class="s02-fallback-table-wrap">
+          <table>
+            <caption>Doce puntos sintéticos para seguir reglas</caption>
+            <thead>
+              <tr><th scope="col">x₁</th><th scope="col">x₂</th><th scope="col">Etiqueta</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>1</td><td>A</td></tr>
+              <tr><td>1</td><td>2</td><td>A</td></tr>
+              <tr><td>2</td><td>1</td><td>A</td></tr>
+              <tr><td>2</td><td>2</td><td>A</td></tr>
+              <tr><td>1</td><td>4</td><td>B</td></tr>
+              <tr><td>2</td><td>4</td><td>B</td></tr>
+              <tr><td>4</td><td>1</td><td>B</td></tr>
+              <tr><td>5</td><td>1</td><td>B</td></tr>
+              <tr><td>4</td><td>2</td><td>B</td></tr>
+              <tr><td>5</td><td>2</td><td>B</td></tr>
+              <tr><td>4</td><td>4</td><td>A</td></tr>
+              <tr><td>5</td><td>4</td><td>A</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Criterios para clasificar</h3>
+        <p>
+          Gini mide impureza con <code>1 − Σ p²</code>; la entropía usa
+          <code>−Σ p log₂ p</code>. El árbol compara la impureza ponderada de los hijos con la del
+          nodo padre. scikit-learn acepta <code>gini</code>, <code>entropy</code> y
+          <code>log_loss</code>; los dos últimos usan entropía de Shannon.
+        </p>
+        <h3>Ajustar y aplicar un clasificador</h3>
+        <pre><code>{`from sklearn.tree import DecisionTreeClassifier
+
+arbol = DecisionTreeClassifier(
+    criterion="gini", max_depth=2,
+    min_samples_leaf=2, random_state=42
+)
+arbol.fit(X_train, y_train)
+predicciones = arbol.predict(X_test)`}</code></pre>
+        <p>
+          <code>max_depth</code> limita los niveles; <code>min_samples_leaf</code> exige casos mínimos
+          por hoja. En el ejemplo sintético, una raíz <code>x₁ ≤ 3</code> acierta 8 de 12 puntos. Con
+          profundidad 2 puede separar el resto usando <code>x₂ ≤ 3</code>. Si cada hoja debe
+          conservar al menos 3 puntos, ese segundo nivel no se permite. Una hoja R predice por
+          mayoría: <code>ĉ_R = argmaxₖ n_&#123;k,R&#125;</code>, donde <code>n_&#123;k,R&#125;</code
+          > cuenta los casos de clase k en esa hoja. El mapa y el árbol interactivos usan un CART didáctico,
+          sin ejecutar scikit-learn.
+        </p>
+        <h3>Regresión</h3>
+        <p>
+          Con <code>squared_error</code>, la hoja R predice <code>ŷ_R = ȳ_R</code>. El corte elegido
+          minimiza <code>t* = argmin_t [SSE(L_t) + SSE(R_t)]</code>, con
+          <code>SSE(R) = Σ_&#123;i∈R&#125;(y_i − ȳ_R)²</code>. Para los objetivos sintéticos
+          <code>[1, 1.2, 2.8, 3]</code>, la raíz predice la media 2; un corte produce medias 1,1 y
+          2,9. La suma de cuadrados baja de 3,28 a 0,04 dentro de las hojas. El criterio
+          <code>absolute_error</code> usa la mediana. En scikit-learn, ambos pertenecen a
+          <code>DecisionTreeRegressor</code>.
+        </p>
+        <h3>Predicción determinista y sobreajuste</h3>
+        <p>
+          Con el árbol fijado, la misma entrada sigue la misma ruta. El sobreajuste aparece cuando
+          la complejidad captura peculiaridades del entrenamiento; una muestra distinta puede
+          cambiar la estructura. Bootstrap y Random Forest combinan árboles para reducir parte de
+          esa variabilidad.
+        </p>
+        <h3>Secuencia de la sesión</h3>
+        <ol>
+          {
+            s02Stops.map((stop) => (
+              <li>
+                <h4>
+                  {stop.title}: {stop.partLabel}
+                </h4>
+                <p>{stop.intro}</p>
+              </li>
+            ))
+          }
+        </ol>
+        <p>
+          Para leer la información completa sobre entropía, Gini, regresión, OOB, la población y sus
+          límites, activa JavaScript. La práctica ejecutable está en el{' '}
+          <a href={s02ColabUrl}>notebook de la sesión en Colab</a>.
+        </p>
+      </section>
+    </noscript>
+  </div>
+</SiteLayout>
+
+<style>
+  .s02-session-shell {
+    position: fixed;
+    z-index: 30;
+    inset: 0;
+    display: grid;
+    overflow: hidden;
+    place-items: center;
+    background: var(--ink-950);
+  }
+
+  .s02-instrument {
+    width: min(100vw, 177.7778svh);
+    height: min(100svh, 56.25vw);
+    aspect-ratio: 16 / 9;
+    padding: 0;
+  }
+
+  .s02-fallback {
+    position: fixed;
+    z-index: 50;
+    inset: 0;
+    overflow-y: auto;
+    padding: var(--space-8);
+    color: var(--paper-100);
+    background: var(--ink-950);
+  }
+
+  .s02-fallback h2 {
+    max-width: 16ch;
+  }
+
+  .s02-fallback h3 {
+    margin-top: var(--space-7);
+    font-size: var(--step-1);
+  }
+
+  .s02-fallback h4 {
+    margin-block: var(--space-4) var(--space-1);
+  }
+
+  .s02-fallback-table-wrap {
+    overflow-x: auto;
+  }
+
+  .s02-fallback table {
+    width: min(100%, 36rem);
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+    text-align: left;
+  }
+
+  .s02-fallback caption {
+    padding-block: var(--space-3);
+    text-align: left;
+  }
+
+  .s02-fallback :is(th, td) {
+    padding: 0.45rem 0.8rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.16);
+  }
+
+  .s02-fallback ol {
+    padding-left: 1.3rem;
+  }
+
+  .s02-fallback li {
+    padding-left: var(--space-2);
+  }
+
+  .s02-fallback p {
+    max-width: 72ch;
+  }
+
+  :global(body:has(.s02-session-shell)) {
+    overflow: hidden;
+    background: var(--ink-950);
+  }
+
+  :global(body:has(.s02-session-shell) .site-header),
+  :global(body:has(.s02-session-shell) .site-footer) {
+    display: none;
+  }
+
+  :global(body:has(.s02-session-shell) #contenido) {
+    margin: 0;
+  }
+
+  @media (min-width: 49rem) and (max-aspect-ratio: 16 / 9) {
+    .s02-instrument {
+      width: 100vw;
+      height: 100svh;
+      aspect-ratio: auto;
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .s02-session-shell {
+      position: relative;
+      display: block;
+      overflow: visible;
+    }
+
+    .s02-instrument {
+      width: 100%;
+      height: auto;
+      aspect-ratio: auto;
+      padding-block: var(--space-3);
+    }
+
+    :global(body:has(.s02-session-shell)) {
+      overflow: auto;
+    }
+
+    :global(body:has(.s02-session-shell) .site-header),
+    :global(body:has(.s02-session-shell) .site-footer) {
+      display: block;
+    }
+  }
+</style>

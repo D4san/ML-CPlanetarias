@@ -1,0 +1,593 @@
+.s02-exoplanet-activity {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  gap: clamp(0.45rem, 0.8vw, 0.8rem);
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  color: var(--paper-200);
+}
+
+.s02-exoplanet-activity__source,
+.s02-exoplanet-activity__data-card,
+.s02-exoplanet-activity__task-card {
+  min-width: 0;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.045);
+}
+
+.s02-exoplanet-activity__source {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0.85rem;
+  border-left: 3px solid var(--s02-rule);
+  background: linear-gradient(100deg, rgb(112 213 216 / 0.09), rgb(255 255 255 / 0.025));
+}
+
+.s02-exoplanet-activity__source h3,
+.s02-exoplanet-activity__section-heading h3,
+.s02-exoplanet-activity__task-card h3 {
+  margin: 0;
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), clamp(0.95rem, 1.2vw, 1.18rem));
+  line-height: 1.2;
+}
+
+.s02-exoplanet-activity__source > div > p:last-child {
+  max-width: 90ch;
+  margin: 0.25rem 0 0;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.75rem, 0.88vw, 0.9rem));
+  line-height: 1.35;
+}
+
+.s02-exoplanet-activity__eyebrow {
+  margin: 0 0 0.2rem;
+  color: var(--data-soft);
+  font-family: var(--font-mono);
+  font-size: max(var(--s02-readable-floor), clamp(0.65rem, 0.74vw, 0.76rem));
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.s02-exoplanet-activity__archive-link {
+  display: inline-flex;
+  min-height: 2.4rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgb(112 213 216 / 0.56);
+  border-radius: var(--radius-sm);
+  color: var(--paper-50);
+  background: rgb(112 213 216 / 0.11);
+  font-size: max(var(--s02-readable-floor), 0.8rem);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.s02-exoplanet-activity__archive-link:hover {
+  background: rgb(112 213 216 / 0.2);
+}
+
+.s02-exoplanet-activity__workspace {
+  display: grid;
+  min-height: 14rem;
+  flex: 0 0 auto;
+  grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.9fr);
+  gap: clamp(0.55rem, 0.95vw, 0.95rem);
+}
+
+.s02-exoplanet-activity__data-card,
+.s02-exoplanet-activity__task-card {
+  display: flex;
+  min-height: min-content;
+  flex-direction: column;
+  padding: clamp(0.7rem, 1vw, 1rem);
+}
+
+.s02-exoplanet-activity__data-card {
+  gap: clamp(0.4rem, 0.75vw, 0.75rem);
+}
+
+.s02-exoplanet-activity__section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.s02-exoplanet-activity__row-badge {
+  padding: 0.3rem 0.55rem;
+  border: 1px solid rgb(174 157 255 / 0.4);
+  border-radius: 99px;
+  color: var(--paper-50);
+  background: rgb(174 157 255 / 0.1);
+  font-size: max(var(--s02-readable-floor), 0.73rem);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.s02-exoplanet-activity__table-wrap {
+  flex: 0 0 auto;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.s02-exoplanet-activity__schema {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--paper-200);
+  font-size: max(var(--s02-readable-floor), clamp(0.69rem, 0.8vw, 0.82rem));
+  line-height: 1.25;
+  text-align: left;
+}
+
+.s02-exoplanet-activity__schema caption {
+  padding: 0 0 0.3rem;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), 0.9em);
+  text-align: left;
+}
+
+.s02-exoplanet-activity__schema th,
+.s02-exoplanet-activity__schema td {
+  padding: 0.35rem 0.45rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.13);
+  vertical-align: top;
+}
+
+.s02-exoplanet-activity__schema thead th {
+  color: var(--paper-50);
+  background: rgb(0 0 0 / 0.16);
+}
+
+.s02-exoplanet-activity__schema code {
+  color: var(--s02-rule);
+  white-space: nowrap;
+}
+
+.s02-exoplanet-activity__leakage-note {
+  margin: 0;
+  padding: 0.38rem 0.55rem;
+  border-left: 2px solid var(--s02-limit);
+  color: var(--paper-300);
+  background: rgb(240 138 124 / 0.07);
+  font-size: max(var(--s02-readable-floor), clamp(0.69rem, 0.77vw, 0.79rem));
+  line-height: 1.3;
+}
+
+.s02-exoplanet-activity__leakage-note strong {
+  color: var(--paper-50);
+}
+
+.s02-exoplanet-activity__flow {
+  display: grid;
+  min-height: 5.5rem;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(7.5rem, 1.3fr) auto minmax(7rem, 1fr) auto minmax(4.4rem, 0.65fr);
+  align-items: center;
+  gap: clamp(0.2rem, 0.45vw, 0.45rem);
+  padding: 0.5rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: var(--radius-sm);
+  background: rgb(0 0 0 / 0.15);
+}
+
+.s02-exoplanet-activity__flow-group,
+.s02-exoplanet-activity__model-node,
+.s02-exoplanet-activity__target-node {
+  display: grid;
+  min-width: 0;
+  gap: 0.32rem;
+  justify-items: center;
+  text-align: center;
+}
+
+.s02-exoplanet-activity__flow-label {
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), 0.69rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.s02-exoplanet-activity__feature-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.s02-exoplanet-activity__plus {
+  color: var(--paper-50);
+  font-weight: 800;
+}
+
+.s02-exoplanet-activity__feature-list code,
+.s02-exoplanet-activity__target-node code {
+  padding: 0.3rem 0.38rem;
+  border: 1px solid rgb(112 213 216 / 0.42);
+  border-radius: 0.3rem;
+  color: var(--s02-rule);
+  background: rgb(112 213 216 / 0.09);
+  font-size: max(var(--s02-readable-floor), clamp(0.72rem, 0.83vw, 0.84rem));
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.s02-exoplanet-activity__feature-list .s02-exoplanet-activity__feature-added {
+  border-color: rgb(174 157 255 / 0.52);
+  color: var(--paper-50);
+  background: rgb(174 157 255 / 0.13);
+}
+
+.s02-exoplanet-activity__arrow {
+  color: var(--s02-rule);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.s02-exoplanet-activity__model-node {
+  padding: 0.45rem 0.35rem;
+  border: 1px solid rgb(240 138 124 / 0.45);
+  border-radius: var(--radius-sm);
+  background: rgb(240 138 124 / 0.09);
+}
+
+.s02-exoplanet-activity__model-node strong {
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), 0.8rem);
+}
+
+.s02-exoplanet-activity__model-node small,
+.s02-exoplanet-activity__target-node small {
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), 0.66rem);
+  line-height: 1.2;
+}
+
+.s02-exoplanet-activity__target-node code {
+  border-color: rgb(240 138 124 / 0.5);
+  color: var(--paper-50);
+  background: rgb(240 138 124 / 0.12);
+}
+
+.s02-exoplanet-activity__task-card {
+  gap: 0.42rem;
+  border-top: 3px solid var(--decision);
+}
+
+.s02-exoplanet-activity__task-prompt {
+  margin: 0;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.78rem, 0.9vw, 0.92rem));
+  line-height: 1.35;
+}
+
+.s02-exoplanet-activity__choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.s02-exoplanet-activity__choices button {
+  display: flex;
+  min-width: 0;
+  min-height: 3.15rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.48rem;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: var(--radius-sm);
+  color: var(--paper-300);
+  background: rgb(0 0 0 / 0.14);
+  text-align: left;
+  cursor: pointer;
+}
+
+.s02-exoplanet-activity__choices button[aria-pressed='true'] {
+  border-color: var(--s02-rule);
+  color: var(--paper-50);
+  background: rgb(112 213 216 / 0.13);
+  box-shadow: inset 0 0 0 1px rgb(112 213 216 / 0.18);
+}
+
+.s02-exoplanet-activity__choice-index {
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid currentcolor;
+  border-radius: 50%;
+  color: var(--data-soft);
+  font-family: var(--font-mono);
+  font-weight: 800;
+}
+
+.s02-exoplanet-activity__choices button > span:last-child {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.s02-exoplanet-activity__choices strong {
+  font-size: max(var(--s02-readable-floor), clamp(0.7rem, 0.81vw, 0.84rem));
+  line-height: 1.15;
+}
+
+.s02-exoplanet-activity__choices small {
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), 0.68rem);
+}
+
+.s02-exoplanet-activity__status {
+  min-height: 2.4rem;
+  margin: 0;
+  padding: 0.5rem 0.6rem;
+  border-left: 2px solid var(--s02-rule);
+  color: var(--paper-50);
+  background: rgb(112 213 216 / 0.08);
+  font-size: max(var(--s02-readable-floor), clamp(0.72rem, 0.8vw, 0.82rem));
+  line-height: 1.3;
+}
+
+.s02-exoplanet-activity__hypothesis {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid rgb(174 157 255 / 0.3);
+  border-radius: var(--radius-sm);
+  background: rgb(174 157 255 / 0.06);
+}
+
+.s02-exoplanet-activity__hypothesis strong {
+  color: var(--paper-50);
+  font-size: max(var(--s02-readable-floor), 0.79rem);
+}
+
+.s02-exoplanet-activity__hypothesis p {
+  margin: 0.25rem 0 0;
+  color: var(--paper-300);
+  font-size: max(var(--s02-readable-floor), clamp(0.71rem, 0.8vw, 0.82rem));
+  line-height: 1.35;
+}
+
+.s02-exoplanet-activity__resources {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.9rem;
+  padding: 0.3rem 0.15rem 0;
+  border-top: 1px solid rgb(255 255 255 / 0.12);
+  font-size: max(var(--s02-readable-floor), clamp(0.68rem, 0.77vw, 0.78rem));
+}
+
+.s02-exoplanet-activity__resources > span {
+  color: var(--paper-50);
+  font-weight: 750;
+}
+
+.s02-exoplanet-activity__resources a {
+  color: var(--data-soft);
+  text-underline-offset: 0.2em;
+}
+
+@media (max-width: 48rem) {
+  .s02-exoplanet-activity {
+    height: auto;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .s02-exoplanet-activity__source {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .s02-exoplanet-activity__workspace {
+    flex: 0 0 auto;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .s02-exoplanet-activity__flow {
+    min-height: 6rem;
+  }
+
+  .s02-exoplanet-activity__resources {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 33rem) {
+  .s02-exoplanet-activity__schema {
+    min-width: 36rem;
+  }
+
+  .s02-exoplanet-activity__flow {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+
+  .s02-exoplanet-activity__arrow {
+    transform: rotate(90deg);
+  }
+
+  .s02-exoplanet-activity__choices {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 49rem) and (max-height: 48rem) {
+  .s02-exoplanet-activity {
+    gap: 0.3rem;
+  }
+
+  .s02-exoplanet-activity__source {
+    gap: 0.6rem;
+    padding: 0.35rem 0.6rem;
+  }
+
+  .s02-exoplanet-activity__source h3 {
+    font-size: 1rem;
+  }
+
+  .s02-exoplanet-activity__source > div > p:last-child {
+    margin-top: 0.15rem;
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+    line-height: 1.2;
+  }
+
+  .s02-exoplanet-activity__archive-link {
+    min-height: 2rem;
+    padding: 0.3rem 0.55rem;
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+  }
+
+  .s02-exoplanet-activity__workspace {
+    grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.9fr);
+    gap: 0.35rem;
+  }
+
+  .s02-exoplanet-activity__data-card,
+  .s02-exoplanet-activity__task-card {
+    padding: 0.45rem;
+  }
+
+  .s02-exoplanet-activity__data-card {
+    gap: 0.3rem;
+  }
+
+  .s02-exoplanet-activity__section-heading h3,
+  .s02-exoplanet-activity__task-card h3 {
+    font-size: max(var(--s02-readable-floor), 0.95rem);
+  }
+
+  .s02-exoplanet-activity__row-badge {
+    padding: 0.2rem 0.4rem;
+    font-size: max(var(--s02-readable-floor), 0.7rem);
+  }
+
+  .s02-exoplanet-activity__schema {
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+    line-height: 1.15;
+  }
+
+  .s02-exoplanet-activity__schema caption {
+    padding-bottom: 0.1rem;
+  }
+
+  .s02-exoplanet-activity__schema th,
+  .s02-exoplanet-activity__schema td {
+    padding: 0.15rem 0.3rem;
+  }
+
+  .s02-exoplanet-activity__leakage-note {
+    padding: 0.25rem 0.4rem;
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+    line-height: 1.18;
+  }
+
+  .s02-exoplanet-activity__flow {
+    min-height: 3.4rem;
+    gap: 0.15rem;
+    padding: 0.2rem;
+  }
+
+  .s02-exoplanet-activity__flow-group,
+  .s02-exoplanet-activity__model-node,
+  .s02-exoplanet-activity__target-node {
+    gap: 0.18rem;
+  }
+
+  .s02-exoplanet-activity__flow-label {
+    font-size: max(var(--s02-readable-floor), 0.7rem);
+  }
+
+  .s02-exoplanet-activity__feature-list code,
+  .s02-exoplanet-activity__target-node code {
+    padding: 0.2rem 0.28rem;
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+  }
+
+  .s02-exoplanet-activity__model-node {
+    padding: 0.25rem;
+  }
+
+  .s02-exoplanet-activity__model-node strong {
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+  }
+
+  .s02-exoplanet-activity__model-node small,
+  .s02-exoplanet-activity__target-node small {
+    font-size: max(var(--s02-readable-floor), 0.7rem);
+  }
+
+  .s02-exoplanet-activity__task-card {
+    gap: 0.25rem;
+  }
+
+  .s02-exoplanet-activity__task-prompt {
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+    line-height: 1.2;
+  }
+
+  .s02-exoplanet-activity__choices {
+    gap: 0.25rem;
+  }
+
+  .s02-exoplanet-activity__choices button {
+    min-height: 2.35rem;
+    gap: 0.35rem;
+    padding: 0.3rem;
+  }
+
+  .s02-exoplanet-activity__choice-index {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .s02-exoplanet-activity__choices strong {
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+  }
+
+  .s02-exoplanet-activity__choices small {
+    font-size: max(var(--s02-readable-floor), 0.7rem);
+  }
+
+  .s02-exoplanet-activity__status {
+    min-height: 0;
+    padding: 0.25rem 0.4rem;
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+    line-height: 1.15;
+  }
+
+  .s02-exoplanet-activity__hypothesis {
+    padding: 0.35rem 0.45rem;
+  }
+
+  .s02-exoplanet-activity__hypothesis strong {
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+  }
+
+  .s02-exoplanet-activity__hypothesis p {
+    margin-top: 0.15rem;
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+    line-height: 1.18;
+  }
+
+  .s02-exoplanet-activity__resources {
+    gap: 0.15rem 0.65rem;
+    padding-top: 0.15rem;
+    font-size: max(var(--s02-readable-floor), 0.75rem);
+  }
+}
