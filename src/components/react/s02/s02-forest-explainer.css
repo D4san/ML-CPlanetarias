@@ -59,27 +59,29 @@
 .s02-forest-explainer__svg {
   display: block;
   width: 100%;
+  /* Keep SVG labels in proportion to the 360-unit viewBox as the card grows. */
+  max-width: 27.5rem;
   height: auto;
   overflow: visible;
   font-family: var(--font-sans);
-  font-size: max(var(--s02-readable-floor), 12px);
+  font-size: 13px;
 }
 
 .s02-forest-explainer__svg-heading {
   fill: var(--paper-200);
-  font-size: max(var(--s02-readable-floor), 12px);
+  font-size: 13px;
   font-weight: 700;
 }
 
 .s02-forest-explainer__svg-note {
   fill: var(--paper-300);
-  font-size: max(var(--s02-readable-floor), 11px);
+  font-size: 12px;
 }
 
 .s02-forest-explainer__row-label {
   fill: var(--paper-100);
   font-family: var(--font-mono);
-  font-size: max(var(--s02-readable-floor), 11px);
+  font-size: 13px;
   font-weight: 700;
 }
 
@@ -97,7 +99,7 @@
 .s02-forest-explainer__case-text,
 .s02-forest-explainer__feature-text {
   fill: var(--paper-50);
-  font-size: max(var(--s02-readable-floor), 11px);
+  font-size: 13px;
   font-weight: 700;
 }
 
@@ -142,7 +144,7 @@
 .s02-forest-explainer__prediction-value {
   fill: var(--paper-50);
   font-family: var(--font-mono);
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 800;
 }
 
@@ -165,6 +167,21 @@
 }
 
 @media (max-width: 48rem) {
+  .s02-forest-explainer__svg {
+    font-size: 14px;
+  }
+
+  .s02-forest-explainer__svg-heading,
+  .s02-forest-explainer__row-label,
+  .s02-forest-explainer__case-text,
+  .s02-forest-explainer__feature-text {
+    font-size: 14px;
+  }
+
+  .s02-forest-explainer__svg-note {
+    font-size: 13px;
+  }
+
   .s02-forest-explainer {
     height: auto;
     grid-template-columns: minmax(0, 1fr);
@@ -217,17 +234,17 @@
   }
 
   .s02-forest-explainer__svg {
-    font-size: max(var(--s02-readable-floor), 13px);
+    font-size: 13px;
   }
 
   .s02-forest-explainer__svg-heading,
   .s02-forest-explainer__row-label,
   .s02-forest-explainer__case-text,
   .s02-forest-explainer__feature-text {
-    font-size: max(var(--s02-readable-floor), 13px);
+    font-size: 13px;
   }
 
   .s02-forest-explainer__svg-note {
-    font-size: max(var(--s02-readable-floor), 12px);
+    font-size: 12px;
   }
 }

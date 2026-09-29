@@ -13,7 +13,7 @@ packet_id:
 
 ## Objetivo de aprendizaje
 
-Quien estudia identifica una fila de PSCompPars como un planeta, distingue la variable objetivo (`pl_rade`) de los predictores (`pl_bmasse`, y luego `pl_insol`) y formula una comparación que pueda evaluar en sistemas estelares reservados. Reconoce que `pl_name` identifica, `hostname` permite agrupar la partición y ninguna de las dos columnas es predictor.
+Quien estudia identifica una fila de PSCompPars como un planeta, distingue la variable objetivo (`pl_rade`) de los predictores (`pl_bmasse`, y luego `pl_insol`) y formula una comparación evaluada en planetas reservados al azar. Reconoce que `pl_name` identifica el planeta y `hostname` su sistema; ninguno entra como predictor. La partición del notebook se hace por planeta y puede dejar miembros de un sistema en ambos conjuntos.
 
 ## Estado inicial y fallback
 
@@ -47,15 +47,16 @@ El estado inicial presenta la comparación A: usar `pl_bmasse` para estimar `pl_
 ## Texto alrededor de la figura
 
 - pie: NASA Exoplanet Archive publica PSCompPars como una tabla compuesta, con una fila por planeta; para completar columnas puede combinar referencias y ciertos valores derivados. Por eso se revisan referencias, límites e incertidumbres antes de modelar.
-- qué observar: A propone masa como predictor; B añade irradiación. `pl_name` es identificador. `hostname` mantiene los planetas de cada sistema juntos al separar entrenamiento y prueba.
+- qué observar: A propone masa como predictor; B añade irradiación. `pl_name` identifica el planeta y `hostname` el sistema. El notebook separa planetas al azar para entrenamiento y prueba; no reserva sistemas estelares completos.
 - resumen de estado: “Comparación A: `pl_bmasse` → modelo → `pl_rade`” o “Comparación B: `pl_bmasse` + `pl_insol` → modelo → `pl_rade`”.
-- misconcepción prevenida: el selector no demuestra que la irradiación mejore el MAE, y el diagrama no contiene mediciones reales. Antes de ajustar se audita si `pl_rade` fue calculado a partir de masa, para prevenir fuga de información.
+- misconcepción prevenida: el selector no demuestra que la irradiación mejore el MAE, y el diagrama no contiene mediciones reales. Antes de ajustar se audita si `pl_rade` fue calculado a partir de masa, para prevenir fuga de información. La prueba por planeta tampoco demuestra desempeño en sistemas estelares no vistos.
 - qué no demuestra: PSCompPars no garantiza que todos los valores de una fila provengan de una misma referencia ni que la comparación tenga validez causal o describa todos los exoplanetas.
 
 ## Matriz de pruebas
 
 - [ ] estado inicial determinista con `pl_bmasse` y `pl_rade`;
 - [ ] botones A/B, teclado, `aria-pressed` y resumen actualizado;
+- [ ] el enlace `?estacion=cierre` abre la primera subestación de Cierre;
 - [ ] enlaces oficiales de tabla, columnas, métodos y TAP;
 - [ ] desktop y móvil, con tabla legible y orden de lectura claro;
 - [ ] revisión de que la interacción no presenta valores de rendimiento;

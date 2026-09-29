@@ -30,6 +30,7 @@ import {
   s00VisualAssets,
   type S00Branch,
   type S00ImpactCase,
+  type S00PaperFigureCredit,
   type S00Part,
   type S00Slide,
   type S00Unit,
@@ -44,52 +45,38 @@ import {
 } from './CourseContent';
 import { ConceptTerm } from './ConceptTerm';
 import { MathExpression } from './MathExpression';
+import { SessionPresentationFooter } from './SessionPresentationFooter';
 import SlideRail from './SlideRail';
 import './course-content.css';
 import './s00-learning-journey.css';
+import './session-presentation.css';
 
-const activityItems = [
-  {
-    id: 'question',
-    label: 'Acoté una curiosidad de exoplanetas con unidad, dato, salida y uso.',
-    hint: 'Empieza por una frase amplia y subraya qué tendría que medir un instrumento.',
-  },
-  {
-    id: 'measurement',
-    label: 'Distinguí un observable de la propiedad física que quiero inferir.',
-    hint: 'Usa dos verbos: registrar para la medición e inferir para el parámetro.',
-  },
-  {
-    id: 'representation',
-    label: 'Elegí una representación y nombré el riesgo dominante del dato.',
-    hint: 'Una curva, un espectro, una imagen y un catálogo conservan estructuras distintas.',
-  },
-  {
-    id: 'task',
-    label: 'Elegí un verbo de ML y escribí la salida que debería devolver.',
-    hint: 'Detectar, clasificar, estimar, describir y priorizar no producen el mismo objeto.',
-  },
-  {
-    id: 'limit',
-    label: 'Añadí una evaluación y un límite a una afirmación del modelo.',
-    hint: 'Pregunta qué conjunto produjo la cifra, qué compara y qué queda fuera.',
-  },
-] as const;
-
-type ActivityState = Record<(typeof activityItems)[number]['id'], boolean>;
-
-function emptyActivityState(): ActivityState {
-  return {
-    question: false,
-    measurement: false,
-    representation: false,
-    task: false,
-    limit: false,
-  };
-}
+type ActivityAnswers = Record<string, string>;
 
 function assetUrl(path: string) {
   return import.meta.env.BASE_URL + path.replace(/^\/+/, '');
+}
+
+function PaperFigureCredit({
+  credit,
+  className,
+}: {
+  credit: S00PaperFigureCredit;
+  className: string;
+}) {
+  return (
+    <p className={className}>
+      {credit.figure} de{' '}
+      <a href={credit.sourceUrl} target="_blank" rel="noopener noreferrer">
+        {credit.citation}
+      </a>
+      . Licencia{' '}
+      <a href={credit.licenseUrl} target="_blank" rel="noopener noreferrer">
+        {credit.license}
+      </a>
+      . {credit.changes}
+    </p>
+  );
 }
 
 function ConceptStrip({ unit }: { unit: S00Unit }) {
@@ -111,6 +98,7 @@ interface ImageLightboxProps {
   imageAlt: string;
   title: string;
   caption: string;
+  credit: S00PaperFigureCredit;
   badge: string;
 }
 
@@ -121,6 +109,7 @@ function ImageLightbox({
   imageAlt,
   title,
   caption,
+  credit,
   badge,
 }: ImageLightboxProps) {
   useEffect(() => {
@@ -191,7 +180,10 @@ function ImageLightbox({
         </div>
 
         <div className="s00-lightbox-footer">
-          <p className="s00-lightbox-caption">{caption}</p>
+          <div className="s00-lightbox-footer__text">
+            <p className="s00-lightbox-caption">{caption}</p>
+            <PaperFigureCredit credit={credit} className="s00-lightbox-credit" />
+          </div>
           <span className="s00-lightbox-hint">Pulsa Esc o haz clic fuera para cerrar</span>
         </div>
       </div>
@@ -2182,9 +2174,8 @@ function VisualFrame({
   onSelectImpactCase,
   selectedBranchId,
   onSelectBranch,
-  selectedClosureStepId,
-  onSelectClosureStep,
   onSelectSlide,
+  onSelectMode,
 }: {
   unit: S00Unit;
   part?: S00Part | null;
@@ -2199,9 +2190,8 @@ function VisualFrame({
   onSelectImpactCase?: (id: string) => void;
   selectedBranchId?: string;
   onSelectBranch?: (id: string) => void;
-  selectedClosureStepId?: string;
-  onSelectClosureStep?: (id: string) => void;
   onSelectSlide?: (index: number) => void;
+  onSelectMode?: (mode: CourseDisplayMode) => void;
 }) {
   const interactive = !compact;
   const visualFocus = part?.visualFocus ?? 'overview';
@@ -2294,14 +2284,18 @@ function VisualFrame({
                     alt={activeCard.imageAlt}
                     className="s00-concept-detail__image"
                     loading="lazy"
-                    width="1400"
-                    height="750"
+                    width={activeCard.imageWidth}
+                    height={activeCard.imageHeight}
                   />
                   <span className="s00-concept-detail__zoom-indicator" aria-hidden="true">
                     🔍 Clic para ampliar
                   </span>
                 </button>
                 <p className="s00-concept-detail__caption">{activeCard.imageCaption}</p>
+                <PaperFigureCredit
+                  credit={activeCard.imageCredit}
+                  className="s00-concept-detail__credit"
+                />
               </div>
 
               <div className="s00-concept-detail__content">
@@ -2397,6 +2391,7 @@ function VisualFrame({
                 imageAlt={activeCard.imageAlt}
                 title={`${activeCard.title} · ${activeCard.badge}`}
                 caption={activeCard.imageCaption}
+                credit={activeCard.imageCredit}
                 badge={activeCard.badge}
               />
             )}
@@ -3429,104 +3424,34 @@ function VisualFrame({
           </div>
 
           {selected && <BranchDetail branch={selected} compact={compact} />}
+
+          {selected?.id === 'aplicacion' && interactive && (
+            <div className="s00-branch-cta">
+              <div className="s00-branch-cta__copy">
+                <span className="s00-stage-tag" data-tone="transfer">
+                  TRANSFERENCIA METODOLÓGICA
+                </span>
+                <strong>¿Listo para formular tu propia cadena de investigación?</strong>
+                <p>
+                  Construye y valida las 7 decisiones que conectan un mundo astronómico con el
+                  Machine Learning en el taller de actividades.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="s00-branch-cta__btn"
+                onClick={() => onSelectMode?.('activities')}
+              >
+                <span>🎯 Taller Metodológico: La cadena al límite (7 pasos)</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          )}
         </div>
       );
     }
 
-    const steps = unit.closureSteps ?? s00ClosureSteps;
-    const activeClosureStepIndex = Math.max(
-      0,
-      steps.findIndex((s) => s.id === (selectedClosureStepId || visualFocus)),
-    );
-    const activeStep = steps[activeClosureStepIndex] ?? steps[0];
-
-    return (
-      <div className="s00-visual s00-visual--closure" data-active-step={activeStep?.id}>
-        {/* Cumulative Synthesis Timeline */}
-        <div
-          className="s00-closure-pipeline"
-          role={interactive ? 'tablist' : undefined}
-          aria-label="Cadena metodológica completa del curso"
-        >
-          {steps.map((step, index) => {
-            const isCompleted = index < activeClosureStepIndex;
-            const isActive = index === activeClosureStepIndex;
-            return interactive ? (
-              <button
-                key={step.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                className={`s00-closure-step-btn ${isActive ? 'is-active' : ''} ${isCompleted ? 'is-completed' : ''}`}
-                data-tone={step.tone}
-                onClick={() => {
-                  onSelectClosureStep?.(step.id);
-                  const targetIdx = getS00SlideIndex('s00-cierre', index);
-                  if (targetIdx >= 0) onSelectSlide?.(targetIdx);
-                }}
-              >
-                <span className="s00-closure-step-num">{isCompleted ? '✓' : step.number}</span>
-                <strong className="s00-closure-step-name">{step.stepName}</strong>
-              </button>
-            ) : (
-              <div
-                key={step.id}
-                className={`s00-closure-step-btn ${isActive ? 'is-active' : ''} ${isCompleted ? 'is-completed' : ''}`}
-                data-tone={step.tone}
-              >
-                <span className="s00-closure-step-num">{isCompleted ? '✓' : step.number}</span>
-                <strong className="s00-closure-step-name">{step.stepName}</strong>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Active Step Synthesis Dossier */}
-        {activeStep && (
-          <article className="s00-closure-dossier" aria-live={interactive ? 'polite' : undefined}>
-            <div className="s00-closure-dossier__header">
-              <span className="s00-stage-tag">{activeStep.number} / 07 · PASO DE LA CADENA</span>
-              <h3>
-                {activeStep.stepName}: {activeStep.title}
-              </h3>
-              <p className="s00-stage-subtitle">{activeStep.subtitle}</p>
-            </div>
-
-            <div className="s00-closure-formula-box">
-              <span className="s00-formula-label">Principio formal rector:</span>
-              <div className="s00-closure-formula-display">
-                <MathExpression tex={activeStep.formula} label={activeStep.title} block />
-              </div>
-            </div>
-
-            <div className="s00-closure-grid">
-              <div className="s00-closure-card s00-closure-card--decision">
-                <span className="s00-closure-card__title">Decisión metodológica en S00</span>
-                <p>{activeStep.s00Decision}</p>
-              </div>
-              <div className="s00-closure-card s00-closure-card--risk">
-                <span className="s00-closure-card__title">Riesgo epistemológico evitado</span>
-                <p>{activeStep.epistemologicalRisk}</p>
-              </div>
-              <div className="s00-closure-card s00-closure-card--bridge">
-                <span className="s00-closure-card__title">Puente formal hacia Sesión 01</span>
-                <p>{activeStep.s01Bridge}</p>
-              </div>
-            </div>
-
-            {/* Epistemological Covenant */}
-            <div className="s00-closure-covenant">
-              <span className="s00-covenant-tag">CONTRATO EPISTEMOLÓGICO DEL CURSO</span>
-              <strong>La salida del modelo nunca es la conclusión científica final.</strong>
-              <p>
-                Toda inferencia de ML es evidencia condicionada por el observable físico, los
-                supuestos generativos, el protocolo de evaluación y los límites del instrumento.
-              </p>
-            </div>
-          </article>
-        )}
-      </div>
-    );
+    return null;
   };
 
   return (
@@ -3873,46 +3798,246 @@ function S00Glossary() {
 }
 
 function S00Activities({
-  state,
-  onChange,
+  answers,
+  onAnswer,
+  onReset,
 }: {
-  state: ActivityState;
-  onChange: (id: keyof ActivityState) => void;
+  answers: ActivityAnswers;
+  onAnswer: (stepId: string, optionId: string) => void;
+  onReset: () => void;
 }) {
-  const completed = activityItems.filter((item) => state[item.id]).length;
+  const fallbackStep = s00ClosureSteps[0];
+  if (!fallbackStep) return null;
+
+  const [activeStepId, setActiveStepId] = useState<string>(fallbackStep.id);
+  const activeStep = s00ClosureSteps.find((s) => s.id === activeStepId) ?? fallbackStep;
+  const activeIndex = s00ClosureSteps.findIndex((s) => s.id === activeStep.id);
+  const prevStep = activeIndex > 0 ? s00ClosureSteps[activeIndex - 1] : undefined;
+  const nextStep =
+    activeIndex >= 0 && activeIndex < s00ClosureSteps.length - 1
+      ? s00ClosureSteps[activeIndex + 1]
+      : undefined;
+
+  const completedCount = s00ClosureSteps.filter((step) => {
+    const selectedOptionId = answers[step.id];
+    return step.challenge.options.find((opt) => opt.id === selectedOptionId)?.correct === true;
+  }).length;
+
+  const allCompleted = completedCount === s00ClosureSteps.length;
+  const currentSelectedOptionId = answers[activeStep.id];
+  const currentSelectedOption = activeStep.challenge.options.find(
+    (opt) => opt.id === currentSelectedOptionId,
+  );
+  const isCurrentStepCorrect = currentSelectedOption?.correct === true;
+
   return (
     <section className="s00-activities" aria-labelledby="s00-activities-title">
       <div className="s00-activities__intro">
-        <p className="s00-reading__label">Producto diagnóstico · 5 movimientos</p>
-        <h2 id="s00-activities-title">Construye una cadena que se pueda discutir</h2>
+        <p className="s00-reading__label">Taller metodológico · 7 decisiones científicas</p>
+        <h2 id="s00-activities-title">La cadena de la pregunta al límite</h2>
         <p>
-          Marca cada paso cuando puedas mostrarlo con un ejemplo. Las casillas conservan tu avance
-          local; el resultado sigue siendo una producción de aprendizaje, no una validación
-          científica.
+          Construye la trayectoria completa de una investigación en exoplanetas. Resuelve el desafío
+          conceptual de cada paso para formalizar la decisión, evitar el riesgo epistemológico
+          correspondiente y desbloquear el contrato científico del curso.
         </p>
-        <div className="s00-activities__status" role="status" aria-live="polite">
-          {completed} de {activityItems.length} movimientos completados.
+
+        <div className="s00-activities__status-panel">
+          <div className="s00-activities__status" role="status" aria-live="polite">
+            <strong>
+              {completedCount} de {s00ClosureSteps.length} pasos completados
+            </strong>{' '}
+            ({Math.round((completedCount / s00ClosureSteps.length) * 100)}%)
+          </div>
+          <div className="s00-activities__track" aria-hidden="true">
+            <div
+              className="s00-activities__bar"
+              style={{ width: `${(completedCount / s00ClosureSteps.length) * 100}%` }}
+            />
+          </div>
         </div>
       </div>
-      <ol className="s00-activities__list">
-        {activityItems.map((item, index) => (
-          <li key={item.id} data-complete={state[item.id]}>
-            <label>
-              <span className="s00-activity-index">0{index + 1}</span>
-              <input type="checkbox" checked={state[item.id]} onChange={() => onChange(item.id)} />
-              <span className="s00-activity-copy">
-                <strong>{item.label}</strong>
-                <small>{item.hint}</small>
-              </span>
-            </label>
-          </li>
-        ))}
-      </ol>
-      <aside className="s00-activities__result">
-        <span>Al finalizar</span>
-        <strong>pregunta → dato → tarea → evaluación → límite</strong>
-        <p>Usa esta secuencia como ticket de salida o como punto de partida para S01.</p>
-      </aside>
+
+      {/* Stepper horizontal interactivo de 7 pasos */}
+      <div
+        className="s00-activity-pipeline"
+        role="tablist"
+        aria-label="Pasos de la cadena metodológica de investigación"
+      >
+        {s00ClosureSteps.map((step) => {
+          const isStepCorrect =
+            step.challenge.options.find((o) => o.id === answers[step.id])?.correct === true;
+          const isActive = step.id === activeStep.id;
+          return (
+            <button
+              key={step.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              className={`s00-activity-step-btn ${isActive ? 'is-active' : ''} ${
+                isStepCorrect ? 'is-completed' : ''
+              }`}
+              data-tone={step.tone}
+              onClick={() => setActiveStepId(step.id)}
+            >
+              <span className="s00-activity-step-num">{isStepCorrect ? '✓' : step.number}</span>
+              <strong className="s00-activity-step-name">{step.stepName}</strong>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Dossier y desafío del paso activo */}
+      <article className="s00-activity-dossier" aria-live="polite">
+        <div className="s00-activity-dossier__header">
+          <span className="s00-stage-tag" data-tone={activeStep.tone}>
+            PASO {activeStep.number} / 07 · {activeStep.stepName.toUpperCase()}
+          </span>
+          <h3>{activeStep.title}</h3>
+          <p className="s00-stage-subtitle">{activeStep.subtitle}</p>
+        </div>
+
+        <div className="s00-closure-formula-box">
+          <span className="s00-formula-label">Principio formal rector:</span>
+          <div className="s00-closure-formula-display">
+            <MathExpression tex={activeStep.formula} label={activeStep.title} block />
+          </div>
+        </div>
+
+        <div className="s00-closure-grid">
+          <div className="s00-closure-card s00-closure-card--decision">
+            <span className="s00-closure-card__title">Decisión metodológica en S00</span>
+            <p>{activeStep.s00Decision}</p>
+          </div>
+          <div className="s00-closure-card s00-closure-card--risk">
+            <span className="s00-closure-card__title">Riesgo epistemológico evitado</span>
+            <p>{activeStep.epistemologicalRisk}</p>
+          </div>
+          <div className="s00-closure-card s00-closure-card--bridge">
+            <span className="s00-closure-card__title">Puente formal hacia Sesión 01</span>
+            <p>{activeStep.s01Bridge}</p>
+          </div>
+        </div>
+
+        {/* Reto interactivo */}
+        <div className="s00-activity-challenge">
+          <div className="s00-activity-challenge__prompt">
+            <span className="s00-challenge-badge">🎯 Desafío metodológico</span>
+            <h4>{activeStep.challenge.question}</h4>
+          </div>
+
+          <div
+            className="s00-activity-challenge__options"
+            role="group"
+            aria-label={`Opciones para ${activeStep.stepName}`}
+          >
+            {activeStep.challenge.options.map((opt) => {
+              const isSelected = currentSelectedOptionId === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  type="button"
+                  className="s00-activity-challenge__option"
+                  data-selected={isSelected}
+                  data-correct={isSelected && opt.correct}
+                  data-incorrect={isSelected && !opt.correct}
+                  onClick={() => onAnswer(activeStep.id, opt.id)}
+                >
+                  <span className="s00-option-marker">
+                    {isSelected ? (opt.correct ? '✓' : '✕') : '○'}
+                  </span>
+                  <span className="s00-option-label">{opt.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {currentSelectedOption && (
+            <div
+              className={`s00-activity-challenge__feedback ${
+                currentSelectedOption.correct ? 'is-correct' : 'is-incorrect'
+              }`}
+              role="alert"
+            >
+              <strong>
+                {currentSelectedOption.correct
+                  ? '✓ Decisión válida:'
+                  : '⚠️ Precaución metodológica:'}
+              </strong>
+              <p>{currentSelectedOption.feedback}</p>
+            </div>
+          )}
+
+          <div className="s00-activity-step-nav">
+            {prevStep && (
+              <button
+                type="button"
+                className="s00-activity-nav-btn s00-activity-nav-btn--prev"
+                onClick={() => setActiveStepId(prevStep.id)}
+              >
+                ← Paso {prevStep.number}: {prevStep.stepName}
+              </button>
+            )}
+            {nextStep && (
+              <button
+                type="button"
+                className="s00-activity-nav-btn s00-activity-nav-btn--next"
+                disabled={!isCurrentStepCorrect}
+                onClick={() => setActiveStepId(nextStep.id)}
+              >
+                Paso {nextStep.number}: {nextStep.stepName} →
+              </button>
+            )}
+          </div>
+        </div>
+      </article>
+
+      {/* Contrato Epistemológico y Síntesis Final */}
+      <div className={`s00-closure-covenant ${allCompleted ? 'is-unlocked' : 'is-locked'}`}>
+        <div className="s00-covenant-header">
+          <span className="s00-covenant-tag">
+            {allCompleted
+              ? 'CONTRATO EPISTEMOLÓGICO DESBLOQUEADO'
+              : 'CONTRATO EPISTEMOLÓGICO DEL CURSO'}
+          </span>
+          {allCompleted && <span className="s00-covenant-status">Cadena completa ✓</span>}
+        </div>
+        <h3>La salida del modelo nunca es la conclusión científica final.</h3>
+        <p>
+          Toda inferencia de ML es evidencia condicionada por el observable físico, los supuestos
+          generativos, el protocolo de evaluación y los límites del instrumento.
+        </p>
+
+        {allCompleted ? (
+          <div className="s00-covenant-unlocked-body">
+            <div className="s00-covenant-pipeline-summary">
+              <span>Mundo físico</span>
+              <span className="s00-summary-arrow">→</span>
+              <span>Observable directo</span>
+              <span className="s00-summary-arrow">→</span>
+              <span>Tensor multiescala</span>
+              <span className="s00-summary-arrow">→</span>
+              <span>Verbo matemático</span>
+              <span className="s00-summary-arrow">→</span>
+              <span>Línea base & PR-AUC</span>
+              <span className="s00-summary-arrow">→</span>
+              <span>Evidencia condicionada</span>
+            </div>
+            <p className="s00-covenant-ticket">
+              🎓 <strong>Ticket de salida listo:</strong> Has formulado las 7 decisiones que
+              conectan un mundo astronómico con un problema de aprendizaje formal. Puedes llevar
+              esta estructura directamente a la Sesión 01.
+            </p>
+            <button type="button" className="s00-activities__reset-btn" onClick={onReset}>
+              Reiniciar taller de actividades
+            </button>
+          </div>
+        ) : (
+          <p className="s00-covenant-hint">
+            Resuelve los {s00ClosureSteps.length - completedCount} pasos restantes para verificar la
+            cadena de investigación y desbloquear el resumen de salida.
+          </p>
+        )}
+      </div>
     </section>
   );
 }
@@ -4071,7 +4196,7 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
   const [hydrated, setHydrated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(1);
   const [displayMode, setDisplayMode] = useState<CourseDisplayMode>(settings.defaultView);
-  const [activityState, setActivityState] = useState<ActivityState>(emptyActivityState);
+  const [activityAnswers, setActivityAnswers] = useState<ActivityAnswers>({});
   const [selectedConceptId, setSelectedConceptId] = useState<
     'exoplaneta' | 'transito' | 'espectro' | 'representacion'
   >('transito');
@@ -4079,7 +4204,6 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
   const [selectedVerb, setSelectedVerb] = useState('detectar');
   const [selectedImpactCaseId, setSelectedImpactCaseId] = useState('astronet');
   const [selectedBranchId, setSelectedBranchId] = useState('astronomia');
-  const [selectedClosureStepId, setSelectedClosureStepId] = useState('pregunta');
   const activeSlide: S00Slide | undefined = activeIndex > 0 ? s00Slides[activeIndex] : undefined;
   const activeUnit = activeSlide ? s00Units[activeSlide.unitIndex] : undefined;
   const activePart = activeSlide
@@ -4091,8 +4215,11 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
   useEffect(() => {
     function syncLocation() {
       const mode = new URLSearchParams(window.location.search).get('modo');
-      const resolvedMode: CourseDisplayMode =
-        mode === 'lectura'
+      const hash = window.location.hash.toLowerCase();
+      const isCierreHash = hash.startsWith('#cierre');
+      const resolvedMode: CourseDisplayMode = isCierreHash
+        ? 'activities'
+        : mode === 'lectura'
           ? 'reading'
           : mode === 'actividades'
             ? 'activities'
@@ -4158,7 +4285,6 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
       activeUnit?.visualKind === 'impact-gallery' ? activeVisualFocus : 'astronet',
     );
     setSelectedBranchId(activeUnit?.visualKind === 'branches' ? activeVisualFocus : 'astronomia');
-    setSelectedClosureStepId(activeUnit?.visualKind === 'closure' ? activeVisualFocus : 'pregunta');
   }, [activeIndex, activeUnit?.visualKind, activeVisualFocus]);
 
   function updateHash(index: number, replace = false) {
@@ -4185,17 +4311,20 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
   function reset() {
     setActiveIndex(1);
     setSelectedConceptId('transito');
-    setActivityState(emptyActivityState());
+    setActivityAnswers({});
     const url = new URL(window.location.href);
     url.hash = 'pregunta';
     window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash);
   }
 
-  const completedActivities = activityItems.filter((item) => activityState[item.id]).length;
+  const completedActivities = s00ClosureSteps.filter((step) => {
+    const selectedOptionId = activityAnswers[step.id];
+    return step.challenge.options.find((opt) => opt.id === selectedOptionId)?.correct === true;
+  }).length;
 
   return (
     <section
-      className="s00-journey"
+      className="session-presentation s00-journey"
       data-ready="true"
       data-hydrated={hydrated ? 'true' : undefined}
       data-session-id="S00"
@@ -4212,7 +4341,9 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
       <header className="s00-journey__header">
         <div className="s00-journey__masthead">
           <p className="eyebrow">Sesión 0 · introducción · 90 min</p>
-          <h1 id="s00-journey-title">De los mundos a los datos</h1>
+          <h1 id="s00-journey-title" className="session-presentation__title">
+            De los mundos a los datos
+          </h1>
           <p>Una señal débil, una pregunta científica, una cadena de decisiones.</p>
         </div>
         <div className="s00-journey__toggles">
@@ -4256,9 +4387,8 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
                 ? (activePart?.label ?? 'S00')
                 : (activeUnit?.shortLabel ?? 'S00') + ' · ' + (activePart?.label ?? '')
           }
-          className="slide-rail--s00-presentation"
+          className="slide-rail--session-presentation"
           compactCaption
-          hideCaption
           ariaLabel="Diapositivas de S00"
           progressLabel="Avance de las diapositivas de S00"
           getIndexLabel={(slide) => getS00SlideNumber(slide)}
@@ -4276,13 +4406,16 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
       <div className="s00-journey__content">
         {displayMode === 'activities' ? (
           <S00Activities
-            state={activityState}
-            onChange={(id) => setActivityState((current) => ({ ...current, [id]: !current[id] }))}
+            answers={activityAnswers}
+            onAnswer={(stepId, optionId) =>
+              setActivityAnswers((prev) => ({ ...prev, [stepId]: optionId }))
+            }
+            onReset={() => setActivityAnswers({})}
           />
         ) : displayMode === 'reading' ? (
           <article className="s00-reading" aria-labelledby="s00-reading-title">
             <header className="s00-reading__header">
-              <p className="s00-reading__label">Lectura lineal · nueve estaciones</p>
+              <p className="s00-reading__label">Lectura lineal · siete estaciones</p>
               <h2 id="s00-reading-title">La pregunta viaja con la evidencia</h2>
               <p>
                 La lectura conserva la cadena completa, sus visuales, las fuentes y los límites.
@@ -4301,6 +4434,26 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
               ))}
             </div>
             <S00Glossary />
+            <aside className="s00-reading-activity-cta">
+              <div className="s00-reading-activity-cta__content">
+                <span className="s00-stage-tag" data-tone="transfer">
+                  TALLER METODOLÓGICO
+                </span>
+                <h3>Pon a prueba la cadena de investigación</h3>
+                <p>
+                  Pasa al modo interactivo de actividades para construir las 7 decisiones que
+                  conectan un mundo físico con la evidencia condicionada de Machine Learning.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="s00-reading-activity-cta__btn"
+                onClick={() => changeDisplayMode('activities')}
+              >
+                <span>Ir al taller de actividades</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            </aside>
           </article>
         ) : activeIndex === 0 ? (
           <S00BibliographyStage />
@@ -4394,9 +4547,8 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
                     onSelectImpactCase={setSelectedImpactCaseId}
                     selectedBranchId={selectedBranchId}
                     onSelectBranch={setSelectedBranchId}
-                    selectedClosureStepId={selectedClosureStepId}
-                    onSelectClosureStep={setSelectedClosureStepId}
                     onSelectSlide={selectSlide}
+                    onSelectMode={changeDisplayMode}
                   />
                   <p className="s00-visual__caption">{activeUnit.visualCaption}</p>
                   <div className="s00-scene__narrative">
@@ -4426,14 +4578,17 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
         ) : null}
       </div>
 
-      <footer className="s00-journey__footer">
-        <p className="s00-state-summary" aria-live="polite">
-          {displayMode === 'activities'
+      <SessionPresentationFooter
+        className="s00-journey__footer"
+        summaryClassName="s00-state-summary"
+        actionsClassName="s00-journey__actions"
+        summary={
+          displayMode === 'activities'
             ? 'Rama de actividades. ' +
               completedActivities +
               ' de ' +
-              activityItems.length +
-              ' movimientos completados.'
+              s00ClosureSteps.length +
+              ' pasos metodológicos completados.'
             : activeIndex === 0
               ? 'Diapositiva 0. Fuentes de S00.'
               : 'Modo ' +
@@ -4444,43 +4599,42 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
                 s00Slides.length +
                 ': ' +
                 (activePart?.label ?? activeUnit?.title ?? 'S00') +
-                '.'}
-        </p>
-        <div className="s00-journey__actions" aria-label="Controles del recorrido">
-          {displayMode === 'presentation' ? (
-            <>
-              <button
-                type="button"
-                onClick={() => selectSlide(activeIndex - 1)}
-                disabled={activeIndex === 0}
-              >
-                ← Anterior
-              </button>
-              <button
-                type="button"
-                onClick={() => selectSlide(activeIndex + 1)}
-                disabled={activeIndex === s00Slides.length - 1}
-              >
-                Siguiente →
-              </button>
-            </>
-          ) : displayMode === 'reading' ? (
+                '.'
+        }
+      >
+        {displayMode === 'presentation' ? (
+          <>
             <button
               type="button"
-              onClick={() => document.getElementById('s00-reading-title')?.scrollIntoView()}
+              onClick={() => selectSlide(activeIndex - 1)}
+              disabled={activeIndex === 0}
             >
-              ↑ Volver al inicio
+              ← Anterior
             </button>
-          ) : (
-            <button type="button" onClick={() => changeDisplayMode('presentation')}>
-              ← Volver al recorrido
+            <button
+              type="button"
+              onClick={() => selectSlide(activeIndex + 1)}
+              disabled={activeIndex === s00Slides.length - 1}
+            >
+              Siguiente →
             </button>
-          )}
-          <button type="button" className="s00-reset" onClick={reset}>
-            Reiniciar
+          </>
+        ) : displayMode === 'reading' ? (
+          <button
+            type="button"
+            onClick={() => document.getElementById('s00-reading-title')?.scrollIntoView()}
+          >
+            ↑ Volver al inicio
           </button>
-        </div>
-      </footer>
+        ) : (
+          <button type="button" onClick={() => changeDisplayMode('presentation')}>
+            ← Volver al recorrido
+          </button>
+        )}
+        <button type="button" className="s00-reset" onClick={reset}>
+          Reiniciar
+        </button>
+      </SessionPresentationFooter>
     </section>
   );
 }

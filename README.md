@@ -77,6 +77,7 @@ schemas/ + scripts/             contratos ejecutables
 - [Puente Obsidian ↔ repo](docs/architecture/OBSIDIAN_BRIDGE.md)
 - [Ciclo de contenido](docs/protocols/CONTENT_LIFECYCLE.md)
 - [Procedencia y derechos](docs/protocols/PROVENANCE_AND_RIGHTS.md)
+- [Código pedagógico](docs/protocols/PEDAGOGICAL_CODE.md)
 - [Interacciones educativas](docs/protocols/INTERACTION_SPEC.md)
 - [Sistema visual](docs/protocols/VISUAL_SYSTEM.md)
 - [Calidad y entrega](docs/protocols/QUALITY_AND_RELEASE.md)

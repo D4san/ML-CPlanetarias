@@ -1,32 +1,5 @@
 .s01-journey {
   --s01-accent: #70d5d8;
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  width: min(100%, var(--screen));
-  margin-inline: auto;
-  padding: clamp(1rem, 3vw, 2.5rem);
-  border: 1px solid rgb(255 255 255 / 0.14);
-  border-radius: var(--radius-md);
-  color: var(--paper-50);
-  background:
-    radial-gradient(circle at 5% 10%, rgb(0 124 135 / 0.27), transparent 26rem),
-    radial-gradient(circle at 93% 60%, rgb(81 68 201 / 0.25), transparent 30rem),
-    linear-gradient(145deg, #071a25, #0c2430 58%, #081821);
-  box-shadow: var(--shadow-float);
-}
-
-.s01-journey::before {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background-image:
-    linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
-  background-size: 2rem 2rem;
-  mask-image: linear-gradient(to bottom, black, transparent 88%);
-  content: '';
-  pointer-events: none;
 }
 
 .s01-journey button {
@@ -49,7 +22,6 @@
   max-width: 20ch;
   margin-bottom: var(--space-3);
   color: var(--white);
-  font-size: var(--step-3);
 }
 
 .s01-journey__header p:last-child {
@@ -198,9 +170,9 @@
 .s01-scene-deck,
 .s01-focus,
 .s01-overview {
-  border: 1px solid rgb(255 255 255 / 0.13);
+  border: 1px solid var(--presentation-border);
   border-radius: var(--radius-md);
-  background: rgb(255 255 255 / 0.05);
+  background: var(--presentation-surface);
 }
 
 .s01-scene-deck {
@@ -2305,11 +2277,6 @@ button.s01-algorithm-tree__task:focus-visible {
 }
 
 @media (min-width: 80rem) and (orientation: landscape) {
-  .s01-journey[data-display-mode='presentation'] {
-    width: 100%;
-    padding: clamp(1.2rem, 1.5vw, 1.75rem);
-  }
-
   .s01-journey[data-display-mode='presentation'] .s01-journey__header {
     align-items: center;
     margin-bottom: var(--space-2);
@@ -2318,7 +2285,7 @@ button.s01-algorithm-tree__task:focus-visible {
   .s01-journey[data-display-mode='presentation'] .s01-journey__header h1 {
     max-width: none;
     margin-bottom: 0;
-    font-size: clamp(2rem, 1.4rem + 1vw, 2.75rem);
+    font-size: var(--presentation-title-size);
   }
 
   .s01-journey[data-display-mode='presentation'] .s01-journey__header p:last-child {
@@ -4050,11 +4017,6 @@ button.s01-algorithm-tree__task:focus-visible {
   .s01-outcome-card__face {
     align-content: start;
     padding: clamp(1rem, 5vw, 1.5rem);
-  }
-
-  .s01-journey {
-    padding: var(--space-4);
-    border-radius: var(--radius-sm);
   }
 
   .s01-journey__header h1 {

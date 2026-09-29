@@ -22,7 +22,7 @@ test('S00 no presenta violaciones WCAG A/AA en lectura y actividades', async ({ 
     .analyze();
   expect(readingResults.violations).toEqual([]);
 
-  await page.getByRole('button', { name: 'Actividades' }).click();
+  await page.getByRole('button', { name: 'Actividades', exact: true }).click();
   const activityResults = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
     .analyze();

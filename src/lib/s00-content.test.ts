@@ -7,6 +7,7 @@ import {
   getS00SlideIndexFromHash,
   getS00SlideNumber,
   s00BibliographyReferences,
+  s00ClosureSteps,
   s00ConceptCards,
   s00Concepts,
   s00MeasurementModalities,
@@ -16,7 +17,7 @@ import {
 
 describe('S00 scientific content', () => {
   it('flattens bibliography and uneven station parts for the shared SlideRail', () => {
-    expect(s00Slides).toHaveLength(38);
+    expect(s00Slides).toHaveLength(31);
     expect(s00Slides[0]).toMatchObject({
       id: 's00-bibliografia',
       partLabel: 'Fuentes',
@@ -27,15 +28,15 @@ describe('S00 scientific content', () => {
         .filter((slide) => slide.partIndex === 0)
         .map((slide) => slide.unitId),
     ).toEqual(s00Units.map((unit) => unit.id));
-    expect(s00Slides.slice(1).map((slide) => slide.partIndex)).toContain(6);
+    expect(s00Slides.slice(1).map((slide) => slide.partIndex)).toContain(5);
     expect(getS00SlideNumber(s00Slides[1]!)).toBe('01.1');
     expect(getS00SlideNumber(s00Slides[2]!)).toBe('01.2');
     expect(getS00SlideNumber(s00Slides[3]!)).toBe('01.3');
     expect(getS00SlideNumber(s00Slides[4]!)).toBe('02.1');
-    expect(s00Units).toHaveLength(8);
+    expect(s00Units).toHaveLength(7);
     expect(getS00Parts('s00-pregunta')).toHaveLength(3);
     expect(getS00Parts('s00-datos')).toHaveLength(5);
-    expect(getS00Parts('s00-cierre')).toHaveLength(7);
+    expect(getS00Parts('s00-ramas')).toHaveLength(3);
     expect(s00Units.map((unit) => unit.shortLabel)).toEqual([
       'Mundo',
       'Campo',
@@ -44,8 +45,12 @@ describe('S00 scientific content', () => {
       'Verbos',
       'Impacto',
       'Ramas',
-      'Cierre',
     ]);
+    expect(s00ClosureSteps).toHaveLength(7);
+    expect(s00ClosureSteps.every((step) => step.challenge.options.length === 3)).toBe(true);
+    expect(s00ClosureSteps.every((step) => step.challenge.options.some((opt) => opt.correct))).toBe(
+      true,
+    );
   });
 
   it('resolves stable scientific hashes and opens the first station by default', () => {
@@ -57,6 +62,8 @@ describe('S00 scientific content', () => {
     expect(getS00SlideIndexFromHash('#ramas/teoria')).toBe(getS00SlideIndex('s00-ramas', 1));
     expect(getS00SlideIndexFromHash('#acotar')).toBe(getS00SlideIndex('s00-medicion'));
     expect(getS00SlideIndexFromHash('#acotar/salida')).toBe(getS00SlideIndex('s00-medicion'));
+    expect(getS00SlideIndexFromHash('#cierre')).toBe(getS00SlideIndex('s00-ramas', 2));
+    expect(getS00SlideIndexFromHash('#cierre/evaluacion')).toBe(getS00SlideIndex('s00-ramas', 2));
     expect(getS00SlideIndexFromHash('#missing')).toBeNull();
     expect(getS00SlideIndexFromHash('#pregunta/missing')).toBeNull();
   });

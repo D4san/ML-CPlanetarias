@@ -48,6 +48,7 @@ El `inbox/` puede contener el diseño teórico detallado que alimenta la web, pe
 5. Si la tarea devuelve observaciones al vault, leer `outbox/README.md`.
 6. Para trabajo web, leer la ADR activa y el protocolo pertinente de `docs/protocols/`.
 7. Para crear o revisar una página interactiva, usar la skill local `$develop-mlcp-web`.
+8. Para escribir o revisar código que el estudiante leerá o ejecutará, seguir `docs/protocols/PEDAGOGICAL_CODE.md`.
 
 ## Fuentes de verdad
 
@@ -89,6 +90,7 @@ Cada tarea debe dejar una entrada en [BITACORA.md](docs/planning/agent-execution
 - La elección técnica vive en `docs/architecture/decisions/`.
 - Los estados y la promoción viven en `docs/protocols/CONTENT_LIFECYCLE.md`.
 - La procedencia y los derechos viven en `docs/protocols/PROVENANCE_AND_RIGHTS.md`.
+- El estilo del código dirigido al aprendizaje vive en `docs/protocols/PEDAGOGICAL_CODE.md`.
 - El contrato interactivo y visual vive en `docs/protocols/INTERACTION_SPEC.md` y `VISUAL_SYSTEM.md`.
 - Los comandos y gates viven en `docs/protocols/QUALITY_AND_RELEASE.md`.
 - Los esquemas ejecutables viven en `schemas/`; la prosa no debe contradecirlos.

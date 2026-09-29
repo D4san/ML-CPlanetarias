@@ -30,6 +30,7 @@ import { SceneForStop } from './s01/SceneForStop';
 import { S01Navigation } from './s01/S01Navigation';
 import './s01-learning-journey.css';
 import './s01-pilot.css';
+import './session-presentation.css';
 
 const s01HistoryStateKey = '__mlcpS01';
 
@@ -277,7 +278,7 @@ function S01JourneyContent() {
 
   return (
     <section
-      className="s01-journey"
+      className="session-presentation s01-journey"
       data-ready="true"
       data-active-stop={state.stopId}
       data-scenario={state.scenarioId}

@@ -91,15 +91,24 @@ describe('S00 journey', () => {
     const user = userEvent.setup();
     render(<S00LearningJourney config={{ ...courseConfig, defaultView: 'activities' }} />);
 
-    const checkbox = screen.getByRole('checkbox', {
-      name: /Acoté una curiosidad/i,
+    expect(
+      screen.getByRole('heading', { name: 'La cadena de la pregunta al límite' }),
+    ).toBeVisible();
+    expect(screen.getByText(/PASO 01 \/ 07 · PREGUNTA/i)).toBeVisible();
+
+    // Answer step 1 challenge
+    const correctOption = screen.getByRole('button', {
+      name: /firma de absorción en 1\.4 µm/i,
     });
-    await user.click(checkbox);
-    expect(screen.getByRole('status')).toHaveTextContent('1 de 5');
+    await user.click(correctOption);
+    expect(screen.getByRole('status')).toHaveTextContent('1 de 7 pasos completados');
+    expect(screen.getByRole('alert')).toHaveTextContent(/Decisión válida/i);
+
+    // Switch to presentation and back to activities
     await user.click(screen.getByRole('button', { name: 'Presentación' }));
     expect(screen.getByRole('heading', { name: 'Un mundo se vuelve observable' })).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Actividades' }));
-    expect(screen.getByRole('checkbox', { name: /Acoté una curiosidad/i })).toBeChecked();
+    expect(screen.getByRole('status')).toHaveTextContent('1 de 7 pasos completados');
   });
 
   it('recovers an invalid hash and exposes local terms by keyboard', async () => {
@@ -122,8 +131,8 @@ describe('S00 journey', () => {
     const rail = screen.getByRole('navigation', { name: 'Diapositivas de S00' });
 
     expect(document.querySelector('.slide-rail__caption')).not.toBeInTheDocument();
-    expect(journey).toHaveAttribute('data-slide-count', '38');
-    expect(rail.querySelectorAll('.slide-rail__index')).toHaveLength(38);
+    expect(journey).toHaveAttribute('data-slide-count', '31');
+    expect(rail.querySelectorAll('.slide-rail__index')).toHaveLength(31);
     expect(screen.getByText('01.1')).toBeInTheDocument();
     expect(screen.getByText('01.2')).toBeInTheDocument();
     expect(screen.getByText('01.3')).toBeInTheDocument();
@@ -412,16 +421,18 @@ describe('S00 journey', () => {
     expect(screen.getByText('Scikit-learn')).toBeVisible();
   });
 
-  it('renders methodological pipeline and epistemological covenant on station 08', async () => {
+  it('activates activities workshop on #cierre, renders 7-step pipeline, and provides CTA on branches', async () => {
     const user = userEvent.setup();
+
+    // 1. Entering with legacy #cierre opens activities workshop directly
     window.history.replaceState(null, '', '/sesiones/s00/#cierre');
     render(<S00LearningJourney config={courseConfig} />);
 
     expect(
-      screen.getByRole('heading', { name: 'La salida del modelo es evidencia condicionada' }),
+      screen.getByRole('heading', { name: 'La cadena de la pregunta al límite' }),
     ).toBeVisible();
 
-    // 7 cumulative closure pipeline steps
+    // 7 pipeline step tabs
     expect(screen.getByRole('tab', { name: /Pregunta/i })).toBeVisible();
     expect(screen.getByRole('tab', { name: /Medición/i })).toBeVisible();
     expect(screen.getByRole('tab', { name: /Dato/i })).toBeVisible();
@@ -430,27 +441,41 @@ describe('S00 journey', () => {
     expect(screen.getByRole('tab', { name: /Evaluación/i })).toBeVisible();
     expect(screen.getByRole('tab', { name: /Límite/i })).toBeVisible();
 
-    // Active step dossier 09.1
-    expect(screen.getByText(/01 \/ 07 · PASO DE LA CADENA/i)).toBeVisible();
+    // Active step dossier 01
+    expect(screen.getByText(/PASO 01 \/ 07 · PREGUNTA/i)).toBeVisible();
     expect(screen.getByText(/Principio formal rector:/i)).toBeVisible();
     expect(screen.getByText(/Decisión metodológica en S00/i)).toBeVisible();
     expect(screen.getByText(/Riesgo epistemológico evitado/i)).toBeVisible();
     expect(screen.getByText(/Puente formal hacia Sesión 01/i)).toBeVisible();
+    expect(screen.getByText(/🎯 Desafío metodológico/i)).toBeVisible();
 
-    // Epistemological Covenant
+    // Epistemological Covenant initially locked
     expect(screen.getByText(/CONTRATO EPISTEMOLÓGICO DEL CURSO/i)).toBeVisible();
     expect(
       screen.getByText(/La salida del modelo nunca es la conclusión científica final\./i),
     ).toBeVisible();
 
-    // Switch to step 09.6 Evaluación (index 5 -> part 'evaluacion')
+    // Switch to step 06 Evaluación
     await user.click(screen.getByRole('tab', { name: /Evaluación/i }));
-    expect(window.location.hash).toBe('#cierre/evaluacion');
-    expect(screen.getByText(/06 \/ 07 · PASO DE LA CADENA/i)).toBeVisible();
+    expect(screen.getByText(/PASO 06 \/ 07 · EVALUACIÓN/i)).toBeVisible();
     expect(
       screen.getByText(/Evaluar con PR-AUC, Brier score y cobertura bayesiana/i),
     ).toBeVisible();
     expect(screen.getByText(/Reportar accuracy engañosa en clases desbalanceadas/i)).toBeVisible();
+
+    // 2. Verify CTA on station 07 (Ramas - Aplicación reproducible)
+    await user.click(screen.getByRole('button', { name: 'Presentación' }));
+    window.history.replaceState(null, '', '/sesiones/s00/#ramas/aplicacion');
+    // Select Aplicación reproducible tab
+    await user.click(screen.getByRole('tab', { name: /Aplicación reproducible/i }));
+    const ctaBtn = screen.getByRole('button', {
+      name: /Taller Metodológico: La cadena al límite/i,
+    });
+    expect(ctaBtn).toBeVisible();
+    await user.click(ctaBtn);
+    expect(
+      screen.getByRole('heading', { name: 'La cadena de la pregunta al límite' }),
+    ).toBeVisible();
   });
 
   it('opens interactive flashcard modal, cycles cards with keyboard and closes with Escape', async () => {

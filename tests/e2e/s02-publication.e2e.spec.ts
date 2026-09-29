@@ -22,4 +22,13 @@ test('lista S02 y ofrece en Colab el notebook versionado de la práctica', async
   await expect(colabLink).toHaveAttribute('href', colabUrl);
   await expect(colabLink).toHaveAttribute('target', '_blank');
   await expect(colabLink).toHaveAttribute('rel', /noreferrer/);
+
+  const closingUrl = new URL(page.url());
+  closingUrl.searchParams.set('estacion', 'cierre');
+  await page.goto(closingUrl.toString());
+  await page.waitForFunction(() => !document.querySelector('astro-island')?.hasAttribute('ssr'));
+  await expect(
+    page.getByRole('heading', { name: 'Comunica el resultado y sus límites' }),
+  ).toBeVisible();
+  await expect(page.locator('.s02-journey__eyebrow')).toContainText('Estación 6 · subestación 1');
 });

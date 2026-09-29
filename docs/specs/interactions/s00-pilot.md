@@ -28,14 +28,14 @@ representación → tarea → evaluación → límite`, más la rama principal d
 
 ## Objeto mínimo y presentación
 
-El objeto mínimo es una cadena de medición y decisión con un ejemplo de exoplanetas. La página debe
-ofrecer tres modos equivalentes: Presentación, Lectura y Actividades. Presentación guía una idea por
-vez; Lectura conserva todo el argumento, referencias y límites en HTML; Actividades separa las
-producciones del estudiante.
+El objeto mínimo es una cadena de medición y decisión con un ejemplo de exoplanetas. La página ofrece
+tres modos equivalentes: Presentación, Lectura y Actividades. Presentación guía una idea por
+vez a lo largo de siete estaciones temáticas limpias; Lectura conserva todo el argumento, referencias y límites en HTML; Actividades
+organiza el taller metodológico de la cadena de inferencia (7 decisiones científicas con desafíos interactivos y desbloqueo del Contrato Epistemológico).
 
 La vista inicial de Presentación abre en la primera estación, **Partir de una pregunta**, con la pregunta guía, el
 subtítulo «Una señal débil, una pregunta científica, una cadena de decisiones» y una instrucción
-de orientación. El contenido estático de las ocho estaciones aparece también en Lectura y en el
+de orientación. El contenido estático de las siete estaciones aparece también en Lectura y en el
 resumen lineal.
 
 ### Primer cuadro horizontal
@@ -57,10 +57,12 @@ reorganiza a flujo vertical sin perder la cadena.
 ## Secuencia de estaciones
 
 El carril reutiliza la composición de `SlideRail`: cinco tarjetas desarrolladas alrededor de la
-activa y las restantes apiladas en los bordes. S00 articula ocho estaciones conceptuales como
-spine, y la Presentación se recorre mediante subpantallas jerárquicas (`01.1`, `01.2`, …) para
-dar protagonismo a cada objeto, señal, dato o decisión. La cantidad de subpantallas es irregular y
-depende de la información que necesita cada estación.
+activa y las restantes apiladas en los bordes. S00 articula siete estaciones conceptuales temáticas como
+spine de presentación oral, y traslada la formalización exhaustiva de la cadena metodológica al taller
+interactivo de Actividades. La Presentación se recorre mediante subpantallas jerárquicas (`01.1`, `01.2`, …)
+para dar protagonismo a cada objeto, señal, dato o decisión. El riel usa el preset compartido
+`slide-rail--session-presentation`: mantiene visible el nombre de la pantalla activa y el conteo
+compacto, con el mismo tamaño de tarjetas y controles que S01.
 
 | Orden | Estación | Pregunta de control | Ejemplo mínimo | Salida visible |
 | ---: | --- | --- | --- | --- |
@@ -70,8 +72,7 @@ depende de la información que necesita cada estación.
 | 4 | Datos observacionales, simulación y catálogo | ¿Cómo se conserva el dato y cómo se estructura el entrenamiento? | Curva observacional, catálogo derivado o forward model | Estructura de tensores, balance y particiones |
 | 5 | El rol de ML | ¿Qué verbo y tarea aproxima el problema? | Detectar, clasificar, estimar, describir o priorizar | Verbo formulado y función de pérdida |
 | 6 | Casos de impacto | ¿Dónde marca diferencia ML frente al método clásico? | Tránsitos Kepler, estabilidad dinámica, espectros JWST | Contraste riguroso, métrica y validación física |
-| 7 | Las tres ramas | ¿Cómo se articulan ciencia, teoría y código? | Problema astronómico, teoría estadística, software reproducible | Conexión metodológica |
-| 8 | Síntesis y cierre | ¿Cómo se evalúa la cadena completa y qué límites conserva? | Diagnóstico integral, falsos positivos, sesgo inductivo | Salida condicionada y transferencia docente |
+| 7 | Las tres ramas | ¿Cómo se articulan ciencia, teoría y código? | Problema astronómico, teoría estadística, software reproducible | Conexión metodológica y transferencia al taller |
 
 La Presentación distribuye las partes así:
 
@@ -84,19 +85,19 @@ La Presentación distribuye las partes así:
 | 05 · El rol de ML | Detectar señales débiles, Clasificar morfologías y candidatos, Estimar parámetros físicos, Describir poblaciones y estructuras, Priorizar seguimiento escaso | 5 |
 | 06 · Casos de impacto | Clasificación de curvas de luz, Estabilidad orbital y dinámica, Caracterización atmosférica, Procesamiento de imágenes de alto contraste, Validación estadística vs. confirmación física, Generación de catálogos de candidatos | 6 |
 | 07 · Las tres ramas | Problema astronómico, Teoría formal ML, Aplicación reproducible | 3 |
-| 08 · Síntesis: la cadena completa | Pregunta científica, Medición física, Dato y representación, Tarea de ML, Modelo y aprendizaje, Evaluación rigurosa, Interpretación y límites | 7 |
 
 La primera subpantalla de cada estación (`x.1`) presenta exclusivamente el foco conceptual en un
 único panel centrado a pantalla completa. La subpantalla siguiente (`x.2`) unifica el desarrollo
 visual inicial con los controles de esa parte, dedicando todo el espacio a la escena interactiva.
 En la estación 03, la experiencia integra cuatro lentes dinámicas (Física & Instrumento, Tensor &
 Unidad ML, Inferencia & Salida, Decisión & Límites) que permiten profundizar sin fragmentar la narrativa.
-Cada subpantalla posterior conserva su elemento protagonista a pantalla completa con su visual,
-pregunta, límite y actividad. Anterior/Siguiente, las tarjetas del rail, los botones de partes y la
-URL recorren el mismo orden plano subyacente de 38 subpantallas (incluida la bibliografía). La URL jerárquica conserva el nombre
+La subpantalla `07.3` (Aplicación reproducible) incorpora un llamado a la acción (CTA) directo hacia el taller
+metodológico interactivo de Actividades.
+Anterior/Siguiente, las tarjetas del rail, los botones de partes y la
+URL recorren el mismo orden plano subyacente de 31 subpantallas (incluida la bibliografía en `00.1`). La URL jerárquica conserva el nombre
 de estación para la primera parte (`#pregunta`) y añade el identificador de parte para las siguientes
-(`#pregunta/senal`). Los hashes anteriores (como `#acotar`) se resuelven de forma compatible hacia
-su modalidad correspondiente. Un estado inválido conserva una salida útil y anuncia la estación activa.
+(`#pregunta/senal`). Los hashes `#cierre` redirigen de forma transparente al modo `actividades`, y
+los anteriores (`#acotar`) se resuelven hacia `#medicion/transito`. Un estado inválido conserva una salida útil y anuncia la estación activa.
 
 ## Interacciones necesarias
 
@@ -183,27 +184,19 @@ distintos. Una cifra de sistemas simulados no equivale a planetas descubiertos.
 **Fallback estático.** Cada caso se presenta como bloque completo en el orden problema → dato →
 intervención → cifra → resultado → límite → referencia.
 
-## Actividades diagnósticas y salida
+## Actividades diagnósticas: Taller metodológico de la cadena de inferencia
 
-Las actividades producen respuestas observables, pero la ficha no registra progreso ni convierte el
-recorrido en una puntuación.
+El modo de Actividades se estructura como un taller interactivo guiado por un stepper horizontal de siete decisiones científicas. Cada paso expone su principio rector formal en KaTeX, su decisión metodológica, el riesgo epistemológico evitado y un desafío conceptual de opción múltiple con retroalimentación inmediata.
 
-1. **Una pregunta, dos formulaciones.** Transformar una pregunta amplia en una pregunta con unidad,
-   dato, salida y criterio de utilidad.
-2. **Clasificar la representación.** Elegir curva, espectro, imagen, catálogo, simulación o
-   inyección y escribir qué información podría perderse al resumirla.
-3. **Reconstruir un artículo.** Completar pregunta, dato, representación, salida, etiqueta o
-   referencia, línea base, métrica, conclusión permitida y alcance.
-4. **Elegir el verbo.** Asociar un enunciado con detectar, clasificar, estimar, describir o
-   priorizar y justificar la salida.
-5. **Límite en una frase.** Completar: «Este modelo puede ayudar a ___ a partir de ___, bajo el
-   supuesto de ___. Su resultado debe validarse mediante ___.»
-6. **Transferencia docente.** Preparar una mini actividad de 5–10 minutos con pregunta, visual,
-   comprobación, límite y referencia.
+1. **Paso 01 · Pregunta:** Formular una pregunta física acotada frente a una ambición abstracta no computable.
+2. **Paso 02 · Medición:** Separar el observable instrumental directo (flujo, espectro) del parámetro físico inferido (radio, masa).
+3. **Paso 03 · Dato:** Diferenciar un catálogo prefiltrado de la población astronómica subyacente y sus sesgos de selección.
+4. **Paso 04 · Representación:** Estructurar representaciones multiescala (global/local) para aislar la variabilidad estelar.
+5. **Paso 05 · Tarea:** Asignar el verbo computacional exacto y su función de pérdida formal.
+6. **Paso 06 · Evaluación:** Sustituir la exactitud engañosa por métricas sensibles al descubrimiento (PR-AUC, Brier score) en regímenes de desbalance severo.
+7. **Paso 07 · Límite:** Tratar la salida del modelo como evidencia condicionada y formalizar el **Contrato Epistemológico del Curso**.
 
-La ficha de salida debe incluir los ocho campos de la promesa y un enlace visible a Lectura,
-Glosario y Referencias. Las respuestas de ejemplo sirven para retroalimentación local; no se
-presentan como evaluación científica ni como nota académica.
+Al resolver los 7 pasos, se desbloquea el Contrato Epistemológico completo, la síntesis visual de la cadena y el **ticket de salida** para transferir la formulación a la Sesión 01. Las respuestas se mantienen en memoria del navegador y permiten reinicio completo sin persistir datos personales ni emitir notas numéricas punitivas.
 
 ## Codificación visual y semántica
 

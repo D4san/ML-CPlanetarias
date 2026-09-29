@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import SlideRail from './SlideRail';
 import { SessionPresentationFooter } from './SessionPresentationFooter';
@@ -14,6 +14,7 @@ import S02BootstrapSampler from './s02/S02BootstrapSampler';
 import S02ExoplanetPredictionActivity from './s02/S02ExoplanetPredictionActivity';
 import S02DatasetAudit from './s02/S02DatasetAudit';
 import S02ForestExplainer from './s02/S02ForestExplainer';
+import { S02ReadingView } from './s02/S02ReadingView';
 import {
   s02ColabUrl,
   s02OpeningSources,
@@ -33,9 +34,28 @@ import './s02/s02-forest-explainer.css';
 import './s02/s02-regression-explorer.css';
 import './s02/s02-tree-playground.css';
 import './session-presentation.css';
+import './s02/s02-reading.css';
 
 export default function S02LearningJourney() {
-  const [activeStopId, setActiveStopId] = useState('references');
+  const [activeStopId, setActiveStopId] = useState<S02Stop['id']>('references');
+  const [displayMode, setDisplayMode] = useState<'presentation' | 'reading'>('presentation');
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('estacion') === 'cierre') setActiveStopId('limits');
+    if (params.get('modo') === 'lectura') setDisplayMode('reading');
+
+    const syncDisplayMode = () => {
+      const mode = new URLSearchParams(window.location.search).get('modo');
+      const nextMode = mode === 'lectura' ? 'reading' : 'presentation';
+      setDisplayMode(nextMode);
+      if (nextMode === 'presentation') window.scrollTo({ top: 0, behavior: 'auto' });
+    };
+    window.addEventListener('popstate', syncDisplayMode);
+    return () => window.removeEventListener('popstate', syncDisplayMode);
+  }, []);
+  const handleActiveStopChange = useCallback((stopId: S02Stop['id']) => {
+    setActiveStopId(stopId);
+  }, []);
   const activeIndex = Math.max(
     s02Stops.findIndex((stop) => stop.id === activeStopId),
     0,
@@ -63,10 +83,25 @@ export default function S02LearningJourney() {
     if (stop) setActiveStopId(stop.id);
   }
 
+  function changeDisplayMode(mode: 'presentation' | 'reading') {
+    if (mode === displayMode) return;
+    const url = new URL(window.location.href);
+    if (mode === 'reading') url.searchParams.set('modo', 'lectura');
+    else url.searchParams.delete('modo');
+    window.history.pushState({ s02DisplayMode: mode }, '', url);
+    setDisplayMode(mode);
+
+    if (mode === 'reading') {
+      if (activeStopId === 'references') window.scrollTo({ top: 0, behavior: 'auto' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+  }
+
   return (
     <section
       className="session-presentation s02-journey"
-      data-display-mode="presentation"
+      data-display-mode={displayMode}
       aria-labelledby="s02-journey-title"
     >
       <header className="s02-journey__header">
@@ -80,79 +115,112 @@ export default function S02LearningJourney() {
           </p>
         </div>
         <div className="s02-journey__header-actions">
+          <div className="s02-journey__mode-switch" role="group" aria-label="Modo de visualización">
+            <button
+              type="button"
+              aria-pressed={displayMode === 'presentation'}
+              onClick={() => changeDisplayMode('presentation')}
+            >
+              Presentación
+            </button>
+            <button
+              type="button"
+              aria-pressed={displayMode === 'reading'}
+              onClick={() => changeDisplayMode('reading')}
+            >
+              Lectura
+            </button>
+          </div>
           <a className="s02-journey__sessions-link" href={withBase('/sesiones/')}>
             Sesiones
           </a>
         </div>
       </header>
 
-      <SlideRail
-        slides={railStops}
-        activeIndex={activeIndex}
-        activeLabel={activeLabel}
-        ariaLabel="Recorrido de diapositivas S02"
-        progressLabel="Avance de la sesión 02"
-        visibleCount={5}
-        compactCaption
-        className="slide-rail--session-presentation"
-        onSelect={(_stop, index) => moveTo(index)}
-        getIndexLabel={(stop) => {
-          if (stop.stationId === 'references') return '00';
-          const stopStationIndex = s02TeachingStations.findIndex(
-            (station) => station.id === stop.stationId,
-          );
-          return `${String(stopStationIndex + 1).padStart(2, '0')}.${(stop.partIndex ?? 0) + 1}`;
-        }}
-        getAriaLabel={(stop, index) => {
-          if (stop.stationId === 'references') {
-            return `Diapositiva 0, bibliografía de S02. Diapositiva ${index + 1} de ${s02Stops.length}.`;
-          }
-          const stopStationIndex = s02TeachingStations.findIndex(
-            (station) => station.id === stop.stationId,
-          );
-          return `${stopStationIndex + 1}.${(stop.partIndex ?? 0) + 1} ${stop.groupLabel}, subestación ${stop.title}: ${stop.partLabel}. Diapositiva ${index + 1} de ${s02Stops.length}.`;
-        }}
-      />
+      {displayMode === 'presentation' ? (
+        <>
+          <SlideRail
+            slides={railStops}
+            activeIndex={activeIndex}
+            activeLabel={activeLabel}
+            ariaLabel="Recorrido de diapositivas S02"
+            progressLabel="Avance de la sesión 02"
+            visibleCount={5}
+            compactCaption
+            className="slide-rail--session-presentation"
+            onSelect={(_stop, index) => moveTo(index)}
+            getIndexLabel={(stop) => {
+              if (stop.stationId === 'references') return '00';
+              const stopStationIndex = s02TeachingStations.findIndex(
+                (station) => station.id === stop.stationId,
+              );
+              return `${String(stopStationIndex + 1).padStart(2, '0')}.${(stop.partIndex ?? 0) + 1}`;
+            }}
+            getAriaLabel={(stop, index) => {
+              if (stop.stationId === 'references') {
+                return `Diapositiva 0, bibliografía de S02. Diapositiva ${index + 1} de ${s02Stops.length}.`;
+              }
+              const stopStationIndex = s02TeachingStations.findIndex(
+                (station) => station.id === stop.stationId,
+              );
+              return `${stopStationIndex + 1}.${(stop.partIndex ?? 0) + 1} ${stop.groupLabel}, subestación ${stop.title}: ${stop.partLabel}. Diapositiva ${index + 1} de ${s02Stops.length}.`;
+            }}
+          />
 
-      <article className="s02-journey__slide" aria-labelledby={`s02-${activeStop.id}-title`}>
-        <header className="s02-journey__slide-heading">
-          <div>
-            <p className="s02-journey__eyebrow">{activeStop.eyebrow}</p>
-            <h2 id={`s02-${activeStop.id}-title`} tabIndex={-1}>
-              {slideHeading(activeStop)}
-            </h2>
-            <StopIntro stop={activeStop} />
-          </div>
-          <span
-            className="s02-journey__slide-number"
-            aria-label={
-              activeStop.id === 'references'
-                ? 'Diapositiva 00, referencias'
-                : `Estación ${stationIndex + 1}, subestación ${substationIndex + 1}`
-            }
-          >
-            {activeStop.id === 'references'
-              ? '00'
-              : `${String(stationIndex + 1).padStart(2, '0')}.${substationIndex + 1}`}
-          </span>
-        </header>
-        <div className="s02-journey__slide-content">
-          <StopContent stop={activeStop} />
-        </div>
-      </article>
+          <article className="s02-journey__slide" aria-labelledby={`s02-${activeStop.id}-title`}>
+            <header className="s02-journey__slide-heading">
+              <div>
+                <p className="s02-journey__eyebrow">{activeStop.eyebrow}</p>
+                <h2 id={`s02-${activeStop.id}-title`} tabIndex={-1}>
+                  {slideHeading(activeStop)}
+                </h2>
+                <StopIntro stop={activeStop} />
+              </div>
+              <span
+                className="s02-journey__slide-number"
+                aria-label={
+                  activeStop.id === 'references'
+                    ? 'Diapositiva 00, referencias'
+                    : `Estación ${stationIndex + 1}, subestación ${substationIndex + 1}`
+                }
+              >
+                {activeStop.id === 'references'
+                  ? '00'
+                  : `${String(stationIndex + 1).padStart(2, '0')}.${substationIndex + 1}`}
+              </span>
+            </header>
+            <div className="s02-journey__slide-content">
+              <StopContent stop={activeStop} />
+            </div>
+          </article>
 
-      <SessionPresentationFooter className="s02-journey__footer">
-        <button type="button" onClick={() => moveTo(activeIndex - 1)} disabled={activeIndex === 0}>
-          Anterior
-        </button>
-        <button
-          type="button"
-          onClick={() => moveTo(activeIndex + 1)}
-          disabled={activeIndex === s02Stops.length - 1}
-        >
-          Siguiente
-        </button>
-      </SessionPresentationFooter>
+          <SessionPresentationFooter className="s02-journey__footer">
+            <button
+              type="button"
+              onClick={() => moveTo(activeIndex - 1)}
+              disabled={activeIndex === 0}
+            >
+              Anterior
+            </button>
+            <button
+              type="button"
+              onClick={() => moveTo(activeIndex + 1)}
+              disabled={activeIndex === s02Stops.length - 1}
+            >
+              Siguiente
+            </button>
+          </SessionPresentationFooter>
+        </>
+      ) : (
+        <S02ReadingView
+          stops={s02Stops}
+          activeStopId={activeStopId}
+          renderInteractive={(stop) => <StopContent stop={stop} />}
+          getHeading={slideHeading}
+          onActiveStopChange={handleActiveStopChange}
+          onReturnToPresentation={() => changeDisplayMode('presentation')}
+        />
+      )}
     </section>
   );
 }
@@ -299,8 +367,8 @@ function StopContent({ stop }: { stop: S02Stop }) {
           <section>
             <h3>Objetivo</h3>
             <p>
-              Responder con una comparación reproducible si la irradiación mejora la predicción del
-              radio en sistemas estelares que el modelo no vio durante el entrenamiento.
+              Comparar si añadir irradiación mejora la predicción del radio en planetas reservados
+              al azar y comunicar el alcance de esa evaluación.
             </p>
           </section>
           <section>
@@ -309,11 +377,10 @@ function StopContent({ stop }: { stop: S02Stop }) {
               Consulta PSCompPars del NASA Exoplanet Archive; audita la población, las
               incertidumbres y la procedencia, y excluye radios calculados a partir de la masa.
               Estima <code>pl_rade</code> con <code>pl_bmasse</code> y luego con{' '}
-              <code>pl_bmasse</code> + <code>pl_insol</code>. Reserva sistemas completos agrupando
-              por <code>hostname</code> y compara, sobre la misma prueba, la mediana de
-              entrenamiento, un árbol y dos Random Forest con MAE y R². Grafica la importancia por
-              permutación del bosque con ambos predictores y concluye si añadir irradiación mejora
-              la predicción para esta población.
+              <code>pl_bmasse</code> + <code>pl_insol</code>. Separa al azar el 20 % de los planetas
+              para prueba y compara la mediana, un árbol y dos Random Forest mediante MAE y R².
+              Grafica los radios observados y predichos, y la importancia MDI del bosque con ambos
+              predictores. Planetas de una estrella pueden aparecer en entrenamiento y prueba.
             </p>
           </section>
         </div>
@@ -381,7 +448,7 @@ function StopContent({ stop }: { stop: S02Stop }) {
 
         <section className="s02-journey__concept-card">
           <h3>¿Qué cambia al añadir insolación?</h3>
-          <p>Random Forest · misma configuración · prueba: 300 planetas en 250 sistemas</p>
+          <p>Salida guardada · Random Forest · prueba aleatoria: 306 planetas</p>
           <table
             className="s02-journey__closing-table"
             aria-label="Resultados en el conjunto de prueba"
@@ -395,33 +462,45 @@ function StopContent({ stop }: { stop: S02Stop }) {
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Masa</th>
-                <td>1,618</td>
-                <td>0,824</td>
+                <th scope="row">Mediana</th>
+                <td>4,897</td>
+                <td>-0,003</td>
               </tr>
               <tr>
-                <th scope="row">Masa + insolación</th>
-                <td>1,362</td>
-                <td>0,855</td>
+                <th scope="row">Árbol: masa</th>
+                <td>1,751</td>
+                <td>0,805</td>
+              </tr>
+              <tr>
+                <th scope="row">Random Forest: masa</th>
+                <td>1,673</td>
+                <td>0,814</td>
+              </tr>
+              <tr>
+                <th scope="row">Random Forest: masa + insolación</th>
+                <td>1,191</td>
+                <td>0,889</td>
               </tr>
             </tbody>
           </table>
           <p>
-            En este corte, añadir insolación redujo el error absoluto promedio en 0,256 R⊕. Para R²,
-            1 es predicción perfecta y 0 equivale a predecir siempre el radio medio de prueba.
+            En esta salida, añadir insolación redujo el MAE en 0,482 R⊕ y elevó R² en 0,075 frente
+            al bosque con masa. R² = 1 indica predicción perfecta; R² = 0 iguala la referencia del
+            radio medio de prueba.
           </p>
         </section>
 
         <aside className="s02-journey__prompt">
           <strong>Límite de la comparación</strong>
           <p>
-            GroupShuffleSplit reservó 999 sistemas para entrenar y 250 para probar; sus 1.229 y 300
-            planetas no comparten estrellas anfitrionas. Esta evaluación estima el desempeño en
-            sistemas no vistos, dentro de la población filtrada.
+            train_test_split reservó al azar 306 planetas para prueba (20 %). La división se hace
+            por planeta, así que una estrella puede tener planetas en ambos conjuntos. Las métricas
+            no miden el desempeño en sistemas estelares completamente nuevos.
           </p>
           <p>
-            La mejora predictiva no demuestra causalidad. El análisis tampoco incorpora las
-            incertidumbres de las mediciones.
+            La importancia MDI se calcula durante el entrenamiento: no demuestra causalidad ni
+            reemplaza las métricas de prueba. El análisis tampoco incorpora las incertidumbres de
+            las mediciones.
           </p>
         </aside>
       </div>

@@ -1,0 +1,221 @@
+date: 2026-09-27
+session: S00
+purpose: Sustituir gráficos locales simulados por figuras publicadas con licencia y procedencia verificadas.
+assets:
+  - id: S00-FIG-HR8799-MIRI-FIG1
+    type: observed
+    file: public/images/s00/papers/hr8799-miri-fig1.png
+    unit: S00 / estación 01 / diapositiva 01.2
+    case: HR 8799 con coronografía JWST/MIRI
+    purpose: Comparar filtros y la reducción mediante estrella de referencia.
+    tool_process: Poppler rasterizado a 300 dpi; recorte con Pillow; PNG RGB.
+    generation_method: exact-code
+    style_family: Figura publicada, se conserva estilo editorial de la fuente.
+    background_mode: opaque
+    alpha_status: not-applicable
+    width: 2100
+    height: 1116
+    weight_bytes: 656160
+    alt: >-
+      Figura de ocho paneles en cuatro filtros MIRI: imágenes coronagráficas originales arriba y
+      con sustracción de estrella de referencia abajo; los planetas aparecen señalados en algunos filtros.
+    caption: >-
+      Las columnas comparan F1065C, F1140C, F1550C y F2100W. La detección cambia entre filtros;
+      la figura también señala un objeto de fondo y una estructura de polvo interior.
+    provenance:
+      origin: external-paper
+      source_path: docs/planning/agent-execution/evidence/S00-PAPER-FIGURES.md
+      source_heading: S00-FIG-HR8799-MIRI-FIG1
+      source_url: https://doi.org/10.1051/0004-6361/202347912
+      figure: Figura 1; PDF, página 4
+      source_refs:
+        - >-
+          Boccaletti et al. (2024), “Imaging detection of the inner dust belt and the four exoplanets
+          in the HR 8799 system with JWST’s MIRI coronagraph”, A&A, 686, A33.
+          DOI: 10.1051/0004-6361/202347912.
+      transformation: >-
+        Rasterizado desde el PDF a 300 dpi y recortado a los ocho paneles; no se editaron datos,
+        escalas, colores ni etiquetas.
+      units: arcsec y au, tal como aparecen en la figura publicada.
+      seed: null
+    rights:
+      status: open-license
+      license: CC BY 4.0
+      note: >-
+        Licencia confirmada en el registro ePubs STFC. Atribución, enlace a la licencia y
+        transformación por recorte visibles en S00.
+    limits:
+      - La sensibilidad y las detecciones cambian por filtro; no todos los paneles muestran los cuatro planetas.
+      - La fuente visual es JWST/MIRI 2024; el paper de Marois et al. (2008) permanece como referencia del descubrimiento.
+    review:
+      status: ready-for-review
+      inspected_at: 2026-09-27
+      contexts:
+        - desktop-1440x900-card
+        - mobile-390x844-lightbox
+      findings:
+        - Figura visible sin distorsión en tarjeta y ampliación.
+        - Caption, cita, licencia y nota de recorte se ajustan al ancho móvil.
+
+  - id: S00-FIG-KEPLER90I-TRANSIT-FIG12
+    type: observed
+    file: public/images/s00/papers/kepler90i-transit-fig12.png
+    unit: S00 / estación 01 / diapositiva 01.2
+    case: Curva de tránsito de Kepler-90 i
+    purpose: Mostrar los datos de brillo agrupados junto al ajuste de tránsito publicado.
+    tool_process: Poppler rasterizado a 300 dpi; recorte del panel inferior con Pillow; PNG RGB.
+    generation_method: exact-code
+    style_family: Figura publicada, se conserva estilo editorial de la fuente.
+    background_mode: opaque
+    alpha_status: not-applicable
+    width: 1466
+    height: 932
+    weight_bytes: 110622
+    alt: >-
+      Recorte del panel inferior de la Figura 12: brillo relativo de Kepler-90 i frente a horas desde
+      el punto medio del tránsito, con datos agrupados y curva roja de mejor ajuste.
+    caption: >-
+      Recorte del panel Kepler-90 i: puntos grises promediados en intervalos de unos 10 minutos,
+      puntos morados en intervalos de unos 45 minutos y ajuste del tránsito en rojo.
+    provenance:
+      origin: external-paper
+      source_path: docs/planning/agent-execution/evidence/S00-PAPER-FIGURES.md
+      source_heading: S00-FIG-KEPLER90I-TRANSIT-FIG12
+      source_url: https://doi.org/10.3847/1538-3881/aa9e09
+      figure: Figura 12, panel Kepler-90 i; PDF, página 18
+      source_refs:
+        - >-
+          Shallue y Vanderburg (2018), “Identifying Exoplanets with Deep Learning: A Five-planet
+          Resonant Chain around Kepler-80 and an Eighth Planet around Kepler-90”, The Astronomical
+          Journal, 155(2), 94. DOI: 10.3847/1538-3881/aa9e09.
+      transformation: >-
+        Rasterizado desde el PDF a 300 dpi y recortado al panel Kepler-90 i; se conservan datos,
+        ajuste, ejes, escalas y rótulos.
+      units: brillo relativo, horas, días y radio terrestre, tal como aparecen en la figura.
+      seed: null
+    rights:
+      status: open-license
+      license: CC BY 3.0
+      note: >-
+        El artículo indica CC BY 3.0. S00 acredita autores, título, revista, DOI y licencia, y
+        declara el recorte del panel.
+    limits:
+      - El tránsito constriñe la relación de radios con supuestos del modelo; no mide masa planetaria.
+      - El panel es un ajuste publicado y no basta por sí solo para demostrar toda la validación del planeta.
+    review:
+      status: ready-for-review
+      inspected_at: 2026-09-27
+      contexts:
+        - desktop-1440x900-card
+        - mobile-390x844-lightbox
+      findings:
+        - Figura visible sin distorsión en tarjeta y ampliación.
+        - Caption, cita, licencia y nota de recorte se ajustan al ancho móvil.
+
+  - id: S00-FIG-WASP39B-SPECTRUM-FIG2
+    type: observed
+    file: public/images/s00/papers/wasp39b-spectrum-fig2.png
+    unit: S00 / estación 01 / diapositiva 01.2
+    case: Espectro de transmisión de WASP-39 b
+    purpose: Comparar cuatro reducciones independientes del espectro JWST.
+    tool_process: Descarga del PNG de tamaño completo servido por Nature; archivo sin modificar.
+    generation_method: exact-code
+    style_family: Figura publicada, se conserva estilo editorial de la fuente.
+    background_mode: opaque
+    alpha_status: not-applicable
+    width: 1040
+    height: 552
+    weight_bytes: 118775
+    alt: >-
+      Figura 2 del artículo: profundidad de tránsito de WASP-39 b frente a longitud de onda,
+      con cuatro reducciones independientes de JWST, puntos de Spitzer y barras de incertidumbre.
+    caption: >-
+      Las reducciones independientes concuerdan en la banda de absorción de CO2 cerca de 4,3 μm.
+      El rasgo menor cerca de 4,0 μm se presenta como tentativo en el artículo.
+    provenance:
+      origin: external-paper
+      source_path: docs/planning/agent-execution/evidence/S00-PAPER-FIGURES.md
+      source_heading: S00-FIG-WASP39B-SPECTRUM-FIG2
+      source_url: https://doi.org/10.1038/s41586-022-05269-w
+      figure: Figura 2; PNG de tamaño completo del editor
+      source_refs:
+        - >-
+          JWST Transiting Exoplanet Community ERS Team (2023), “Identification of carbon dioxide in
+          an exoplanet atmosphere”, Nature, 614, 649–652. DOI: 10.1038/s41586-022-05269-w.
+      transformation: Figura descargada del editor; sin recorte ni modificaciones.
+      units: micrómetros, porcentaje de profundidad de tránsito y alturas de escala, según la figura.
+      seed: null
+    rights:
+      status: open-license
+      license: CC BY 4.0
+      note: >-
+        El artículo está bajo CC BY 4.0. La figura 2 no tiene crédito de terceros que la excluya
+        de la licencia del artículo; S00 conserva el enlace de fuente y de licencia.
+    limits:
+      - El rasgo cercano a 4,0 μm es tentativo y no se atribuye a una especie molecular confirmada.
+      - La figura compara reducciones y no elimina degeneraciones entre abundancias, nubes y estructura atmosférica.
+    review:
+      status: ready-for-review
+      inspected_at: 2026-09-27
+      contexts:
+        - desktop-1440x900-card
+        - mobile-390x844-lightbox
+      findings:
+        - Figura visible sin distorsión en tarjeta y ampliación.
+        - Caption, cita, licencia y nota de recorte se ajustan al ancho móvil.
+
+  - id: S00-FIG-ASTRONET-INPUT-FIG3
+    type: observed
+    file: public/images/s00/papers/astronet-input-fig3.png
+    unit: S00 / estación 01 / diapositiva 01.2
+    case: Vistas global y local de curvas de luz Kepler
+    purpose: Hacer visible cómo una representación conserva contexto y puede ocultar señales.
+    tool_process: Poppler rasterizado a 300 dpi; recorte con Pillow; PNG RGB.
+    generation_method: exact-code
+    style_family: Figura publicada, se conserva estilo editorial de la fuente.
+    background_mode: opaque
+    alpha_status: not-applicable
+    width: 2216
+    height: 1595
+    weight_bytes: 203423
+    alt: >-
+      Figura 3 de Shallue y Vanderburg: tres candidatos TCE comparados en vistas globales de la curva
+      completa y vistas locales centradas en el evento.
+    caption: >-
+      La vista global conserva el ciclo completo; la local amplía el evento. Los ejemplos muestran
+      tanto un tránsito comprimido en la vista global como un eclipse secundario que puede confundirse
+      con un planeta en la vista local.
+    provenance:
+      origin: external-paper
+      source_path: docs/planning/agent-execution/evidence/S00-PAPER-FIGURES.md
+      source_heading: S00-FIG-ASTRONET-INPUT-FIG3
+      source_url: https://doi.org/10.3847/1538-3881/aa9e09
+      figure: Figura 3; PDF, página 5
+      source_refs:
+        - >-
+          Shallue y Vanderburg (2018), “Identifying Exoplanets with Deep Learning: A Five-planet
+          Resonant Chain around Kepler-80 and an Eighth Planet around Kepler-90”, The Astronomical
+          Journal, 155(2), 94. DOI: 10.3847/1538-3881/aa9e09.
+      transformation: >-
+        Rasterizado desde el PDF a 300 dpi y recortado para excluir encabezado y caption; se conservan
+        los tres casos, ejes, puntos y etiquetas de las vistas.
+      units: brillo normalizado y número de bin, tal como aparecen en la figura.
+      seed: null
+    rights:
+      status: open-license
+      license: CC BY 3.0
+      note: >-
+        El artículo indica CC BY 3.0. S00 acredita autores, título, revista, DOI y licencia, y
+        declara el recorte.
+    limits:
+      - La figura muestra tres ejemplos y no el conjunto completo de entradas usadas para entrenar el modelo.
+      - Las vistas son decisiones de representación: ninguna elimina sesgo ni garantiza una clasificación correcta.
+    review:
+      status: ready-for-review
+      inspected_at: 2026-09-27
+      contexts:
+        - desktop-1440x900-card
+        - mobile-390x844-lightbox
+      findings:
+        - Figura visible sin distorsión en tarjeta y ampliación.
+        - Caption, cita, licencia y nota de recorte se ajustan al ancho móvil.

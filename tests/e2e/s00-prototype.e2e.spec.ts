@@ -47,14 +47,17 @@ test.describe('S00 introducción científica', () => {
   test('mantiene separado el estado de actividades al cambiar de vista', async ({ page }) => {
     await page.goto('./sesiones/s00/?modo=actividades');
     await expect(page.locator('.s00-activities')).toBeVisible();
-    const firstCheck = page.getByRole('checkbox').first();
-    await firstCheck.check();
-    await expect(page.getByRole('status')).toContainText('1 de 5');
+    const correctOption = page.getByRole('button', { name: /firma de absorción en 1\.4 µm/i });
+    await correctOption.click();
+    await expect(page.getByRole('status')).toContainText('1 de 7');
 
     await page.getByRole('button', { name: 'Presentación' }).click();
     await expect(page.locator('.s00-journey')).toHaveAttribute('data-display-mode', 'presentation');
     await page.getByRole('button', { name: 'Actividades' }).click();
-    await expect(page.getByRole('checkbox').first()).toBeChecked();
+    await expect(
+      page.getByRole('button', { name: /firma de absorción en 1\.4 µm/i }),
+    ).toHaveAttribute('data-selected', 'true');
+    await expect(page.getByRole('status')).toContainText('1 de 7');
   });
 
   test('conserva el flujo sin desbordamiento en móvil', async ({ page }) => {

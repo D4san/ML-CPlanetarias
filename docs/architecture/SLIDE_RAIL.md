@@ -21,10 +21,18 @@ y `01.1`, `01.2`, `01.3` —hasta `07.3`— para conservar visible la relación 
 
 ## Comportamiento compartido
 
-El valor predeterminado mantiene cinco tarjetas desarrolladas alrededor de la activa y apila las
-restantes en los bordes. La tarjeta activa gana espacio. Las tarjetas ocultas siguen siendo
-controles nativos; las flechas, `Home`, `End`, el foco y el nombre accesible pertenecen al carril.
-En móvil todas pasan a un flujo vertical legible.
+El valor predeterminado muestra cinco tarjetas alrededor de la activa y apila las restantes en los
+bordes. Esa cifra controla la ventana visible, no la cantidad de estaciones o partes de una sesión;
+`visibleCount` puede configurarse cuando la ficha visual lo requiera. Una sesión puede aportar
+cualquier número de diapositivas y cualquier distribución de partes. La tarjeta activa gana
+espacio. Las tarjetas ocultas siguen siendo controles nativos; las flechas, `Home`, `End`, el foco
+y el nombre accesible pertenecen al carril. En móvil todas pasan a un flujo vertical legible.
+
+En modo presentación, S00 y S01 usan `slide-rail--session-presentation` y
+`session-presentation.css` para compartir caption compacto, conteo, tamaño de tarjeta, espaciado y
+comportamiento visual. Se muestra el rótulo activo y el conteo corto; cada sesión aporta sus propias
+etiquetas, numeración, tonos y URLs. El CSS local de sesión no oculta el caption ni comprime las
+tarjetas del carril.
 
 La secuencia puede contener una diapositiva inicial, partes de una estación o una única entrada
 por estación. El carril no conoce sesiones, contenidos científicos ni reglas de hash. Esos datos

@@ -32,6 +32,9 @@ export interface S00ConceptCard {
   imageSrc: string;
   imageAlt: string;
   imageCaption: string;
+  imageWidth: number;
+  imageHeight: number;
+  imageCredit: S00PaperFigureCredit;
   study: {
     authors: string;
     year: number;
@@ -51,6 +54,15 @@ export interface S00ConceptCard {
     url: string;
   };
   limit: string;
+}
+
+export interface S00PaperFigureCredit {
+  figure: string;
+  citation: string;
+  sourceUrl: string;
+  license: string;
+  licenseUrl: string;
+  changes: string;
 }
 
 export interface S00DataCard {
@@ -131,6 +143,18 @@ export interface S00ImpactCase {
   };
 }
 
+export interface S00ClosureChallengeOption {
+  id: string;
+  label: string;
+  correct: boolean;
+  feedback: string;
+}
+
+export interface S00ClosureChallenge {
+  question: string;
+  options: readonly S00ClosureChallengeOption[];
+}
+
 export interface S00ClosureStep {
   id: string;
   number: string;
@@ -142,6 +166,7 @@ export interface S00ClosureStep {
   s01Bridge: string;
   formula: string;
   tone: 'question' | 'data' | 'model' | 'decision' | 'limit';
+  challenge: S00ClosureChallenge;
 }
 
 export interface S00PlanetaryPillar {
@@ -328,10 +353,10 @@ export const s00VisualAssets = {
   lightCurve: '/images/s00/plots/s00-light-curve.png',
   spectrum: '/images/s00/plots/s00-spectrum.png',
   impact: '/images/s00/plots/s00-impact-comparison.png',
-  realExoplanet: '/images/s00/s00-real-exoplanet.png',
-  realTransit: '/images/s00/s00-real-transit.png',
-  realSpectrum: '/images/s00/s00-real-spectrum.png',
-  realRepresentation: '/images/s00/s00-real-representation.png',
+  paperExoplanet: '/images/s00/papers/hr8799-miri-fig1.png',
+  paperTransit: '/images/s00/papers/kepler90i-transit-fig12.png',
+  paperSpectrum: '/images/s00/papers/wasp39b-spectrum-fig2.png',
+  paperRepresentation: '/images/s00/papers/astronet-input-fig3.png',
   miniatures: {
     datosObservacion: '/images/s00/miniatures/s00-datos-observacion.png',
     datosCatalogo: '/images/s00/miniatures/s00-datos-catalogo.png',
@@ -567,14 +592,26 @@ export const s00ConceptCards: readonly S00ConceptCard[] = [
       'Planeta que orbita una estrella distinta del Sol; la inmensa mayoría solo se revela por sus efectos indirectos.',
     description:
       'En casos excepcionales de planetas jóvenes, calientes, masivos (>1 MJup) y distantes (>10 UA), la óptica adaptativa y la coronografía logran enmascarar el halo estelar para resolver los mundos como fuentes puntuales individuales y rastrear sus órbitas con astrometría multianual.',
-    target: 'Sistema cuádruple HR 8799 (planetas b, c, d, e)',
-    instrument: 'Telescopio Keck II (NIRC2 con óptica adaptativa) y VLT',
-    dataType: 'Imagen infrarroja de alto contraste (2D) con sustracción angular del PSF estelar',
-    imageSrc: s00VisualAssets.realExoplanet,
+    target: 'Sistema HR 8799: planetas b, c, d y e',
+    instrument: 'JWST/MIRI (figura de 2024); Keck y Gemini (descubrimiento de Marois et al., 2008)',
+    dataType:
+      'Imágenes coronagráficas en cuatro filtros MIRI, antes y después de sustraer la estrella de referencia',
+    imageSrc: s00VisualAssets.paperExoplanet,
     imageAlt:
-      'Panel dual mostrando la imagen astronómica de alto contraste de HR 8799 obtenida con Keck NIRC2 coronagraph y el diagrama de sus cuatro órbitas comparadas con Neptuno.',
+      'Figura de ocho paneles en cuatro filtros MIRI: imágenes coronagráficas originales arriba y con sustracción de estrella de referencia abajo; los planetas aparecen señalados en algunos filtros.',
     imageCaption:
-      'HR 8799 (Keck/VLT): cuatro exoplanetas superjovianos resueltos por imagen directa y astrometría orbital a lo largo de décadas.',
+      'Las columnas comparan F1065C, F1140C, F1550C y F2100W. La detección cambia entre filtros; la figura también señala un objeto de fondo y una estructura de polvo interior.',
+    imageWidth: 2100,
+    imageHeight: 1116,
+    imageCredit: {
+      figure: 'Figura 1',
+      citation:
+        'Boccaletti et al. (2024), “Imaging detection of the inner dust belt and the four exoplanets in the HR 8799 system with JWST’s MIRI coronagraph”, A&A, 686, A33. DOI: 10.1051/0004-6361/202347912',
+      sourceUrl: 'https://doi.org/10.1051/0004-6361/202347912',
+      license: 'CC BY 4.0',
+      licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+      changes: 'Recorte de los paneles de la página 4; se conservan escala, rótulos y colores.',
+    },
     study: {
       authors: 'Marois, C., Macintosh, B., Barman, T., et al.',
       year: 2008,
@@ -604,12 +641,24 @@ export const s00ConceptCards: readonly S00ConceptCard[] = [
       'La curva de luz registra el brillo estelar en función del tiempo. La caída en flujo mide directamente el área del disco planetario frente a la estrella ((Rp/R★)²), mientras que la periodicidad fija el semi-eje mayor y la distancia orbital mediante la tercera ley de Kepler.',
     target: 'Kepler-90 i (8º planeta descubierto del sistema)',
     instrument: 'Telescopio Espacial Kepler (NASA)',
-    dataType: 'Serie temporal fotométrica en fase (caída de 420 ppm / 0.042% del flujo estelar)',
-    imageSrc: s00VisualAssets.realTransit,
+    dataType:
+      'Brillo relativo frente a horas desde el tránsito; promedios de Kepler y modelo de mejor ajuste',
+    imageSrc: s00VisualAssets.paperTransit,
     imageAlt:
-      'Curva de luz fotométrica en fase del exoplaneta Kepler-90 i con mediciones de cadencia del telescopio Kepler, promedio binned y ajuste del modelo de tránsito analítico.',
+      'Recorte del panel inferior de la Figura 12: brillo relativo de Kepler-90 i frente a horas desde el punto medio del tránsito, con datos agrupados y curva roja de mejor ajuste.',
     imageCaption:
-      'Kepler-90 i (Kepler/NASA): tránsito real con caída minúscula de 420 ppm (0.042%), descubierto en los datos de archivo por una red neuronal profunda.',
+      'Recorte del panel Kepler-90 i: puntos grises promediados en intervalos de unos 10 minutos, puntos morados en intervalos de unos 45 minutos y ajuste del tránsito en rojo.',
+    imageWidth: 1466,
+    imageHeight: 932,
+    imageCredit: {
+      figure: 'Figura 12, panel Kepler-90 i',
+      citation:
+        'Shallue y Vanderburg (2018), “Identifying Exoplanets with Deep Learning: A Five-planet Resonant Chain around Kepler-80 and an Eighth Planet around Kepler-90”, The Astronomical Journal, 155(2), 94. DOI: 10.3847/1538-3881/aa9e09',
+      sourceUrl: 'https://doi.org/10.3847/1538-3881/aa9e09',
+      license: 'CC BY 3.0',
+      licenseUrl: 'https://creativecommons.org/licenses/by/3.0/',
+      changes: 'Recorte del panel inferior; se conservan datos, modelo, escalas y rótulos.',
+    },
     study: {
       authors: 'Shallue, C. J., & Vanderburg, A.',
       year: 2018,
@@ -641,12 +690,23 @@ export const s00ConceptCards: readonly S00ConceptCard[] = [
     target: 'Exoplaneta WASP-39 b (Saturno caliente a ~700 años luz)',
     instrument: 'Telescopio Espacial James Webb (JWST / NIRSpec PRISM)',
     dataType:
-      'Espectro de transmisión infrarrojo (2.0 a 5.3 μm) con resolución fotométrica espectral',
-    imageSrc: s00VisualAssets.realSpectrum,
+      'Espectro de transmisión de 3,0 a 5,5 μm con cuatro reducciones independientes y datos de Spitzer',
+    imageSrc: s00VisualAssets.paperSpectrum,
     imageAlt:
-      'Espectro de transmisión de WASP-39 b obtenido con JWST NIRSpec mostrando datos observacionales con barras de error y las firmas de absorción de H2O, SO2 y el pico prominente de CO2 en 4.3 micras.',
+      'Figura 2 del artículo: profundidad de tránsito de WASP-39 b frente a longitud de onda, con cuatro reducciones independientes de JWST, puntos de Spitzer y barras de incertidumbre.',
     imageCaption:
-      'WASP-39 b (JWST/NASA/ESA/CSA): primera detección inequívoca de dióxido de carbono (CO₂) y fotoquímica de SO₂ en la atmósfera de un exoplaneta.',
+      'Las reducciones independientes concuerdan en la banda de absorción de CO₂ cerca de 4,3 μm. El rasgo menor cerca de 4,0 μm se presenta como tentativo en el artículo.',
+    imageWidth: 1040,
+    imageHeight: 552,
+    imageCredit: {
+      figure: 'Figura 2',
+      citation:
+        'JWST Transiting Exoplanet Community ERS Team (2023), “Identification of carbon dioxide in an exoplanet atmosphere”, Nature, 614, 649–652. DOI: 10.1038/s41586-022-05269-w',
+      sourceUrl: 'https://doi.org/10.1038/s41586-022-05269-w',
+      license: 'CC BY 4.0',
+      licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+      changes: 'Figura descargada de Nature en su formato publicado; sin modificaciones.',
+    },
     study: {
       authors: 'JWST Transiting Exoplanet Community ERS Team',
       year: 2023,
@@ -671,17 +731,29 @@ export const s00ConceptCards: readonly S00ConceptCard[] = [
     kicker: '04 · del dato al algoritmo',
     badge: 'Vector multiescala para ML',
     shortDefinition:
-      'Transformación estructurada del dato físico crudo en tensores numéricos para que un algoritmo aprenda patrones sin sesgos.',
+      'Organización de una curva de luz como entrada numérica para un modelo; cada representación conserva algunos patrones y puede ocultar otros.',
     description:
-      'Una serie temporal astronómica cruda (con 65.000 mediciones, gaps instrumentales y variabilidad térmica) no puede alimentar directamente una red neuronal. Se pliega en fase y se divide en representaciones multiescala: una vista global (201 bins) para evaluar el contexto orbital y descartar variabilidad estelar, y una vista local (61 bins) centrada en el tránsito para evaluar simetría y fondo plano.',
+      'En el estudio de Shallue y Vanderburg, la curva de Kepler se aplana, se pliega al período candidato y se agrupa de dos maneras. La vista global resume la curva completa; la vista local enfoca una ventana alrededor del tránsito. La configuración final usa 2001 bins globales y 201 locales.',
     target: 'Candidatos Kepler (TCEs: Threshold Crossing Events / KOIs)',
     instrument: 'Pipeline Kepler + Red Neuronal Convolucional (AstroNet)',
-    dataType: 'Vistas multiescala: vector global (201 bins) y vector local (61 bins) normalizados',
-    imageSrc: s00VisualAssets.realRepresentation,
+    dataType:
+      'Tres ejemplos de curvas de luz plegadas y normalizadas, mostradas como vistas globales y locales',
+    imageSrc: s00VisualAssets.paperRepresentation,
     imageAlt:
-      'Representación multiescala de dos paneles: Vista global de 201 bins para contexto estelar y Vista local de 61 bins para evaluar la geometría del tránsito, diseñadas para redes neuronales convolucionales.',
+      'Figura 3 de Shallue y Vanderburg: tres candidatos TCE comparados en vistas globales de la curva completa y vistas locales centradas en el evento.',
     imageCaption:
-      'Representación multiescala (AstroNet): la vista global descarta variabilidad estelar y manchas, mientras la vista local analiza la geometría y simetría de la caída.',
+      'La vista global conserva el ciclo completo; la local amplía el evento. Los ejemplos muestran tanto un tránsito comprimido en la vista global como un eclipse secundario que puede confundirse con un planeta en la vista local.',
+    imageWidth: 2216,
+    imageHeight: 1595,
+    imageCredit: {
+      figure: 'Figura 3',
+      citation:
+        'Shallue y Vanderburg (2018), “Identifying Exoplanets with Deep Learning: A Five-planet Resonant Chain around Kepler-80 and an Eighth Planet around Kepler-90”, The Astronomical Journal, 155(2), 94. DOI: 10.3847/1538-3881/aa9e09',
+      sourceUrl: 'https://doi.org/10.3847/1538-3881/aa9e09',
+      license: 'CC BY 3.0',
+      licenseUrl: 'https://creativecommons.org/licenses/by/3.0/',
+      changes: 'Recorte de la figura para excluir el encabezado de página y el caption original.',
+    },
     study: {
       authors: 'Shallue, C. J., & Vanderburg, A.',
       year: 2018,
@@ -1756,6 +1828,35 @@ export const s00ClosureSteps: readonly S00ClosureStep[] = [
     s01Bridge: 'S01 formaliza la relación entre el sistema físico y el problema de decisión.',
     formula: '\\text{Mundo} \\longrightarrow \\text{Pregunta física acotada}',
     tone: 'question',
+    challenge: {
+      question:
+        '¿Cuál de las siguientes formulaciones expresa una pregunta física acotada para Machine Learning en exoplanetas?',
+      options: [
+        {
+          id: 'ambition',
+          label: 'Descubrir planetas habitables con formas de vida orgánica en la Vía Láctea.',
+          correct: false,
+          feedback:
+            'Es una ambición abstracta no computable sin variables observables delimitadas ni función de pérdida definida.',
+        },
+        {
+          id: 'physical',
+          label:
+            '¿Qué firma de absorción en 1.4 µm revela presencia de vapor de agua en el espectro de transmisión?',
+          correct: true,
+          feedback:
+            'Excelente. Delimita un observable espectroscópico medible y un parámetro molecular físico concreto.',
+        },
+        {
+          id: 'unfocused',
+          label:
+            'Descargar todas las curvas de luz disponibles y buscar anomalías sin hipótesis previa.',
+          correct: false,
+          feedback:
+            'Carece de unidad de análisis, observable objetivo y criterio de éxito científico evaluable.',
+        },
+      ],
+    },
   },
   {
     id: 'medicion',
@@ -1770,6 +1871,33 @@ export const s00ClosureSteps: readonly S00ClosureStep[] = [
     s01Bridge: 'S01 formaliza la función de observación y el ruido del detector.',
     formula: '\\Delta F(t), \\quad \\Delta v_r(t), \\quad F(\\lambda), \\quad I(x, y)',
     tone: 'data',
+    challenge: {
+      question:
+        '¿Cuál de los siguientes elementos constituye un observable instrumental directo y no una inferencia física?',
+      options: [
+        {
+          id: 'inferred_radius',
+          label: 'El radio planetario exacto expresado en radios terrestres.',
+          correct: false,
+          feedback:
+            'El radio es una propiedad física deducida tras modelar la profundidad del tránsito y conocer el radio estelar.',
+        },
+        {
+          id: 'direct_flux',
+          label: 'La serie temporal de flujo relativo normalizado y su dispersión fotométrica.',
+          correct: true,
+          feedback:
+            'Exacto. Es la señal física cruda registrada directamente por los píxeles del detector del telescopio.',
+        },
+        {
+          id: 'inferred_mass',
+          label: 'La masa mínima del planeta calculada mediante velocidad radial.',
+          correct: false,
+          feedback:
+            'La masa es un parámetro físico derivado tras resolver la semiamplitud Doppler K observada.',
+        },
+      ],
+    },
   },
   {
     id: 'dato',
@@ -1784,6 +1912,34 @@ export const s00ClosureSteps: readonly S00ClosureStep[] = [
     s01Bridge: 'S01 define formalmente la instancia x_i y la unidad de análisis.',
     formula: 'x_i \\in \\mathcal{X}, \\quad \\mathbf{X} \\in \\mathbb{R}^{N \\times P}',
     tone: 'data',
+    challenge: {
+      question:
+        'Al construir el conjunto de entrenamiento a partir de un catálogo astronómico, ¿qué sesgo domina el riesgo epistemológico?',
+      options: [
+        {
+          id: 'malmquist',
+          label:
+            'Sesgo de Malmquist: los instrumentos detectan preferentemente fuentes más brillantes y tránsitos más profundos.',
+          correct: true,
+          feedback:
+            'Correcto. El volumen de detección favorece objetos extremos, sesgando la representatividad poblacional de los datos.',
+        },
+        {
+          id: 'detector_noise',
+          label: 'Que el detector confunda un fotón óptico con uno infrarrojo.',
+          correct: false,
+          feedback:
+            'La respuesta espectral del detector está calibrada instrumentalmente; el riesgo crítico está en la selección observacional de la muestra.',
+        },
+        {
+          id: 'metadata_lost',
+          label: 'Que los catálogos astronómicos nunca incluyan identificadores estelares.',
+          correct: false,
+          feedback:
+            'Los catálogos poseen metadatos astrométricos rigurosos; el problema metodológico es la representatividad física de la muestra.',
+        },
+      ],
+    },
   },
   {
     id: 'representacion',
@@ -1798,6 +1954,36 @@ export const s00ClosureSteps: readonly S00ClosureStep[] = [
     s01Bridge: 'S01 conecta la representación con el espacio de características del modelo.',
     formula: '\\phi(x) \\in \\mathbb{R}^D, \\quad \\text{Vista Global + Vista Local}',
     tone: 'model',
+    challenge: {
+      question:
+        '¿Por qué se estructuran representaciones multiescala (vista global + vista local) en curvas de tránsito?',
+      options: [
+        {
+          id: 'augment',
+          label:
+            'Para duplicar artificialmente la cantidad de datos sin realizar nuevas observaciones.',
+          correct: false,
+          feedback:
+            'Duplicar muestras sin una hipótesis de invarianza física no resuelve la confusión con variabilidad estelar.',
+        },
+        {
+          id: 'multiscale',
+          label:
+            'La vista global captura variabilidad estelar y ruido de fondo, mientras la vista local resuelve la morfología del tránsito.',
+          correct: true,
+          feedback:
+            'Exacto. Aísla la simetría periódica en U/V del tránsito frente a manchas, pulsaciones estelares y artefactos sistemáticos.',
+        },
+        {
+          id: 'arbitrary',
+          label:
+            'Porque las redes convolucionales solo admiten tensores de entrada bidimensionales.',
+          correct: false,
+          feedback:
+            'La representación matemática se diseña para respetar la física de la señal, no por una restricción arbitraria de software.',
+        },
+      ],
+    },
   },
   {
     id: 'tarea',
@@ -1813,6 +1999,34 @@ export const s00ClosureSteps: readonly S00ClosureStep[] = [
     formula:
       'f_\\theta: \\mathcal{X} \\to \\mathcal{Y}, \\quad \\min_\\theta \\mathcal{L}(f_\\theta(x), y)',
     tone: 'model',
+    challenge: {
+      question:
+        'Para estimar la temperatura atmosférica continua a partir de un espectro observado, ¿qué tarea matemática se formula?',
+      options: [
+        {
+          id: 'classification',
+          label: 'Clasificación binaria supervisada con pérdida de entropía cruzada.',
+          correct: false,
+          feedback:
+            'La temperatura es un parámetro continuo con orden métrico físico, no una categoría dicotómica.',
+        },
+        {
+          id: 'regression',
+          label:
+            'Regresión continua supervisada minimizando error cuadrático medio o pérdida de Huber.',
+          correct: true,
+          feedback:
+            'Correcto. Mapea el vector de flujo a un valor continuo en Kelvin penalizando la discrepancia cuadrática o robusta.',
+        },
+        {
+          id: 'clustering',
+          label: 'Clustering no supervisado con k-means para agrupar espectros similares.',
+          correct: false,
+          feedback:
+            'El agrupamiento no asigna valores continuos calibrados de temperatura a nuevas observaciones.',
+        },
+      ],
+    },
   },
   {
     id: 'evaluacion',
@@ -1828,6 +2042,34 @@ export const s00ClosureSteps: readonly S00ClosureStep[] = [
     formula:
       '\\text{PR-AUC}, \\quad \\text{Coverage}(\\theta), \\quad \\text{Costo}(\\text{FP}) \\gg \\text{Costo}(\\text{FN})',
     tone: 'decision',
+    challenge: {
+      question:
+        'En un censo donde el 99% de las curvas son falsos positivos o ruido, ¿por qué la exactitud (accuracy) del 99% es engañosa?',
+      options: [
+        {
+          id: 'trivial_classifier',
+          label:
+            'Un modelo trivial que clasifique todo como "no planeta" obtendría 99% de accuracy sin detectar ningún mundo.',
+          correct: true,
+          feedback:
+            'Excelente. El desbalance severo exige métricas sensibles al descubrimiento (PR-AUC, recall de candidatos) y comparación frente a BLS.',
+        },
+        {
+          id: 'scale_wrong',
+          label: 'Porque en astronomía ninguna métrica por debajo de 99.9% es aceptada.',
+          correct: false,
+          feedback:
+            'El problema no es un umbral numérico arbitrario, sino que la exactitud ignora por completo la clase minoritaria de interés científico.',
+        },
+        {
+          id: 'no_fp',
+          label: 'Porque los falsos positivos nunca ocurren en datos espaciales.',
+          correct: false,
+          feedback:
+            'Binarias eclipsantes y manchas estelares producen miles de falsos positivos en misiones como Kepler o TESS.',
+        },
+      ],
+    },
   },
   {
     id: 'limite',
@@ -1843,6 +2085,35 @@ export const s00ClosureSteps: readonly S00ClosureStep[] = [
     formula:
       '\\text{Salida} = \\text{Evidencia condicionada}(\\text{Datos}, \\text{Física}, \\text{Supuestos}, \\text{Evaluación})',
     tone: 'limit',
+    challenge: {
+      question:
+        'Si un modelo predice un candidato exoplanetario con probabilidad 0.999, ¿cuál es la afirmación científica rigurosa y válida?',
+      options: [
+        {
+          id: 'absolute_truth',
+          label:
+            'El planeta está confirmado físicamente y se puede anunciar su descubrimiento sin observaciones adicionales.',
+          correct: false,
+          feedback:
+            'Viola el contrato epistemológico: un score estadístico nunca sustituye la confirmación instrumental independiente.',
+        },
+        {
+          id: 'conditional_evidence',
+          label:
+            'Constituye evidencia condicionada de alta prioridad para optimizar campañas de seguimiento en velocidad radial o espectroscopía.',
+          correct: true,
+          feedback:
+            'Brillante. Reconoce que ML produce evidencia condicionada que guía la decisión experimental dentro de sus límites físicos.',
+        },
+        {
+          id: 'laws_learned',
+          label: 'El modelo aprendió de forma autónoma las leyes fundamentales de la física.',
+          correct: false,
+          feedback:
+            'El modelo optimizó una correspondencia estadística en representaciones computables, no dedujo principios físicos fundamentales.',
+        },
+      ],
+    },
   },
 ];
 
@@ -2126,43 +2397,6 @@ export const s00Units: readonly S00Unit[] = [
       'Pedir una frase por rama y terminar con el límite que debe regresar a la pregunta astronómica.',
     ),
   },
-  {
-    id: 's00-cierre',
-    groupLabel: '08 · cerrar',
-    title: 'La salida del modelo es evidencia condicionada',
-    partLabel: 'Transferencia',
-    tone: 'limit',
-    function: 'closing',
-    shortLabel: 'Cierre',
-    question:
-      '¿Qué debe quedar escrito para que una salida de ML sea científicamente interpretable?',
-    idea: 'Pregunta, dato, representación, tarea, evaluación, interpretación y límite forman una unidad de lectura.',
-    content:
-      'Al terminar S00, cada estudiante puede describir una aplicación con una pregunta clara, un dato identificable, una salida concreta, una evaluación y un límite honesto. Ese mapa será el puente hacia S01 y hacia las aplicaciones posteriores del curso.',
-    interpretation:
-      'La mejor primera decisión técnica suele ser una formulación más precisa de la pregunta y de la evidencia disponible.',
-    limits:
-      'S00 ofrece intuición y un mapa compartido. Todavía no sustituye una práctica reproducible, una línea base, una métrica calculada ni una validación científica.',
-    conceptIds: ['representacion', 'tarea-salida', 'generalizacion', 'evaluacion-limite'],
-    visualKind: 'closure',
-    visualAlt:
-      'Cadena final con siete pasos y una señal de límite que acompaña la salida del modelo.',
-    visualCaption:
-      'La interpretación empieza cuando la salida queda acompañada por el procedimiento y sus condiciones.',
-    closureSteps: s00ClosureSteps,
-    caution: caution(
-      's00-map-is-not-result',
-      'Un mapa de investigación prepara una práctica; no reemplaza su evidencia.',
-      'Contar la comprensión de la cadena como validación de un modelo.',
-      'Se afirma más de lo que los datos, la evaluación y los límites permiten.',
-    ),
-    teacherPrompt: prompt(
-      's00-cierre-docente',
-      'transfer',
-      'Explica una aplicación en una sola frase usando pregunta, dato, salida y límite.',
-      'Usar la frase como ticket de salida y guardar las dudas que requieren el formalismo de S01.',
-    ),
-  },
 ];
 
 export const s00Glossary = s00Concepts.map((concept) => ({
@@ -2171,10 +2405,8 @@ export const s00Glossary = s00Concepts.map((concept) => ({
 }));
 
 /**
- * S00 keeps the nine stations as the conceptual spine, but each station is
- * presented through the parts that actually need a visual beat. The count is
- * intentionally uneven: a data landscape needs five parts, while the course
- * branches need three.
+ * S00 conserva siete estaciones temáticas en el carril de presentación.
+ * La síntesis y el contrato epistemológico se desarrollan en la actividad interactiva.
  */
 export const s00Parts: Readonly<Record<string, readonly S00Part[]>> = {
   's00-pregunta': [
@@ -2220,15 +2452,6 @@ export const s00Parts: Readonly<Record<string, readonly S00Part[]>> = {
     { id: 'astronomia', label: 'Problema astronómico', visualFocus: 'astronomia' },
     { id: 'teoria', label: 'Teoría formal ML', visualFocus: 'teoria' },
     { id: 'aplicacion', label: 'Aplicación reproducible', visualFocus: 'aplicacion' },
-  ],
-  's00-cierre': [
-    { id: 'pregunta', label: 'Pregunta', visualFocus: 'pregunta' },
-    { id: 'medicion', label: 'Medición', visualFocus: 'medicion' },
-    { id: 'dato', label: 'Dato', visualFocus: 'dato' },
-    { id: 'representacion', label: 'Representación', visualFocus: 'representacion' },
-    { id: 'tarea', label: 'Tarea', visualFocus: 'tarea' },
-    { id: 'evaluacion', label: 'Evaluación', visualFocus: 'evaluacion' },
-    { id: 'limite', label: 'Límite', visualFocus: 'limite' },
   ],
 };
 
@@ -2319,6 +2542,11 @@ export function getS00SlideIndexFromHash(hash: string): number | null {
   if (normalized === null) return null;
   if (normalized === '') return 1;
   if (normalized === 'bibliografia') return 0;
+  // Compatibilidad con enlaces previos a cierre -> dirigir a la última subdiapositiva de ramas
+  if (normalized.startsWith('cierre')) {
+    const ramasIndex = getS00SlideIndex('s00-ramas', 2);
+    return ramasIndex >= 0 ? ramasIndex : null;
+  }
   const [rawUnitHash, rawPartId, extra] = normalized.split('/');
   if (!rawUnitHash || extra !== undefined) return null;
   // Compatibilidad con hashes previos de acotar

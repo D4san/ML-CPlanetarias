@@ -2,7 +2,10 @@
   --s02-rule: #70d5d8;
   --s02-branch: #ae9dff;
   --s02-limit: #f08a7c;
-  --s02-readable-floor: max(var(--presentation-control-size), 15px);
+  --s02-readable-floor: clamp(15px, max(1vw, 1.7vh), 19px);
+  --presentation-essential-size: clamp(18px, max(1.3vw, 2vh), 28px);
+  --presentation-support-size: clamp(16px, max(1.05vw, 1.8vh), 21px);
+  --presentation-control-size: var(--s02-readable-floor);
   --presentation-metadata-size: var(--s02-readable-floor);
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
@@ -20,6 +23,34 @@
 
 .s02-journey .slide-rail--session-presentation {
   --slide-rail-small: var(--s02-readable-floor);
+}
+
+@media (min-width: 49rem) {
+  .session-presentation.s02-journey[data-display-mode='presentation'] {
+    padding: clamp(0.7rem, 0.8vw, 1rem);
+  }
+
+  .session-presentation.s02-journey[data-display-mode='presentation']
+    .slide-rail--session-presentation {
+    margin-bottom: 0;
+  }
+
+  .session-presentation.s02-journey[data-display-mode='presentation']
+    .slide-rail--session-presentation
+    .slide-rail__viewport {
+    min-height: 5.5rem;
+    padding-block: 0.35rem;
+  }
+
+  .session-presentation.s02-journey[data-display-mode='presentation']
+    .slide-rail--session-presentation
+    ol,
+  .session-presentation.s02-journey[data-display-mode='presentation']
+    .slide-rail--session-presentation
+    li[data-visible='true']
+    button {
+    min-height: 4.5rem;
+  }
 }
 
 .s02-journey .slide-rail__stack-hint {
@@ -63,7 +94,7 @@
 .s02-journey__header .session-presentation__title {
   max-width: none;
   margin: 0;
-  font-size: clamp(1.35rem, 2.45vw, 2.55rem);
+  font-size: clamp(1.5rem, 2.5vw, 2.8rem);
   line-height: 1.05;
 }
 
@@ -147,7 +178,7 @@
 .s02-journey__slide-heading h2 {
   margin: 0;
   color: var(--paper-50);
-  font-size: clamp(1.35rem, 2.1vw, 2.15rem);
+  font-size: clamp(1.5rem, 2.3vw, 2.6rem);
   line-height: 1.08;
 }
 
@@ -525,11 +556,10 @@
 
 .s02-generalization {
   display: grid;
-  grid-template-rows: minmax(min-content, 1fr) auto;
+  grid-template-rows: max-content max-content;
+  align-content: start;
   gap: clamp(0.45rem, 0.8vh, 0.8rem);
-  height: 100%;
-  min-height: 0;
-  overflow-y: auto;
+  min-height: 100%;
   padding-right: 0.25rem;
 }
 
@@ -545,7 +575,7 @@
   display: grid;
   min-width: 0;
   grid-template-rows: auto auto minmax(5.4rem, auto) auto;
-  align-content: start;
+  align-content: center;
   gap: 0.25rem;
   padding: clamp(0.65rem, 1vw, 1rem);
   border: 1px solid rgb(255 255 255 / 0.14);
@@ -573,7 +603,7 @@
 .s02-generalization__case h3 {
   margin: 0;
   color: var(--paper-50);
-  font-size: clamp(1rem, 1.15vw, 1.15rem);
+  font-size: var(--presentation-essential-size);
   line-height: 1.2;
 }
 
@@ -674,7 +704,7 @@
 .s02-generalization__ensemble h3 {
   margin: 0;
   color: var(--paper-50);
-  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-size: var(--presentation-essential-size);
   line-height: 1.25;
 }
 
@@ -1444,7 +1474,7 @@
   }
 }
 
-@media (min-width: 49rem) and (max-height: 48rem) {
+@media (min-width: 49rem) and (max-height: 50rem) {
   .s02-generalization {
     gap: 0.25rem;
   }
@@ -1454,13 +1484,13 @@
   }
 
   .s02-generalization__case {
-    grid-template-rows: auto auto minmax(2.5rem, auto) auto;
+    grid-template-rows: auto auto minmax(clamp(3.5rem, 10vh, 4.8rem), auto) auto;
     gap: 0.15rem;
     padding: 0.35rem 0.45rem;
   }
 
   .s02-generalization__tree-svg {
-    height: 2.5rem;
+    height: clamp(3.5rem, 10vh, 4.8rem);
   }
 
   .s02-generalization__case-figure figcaption,
@@ -1481,7 +1511,7 @@
   }
 
   .s02-generalization__ensemble-svg {
-    height: 2.7rem;
+    height: clamp(3.6rem, 10.2vh, 5.4rem);
   }
 }
 
@@ -1519,7 +1549,7 @@
   }
 }
 
-@media (min-width: 49rem) and (max-height: 48rem) {
+@media (min-width: 49rem) and (max-height: 50rem) {
   .s02-journey__tree-lab {
     grid-template-columns: minmax(22rem, 1.1fr) minmax(0, 1.42fr);
     gap: 0.3rem;
@@ -1679,14 +1709,14 @@
   }
 }
 
-@media (min-width: 49rem) and (max-height: 48rem) {
-  .s02-journey {
+@media (min-width: 49rem) and (max-height: 50rem) {
+  .session-presentation.s02-journey[data-display-mode='presentation'] {
     gap: 0.25rem;
     padding: 0.75rem;
   }
 
   .s02-journey__header .session-presentation__title {
-    font-size: clamp(1.25rem, 2vw, 2rem);
+    font-size: clamp(1.5rem, 2.2vw, 2.5rem);
   }
 
   .s02-journey__question {
@@ -1694,21 +1724,31 @@
     font-size: max(var(--s02-readable-floor), 0.76rem);
   }
 
-  .s02-journey .slide-rail--session-presentation {
+  .session-presentation.s02-journey[data-display-mode='presentation']
+    .slide-rail--session-presentation {
     margin-bottom: 0.2rem;
   }
 
-  .s02-journey .slide-rail--session-presentation .slide-rail__progress {
+  .session-presentation.s02-journey[data-display-mode='presentation']
+    .slide-rail--session-presentation
+    .slide-rail__progress {
     margin-bottom: 0.2rem;
   }
 
-  .s02-journey .slide-rail--session-presentation .slide-rail__viewport {
+  .session-presentation.s02-journey[data-display-mode='presentation']
+    .slide-rail--session-presentation
+    .slide-rail__viewport {
     min-height: 4.9rem;
     padding-block: 0.25rem;
   }
 
-  .s02-journey .slide-rail--session-presentation ol,
-  .s02-journey .slide-rail--session-presentation li[data-visible='true'] button {
+  .session-presentation.s02-journey[data-display-mode='presentation']
+    .slide-rail--session-presentation
+    ol,
+  .session-presentation.s02-journey[data-display-mode='presentation']
+    .slide-rail--session-presentation
+    li[data-visible='true']
+    button {
     min-height: 4.2rem;
   }
 
@@ -1718,7 +1758,7 @@
   }
 
   .s02-journey__slide-heading h2 {
-    font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+    font-size: clamp(1.35rem, 2.2vw, 2.4rem);
   }
 
   .s02-journey__intro {
@@ -1732,7 +1772,7 @@
   }
 
   .s02-journey__footer button {
-    min-height: 1.9rem;
+    min-height: var(--presentation-control-min-height);
   }
 
   .s02-journey .s02-threshold {
@@ -1868,7 +1908,7 @@
   }
 }
 
-@media (min-width: 49rem) and (max-height: 48rem) {
+@media (min-width: 49rem) and (max-height: 50rem) {
   .s02-journey .s02-threshold__plot-tick text,
   .s02-journey .s02-threshold__plot-label {
     font-size: 44px;

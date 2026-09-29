@@ -10,6 +10,7 @@ import {
   type S01ScenarioId,
   type S01Stop,
 } from '../../../lib/s01-journey';
+import { SessionPresentationFooter } from '../SessionPresentationFooter';
 import SlideRail from '../SlideRail';
 
 export interface S01NavigationProps {
@@ -66,7 +67,9 @@ export function S01Navigation({
       <div className="s01-journey__header">
         <div>
           <p className="eyebrow">Sesión 1</p>
-          <h1 id="s01-journey-title">Una observación va tejiendo el mapa</h1>
+          <h1 id="s01-journey-title" className="session-presentation__title">
+            Una observación va tejiendo el mapa
+          </h1>
           <p>
             {state.displayMode === 'activities'
               ? 'Cinco retos ponen a prueba las decisiones de la ruta.'
@@ -142,7 +145,7 @@ export function S01Navigation({
               ? 'Bibliografía'
               : `${activeStop.shortLabel} · ${parts[partIndex]?.label ?? activeStop.title}`
           }
-          className="slide-rail--s01-presentation"
+          className="slide-rail--session-presentation"
           compactCaption
           ariaLabel="Diapositivas de S01"
           progressLabel="Avance de las diapositivas de S01"
@@ -168,49 +171,51 @@ export function S01Navigation({
 
       {children}
 
-      <div className="s01-journey__footer">
-        <p className="s01-state-summary" aria-live="polite">
-          {state.displayMode === 'activities'
+      <SessionPresentationFooter
+        className="s01-journey__footer"
+        summaryClassName="s01-state-summary"
+        actionsClassName="s01-journey__actions"
+        summary={
+          state.displayMode === 'activities'
             ? `Rama de actividades. ${s01Activities.length} retos breves; elige una respuesta y vuelve a la parada correspondiente.`
             : bibliography && state.displayMode === 'presentation'
               ? 'Diapositiva 0. Bibliografía de S01.'
-              : `Modo ${state.displayMode === 'reading' ? 'lectura lineal' : 'presentación'}. Parada ${activeIndex + 1} de ${s01Stops.length}: ${activeStop.title}. Ruta ${scenario.label}. ${pilot && state.displayMode === 'presentation' ? `Parte ${partIndex + 1} de ${parts.length}: ${parts[partIndex]?.label}.` : ''}`}
-        </p>
-        <div className="s01-journey__actions" aria-label="Controles del recorrido">
-          {state.displayMode === 'presentation' ? (
-            <>
-              <button
-                type="button"
-                onClick={() => onMove(-1)}
-                disabled={bibliography || state.view === 'overview'}
-              >
-                ← Anterior
-              </button>
-              <button
-                type="button"
-                onClick={() => onMove(1)}
-                disabled={
-                  (!bibliography && activeSlideIndex >= slides.length - 1) ||
-                  state.view === 'overview'
-                }
-              >
-                Siguiente →
-              </button>
-            </>
-          ) : state.displayMode === 'reading' ? (
-            <button type="button" onClick={onReadingHome}>
-              ↑ Volver al inicio
+              : `Modo ${state.displayMode === 'reading' ? 'lectura lineal' : 'presentación'}. Parada ${activeIndex + 1} de ${s01Stops.length}: ${activeStop.title}. Ruta ${scenario.label}. ${pilot && state.displayMode === 'presentation' ? `Parte ${partIndex + 1} de ${parts.length}: ${parts[partIndex]?.label}.` : ''}`
+        }
+      >
+        {state.displayMode === 'presentation' ? (
+          <>
+            <button
+              type="button"
+              onClick={() => onMove(-1)}
+              disabled={bibliography || state.view === 'overview'}
+            >
+              ← Anterior
             </button>
-          ) : (
-            <button type="button" onClick={onReturnToPresentation}>
-              ← Volver al recorrido
+            <button
+              type="button"
+              onClick={() => onMove(1)}
+              disabled={
+                (!bibliography && activeSlideIndex >= slides.length - 1) ||
+                state.view === 'overview'
+              }
+            >
+              Siguiente →
             </button>
-          )}
-          <button type="button" className="s01-reset" onClick={onReset}>
-            Reiniciar
+          </>
+        ) : state.displayMode === 'reading' ? (
+          <button type="button" onClick={onReadingHome}>
+            ↑ Volver al inicio
           </button>
-        </div>
-      </div>
+        ) : (
+          <button type="button" onClick={onReturnToPresentation}>
+            ← Volver al recorrido
+          </button>
+        )}
+        <button type="button" className="s01-reset" onClick={onReset}>
+          Reiniciar
+        </button>
+      </SessionPresentationFooter>
     </>
   );
 }

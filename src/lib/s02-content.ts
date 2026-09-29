@@ -166,7 +166,7 @@ export const s02Stops: readonly S02Stop[] = [
     tone: 'question',
     eyebrow: 'Estación 5 · subestación 1',
     intro:
-      '¿Añadir irradiación a la masa mejora la predicción del radio en sistemas estelares reservados?',
+      '¿Añadir irradiación a la masa mejora la predicción del radio en planetas reservados al azar?',
   },
   {
     id: 'limits',
@@ -177,7 +177,7 @@ export const s02Stops: readonly S02Stop[] = [
     tone: 'transfer',
     eyebrow: 'Estación 6 · subestación 1',
     intro:
-      'En el corte guardado, añadir insolación mejora las métricas del Random Forest. Interpreta el resultado según la muestra y la partición que ejecuta el código.',
+      'En la salida guardada, añadir insolación mejora MAE y R² en 306 planetas de prueba elegidos al azar. Interpreta el resultado según la muestra y los límites de esta partición.',
   },
   {
     id: 'sources',
@@ -305,8 +305,12 @@ export const s02Sources = [
     href: 'https://scikit-learn.org/stable/modules/ensemble.html#forest',
   },
   {
-    label: 'scikit-learn: GroupShuffleSplit',
-    href: 'https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GroupShuffleSplit.html',
+    label: 'scikit-learn: train_test_split',
+    href: 'https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html',
+  },
+  {
+    label: 'scikit-learn: RandomForestRegressor e importancia MDI',
+    href: 'https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html',
   },
   {
     label: 'Breiman (1996), Bagging Predictors',
