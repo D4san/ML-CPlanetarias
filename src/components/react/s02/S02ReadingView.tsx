@@ -255,7 +255,7 @@ export function S02ReadingView({
 
       <div className="s02-reading__body">
         {stops.map((stop, index) => {
-          const copy = readingCopy[stop.id];
+          const copy = readingCopy[stop.id]!;
           return (
             <section
               className="s02-reading__section"
