@@ -224,6 +224,7 @@ test('S03 abre enlaces, alterna lectura y actividades y conserva la unidad', asy
   await expect(page.locator('#s03-screen-title')).toHaveText(
     'De las predicciones PC, ¿cuántas coinciden?',
   );
+  await page.locator('.s03-navigation-disclosure > summary').click();
   await page.getByRole('button', { name: 'Actividades', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Decidir y justificar' })).toBeVisible();
   await page.locator('.s03-activities details summary').click();
