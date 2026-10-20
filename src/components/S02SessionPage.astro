@@ -1,7 +1,7 @@
 ---
+import SessionBookFallback from './SessionBookFallback.astro';
 import S02LearningJourney from './react/S02LearningJourney';
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { s02ColabUrl, s02Stops } from '../lib/s02-content';
 ---
 
 <SiteLayout
@@ -16,103 +16,7 @@ import { s02ColabUrl, s02Stops } from '../lib/s02-content';
       <S02LearningJourney client:load />
     </section>
 
-    <noscript>
-      <section class="site-shell s02-fallback" aria-labelledby="s02-fallback-title">
-        <p class="eyebrow">Sesión 02 · lectura lineal</p>
-        <h2 id="s02-fallback-title">De las reglas al bosque</h2>
-        <p>
-          Un árbol pregunta si una variable queda a un lado de un umbral. Cada respuesta separa
-          ejemplos en ramas y cada hoja resume los ejemplos que recibe.
-        </p>
-        <h3>Datos sintéticos de la exploración</h3>
-        <p>
-          Los ejes son coordenadas inventadas; A y B son etiquetas de juguete. No son planetas ni
-          observaciones del NASA Exoplanet Archive.
-        </p>
-        <div class="s02-fallback-table-wrap">
-          <table>
-            <caption>Doce puntos sintéticos para seguir reglas</caption>
-            <thead>
-              <tr><th scope="col">x₁</th><th scope="col">x₂</th><th scope="col">Etiqueta</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>1</td><td>1</td><td>A</td></tr>
-              <tr><td>1</td><td>2</td><td>A</td></tr>
-              <tr><td>2</td><td>1</td><td>A</td></tr>
-              <tr><td>2</td><td>2</td><td>A</td></tr>
-              <tr><td>1</td><td>4</td><td>B</td></tr>
-              <tr><td>2</td><td>4</td><td>B</td></tr>
-              <tr><td>4</td><td>1</td><td>B</td></tr>
-              <tr><td>5</td><td>1</td><td>B</td></tr>
-              <tr><td>4</td><td>2</td><td>B</td></tr>
-              <tr><td>5</td><td>2</td><td>B</td></tr>
-              <tr><td>4</td><td>4</td><td>A</td></tr>
-              <tr><td>5</td><td>4</td><td>A</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <h3>Criterios para clasificar</h3>
-        <p>
-          Gini mide impureza con <code>1 − Σ p²</code>; la entropía usa
-          <code>−Σ p log₂ p</code>. El árbol compara la impureza ponderada de los hijos con la del
-          nodo padre. scikit-learn acepta <code>gini</code>, <code>entropy</code> y
-          <code>log_loss</code>; los dos últimos usan entropía de Shannon.
-        </p>
-        <h3>Ajustar y aplicar un clasificador</h3>
-        <pre><code>{`from sklearn.tree import DecisionTreeClassifier
-
-arbol = DecisionTreeClassifier(
-    criterion="gini", max_depth=2,
-    min_samples_leaf=2, random_state=42
-)
-arbol.fit(X_train, y_train)
-predicciones = arbol.predict(X_test)`}</code></pre>
-        <p>
-          <code>max_depth</code> limita los niveles; <code>min_samples_leaf</code> exige casos mínimos
-          por hoja. En el ejemplo sintético, una raíz <code>x₁ ≤ 3</code> acierta 8 de 12 puntos. Con
-          profundidad 2 puede separar el resto usando <code>x₂ ≤ 3</code>. Si cada hoja debe
-          conservar al menos 3 puntos, ese segundo nivel no se permite. Una hoja R predice por
-          mayoría: <code>ĉ_R = argmaxₖ n_&#123;k,R&#125;</code>, donde <code>n_&#123;k,R&#125;</code
-          > cuenta los casos de clase k en esa hoja. El mapa y el árbol interactivos usan un CART didáctico,
-          sin ejecutar scikit-learn.
-        </p>
-        <h3>Regresión</h3>
-        <p>
-          Con <code>squared_error</code>, la hoja R predice <code>ŷ_R = ȳ_R</code>. El corte elegido
-          minimiza <code>t* = argmin_t [SSE(L_t) + SSE(R_t)]</code>, con
-          <code>SSE(R) = Σ_&#123;i∈R&#125;(y_i − ȳ_R)²</code>. Para los objetivos sintéticos
-          <code>[1, 1.2, 2.8, 3]</code>, la raíz predice la media 2; un corte produce medias 1,1 y
-          2,9. La suma de cuadrados baja de 3,28 a 0,04 dentro de las hojas. El criterio
-          <code>absolute_error</code> usa la mediana. En scikit-learn, ambos pertenecen a
-          <code>DecisionTreeRegressor</code>.
-        </p>
-        <h3>Predicción determinista y sobreajuste</h3>
-        <p>
-          Con el árbol fijado, la misma entrada sigue la misma ruta. El sobreajuste aparece cuando
-          la complejidad captura peculiaridades del entrenamiento; una muestra distinta puede
-          cambiar la estructura. Bootstrap y Random Forest combinan árboles para reducir parte de
-          esa variabilidad.
-        </p>
-        <h3>Secuencia de la sesión</h3>
-        <ol>
-          {
-            s02Stops.map((stop) => (
-              <li>
-                <h4>
-                  {stop.title}: {stop.partLabel}
-                </h4>
-                <p>{stop.intro}</p>
-              </li>
-            ))
-          }
-        </ol>
-        <p>
-          Para leer la información completa sobre entropía, Gini, regresión, OOB, la población y sus
-          límites, activa JavaScript. La práctica ejecutable está en el{' '}
-          <a href={s02ColabUrl}>notebook de la sesión en Colab</a>.
-        </p>
-      </section>
-    </noscript>
+    <noscript><SessionBookFallback session="S02" /></noscript>
   </div>
 </SiteLayout>
 

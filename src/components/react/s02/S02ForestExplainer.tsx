@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 function BootstrapIllustration() {
   return (
     <svg
@@ -88,168 +90,141 @@ function BootstrapIllustration() {
 }
 
 function FeatureIllustration() {
-  const rows = [
-    { tree: 'árbol 1', first: 'radio', second: 'masa', chosen: 'radio' },
-    { tree: 'árbol 2', first: 'masa', second: 'irradiación', chosen: 'irradiación' },
-    { tree: 'árbol 3', first: 'radio', second: 'irradiación', chosen: 'radio' },
-  ];
-
   return (
-    <svg
-      aria-label="En cada árbol se evalúa un subconjunto distinto de predictores para proponer una división."
-      className="s02-forest-explainer__svg"
-      role="img"
-      viewBox="0 0 360 150"
-    >
-      <text className="s02-forest-explainer__svg-heading" x="10" y="16">
-        candidatos en un corte
-      </text>
-      <text className="s02-forest-explainer__svg-heading" x="273" y="16">
-        pregunta
-      </text>
-
-      {rows.map((row, index) => {
-        const y = 30 + index * 34;
-        return (
-          <g key={row.tree}>
-            <text className="s02-forest-explainer__row-label" x="10" y={y + 20}>
-              {row.tree}
-            </text>
-            <rect
-              className="s02-forest-explainer__feature"
-              height="24"
-              rx="7"
-              width="76"
-              x="91"
-              y={y}
-            />
-            <text
-              className="s02-forest-explainer__feature-text"
-              textAnchor="middle"
-              x="129"
-              y={y + 17}
-            >
-              {row.first}
-            </text>
-            <rect
-              className="s02-forest-explainer__feature"
-              height="24"
-              rx="7"
-              width="91"
-              x="174"
-              y={y}
-            />
-            <text
-              className="s02-forest-explainer__feature-text"
-              textAnchor="middle"
-              x="219.5"
-              y={y + 17}
-            >
-              {row.second}
-            </text>
-            <path className="s02-forest-explainer__arrow" d={'M 267 ' + (y + 14.5) + ' H 282'} />
-            <path
-              className="s02-forest-explainer__arrow-head"
-              d={'M 278 ' + (y + 9) + ' L 284 ' + (y + 14.5) + ' L 278 ' + (y + 20)}
-            />
-            <rect
-              className="s02-forest-explainer__feature s02-forest-explainer__feature--chosen"
-              height="24"
-              rx="7"
-              width="68"
-              x="288"
-              y={y}
-            />
-            <text
-              className="s02-forest-explainer__feature-text"
-              textAnchor="middle"
-              x="322"
-              y={y + 17}
-            >
-              {row.chosen}
-            </text>
-          </g>
-        );
-      })}
-
-      <text className="s02-forest-explainer__svg-note" x="10" y="140">
-        el sorteo ocurre en cada división
-      </text>
-    </svg>
+    <table>
+      <caption>
+        Variables candidatas en nodos distintos; el subconjunto puede cambiar dentro de un árbol.
+      </caption>
+      <thead>
+        <tr>
+          <th>Árbol / nodo</th>
+          <th>Candidatas</th>
+          <th>Corte elegido sobre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>1 / 1</th>
+          <td>radio, masa</td>
+          <td>radio</td>
+        </tr>
+        <tr>
+          <th>1 / 2</th>
+          <td>masa, irradiación</td>
+          <td>irradiación</td>
+        </tr>
+        <tr>
+          <th>2 / 1</th>
+          <td>radio, irradiación</td>
+          <td>radio</td>
+        </tr>
+      </tbody>
+    </table>
   );
 }
 
 function PredictionIllustration() {
+  const [task, setTask] = useState<'classification' | 'regression'>('classification');
   return (
-    <svg
-      aria-label="En un ejemplo de regresión, tres árboles predicen 2.1, 2.7 y 3.0; el promedio es 2.6."
-      className="s02-forest-explainer__svg"
-      role="img"
-      viewBox="0 0 360 140"
-    >
-      <text className="s02-forest-explainer__svg-heading" x="10" y="16">
-        ejemplo de regresión
-      </text>
-
-      {[
-        { x: 9, tree: 'árbol 1', value: '2.1' },
-        { x: 95, tree: 'árbol 2', value: '2.7' },
-        { x: 181, tree: 'árbol 3', value: '3.0' },
-      ].map((item) => (
-        <g key={item.tree}>
-          <text
-            className="s02-forest-explainer__svg-note"
-            textAnchor="middle"
-            x={item.x + 34}
-            y="39"
-          >
-            {item.tree}
-          </text>
-          <rect
-            className="s02-forest-explainer__prediction"
-            height="40"
-            rx="8"
-            width="68"
-            x={item.x}
-            y="48"
-          />
-          <text
-            className="s02-forest-explainer__prediction-value"
-            textAnchor="middle"
-            x={item.x + 34}
-            y="75"
-          >
-            {item.value}
-          </text>
-        </g>
-      ))}
-
-      <path className="s02-forest-explainer__arrow" d="M 258 67 H 277" />
-      <path className="s02-forest-explainer__arrow-head" d="M 273 61 L 280 67 L 273 73" />
-      <rect
-        className="s02-forest-explainer__prediction s02-forest-explainer__prediction--mean"
-        height="48"
-        rx="8"
-        width="73"
-        x="285"
-        y="43"
-      />
-      <text className="s02-forest-explainer__svg-note" textAnchor="middle" x="321.5" y="60">
-        promedio
-      </text>
-      <text className="s02-forest-explainer__prediction-value" textAnchor="middle" x="321.5" y="80">
-        2.6
-      </text>
-      <text className="s02-forest-explainer__svg-note" x="10" y="126">
-        clasificación → gana la clase con más votos
-      </text>
-    </svg>
+    <div className="s02-forest-prediction">
+      <div role="group" aria-label="Salida del bosque">
+        <button
+          type="button"
+          aria-pressed={task === 'classification'}
+          onClick={() => setTask('classification')}
+        >
+          Clasificación
+        </button>
+        <button
+          type="button"
+          aria-pressed={task === 'regression'}
+          onClick={() => setTask('regression')}
+        >
+          Regresión
+        </button>
+      </div>
+      {task === 'classification' ? (
+        <>
+          <table>
+            <caption>Clases didácticas: tipo Tierra y tipo Neptuno</caption>
+            <thead>
+              <tr>
+                <th>Árbol</th>
+                <th>P(Tierra)</th>
+                <th>P(Neptuno)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[0.8, 0.6, 0.2].map((p, i) => (
+                <tr key={i}>
+                  <th>{i + 1}</th>
+                  <td>{Math.round(p * 100)} %</td>
+                  <td>{Math.round((1 - p) * 100)} %</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p role="status">
+            Promedio de probabilidades: tipo Tierra 53,3 %; tipo Neptuno 46,7 %. Clase elegida: tipo
+            Tierra.
+          </p>
+          <p>
+            (0,8 + 0,6 + 0,2) / 3 = 0,533. scikit-learn promedia probabilidades, que pueden diferir
+            de una votación de etiquetas.
+          </p>
+        </>
+      ) : (
+        <>
+          <p>Tres árboles predicen radios de 2,1; 2,7 y 3,0 R⊕ para el mismo planeta.</p>
+          <p role="status">Radio del bosque: (2,1 + 2,7 + 3,0) / 3 = 2,6 R⊕.</p>
+          <p>En esta práctica, radio es el objetivo; masa e insolación son las entradas.</p>
+        </>
+      )}
+      <p>Valores inventados para explicar la agregación.</p>
+    </div>
   );
 }
 
 export default function S02ForestExplainer() {
   return (
     <div className="s02-forest-explainer">
+      <details className="s02-forest-explainer__dataset">
+        <summary>¿Qué representan filas, columnas y árboles?</summary>
+        <table>
+          <caption>
+            Tabla sintética de clasificación: cada fila es un planeta; las columnas contienen
+            medidas y una etiqueta.
+          </caption>
+          <thead>
+            <tr>
+              <th>Planeta</th>
+              <th>Masa (M⊕)</th>
+              <th>Radio (R⊕)</th>
+              <th>Irradiación (S⊕)</th>
+              <th>Etiqueta didáctica</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ['A', 1, 1, 1, 'tipo Tierra'],
+              ['B', 2, 1.2, 2, 'tipo Tierra'],
+              ['C', 8, 3, 5, 'tipo Neptuno'],
+              ['D', 10, 3.5, 8, 'tipo Neptuno'],
+            ].map((row) => (
+              <tr key={row[0]}>
+                {row.map((value, i) => (
+                  <td key={i}>{value}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p>
+          Bootstrap remuestrea filas completas, con sus medidas y etiqueta. Un árbol es un modelo
+          que aprende de esas filas. La selección de variables elige columnas candidatas dentro de
+          cada nodo.
+        </p>
+      </details>
       <article className="s02-forest-explainer__card">
         <header className="s02-forest-explainer__card-heading">
           <span>01 · BAGGING</span>
@@ -273,8 +248,9 @@ export default function S02ForestExplainer() {
           <FeatureIllustration />
         </figure>
         <p>
-          En cada corte, el bosque sortea qué variables probar; así, los árboles pueden aprender
-          reglas distintas.
+          En cada nodo se sortean variables candidatas según max_features. Con max_features=1.0, el
+          regresor de la práctica considera todas las entradas; valores menores introducen esa
+          selección aleatoria.
         </p>
       </article>
 
@@ -288,7 +264,8 @@ export default function S02ForestExplainer() {
         </figure>
         <p className="s02-forest-explainer__definition">
           <strong>Varianza:</strong> cambio de la predicción al entrenar con otra muestra. Promediar
-          suaviza ese cambio si los árboles difieren; en clasificación, el bosque vota por mayoría.
+          puede reducir ese cambio si los errores de los árboles difieren. En clasificación,
+          scikit-learn combina probabilidades; en regresión, valores predichos.
         </p>
       </article>
     </div>

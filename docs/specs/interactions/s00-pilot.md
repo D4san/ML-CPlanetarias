@@ -94,7 +94,7 @@ Unidad ML, Inferencia & Salida, Decisión & Límites) que permiten profundizar s
 La subpantalla `07.3` (Aplicación reproducible) incorpora un llamado a la acción (CTA) directo hacia el taller
 metodológico interactivo de Actividades.
 Anterior/Siguiente, las tarjetas del rail, los botones de partes y la
-URL recorren el mismo orden plano subyacente de 31 subpantallas (incluida la bibliografía en `00.1`). La URL jerárquica conserva el nombre
+URL recorren el mismo orden plano de 32 subpantallas: portada `0`, contenido y referencias finales `Ref`, según ADR-0003. La URL jerárquica conserva el nombre
 de estación para la primera parte (`#pregunta`) y añade el identificador de parte para las siguientes
 (`#pregunta/senal`). Los hashes `#cierre` redirigen de forma transparente al modo `actividades`, y
 los anteriores (`#acotar`) se resuelven hacia `#medicion/transito`. Un estado inválido conserva una salida útil y anuncia la estación activa.
@@ -266,8 +266,8 @@ conjunto, la población, el contexto experimental y el estatus descritos por su 
 
 | Área | Caso mínimo | Evidencia esperada |
 | --- | --- | --- |
-| Estado inicial | Carga limpia y recarga en `/sistema/s00/` | Mundo activo, primer foco determinista y resumen correcto |
-| Carril | Anterior/Siguiente, tarjetas apiladas, primera/última subpantalla, estado inválido | Orden jerárquico, nombres accesibles, reinicio a `01.1 Mundo` y URL útil |
+| Estado inicial | Carga limpia y recarga en `/sesiones/s00/` | Portada 0 activa y pregunta de aprendizaje visible |
+| Carril | Anterior/Siguiente, tarjetas apiladas, primera/última subpantalla, estado inválido | Orden jerárquico, nombres accesibles, reinicio a portada y URL útil; `#bibliografia` abre referencias finales |
 | Lente de datos | Cambiar cada modalidad y vista | Figura/tabla, unidades, origen, pérdida posible y resumen sincronizados |
 | Diagnóstico | Respuesta antes de revelar y respuesta alternativa | Retroalimentación local, sin puntuación persistida ni bloqueo de lectura |
 | Impacto | Alternar problema/solución/cifra/límite | Unidad y estatus de cifra conservados; referencia visible |

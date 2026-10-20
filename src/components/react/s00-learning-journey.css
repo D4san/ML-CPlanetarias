@@ -5692,6 +5692,73 @@
     padding: 0.3rem 0.55rem;
     font-size: var(--presentation-control-size);
   }
+
+  .s00-journey[data-display-mode='presentation'] .s00-schematic-svg--transit text {
+    font-size: var(--presentation-metadata-size) !important;
+  }
+
+  .s00-journey[data-display-mode='presentation'] .s00-schematic-svg--data-observation text {
+    font-size: var(--presentation-metadata-size) !important;
+  }
+
+  .s00-journey[data-display-mode='presentation']
+    :is(
+      .s00-data-tab small,
+      .s00-property-label,
+      .s00-stage-tag,
+      .s00-stage-miniature-action,
+      .s00-verb-tab__text small,
+      .s00-impact-hero-label,
+      .s00-impact-mission-badge,
+      .s00-impact-miniature-action,
+      .s00-impact-tab__text span
+    ) {
+    font-size: var(--presentation-metadata-size);
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .s00-journey[data-display-mode='presentation']
+    :is(
+      .s00-data-tab strong,
+      .s00-property-val,
+      .s00-formula-code,
+      .s00-verb-tab__text strong,
+      .s00-impact-tab__text strong
+    ) {
+    font-size: var(--presentation-control-size);
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .s00-journey[data-display-mode='presentation'] .s00-data-tab strong {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .s00-journey[data-display-mode='presentation'] .s00-impact-tab__text span {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .s00-journey[data-display-mode='presentation']
+    :is(
+      .s00-stage-miniature-caption,
+      .s00-data-detail__body,
+      .s00-impact-preview-summary p,
+      .s00-data-bias-banner p
+    ) {
+    font-size: var(--presentation-support-size);
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .s00-journey[data-display-mode='presentation'] .s00-data-detail__question {
+    font-size: var(--presentation-essential-size);
+    line-height: 1.35;
+  }
 }
 
 @media (min-width: 70rem) and (orientation: landscape) {

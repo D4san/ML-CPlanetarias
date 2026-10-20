@@ -4,8 +4,8 @@ Este registro evalúa la estructura documental del plan. A01–H03 permanecen si
 
 ## Comprobaciones realizadas
 
-- 32 fichas de tarea: 31 para implementación/revisión y una publicación opcional.
-- 172 pasos de trabajo y 134 criterios de aceptación identificados por tarea.
+- 33 fichas de tarea: 32 para implementación/revisión y una publicación opcional; I01 organiza solicitudes de S00/S01 sin modificar el producto ni S02.
+- 176 pasos de trabajo y 138 criterios de aceptación identificados por tarea.
 - Todas las fichas incluyen entradas, archivos permitidos, lista de tareas, aceptación, evidencia, logro y límites.
 - Dependencias con IDs existentes, sin ciclos. La única tarea inicialmente asignable es A01.
 - Tablero con todas las tareas y trazabilidad de los 16 requisitos originales.

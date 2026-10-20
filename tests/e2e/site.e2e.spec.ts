@@ -34,7 +34,12 @@ test('lists S01 honestly and reports the remaining public empty states', async (
   await mainNav.getByRole('link', { name: 'Sesiones', exact: true }).click();
   await expect(page).toHaveURL(/\/sesiones\/$/);
   await expect(page.getByRole('heading', { name: 'ML, IA y métodos estadísticos' })).toBeVisible();
-  await expect(page.getByText('Prototipo interno', { exact: true })).toBeVisible();
+  await expect(
+    page
+      .locator('.session-preview')
+      .filter({ has: page.getByRole('heading', { name: 'ML, IA y métodos estadísticos' }) })
+      .getByText('Prototipo interno', { exact: true }),
+  ).toBeVisible();
   await expect(page.getByText(/Las colecciones públicas siguen vacías/i)).toBeVisible();
 
   await mainNav.getByRole('link', { name: 'Glosario', exact: true }).click();

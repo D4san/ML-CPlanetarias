@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const port = 4321;
+const port = Number(process.env.PLAYWRIGHT_PORT ?? 4321);
 const basePath = process.env.BASE_PATH?.replace(/^\/+|\/+$/g, '') ?? '';
 const pathPrefix = basePath ? `/${basePath}/` : '/';
 const baseURL = `http://127.0.0.1:${port}${pathPrefix}`;

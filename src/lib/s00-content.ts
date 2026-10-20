@@ -1,3 +1,4 @@
+import type { SessionSlideRole } from './session-openings';
 import type { ConceptTermData } from './contextual-content';
 import type {
   BibliographyReference,
@@ -482,8 +483,8 @@ export const s00BibliographyReferences: readonly BibliographyReference[] = [
 
 export const s00Bibliography: SessionBibliographyContent = {
   sessionId: 'S00',
-  label: 'S00 · fuentes para abrir el campo',
-  title: 'De los mundos a los datos',
+  label: 'S00 · fuentes para explorar y adaptar',
+  title: 'Referencias de S00',
   intro:
     'La sesión usa exoplanetas como entrada para aprender a formular una pregunta, reconocer su medición y ubicar una tarea de aprendizaje automático dentro de una cadena de evidencia.',
   references: s00BibliographyReferences,
@@ -598,7 +599,7 @@ export const s00ConceptCards: readonly S00ConceptCard[] = [
       'Imágenes coronagráficas en cuatro filtros MIRI, antes y después de sustraer la estrella de referencia',
     imageSrc: s00VisualAssets.paperExoplanet,
     imageAlt:
-      'Figura de ocho paneles en cuatro filtros MIRI: imágenes coronagráficas originales arriba y con sustracción de estrella de referencia abajo; los planetas aparecen señalados en algunos filtros.',
+      'Figura del sistema HR 8799 con ocho paneles en cuatro filtros MIRI: imágenes coronagráficas originales arriba y con sustracción de estrella de referencia abajo; los planetas aparecen señalados en algunos filtros.',
     imageCaption:
       'Las columnas comparan F1065C, F1140C, F1550C y F2100W. La detección cambia entre filtros; la figura también señala un objeto de fondo y una estructura de polvo interior.',
     imageWidth: 2100,
@@ -2470,6 +2471,7 @@ export function getS00Part(unitId: string, partIndex = 0): S00Part | null {
 }
 
 export interface S00Slide extends SlideRailItem {
+  role: SessionSlideRole;
   unitId: string;
   unitIndex: number;
   partIndex: number;
@@ -2482,6 +2484,7 @@ export interface S00Slide extends SlideRailItem {
 const s00ContentSlides: readonly S00Slide[] = s00Units.flatMap((unit, unitIndex) =>
   getS00Parts(unit.id).map((part, partIndex, parts) => ({
     id: `${unit.id}-${part.id}`,
+    role: 'content',
     groupLabel: unit.groupLabel,
     title: unit.title,
     partLabel: part.label,
@@ -2498,8 +2501,24 @@ const s00ContentSlides: readonly S00Slide[] = s00Units.flatMap((unit, unitIndex)
 
 export const s00Slides: readonly S00Slide[] = [
   {
+    id: 's00-opening',
+    role: 'opening',
+    groupLabel: 'Inicio',
+    title: 'De los mundos a los datos',
+    partLabel: 'Portada',
+    tone: 'model',
+    unitId: 's00-opening',
+    unitIndex: -1,
+    partIndex: 0,
+    partId: 'portada',
+    unitTitle: 'Portada',
+    unitShortLabel: 'Portada',
+  },
+  ...s00ContentSlides,
+  {
     id: 's00-bibliografia',
-    groupLabel: '00 · orientar',
+    role: 'references',
+    groupLabel: 'Referencias',
     title: s00Bibliography.title,
     partLabel: 'Fuentes',
     tone: 'model',
@@ -2510,13 +2529,13 @@ export const s00Slides: readonly S00Slide[] = [
     unitTitle: s00Bibliography.title,
     unitShortLabel: 'Fuentes',
   },
-  ...s00ContentSlides,
 ];
 
 export function getS00SlideNumber(
   slide: Pick<S00Slide, 'unitIndex' | 'partIndex' | 'unitId'>,
 ): string {
-  if (slide.unitId === 's00-bibliografia') return '00';
+  if (slide.unitId === 's00-opening') return '0';
+  if (slide.unitId === 's00-bibliografia') return 'Ref.';
   return `${String(slide.unitIndex + 1).padStart(2, '0')}.${slide.partIndex + 1}`;
 }
 
@@ -2526,7 +2545,8 @@ export function getS00SlideIndex(unitId: string, partIndex = 0): number {
 
 export function getS00SlideHash(index: number): string {
   const slide = s00Slides[index];
-  if (!slide || slide.unitId === 's00-bibliografia') return '#bibliografia';
+  if (!slide || slide.role === 'opening') return '#portada';
+  if (slide.role === 'references') return '#bibliografia';
   const unitHash = slide.unitId.replace(/^s00-/, '');
   return slide.partIndex === 0 ? `#${unitHash}` : `#${unitHash}/${slide.partId}`;
 }
@@ -2540,8 +2560,8 @@ export function getS00SlideIndexFromHash(hash: string): number | null {
     }
   })();
   if (normalized === null) return null;
-  if (normalized === '') return 1;
-  if (normalized === 'bibliografia') return 0;
+  if (normalized === '' || normalized === 'portada') return 0;
+  if (normalized === 'bibliografia') return s00Slides.length - 1;
   // Compatibilidad con enlaces previos a cierre -> dirigir a la última subdiapositiva de ramas
   if (normalized.startsWith('cierre')) {
     const ramasIndex = getS00SlideIndex('s00-ramas', 2);

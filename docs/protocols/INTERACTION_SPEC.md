@@ -46,3 +46,12 @@ pregunta → objeto concreto → visual → manipulación → interpretación
 ```
 
 Los controles se mantienen cerca de la figura. Las ecuaciones usan los mismos símbolos que el texto, el código y las etiquetas. Los supuestos y límites aparecen junto a la afirmación que califican.
+
+
+## De la manipulación a la explicación
+
+Una interacción muestra su selección/valor, el resultado que cambia y una frase que ayude a interpretarlo. Una cifra en el resumen accesible no sustituye el valor visible junto al control. Distinguir controles globales del recorrido y pasos locales de una explicación.
+
+Cuando se enseña una operación o ecuación, trabajar primero un ejemplo pequeño, válido y trazable: significado de los símbolos, conteos o unidades, sustitución, valores intermedios y resultado. Después permitir explorar. Mostrar un caso imperfecto antes del óptimo cuando la comparación sea el concepto; el criterio no obliga a añadir cálculos a una unidad cualitativa.
+
+Portada, referencias y reinicio siguen ADR-0003. Contenido esencial accesible sin hover, y alternativa textual completa para gráficos y pasos dependientes de JavaScript.

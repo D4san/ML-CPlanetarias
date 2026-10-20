@@ -79,6 +79,7 @@ schemas/ + scripts/             contratos ejecutables
 - [Procedencia y derechos](docs/protocols/PROVENANCE_AND_RIGHTS.md)
 - [Código pedagógico](docs/protocols/PEDAGOGICAL_CODE.md)
 - [Interacciones educativas](docs/protocols/INTERACTION_SPEC.md)
+- [Lectura como libro interactivo](docs/protocols/READING_BOOK.md)
 - [Sistema visual](docs/protocols/VISUAL_SYSTEM.md)
 - [Calidad y entrega](docs/protocols/QUALITY_AND_RELEASE.md)
 
@@ -90,7 +91,7 @@ La skill local `$develop-mlcp-web` orquesta estos contratos. `AGENTS.md` conserv
 - [Primera retroalimentación: requisitos y fases](docs/planning/FEEDBACK-01.md)
 - [Propuesta de configuración, estructura y flujos con agentes](docs/architecture/COURSE_EVOLUTION.md)
 
-El piloto S01 incorpora bibliografía inicial, subslides en Pregunta e Instancia y modalidades
+El piloto S01 incorpora portada inicial, referencias finales, subslides en Pregunta e Instancia y modalidades
 configurables para el tutor. Consulta la [guía de configuración para forks](docs/guides/FORK_CONFIGURATION.md).
 Los documentos de evolución distinguen este piloto del trabajo pendiente.
 
@@ -98,3 +99,8 @@ Los documentos de evolución distinguen este piloto del trabajo pendiente.
 
 El sitio y sus herramientas siguen en fase de infraestructura. S01 está disponible como prototipo
 público para revisión; conserva sus avisos de estado interno hasta completar la revisión editorial.
+
+
+El recorrido de las presentaciones sigue [ADR-0003](docs/architecture/decisions/ADR-0003-presentation-opening-and-references.md): portada 0, contenido, cierre y referencias finales.
+
+Guía de continuidad: [crear sesiones reutilizables](docs/guides/SESSION_CREATION.md).

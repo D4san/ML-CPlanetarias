@@ -59,7 +59,7 @@ export interface ResolvedCourseConfig extends CourseConfigV2, LegacyCourseConfig
   sessions: Readonly<Record<string, ResolvedSessionConfig>>;
 }
 
-const knownSessionIds = ['S00', 'S01'] as const;
+const knownSessionIds = ['S00', 'S01', 'S03'] as const;
 const knownS01Routes: readonly S01ScenarioId[] = ['spectrum', 'catalog', 'followup'];
 const defaultIdentity: CourseIdentity = { id: 'mlcp', title: 'ML Ciencias Planetarias' };
 const defaultDefaults: CourseDefaults = {
@@ -171,13 +171,16 @@ function normalizedSession(
   const routes = configuredRoutes === undefined ? approvedRoutes : configuredRoutes;
   const enabled = session.enabled ?? enabledByCourse;
 
-  if (sessionId === 'S00' && (routes.length > 0 || session.defaultRouteId !== undefined)) {
-    fail('sessions.S00 no declara rutas; elimina enabledRouteIds/defaultRouteId.');
+  if (
+    (sessionId === 'S00' || sessionId === 'S03') &&
+    (routes.length > 0 || session.defaultRouteId !== undefined)
+  ) {
+    fail(`sessions.${sessionId} no declara rutas; elimina enabledRouteIds/defaultRouteId.`);
   }
   if (isS01 && enabled && routes.length === 0) {
     fail('sessions.S01.enabledRouteIds no puede estar vacío: habilita al menos una ruta.');
   }
-  if (!isS01 && sessionId !== 'S00') {
+  if (!isS01 && sessionId !== 'S00' && sessionId !== 'S03') {
     fail(`sessions.${sessionId} no tiene un adaptador de rutas conocido.`);
   }
   if (routes.some((route) => !approvedRoutes.includes(route as S01ScenarioId))) {

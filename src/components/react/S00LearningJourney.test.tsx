@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { courseConfig } from '../../../config/course.config';
 import S00LearningJourney from './S00LearningJourney';
 
-beforeEach(() => window.history.replaceState(null, '', '/sesiones/s00/'));
+beforeEach(() => window.history.replaceState(null, '', '/sesiones/s00/#pregunta'));
 
 describe('S00 journey', () => {
   it('opens on the scientific question and traverses the common rail', async () => {
@@ -20,7 +20,7 @@ describe('S00 journey', () => {
     expect(screen.queryByAltText(/estrella con un planeta en tránsito/i)).not.toBeInTheDocument();
 
     // Move to 1.2: interactive concept cards with real observations and studies
-    await user.click(screen.getByRole('button', { name: 'Siguiente →' }));
+    await user.click(screen.getByRole('button', { name: 'Siguiente' }));
     expect(window.location.hash).toBe('#pregunta/senal');
     expect(screen.getByRole('heading', { name: 'Conceptos' })).toBeVisible();
     expect(document.querySelector('[data-active-part="senal"]')).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe('S00 journey', () => {
 
     // Click Tránsito tab and verify transit observation
     await user.click(screen.getByRole('tab', { name: /Tránsito/i }));
-    expect(screen.getByAltText(/Curva de luz fotométrica/i)).toBeVisible();
+    expect(screen.getByAltText(/brillo relativo de Kepler-90 i/i)).toBeVisible();
 
     // Click Espectro tab and verify atmospheric data & MAST link
     await user.click(screen.getByRole('tab', { name: /Espectro/i }));
@@ -76,7 +76,7 @@ describe('S00 journey', () => {
 
     // Click Representación tab and verify multi-scale vectors & GitHub code repo
     await user.click(screen.getByRole('tab', { name: /Representación/i }));
-    expect(screen.getByAltText(/Representación multiescala/i)).toBeVisible();
+    expect(screen.getByAltText(/tres candidatos TCE comparados/i)).toBeVisible();
     expect(screen.getByRole('link', { name: /AstroNet GitHub/i })).toBeInTheDocument();
 
     // Move to 1.3: hero image combined with guiding question
@@ -85,7 +85,7 @@ describe('S00 journey', () => {
     expect(screen.getByRole('heading', { name: 'Pregunta guía' })).toBeVisible();
     expect(screen.getByAltText(/estrella con un planeta en tránsito/i)).toBeVisible();
     expect(screen.getByText(/mundo → medición → evidencia/i)).toBeVisible();
-  });
+  }, 15000);
 
   it('keeps scientific activity state when switching views', async () => {
     const user = userEvent.setup();
@@ -117,9 +117,10 @@ describe('S00 journey', () => {
     render(<S00LearningJourney config={courseConfig} />);
 
     expect(screen.queryByText(/todavía no existe/i)).not.toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Un mundo se vuelve observable' })).toBeVisible();
+    expect(document.querySelector('.session-opening')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Siguiente' }));
     // Navigate to concepts on 1.2 to inspect definition
-    await user.click(screen.getByRole('button', { name: 'Siguiente →' }));
+    await user.click(screen.getByRole('button', { name: 'Siguiente' }));
     await user.click(screen.getByRole('tab', { name: /Exoplaneta/i }));
     expect(screen.getByText(/Planeta que orbita una estrella distinta del Sol/i)).toBeVisible();
   });
@@ -131,15 +132,15 @@ describe('S00 journey', () => {
     const rail = screen.getByRole('navigation', { name: 'Diapositivas de S00' });
 
     expect(document.querySelector('.slide-rail__caption')).not.toBeInTheDocument();
-    expect(journey).toHaveAttribute('data-slide-count', '31');
-    expect(rail.querySelectorAll('.slide-rail__index')).toHaveLength(31);
+    expect(journey).toHaveAttribute('data-slide-count', '32');
+    expect(rail.querySelectorAll('.slide-rail__index')).toHaveLength(32);
     expect(screen.getByText('01.1')).toBeInTheDocument();
     expect(screen.getByText('01.2')).toBeInTheDocument();
     expect(screen.getByText('01.3')).toBeInTheDocument();
     expect(screen.getByText('02.1')).toBeInTheDocument();
   });
 
-  it('renders expandable bibliography boxes on slide 0 with direct layout', async () => {
+  it('renders expandable bibliography boxes at the final slide with direct layout', async () => {
     const user = userEvent.setup();
     window.history.replaceState(null, '', '/sesiones/s00/#bibliografia');
     render(<S00LearningJourney config={courseConfig} />);

@@ -6,20 +6,22 @@ test.describe('S00 introducción científica', () => {
   }) => {
     const pageErrors: Error[] = [];
     page.on('pageerror', (error) => pageErrors.push(error));
-    await page.goto('./sesiones/s00/');
+    await page.goto('./sesiones/s00/#pregunta');
     await page.waitForLoadState('networkidle');
 
     const journey = page.locator('.s00-journey[data-ready="true"]');
     await expect(journey).toBeVisible();
     await expect(page.getByText(/^Ruta:$/)).toHaveCount(0);
-    await expect(page.getByRole('heading', { name: 'De los mundos a los datos' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'De los mundos a los datos', level: 1 }),
+    ).toBeVisible();
     await expect(
       page.getByRole('heading', { name: 'Un mundo se vuelve observable' }),
     ).toBeVisible();
     await expect(page.getByText('01.1', { exact: true })).toBeVisible();
     await expect(page.getByText('01.2', { exact: true })).toBeVisible();
 
-    await page.getByRole('button', { name: 'Siguiente →' }).click();
+    await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
     await expect(page).toHaveURL(/\/sesiones\/s00\/#pregunta\/senal$/);
     await expect(page.getByRole('heading', { name: 'Conceptos' })).toBeVisible();
     await expect(page.getByRole('tab', { name: /Tránsito/i })).toBeVisible();
@@ -83,9 +85,9 @@ test.describe('S00 sin JavaScript', () => {
   test.use({ javaScriptEnabled: false });
 
   test('expone una lectura lineal y su estado editorial', async ({ page }) => {
-    await page.goto('./sesiones/s00/');
-    await expect(page.locator('#s00-fallback-title')).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Fuentes de entrada' })).toBeVisible();
+    await page.goto('./sesiones/s00/#pregunta');
+    await expect(page.locator('.book-fallback #s00-reading-title')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Referencias de S00' })).toBeVisible();
     await expect(page.locator('.s00-fallback__status')).toContainText('status: drafting');
   });
 });

@@ -72,7 +72,7 @@ contenido de `inbox/` ni modifica su autorización editorial.
 
 ## Recorrido del piloto
 
-- La entrada a Presentación muestra la diapositiva bibliográfica 0. El botón Bibliografía permite volver a ella.
+- La entrada inicial y el reinicio muestran la portada 0. El botón Bibliografía abre las referencias finales (ADR-0003).
 - Pregunta: apertura → cinco salidas → Estadística, ML e IA.
 - Instancia: apertura → flujo con ejemplos → notación de ajuste y uso.
 - Anterior y Siguiente recorren las partes. Los controles superiores cambian de estación directamente.

@@ -67,3 +67,14 @@ Antes de entregar el código, comprobar:
 - ¿Cada validación y dependencia tiene una razón educativa o práctica concreta?
 - ¿El resultado puede interpretarse sin confundir una demostración con evidencia?
 - ¿El notebook funciona de arriba abajo en el entorno indicado?
+
+
+## Convenciones para notebooks de aprendizaje
+
+- Reunir imports y dependencias en el inicio. En la versión de aula, ocultar warnings con `warnings.filterwarnings("ignore")` desde esa celda para conservar salidas legibles; revisar los avisos durante la preparación y no capturar errores inesperados. El autor puede restablecer avisos con `warnings.resetwarnings()` durante el diagnóstico.
+- Usar `print` para un mensaje breve y la expresión final para una tabla individual. Reservar `display` para varias tablas o salidas enriquecidas dentro de una celda.
+- Nombrar las máscaras booleanas con `cond_`; distinguir condición, filas seleccionadas y tabla resultante.
+- Al comparar representaciones de la misma muestra, mostrar una llamada de partición por configuración con nombres reconocibles de X/y de entrenamiento/prueba. Conservar población, orden, proporción y semilla; la misma semilla por sí sola no alinea poblaciones filtradas de modo distinto.
+- Comprobar con índices y etiquetas que se evalúan los mismos casos, y explicar esa comprobación. Cada ajuste y métrica usa el objetivo de su configuración.
+- Situar junto a los parámetros editables una instrucción: qué cambiar, qué salida observar y desde qué bloque volver a ejecutar. Proponer cambiar una variable a la vez.
+- Mantener fuente sin outputs guardados ni contadores de ejecución. Registrar aparte entorno, instantánea/consulta y resultados de la ejecución de revisión.

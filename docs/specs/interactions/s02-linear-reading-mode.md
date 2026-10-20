@@ -7,6 +7,8 @@ packet_id: S02-arboles-decision-random-forest
 
 # S02: modo de lectura lineal
 
+> Registro histórico. Sustituido para implementación por [session-book-reading](session-book-reading.md) e I04 (2026-10-18): seis capítulos temáticos con desarrollo propio y referencias finales. La lista de quince apartados de esta ficha describe la versión anterior.
+
 ## Pregunta del lector
 
 ¿Cómo se conectan las reglas de los árboles, la variación entre muestras y la evaluación con datos planetarios?

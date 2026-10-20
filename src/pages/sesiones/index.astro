@@ -12,7 +12,8 @@ const sessions = (await getCollection('sessions'))
 const showS00 = isSessionAvailable(courseConfig, 'S00');
 const showS01 = isSessionAvailable(courseConfig, 'S01');
 const showS02Prototype = true;
-const showInternalSessions = showS00 || showS01 || showS02Prototype;
+const showS03 = isSessionAvailable(courseConfig, 'S03');
+const showInternalSessions = showS00 || showS01 || showS02Prototype || showS03;
 const internalSessionLabel =
   showS00 && showS01 ? 'S00, S01 y S02' : showS00 ? 'S00 y S02' : showS01 ? 'S01 y S02' : 'S02';
 ---
@@ -92,6 +93,26 @@ const internalSessionLabel =
         )
       }
       {
+        showS03 && (
+          <li class="session-preview session-preview--s03">
+            <span class="eyebrow">S03 · en desarrollo</span>
+            <div>
+              <span class="status-tag">Prototipo interno</span>
+              <h2>
+                <a href={withBase('/sesiones/s03/')}>De un tránsito a las métricas</a>
+              </h2>
+              <p>
+                Geometría animada del tránsito, datos Kepler y clasificación; matriz, métricas y
+                curvas con ejemplos interactivos.
+              </p>
+              <a class="text-link" href={withBase('/sesiones/s03/')}>
+                Explorar la sesión 3
+              </a>
+            </div>
+          </li>
+        )
+      }
+      {
         sessions.map((session) => (
           <li>
             <span class="eyebrow">{session.data.session}</span>
@@ -109,7 +130,7 @@ const internalSessionLabel =
       sessions.length === 0 && (
         <p class="sessions-public-note">
           {showInternalSessions
-            ? `Las colecciones públicas siguen vacías. ${internalSessionLabel} se listan aquí como prototipos internos mientras continúa la revisión editorial.`
+            ? `Las colecciones públicas siguen vacías. ${internalSessionLabel}${showS03 ? ' y S03' : ''} se listan aquí como prototipos internos mientras continúa la revisión editorial.`
             : 'Las colecciones públicas siguen vacías y todavía no hay sesiones habilitadas para mostrar.'}
         </p>
       )

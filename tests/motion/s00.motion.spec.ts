@@ -1,13 +1,13 @@
 import { expect, test } from '@playwright/test';
 
 test('S00 sigue siendo navegable con movimiento reducido', async ({ page }) => {
-  await page.goto('./sesiones/s00/');
+  await page.goto('./sesiones/s00/#pregunta');
   await expect(page.locator('.s00-journey')).toHaveAttribute('data-hydrated', 'true');
   await expect
     .poll(() => page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches))
     .toBe(true);
 
-  await page.getByRole('button', { name: 'Siguiente →' }).click();
+  await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await expect(page.locator('.s00-journey')).toHaveAttribute('data-active-slide', '2');
   await expect(page).toHaveURL(/#pregunta\/senal$/);
   const railTransition = await page

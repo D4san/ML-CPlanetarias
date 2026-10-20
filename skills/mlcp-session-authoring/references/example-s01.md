@@ -29,10 +29,11 @@ publish_ready: false
 
 | Orden | Tramo | ID editorial | Parte viva relacionada | Resultado | Estado |
 | ---: | --- | --- | --- | --- | --- |
-| 0 | bibliografía | `s01-bibliography` | diapositiva 0 | Géron y Kelleher accesibles por ID | preparado con ubicación de capítulo |
+| 0 | portada | `s01-opening` | diapositiva 0 | título, pregunta de aprendizaje y cadena de decisiones | patrón vigente ADR-0003 |
 | 1 | Pregunta | `question` | `question/apertura` | delimitar qué queremos conocer o producir y para qué uso | preparado |
 | 2 | Instancia | `instance` | `instance/flujo` | identificar unidad, representación, objetivo y salida | preparado |
 | 3 | Instancia | `instance` | `instance/notacion` | escribir `xᵢ`, `yᵢ`, `D` y `ŷ = hθ(x)` sin confundir predicción con causalidad | preparado |
+| última | referencias | `s01-bibliography` | referencias finales | Géron y Kelleher accesibles por ID | preparado con ubicación de capítulo |
 
 El ensayo cubre una muestra acotada. `question/salidas`, `question/disciplinas` y `instance/apertura` se observaron en el adaptador, pero quedan fuera de esta salida y aparecen como trabajo pendiente; no se afirma que el fragmento cubra la sesión completa.
 
@@ -181,3 +182,6 @@ La precaución queda en el contenido principal. Su visibilidad no depende de `te
 | Frontera editorial | `drafting`, `internal`, `publish_ready: false`; el ensayo queda fuera del build |
 
 El resultado es un borrador de preparación útil para revisión. No demuestra que el contenido científico esté validado ni que pueda publicarse.
+
+
+Portada → contenido → cierre → referencias; véase ADR-0003. Si una unidad incluye cálculo, documentar ejemplo trabajado, valores intermedios esperados y transición a exploración.

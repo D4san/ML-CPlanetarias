@@ -1,3 +1,4 @@
+import type { SessionSlideRole } from './session-openings';
 import {
   getS01Stop,
   getS01StopFromHash,
@@ -52,6 +53,7 @@ export const s01Parts = {
 } as const;
 
 export type S01Slide = SlideRailItem & {
+  role: SessionSlideRole;
   unitId: string;
   stopId: S01StopId | null;
   stopIndex: number;
@@ -62,8 +64,11 @@ export type S01Slide = SlideRailItem & {
   tone: S01Tone;
 };
 
-export function getS01SlideNumber(slide: Pick<S01Slide, 'stopId' | 'stopIndex' | 'partIndex'>) {
-  if (slide.stopId === null) return '00';
+export function getS01SlideNumber(
+  slide: Pick<S01Slide, 'stopId' | 'stopIndex' | 'partIndex'> & { role?: S01Slide['role'] },
+) {
+  if (slide.role === 'opening') return '0';
+  if (slide.stopId === null) return 'Ref.';
   return `${String(slide.stopIndex + 1).padStart(2, '0')}.${slide.partIndex + 1}`;
 }
 
@@ -76,6 +81,7 @@ export function getS01Parts(
 const s01ContentSlides: S01Slide[] = s01Stops.flatMap((stop, stopIndex) =>
   getS01Parts(stop.id).map((part, partIndex) => ({
     id: part.unitId,
+    role: 'content',
     unitId: part.unitId,
     groupLabel: stop.shortLabel,
     title: stop.title,
@@ -91,28 +97,41 @@ const s01ContentSlides: S01Slide[] = s01Stops.flatMap((stop, stopIndex) =>
   })),
 );
 
-/**
- * The presentation rail treats every explainable part as a slide while keeping
- * the old station hashes and labels stable. Bibliography is the only slide
- * without a station and remains slide 0 by design.
- */
+/** Cover and references have explicit roles; existing station IDs stay stable. */
 export const s01Slides: readonly S01Slide[] = [
   {
-    id: 's01-bibliography-0',
-    unitId: 's01-bibliography-0',
+    id: 's01-opening',
+    role: 'opening',
+    unitId: 's01-opening',
     groupLabel: 'Inicio',
-    title: 'Bibliografía de S01',
-    partLabel: 'Bibliografía',
+    title: 'De una observación a una afirmación',
+    partLabel: 'Portada',
+    partLabels: [],
+    tone: 'question',
+    stopId: null,
+    stopIndex: -1,
+    partIndex: 0,
+    partId: 'portada',
+    stopLabel: 'Portada',
+    stopTitle: 'Portada',
+  },
+  ...s01ContentSlides,
+  {
+    id: 's01-bibliography-0',
+    role: 'references',
+    unitId: 's01-bibliography-0',
+    groupLabel: 'Referencias',
+    title: 'Referencias de S01',
+    partLabel: 'Fuentes',
     partLabels: [],
     tone: 'question',
     stopId: null,
     stopIndex: -1,
     partIndex: 0,
     partId: 'bibliografia',
-    stopLabel: 'Inicio',
-    stopTitle: 'Bibliografía de S01',
+    stopLabel: 'Referencias',
+    stopTitle: 'Referencias de S01',
   },
-  ...s01ContentSlides,
 ];
 
 export function getS01SlideIndex(stopId: S01StopId, partIndex = 0) {

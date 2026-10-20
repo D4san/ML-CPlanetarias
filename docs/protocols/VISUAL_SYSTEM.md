@@ -142,3 +142,8 @@ Comprobar al menos 1920×1080 para proyección, 1800×700 para pantallas amplias
 1440×900, 390×844 y una anchura intermedia. Revisar contraste, foco, texto largo en español,
 ecuaciones, controles, estados vacíos y figuras sin JavaScript. Un cambio de dirección estética
 requiere actualizar este documento, los tokens y los snapshots en la misma revisión.
+
+
+### Entrada y recorrido de sesión
+
+La portada 0 reúne título, pregunta, promesa y visual orientador; las referencias cierran la secuencia (ADR-0003). `SessionOpening` y `SessionNavigationControls` son las piezas reutilizables; los adaptadores de cada sesión conservan sus rutas y estado. No reducir tipografía para encajar una cuenta larga: dividir la explicación, permitir desplazamiento del contenido y mantener los controles globales visibles fuera de ese desplazamiento.

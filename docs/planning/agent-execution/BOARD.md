@@ -23,7 +23,7 @@ H03 es opcional y requiere autorización expresa. La creación de este plan no c
 | [D01](tasks/D01.md) | Crear la skill de preparación de sesiones                       | A02, A03                          | aceptada                | Mendel              | [evidence/D01.md](evidence/D01.md) |
 | [D02](tasks/D02.md) | Crear la skill de investigación de ejemplos                     | A02, A03                          | aceptada                | Pasteur             | [evidence/D02.md](evidence/D02.md) |
 | [D03](tasks/D03.md) | Crear la skill de producción visual                             | A02, A03                          | aceptada                | Archimedes          | [evidence/D03.md](evidence/D03.md) |
-| [D04](tasks/D04.md) | Crear la skill de revisión e integrar las skills del proyecto   | D01, D02, D03                     | bloqueada              | Codex integrador    | [evidence/D04.md](evidence/D04.md) |
+| [D04](tasks/D04.md) | Crear la skill de revisión e integrar las skills del proyecto   | D01, D02, D03                     | entregada              | Codex integrador    | [evidence/D04.md](evidence/D04.md) |
 | [E01](tasks/E01.md) | Inventariar y ordenar todas las unidades de S01                 | A02, A03, D01                     | aceptada                | Codex integrador    | [evidence/E01.md](evidence/E01.md) |
 | [E02](tasks/E02.md) | Migrar Señal y paradigma a subslides                            | E01, B02, B03                     | aceptada                | Codex integrador    | [evidence/E02.md](evidence/E02.md) |
 | [E03](tasks/E03.md) | Migrar Tarea y salida a subslides                               | E01, B02, B03                     | aceptada                | Codex integrador    | [evidence/E03.md](evidence/E03.md) |
@@ -41,6 +41,14 @@ H03 es opcional y requiere autorización expresa. La creación de este plan no c
 | [H01](tasks/H01.md) | Ejecutar la matriz integrada de calidad                         | F04, G03, D04                     | pendiente                | Sin asignar         | —         |
 | [H02](tasks/H02.md) | Revisar la entrega y cerrar la matriz de requisitos             | H01                               | pendiente                | Sin asignar         | —         |
 | [H03](tasks/H03.md) | Publicar solo tras instrucción expresa y verificar el sitio     | H02                               | entregada                | Codex integrador    | [evidence/H03.md](evidence/H03.md) |
+| [I01](tasks/I01.md) | Organizar solicitudes de S00 y S01 con exclusión de S02         | —                                 | entregada                | Codex integrador    | [evidence/I01.md](evidence/I01.md) |
+| [I02](tasks/I02.md) | Aplicar ajustes de legibilidad en S00 y S01 con exclusión de S02 | I01                               | en curso                 | Codex integrador    | [evidence/I02.md](evidence/I02.md) |
+| [I03](tasks/I03.md) | Retroalimentación RF, recorrido S00–S02 y autoría reutilizable | — | en curso | Codex integrador | [evidence/I03.md](evidence/I03.md) |
+| [I04](tasks/I04.md) | Organizar Lectura como libro interactivo S00–S02 | — | entregada | Codex integrador; revisión usuario/tutor pendiente | [evidence/I04.md](evidence/I04.md) |
+| [I05](tasks/I05.md) | Implementar S03: tránsito, Kepler, clasificación y métricas | — | entregada | Codex integrador; revisión editorial pendiente | [I05](evidence/I05.md), [revisión visual](evidence/I05-VISUAL-REVIEW.md), [ajuste de tránsito 1.1](evidence/S03-TRANSIT-1.1-REVISION.md), [figuras del paper](../../guides/s03-paper-figures.md), [ayudas y diagramas](../../specs/interactions/s03-paper-figures-and-help.md), [imagen Kepler PIA18904](../../guides/s03-kepler-image.md), [ampliación](../../specs/interactions/s03-kepler-image-lightbox.md) |
+| [I06](tasks/I06.md) | Explicar la metodología multiescala y ubicar la aumentación en 5.3 | — | entregada | Codex integrador; revisión editorial del usuario pendiente | [evidence/I06.md](evidence/I06.md) |
+| [I07](tasks/I07.md) | Narrar el seguimiento y la validación de los resultados en 9.2 | — | entregada | Codex integrador; revisión editorial del usuario pendiente | [evidence/I07.md](evidence/I07.md) |
+| [I08](tasks/I08.md) | Colorear y rotular las cuatro celdas interactivas de la matriz 6.2 | — | entregada | Codex integrador; revisión editorial del usuario pendiente | [evidence/I08.md](evidence/I08.md) |
 
 ## Reservas de archivos y ejecución
 
@@ -48,13 +56,14 @@ Completar en A01 y actualizar al asignar cada lote.
 
 | Área compartida                   | Propietario de la ronda | Tareas que esperan | Estado       |
 | --------------------------------- | ----------------------- | ------------------ | ------------ |
-| Contratos/ADR/protocolos          | Sin asignar             | —                  | Liberada tras A03/B01 |
+| Contratos/ADR/protocolos          | Codex integrador        | —                  | Liberada tras comprobaciones I03; revisión pendiente |
 | Configuración/esquemas            | Codex integrador        | —                  | Liberada tras B04 |
 | Contenedor/datos S01              | Codex integrador        | F04                | Liberada tras B02/E07; integración pendiente |
 | Páginas/índices/backlinks         | Codex integrador        | —                  | S00/S01 integradas como prototipos; publicación técnica verificada; promoción editorial pendiente |
 | Tokens/estilos globales           | Codex integrador        | —                  | Liberada tras B02/F02 |
-| Skills/espejos/validador          | Codex integrador        | —                  | Reservada D04 |
-| dist, preview y output/playwright | Sin asignar             | Builds y pruebas   | Sin reservar |
+| Skills/espejos/validador          | Codex integrador        | —                  | Liberada tras I03; bloqueo D04 resuelto |
+| Escenas S00–S02/notebook/pruebas | Codex integrador | — | Liberada tras I03; conserva cambios previos I02 |
+| dist, preview y output/playwright | Codex integrador | Builds y pruebas | Liberada tras comprobaciones I03; revisión pendiente |
 
 Las tareas de escenas reservan además su módulo, CSS y prueba. Un integrador administra cambios compartidos y aplica parches recibidos de otros agentes.
 
@@ -89,11 +98,12 @@ H01 prueba el conjunto; H02 revisa la evidencia y cierra las filas. Las sesiones
 
 | Defecto                                   | Tarea/AC | Reproducción y evidencia           | Responsable | Estado |
 | ----------------------------------------- | -------- | ---------------------------------- | ----------- | ------ |
-| Espejos protegidos ausentes | D04-AC3 | `npm run validate:skills:strict` termina con código 1 y reporta 8 espejos ausentes; las rutas `.codex/skills` y `.agents/skills` requieren permisos del entorno | Integrador/entorno | abierto |
+| Espejos protegidos ausentes | D04-AC3 | Resuelto en I03: las cinco skills tienen ambos espejos y `npm run validate:skills:strict` pasa; ver [evidencia I03](evidence/I03.md) | Codex integrador | resuelto 2026-10-18 |
 
 ## Decisiones pendientes reales
 
-- D04 requiere sincronizar las skills canónicas con los espejos protegidos y repetir el modo estricto.
+- D04 se entrega tras resolver en I03 la sincronización y el gate estricto; su aceptación editorial sigue pendiente.
+- I03 conserva pendiente AC6: actualizar y revisar los baselines Linux cuando Docker vuelva a funcionar; implementación y demás comprobaciones en [I03](evidence/I03.md).
 - C02 queda aceptada para la mecánica contextual; su E2E con una colección pública espera contenido aprobado.
 - C03 deja la infraestructura de ejemplos lista con integración pendiente; F04 debe ensamblar ejemplos y precauciones revisadas en las unidades.
 - F01 queda aceptada para preparación interna: la bibliografía de Géron/Kelleher y los casos primarios de RL/ExoGAN quedaron localizados; permanecen límites de transferencia, derechos, assets y revisión editorial.

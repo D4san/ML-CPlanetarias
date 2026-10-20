@@ -32,7 +32,7 @@ entregada y los contratos o protocolos que la tarea declare. Entrega un informe 
    la ficha y cambios realmente presentes. No aceptes por un mensaje del agente sin artefacto.
 2. **Revisar cuatro capas.** Evalúa por separado (a) código y contratos, (b) contenido y fuentes,
    (c) diseño, accesibilidad y uso, y (d) procedencia, derechos y autorización editorial.
-3. **Reproducir gates proporcionales.** Ejecuta las pruebas indicadas por la tarea; para la web
+3. **Reproducir gates proporcionales.** Comprobar portada 0, fuentes finales, enlaces previos y reinicio; distinguir controles globales/locales. Verificar que el control cambia una salida visible y que el ejemplo trabajado conserva conteos, unidades y valores esperados. Ejecuta las pruebas indicadas por la tarea; para la web
    incluye la ruta afectada y una subruta cuando corresponda. Registra fallos de entorno sin
    convertirlos en aprobación.
 4. **Rastrear afirmaciones.** Cada afirmación fuerte necesita fuente y ubicación; una ilustración

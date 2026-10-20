@@ -8,7 +8,7 @@ No existe una sincronización automática de carpetas. La unidad de comunicació
 
 ## Requisitos que el repo debe conservar
 
-El producto final es una web educativa del curso, potencialmente publicada con GitHub Pages. El agente debe tratar como requisitos de contenido, aunque la tecnología web siga pendiente:
+El producto final es una web educativa del curso, potencialmente publicada con GitHub Pages. El agente debe tratar como requisitos de contenido, sobre la arquitectura vigente de ADR-0001:
 
 - sesiones quincenales con guion, preguntas, misconcepciones, red conceptual y fuentes;
 - glosario bidireccional entre conceptos, sesiones, ejercicios y aplicaciones;
@@ -17,7 +17,7 @@ El producto final es una web educativa del curso, potencialmente publicada con G
 - notebooks ejecutables y enlaces a Colab solo después de probarlos;
 - material reutilizable por tutores y adaptable a futuras electivas.
 
-La estructura del repo debe permitir que `inbox/` conserve el diseño detallado y que `docs/` sea una salida revisada para la web. No se debe elegir todavía Jupyter Book, MkDocs u otra herramienta sin una decisión posterior.
+La estructura del repo debe permitir que `inbox/` conserve el diseño detallado y que `docs/` sea una salida revisada para la web. La implementación sigue Astro estático con islas React, según ADR-0001.
 
 ## Referencias
 
@@ -82,3 +82,6 @@ status: open
 ```
 
 El vault decide si esa salida se convierte en modificación, concepto, tarea o decisión. El repo no sobrescribe notas de Obsidian.
+
+
+El recorrido de las presentaciones sigue [ADR-0003](decisions/ADR-0003-presentation-opening-and-references.md): portada 0, contenido, cierre y referencias finales.

@@ -37,19 +37,19 @@ describe('presentation parts', () => {
   });
 
   it('flattens the bibliography and station parts into one stable slide sequence', () => {
-    expect(s01Slides).toHaveLength(22);
+    expect(s01Slides).toHaveLength(23);
     expect(s01Slides[0]).toMatchObject({
-      id: 's01-bibliography-0',
-      unitId: 's01-bibliography-0',
+      id: 's01-opening',
+      unitId: 's01-opening',
       stopId: null,
-      partLabel: 'Bibliografía',
+      partLabel: 'Portada',
     });
     expect(s01Slides.slice(1, 4).map((slide) => slide.partId)).toEqual([
       'apertura',
       'salidas',
       'disciplinas',
     ]);
-    expect(getS01SlideNumber(s01Slides[0]!)).toBe('00');
+    expect(getS01SlideNumber(s01Slides[0]!)).toBe('0');
     expect(s01Slides.slice(1, 4).map((slide) => getS01SlideNumber(slide))).toEqual([
       '01.1',
       '01.2',
@@ -61,7 +61,7 @@ describe('presentation parts', () => {
       '02.3',
     ]);
     expect(s01Slides.map((slide) => slide.unitId)).toEqual([
-      's01-bibliography-0',
+      's01-opening',
       's01-question-opening',
       's01-question-outputs',
       's01-question-lenses',
@@ -83,6 +83,7 @@ describe('presentation parts', () => {
       's01-evidence-opening',
       's01-evidence-capacity',
       's01-evidence-claim',
+      's01-bibliography-0',
     ]);
     expect(getS01SlideIndex('question', 2)).toBe(3);
     expect(getS01SlideIndex('instance', 2)).toBe(6);
@@ -99,18 +100,18 @@ describe('presentation parts', () => {
       start: 0,
       end: 4,
       leftCount: 0,
-      rightCount: 17,
+      rightCount: 18,
     });
     expect(getS01SlideWindow(6)).toMatchObject({
       start: 4,
       end: 8,
       leftCount: 4,
-      rightCount: 13,
+      rightCount: 14,
     });
-    expect(getS01SlideWindow(21)).toMatchObject({
-      start: 17,
-      end: 21,
-      leftCount: 17,
+    expect(getS01SlideWindow(22)).toMatchObject({
+      start: 18,
+      end: 22,
+      leftCount: 18,
       rightCount: 0,
     });
     expect(getS01SlideStackSide(5, 0)).toBe('right');

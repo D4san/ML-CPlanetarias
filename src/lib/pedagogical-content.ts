@@ -45,7 +45,7 @@ export interface TeacherPromptContent {
 
 export const s01Bibliography: SessionBibliographyContent = {
   sessionId: 'S01',
-  label: 'Diapositiva 0 · materiales de la sesión',
+  label: 'Referencias · materiales de la sesión',
   title: 'Dos libros para orientar el recorrido',
   intro:
     'Comenzaremos por la pregunta y el dato. Estas lecturas sostienen el vocabulario y las distinciones de S01.',

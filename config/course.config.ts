@@ -11,8 +11,11 @@ export const courseConfig = defineCourseConfig({
     teacherMode: false, // Preguntas y orientaciones junto a cada tema.
     defaultView: 'presentation', // 'reading' o 'activities'.
   },
-  enabledSessionIds: ['S00', 'S01'],
+  enabledSessionIds: ['S00', 'S01', 'S03'],
   sessions: {
+    S03: {
+      enabled: true,
+    },
     S00: {
       enabled: true,
     },

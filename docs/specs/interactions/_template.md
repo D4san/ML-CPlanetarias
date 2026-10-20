@@ -42,6 +42,16 @@ packet_id:
 - misconcepción prevenida:
 - qué no demuestra:
 
+## Ejemplo trabajado y feedback (cuando corresponda)
+
+- entrada y significado de cada variable/unidad:
+- conteos, proporciones o supuestos que deben conservarse:
+- operaciones y valores intermedios esperados:
+- resultado esperado y decisión que permite tomar:
+- control → selección/valor visible → cambio en la figura → interpretación:
+- recorrido guiado y transición a exploración:
+- alternativa completa sin JavaScript:
+
 ## Matriz de pruebas
 
 - [ ] estado inicial determinista;

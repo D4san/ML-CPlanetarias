@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mlcp Quality Review"
+  short_description: "Audita entregas y evidencia del curso MLCP"
+  default_prompt: "Use $mlcp-quality-review para revisar una entrega MLCP con matriz de requisitos y evidencia reproducible."

@@ -1,0 +1,41 @@
+.s03-context-help {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  margin-top: 0.55rem;
+}
+
+.s03-context-help__label,
+.s03-concept-dialog__eyebrow {
+  color: var(--data-soft);
+  font-family: var(--font-mono);
+  font-size: max(12px, 0.72em);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.s03-context-help__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.s03-context-help .s03-info-trigger {
+  min-height: 1.9rem;
+  padding-block: 0.16rem;
+  font-size: max(12px, 0.78em);
+}
+
+.s03-concept-dialog__eyebrow {
+  margin: 0;
+}
+
+.s03-concept-dialog__panel strong {
+  color: var(--data-soft);
+}
+
+.s03-concept-dialog {
+  width: min(42rem, calc(100vw - 2rem));
+}

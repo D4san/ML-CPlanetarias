@@ -1,0 +1,11 @@
+---
+import { courseConfig } from '../../../../config/course.config';
+import { isSessionAvailable } from '../../../lib/course-availability';
+import S03SessionPage from '../../../components/S03SessionPage.astro';
+
+export function getStaticPaths() {
+  return isSessionAvailable(courseConfig, 'S03') ? [{ params: { path: undefined } }] : [];
+}
+---
+
+<S03SessionPage />

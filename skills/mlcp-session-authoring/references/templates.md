@@ -140,7 +140,7 @@ Marca cada casilla con una ruta, ID, fuente o nota de laguna. Una declaración g
 ### Inventario y jerarquía
 
 - [ ] El inventario cubre cada tramo usado y registra lo excluido.
-- [ ] Curso, sesión, bibliografía 0, estaciones y unidades tienen IDs estables.
+- [ ] Curso, sesión, portada 0 y referencias finales, estaciones y unidades tienen IDs estables.
 - [ ] El orden vive en arrays explícitos; ningún índice funciona como URL permanente.
 - [ ] Cada `unitId`, `exampleId`, `conceptId`, `cautionId`, `teacherQuestionId` y `sourceId` resuelve o queda marcado como pendiente.
 
@@ -166,3 +166,6 @@ Marca cada casilla con una ruta, ID, fuente o nota de laguna. Una declaración g
 - [ ] Se revisaron cobertura, IDs, fuentes, derechos, límites y frontera editorial.
 - [ ] Cada laguna tiene una tarea de investigación y condición de cierre.
 - [ ] El informe indica qué gate se ejecutó, qué quedó pendiente y quién debe resolverlo.
+
+
+Portada → contenido → cierre → referencias; véase ADR-0003. Si una unidad incluye cálculo, documentar ejemplo trabajado, valores intermedios esperados y transición a exploración.

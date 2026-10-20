@@ -17,18 +17,18 @@ import {
 
 describe('S00 scientific content', () => {
   it('flattens bibliography and uneven station parts for the shared SlideRail', () => {
-    expect(s00Slides).toHaveLength(31);
+    expect(s00Slides).toHaveLength(32);
     expect(s00Slides[0]).toMatchObject({
-      id: 's00-bibliografia',
-      partLabel: 'Fuentes',
+      id: 's00-opening',
+      partLabel: 'Portada',
     });
     expect(
       s00Slides
-        .slice(1)
+        .slice(1, -1)
         .filter((slide) => slide.partIndex === 0)
         .map((slide) => slide.unitId),
     ).toEqual(s00Units.map((unit) => unit.id));
-    expect(s00Slides.slice(1).map((slide) => slide.partIndex)).toContain(5);
+    expect(s00Slides.slice(1, -1).map((slide) => slide.partIndex)).toContain(5);
     expect(getS00SlideNumber(s00Slides[1]!)).toBe('01.1');
     expect(getS00SlideNumber(s00Slides[2]!)).toBe('01.2');
     expect(getS00SlideNumber(s00Slides[3]!)).toBe('01.3');
@@ -54,10 +54,10 @@ describe('S00 scientific content', () => {
   });
 
   it('resolves stable scientific hashes and opens the first station by default', () => {
-    expect(getS00SlideHash(0)).toBe('#bibliografia');
+    expect(getS00SlideHash(0)).toBe('#portada');
     expect(getS00SlideHash(1)).toBe('#pregunta');
     expect(getS00SlideHash(2)).toBe('#pregunta/senal');
-    expect(getS00SlideIndexFromHash('')).toBe(1);
+    expect(getS00SlideIndexFromHash('')).toBe(0);
     expect(getS00SlideIndexFromHash('#ramas')).toBe(getS00SlideIndex('s00-ramas'));
     expect(getS00SlideIndexFromHash('#ramas/teoria')).toBe(getS00SlideIndex('s00-ramas', 1));
     expect(getS00SlideIndexFromHash('#acotar')).toBe(getS00SlideIndex('s00-medicion'));

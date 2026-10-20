@@ -27,7 +27,7 @@ Astro estático y React siguen siendo el stack. La fuente de contenido aprobado 
 | Asset              | ID, tipo, archivo, dimensiones, alt, pie, propósito, procedencia/derechos                                     | Tipo conceptual, simulado u observado; herramienta no determina evidencia.                              |
 | Referencia         | ID, título, autores/institución, año cuando se conozca, URL/DOI, ubicación relevante                          | Una URL no basta para justificar una afirmación.                                                        |
 
-La bibliografía 0 forma parte de la navegación, con tipo propio y su lista de materiales. No requiere inventar un ejemplo astronómico para cada cita. Su ID no altera las estaciones existentes.
+La portada 0 y las referencias finales tienen roles propios en la navegación; las referencias conservan su lista de materiales. No requiere inventar un ejemplo astronómico para cada cita. Su ID no altera las estaciones existentes.
 
 Las explicaciones de actividades también son unidades inventariables. El estudiante conserva su estado de respuesta separado de la narrativa. Cambiar a directo no marca respuestas como correctas ni completa actividades.
 
@@ -129,11 +129,11 @@ No crear un CMS ni un segundo repositorio de definiciones. Reutilizar las colecc
 ## 6. Navegación y modalidades
 
 - Reutilizar el carril `SlideRail` existente y su contrato en `docs/architecture/SLIDE_RAIL.md`. La sesión entrega una secuencia plana y conserva sus hashes/estado pedagógico; el carril resuelve ventana visible, apilado, selección y teclado. Ampliar el adaptador en vez de crear otro carril por sesión.
-- Presentación abre bibliografía 0 salvo enlace profundo válido.
+- Presentación abre portada 0 y referencias finales salvo enlace profundo válido.
 - Anterior/Siguiente recorren las unidades declaradas y cruzan estaciones. En bibliografía, Anterior está deshabilitado; al final, Siguiente está deshabilitado o ofrece una acción final explícita fijada en A02.
 - Cambiar ruta conserva estación/unidad si son válidas. Una unidad compartida adapta su ejemplo a la ruta seleccionada.
 - Cambiar Presentación/Lectura conserva el punto de retorno. Lectura sigue el mismo orden pedagógico.
-- Reset recupera bibliografía y ruta inicial resuelta; conserva la vista elegida, siguiendo el piloto.
+- Reset recupera portada y ruta inicial resuelta en presentación, siguiendo el piloto.
 - Historial restaura estación/unidad; hash inválido produce recuperación útil, sin excepción sin controlar.
 - Al salir de una unidad se cierra su diálogo y se mantiene foco útil; no dejar foco en un nodo desmontado.
 - Directo muestra explicación y ejemplo de las tarjetas sin giro ni apertura previa. La navegación/exploración sigue operativa.
@@ -160,3 +160,6 @@ Si un agente detecta una incompatibilidad:
 5. aceptar la nueva versión solo cuando quede documentada y verificada.
 
 A02 convierte este documento en un contrato aprobado para implementación; las tareas siguientes no vuelven a debatir decisiones ya resueltas sin evidencia nueva.
+
+
+Actualización I03 / ADR-0003: portada 0, contenido y cierre, referencias al final; controles globales visibles y pasos locales diferenciados.

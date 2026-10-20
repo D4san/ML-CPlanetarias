@@ -1,6 +1,6 @@
 # ADR-0002 — Contrato común de contenido, navegación y disponibilidad
 
-- Estado: aceptada para implementación
+- Estado: aceptada para implementación; apertura, posición de referencias y reinicio actualizados por [ADR-0003](ADR-0003-presentation-opening-and-references.md)
 - Fecha: 2026-09-07
 - Alcance: modelo de curso, sesiones, estaciones, unidades, configuración y navegación
 - Relación: extiende ADR-0001; convierte `docs/planning/agent-execution/CONTRACTS.md` en una decisión implementable
@@ -29,7 +29,7 @@ contenido público; un fixture técnico puede declarar explícitamente que aún 
 | --- | --- | --- | --- |
 | Curso | `id`, `identity`, `enabledSessionIds`, `sessions` | `description`, `defaults` | `id: 'mlcp'`; la lista de sesiones define el orden y cada ID aparece una sola vez. |
 | Sesión | `id`, `title`, `summary`, `objectives`, `bibliographyId`, `stationIds`, `units`, `provenance`, `editorial` | `routeIds`, `enabledRouteIds`, `defaultRouteId`, `conceptIds`, `teacherQuestionIds` | `id: 'S01'`, `stationIds: ['question', ...]`; S00 y S01 son IDs distintos. |
-| Bibliografía | `id`, `title`, `items` | `summary` | `id: 's01-bibliography'`; una sesión la referencia y la navegación la coloca en la diapositiva 0. |
+| Bibliografía | `id`, `title`, `items` | `summary` | `id: 's01-bibliography'`; una sesión la referencia y la navegación la coloca al final, según ADR-0003. |
 | Estación | `id`, `title`, `purpose`, `unitIds` | `shortLabel`, `hash`, `tone` | `id: 'question'`, `unitIds: ['s01-question-opening']`; el array declara el orden. |
 | Unidad explicativa | `id`, `function`, `title`, `idea`, `content`, `exampleIds`, `conceptIds` | `visualId`, `cautionIds`, `teacherQuestionIds`, `activityId`, `sourceIds` | `id: 's01-question-opening'`; un ID puede aparecer en una ruta, pero no se redefine su significado. |
 | Ejemplo | `id`, `question`, `domain`, `representation`, `task`, `interpretation`, `limits`, `sourceIds` | `sessionIds`, `unitIds`, `assetIds`, `routeIds` | `id: 's01-spectrum-transit'`; la evidencia científica y la adaptación didáctica se distinguen. |
@@ -114,7 +114,7 @@ La selección del tutor tampoco cambia `status`, `visibility`, `publish_ready` n
   Los índices sirven para navegación, nunca como identidad persistente.
 - S01 conserva los siete IDs y hashes existentes: `question/pregunta`, `instance/instancia`,
   `signal/senal`, `task/tarea`, `family/familia`, `domain/dominio` y `evidence/evidencia`.
-- La bibliografía recibe un ID propio y ocupa la diapositiva 0. No renumera las estaciones.
+- La portada ocupa la diapositiva 0; la bibliografía recibe un ID propio y ocupa la última posición, según ADR-0003. No renumera las estaciones.
 - El enlace `#instancia` abre la primera unidad de esa estación. Un hash específico usa
   `#<station-hash>/<unit-id>`; un hash inválido recupera una entrada útil y no lanza una
   excepción sin controlar.
@@ -126,7 +126,7 @@ La selección del tutor tampoco cambia `status`, `visibility`, `publish_ready` n
   deshabilitado o muestra una acción final explícita definida por la sesión.
 - Cambiar de ruta conserva estación/unidad cuando existe una correspondencia válida; de lo
   contrario vuelve a la primera unidad de la nueva ruta y explica el cambio.
-- Cambiar vista conserva el punto de retorno. Reset vuelve a bibliografía y ruta inicial
+- Cambiar vista conserva el punto de retorno. Reset vuelve a portada y ruta inicial
   resuelta, conserva la vista elegida y no reactiva sesiones/rutas excluidas.
 - El carril reutilizado es `SlideRail`; el adaptador entrega una secuencia plana y resuelve
   contenido, IDs, hashes y rutas. No se crea un carril alternativo por sesión.

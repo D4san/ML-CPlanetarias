@@ -1,8 +1,8 @@
 # Plan ejecutable del curso y la web
 
-Este paquete convierte la primera retroalimentación en **32 tareas delegables: 31 de implementación/revisión y una de publicación opcional**. Está preparado para que un agente nuevo trabaje con contexto limitado, produzca una entrega acotada y demuestre que cumple sus criterios.
+Este paquete convierte la primera retroalimentación en **34 fichas: 33 tareas de implementación/revisión y una de publicación opcional**. I01 organiza las solicitudes de S00/S01; I02 aplica ajustes locales de legibilidad visual. Ambas mantienen S02 fuera del alcance. Está preparado para que un agente trabaje con contexto limitado, produzca una entrega acotada y demuestre que cumple sus criterios.
 
-**Estado:** plan preparado; las tareas nuevas no se han ejecutado por haber escrito estas fichas. El piloto previo de S01 permanece como punto de partida. El estado operativo de cada tarea vive únicamente en [BOARD.md](BOARD.md).
+**Estado:** plan preparado; I02 está en curso. El piloto previo de S01 permanece como punto de partida. El estado operativo de cada tarea vive únicamente en [BOARD.md](BOARD.md).
 
 ## Cómo empezar
 

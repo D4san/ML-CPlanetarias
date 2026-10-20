@@ -28,7 +28,7 @@ describe('fork configuration', () => {
     const resolved = defineCourseConfig(courseConfig);
 
     expect(resolved.identity).toEqual({ id: 'mlcp', title: 'ML Ciencias Planetarias' });
-    expect(resolved.enabledSessionIds).toEqual(['S00', 'S01']);
+    expect(resolved.enabledSessionIds).toEqual(['S00', 'S01', 'S03']);
     expect(resolved.sessions.S00).toMatchObject({ enabled: true, enabledRouteIds: [] });
     expect(resolved.defaults).toEqual({
       interactionMode: 'interactive',

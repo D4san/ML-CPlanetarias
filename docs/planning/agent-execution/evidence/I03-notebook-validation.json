@@ -1,0 +1,48 @@
+{
+  "date_local": "2026-10-18",
+  "execution": "fresh kernel for before and after; local snapshot replaces read_csv in execution copies only",
+  "snapshot": "S02_PSCompPars_20260929T032525Z.csv",
+  "snapshot_sha256": "fc915406014a82702937a9decae0076aa425f534fab1b25626ff675933fdcff3",
+  "notebook_sha256": "18bc6d20c210186b5abde374325bcf45e00942e21a0aea5a52b4a7ba0c54f452",
+  "sample_n": 1529,
+  "train_n": 1223,
+  "test_n": 306,
+  "test_indices_identical_before_after": true,
+  "test_indices_ordered_json_sha256": "2926c66a4712030e71e124f2ad767fe8cfd8623a6c658924e7d057783129925e",
+  "train_test_targets_and_indices_aligned_between_configurations": true,
+  "metrics_identical_before_after": true,
+  "metrics_before_and_after": [
+    {
+      "Modelo": "Random Forest: masa + insolación",
+      "MAE (R⊕)": 1.1907312798154037,
+      "R²": 0.8885865272183835
+    },
+    {
+      "Modelo": "Random Forest: masa",
+      "MAE (R⊕)": 1.6728894387372022,
+      "R²": 0.8137639916093801
+    },
+    {
+      "Modelo": "Árbol: masa",
+      "MAE (R⊕)": 1.750973284414795,
+      "R²": 0.8050702541493554
+    },
+    {
+      "Modelo": "Mediana",
+      "MAE (R⊕)": 4.897152052908497,
+      "R²": -0.0030058924542466503
+    }
+  ],
+  "versions": {
+    "python": "3.12.7",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.5.1",
+    "matplotlib": "3.10.7",
+    "seaborn": "0.13.2",
+    "nbformat": "5.10.4",
+    "nbclient": "0.8.0"
+  },
+  "live_catalog_executed": false,
+  "colab_executed": false
+}

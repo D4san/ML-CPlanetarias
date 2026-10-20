@@ -238,7 +238,7 @@ describe('S01LearningJourney', () => {
     const journey = document.querySelector('[data-ready="true"]');
     const rail = screen.getByRole('navigation', { name: 'Diapositivas de S01' });
 
-    expect(journey).toHaveAttribute('data-slide-count', '22');
+    expect(journey).toHaveAttribute('data-slide-count', '23');
     expect(journey).toHaveAttribute('data-active-slide', '1');
     expect(rail.querySelectorAll('li[data-visible="true"]')).toHaveLength(5);
     expect(within(rail).getByText('01.1')).toBeInTheDocument();
@@ -264,7 +264,7 @@ describe('S01LearningJourney', () => {
     expect(journey).toHaveAttribute('data-active-slide', '19');
     expect(rail.querySelectorAll('li[data-visible="true"]')).toHaveLength(5);
     expect(rail.querySelectorAll('li[data-side="left"]')).toHaveLength(9);
-    expect(rail.querySelectorAll('li[data-side="right"]')).toHaveLength(8);
+    expect(rail.querySelectorAll('li[data-side="right"]')).toHaveLength(9);
   });
 
   it('switches between presentation and linear reading while preserving the active stop', async () => {
@@ -289,8 +289,12 @@ describe('S01LearningJourney', () => {
     expect(window.location.search).toBe('?modo=lectura');
     expect(window.location.hash).toBe('#familia');
 
-    const readingNavigation = screen.getByRole('navigation', { name: 'Contenido de la lectura' });
-    await user.click(within(readingNavigation).getByRole('button', { name: '6. Datos y dominio' }));
+    const readingNavigation = screen.getByRole('navigation', { name: 'Capítulos de S01' });
+    await user.click(
+      within(readingNavigation).getByRole('link', {
+        name: 'El dominio conecta entrenamiento y uso',
+      }),
+    );
     expect(window.location.hash).toBe('#dominio');
 
     await user.click(screen.getByRole('button', { name: 'Presentación' }));
@@ -316,9 +320,9 @@ describe('S01LearningJourney', () => {
 
     await user.click(screen.getByRole('button', { name: 'Reiniciar' }));
     expect(
-      screen.getByRole('heading', { name: 'Dos libros para orientar el recorrido' }),
+      screen.getByRole('heading', { name: 'De una observación a una afirmación' }),
     ).toBeInTheDocument();
-    expect(window.location.hash).toBe('');
+    expect(window.location.hash).toBe('#portada');
   });
 
   it('offers an independent activity branch and returns to the narrative route', async () => {
@@ -367,28 +371,22 @@ describe('S01LearningJourney', () => {
       screen.getByRole('button', { name: 'Subslide 2 · Pregunta · Cinco salidas' }),
     ).toHaveFocus();
     await user.keyboard('{End}');
-    expect(
-      screen.getByRole('button', { name: 'Subslide 3 · Evidencia · Afirmación defendible' }),
-    ).toHaveFocus();
+    expect(screen.getByRole('button', { name: 'Referencias de S01' })).toHaveFocus();
     await user.keyboard('{Home}');
-    expect(screen.getByRole('button', { name: '0. Bibliografía de S01' })).toHaveFocus();
+    expect(screen.getByRole('button', { name: '0. Portada de S01' })).toHaveFocus();
   });
 
-  it('returns to bibliography at the first content boundary and stops at the final unit', async () => {
+  it('returns to the cover and reaches references after the last content unit', async () => {
     const user = userEvent.setup();
     render(<S01LearningJourney />);
-
-    await user.click(screen.getByRole('button', { name: '← Anterior' }));
+    await user.click(screen.getByRole('button', { name: 'Anterior' }));
+    expect(window.location.hash).toBe('#portada');
+    expect(document.querySelector('.session-opening')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Referencias de S01' }));
     expect(window.location.hash).toBe('#bibliografia');
     expect(
       screen.getByRole('heading', { name: 'Dos libros para orientar el recorrido' }),
-    ).toBeInTheDocument();
-
-    await user.click(screen.getByRole('button', { name: 'Siguiente →' }));
-    for (let index = 0; index < 20; index += 1) {
-      await user.click(screen.getByRole('button', { name: 'Siguiente →' }));
-    }
-    expect(window.location.hash).toBe('#evidencia/afirmacion');
-    expect(screen.getByRole('button', { name: 'Siguiente →' })).toBeDisabled();
+    ).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Siguiente' })).toBeDisabled();
   });
 });

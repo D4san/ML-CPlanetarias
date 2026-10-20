@@ -1,0 +1,490 @@
+{
+  "id": "s03-illustrations",
+  "date": "2026-10-20",
+  "assets": [
+    {
+      "id": "s03-variabilidad-conceptual",
+      "file": "public/images/s03/s03-variabilidad-conceptual.png",
+      "type": "conceptual",
+      "unit": "S03 / 3.1",
+      "case": "Actividad estelar con manchas como causa de variabilidad del flujo.",
+      "purpose": "Hacer visible una causa de variación del flujo independiente del tránsito planetario.",
+      "tool_process": "ImageGen integrado según el brief común de S03; la guía no registra versión ni parámetros del modelo.",
+      "style_family": "Ilustración astronómica realista de S03: iluminación sobria, pocos objetos y márgenes para rótulos HTML externos.",
+      "width": 1672,
+      "height": 941,
+      "weight_bytes": 1680928,
+      "sha256": "a5c9bb422b40ee3dd7966dd5cc26c1f9545138f4be5ac76108195c71342b7621",
+      "alt": "Ilustración conceptual generada de una estrella con manchas oscuras y textura superficial activa; no corresponde a una imagen observada por Kepler.",
+      "caption": "Ilustración conceptual generada. Las manchas representan actividad superficial; no muestran datos ni una estrella identificada.",
+      "generation_method": "imagegen",
+      "background_mode": "opaque",
+      "alpha_status": "not-applicable",
+      "rights": {
+        "status": "original",
+        "note": "Ilustración generada para el curso; no observación ni simulación calibrada."
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/s03-illustrations.md",
+        "source_heading": "Brief común",
+        "source_refs": [
+          "src/lib/s03-content.ts#s03-lookalikes-1",
+          "mast-kepler-products",
+          "shallue-vanderburg-2017"
+        ],
+        "transformation": "Copia de la salida PNG elegida; sin edición posterior.",
+        "units": null,
+        "seed": null
+      },
+      "limits": [
+        "No identifica una estrella ni representa una observación de Kepler.",
+        "Granulación, colores, luminosidad y manchas son cualitativos; no permiten inferir temperatura, distancia ni magnitudes medidas."
+      ],
+      "review": {
+        "status": "pending",
+        "inspected_at": "2026-10-19",
+        "contexts": [
+          "intrinsic-size",
+          "1920x1080",
+          "1440x900",
+          "1024x768",
+          "390x844"
+        ],
+        "findings": [
+          "La guía registra inspección intrínseca: no hay texto inventado, la composición es horizontal y las manchas son reconocibles.",
+          "Inspección integrada completada en 1920×1080, 1440×900, 1024×768 y 390×844; imágenes completas sin desbordamiento horizontal. Las ventanas bajas permiten desplazamiento vertical para leer pies y fuentes; la aceptación editorial y los goldens Linux siguen pendientes."
+        ]
+      }
+    },
+    {
+      "id": "s03-eclipsante-mezcla-conceptual",
+      "file": "public/images/s03/s03-eclipsante-mezcla-conceptual.png",
+      "type": "conceptual",
+      "unit": "S03 / 3.2",
+      "case": "Binaria eclipsante conceptual: una estrella menor pasa delante de otra mayor.",
+      "purpose": "Mostrar una explicación alternativa que puede producir una caída de luz parecida a un tránsito.",
+      "tool_process": "ImageGen integrado según el brief común de S03; la guía no registra versión ni parámetros del modelo.",
+      "style_family": "Ilustración astronómica realista de S03: iluminación sobria, pocos objetos y márgenes para rótulos HTML externos.",
+      "width": 1672,
+      "height": 941,
+      "weight_bytes": 1496261,
+      "sha256": "185523850421b23d7532aca26d7fdb264013402eece49005a676c747db1b4421",
+      "alt": "Ilustración conceptual generada de una estrella menor pasando delante de otra mayor en una binaria eclipsante; no es un sistema observado ni está a escala.",
+      "caption": "Ilustración conceptual generada de una binaria eclipsante. La mezcla de fuentes se explica en el texto y no está cuantificada en la imagen.",
+      "generation_method": "imagegen",
+      "background_mode": "opaque",
+      "alpha_status": "not-applicable",
+      "rights": {
+        "status": "original",
+        "note": "Ilustración generada para el curso; no observación ni simulación calibrada."
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/s03-illustrations.md",
+        "source_heading": "Brief común",
+        "source_refs": [
+          "src/lib/s03-content.ts#s03-lookalikes-2",
+          "shallue-vanderburg-2017"
+        ],
+        "transformation": "Copia de la salida PNG elegida; sin edición posterior.",
+        "units": null,
+        "seed": null
+      },
+      "limits": [
+        "No representa un sistema observado concreto y sus tamaños no están a escala.",
+        "La mezcla de fuentes se explica fuera de la imagen; la ilustración no cuantifica dilución ni profundidad de eclipse."
+      ],
+      "review": {
+        "status": "pending",
+        "inspected_at": "2026-10-19",
+        "contexts": [
+          "intrinsic-size",
+          "1920x1080",
+          "1440x900",
+          "1024x768",
+          "390x844"
+        ],
+        "findings": [
+          "La guía registra inspección intrínseca: las siluetas eclipsantes son distinguibles; no se infiere escala.",
+          "Inspección integrada completada en 1920×1080, 1440×900, 1024×768 y 390×844; imágenes completas sin desbordamiento horizontal. Las ventanas bajas permiten desplazamiento vertical para leer pies y fuentes; la aceptación editorial y los goldens Linux siguen pendientes."
+        ]
+      }
+    },
+    {
+      "id": "s03-transit-star-conceptual",
+      "file": "public/images/s03/s03-transit-star-conceptual.png",
+      "type": "conceptual",
+      "unit": "S03 / 1.1",
+      "case": "Disco estelar conceptual en la vista proyectada de un tránsito.",
+      "purpose": "Aportar textura de superficie y resplandor suave sin sustituir la geometría calculada en SVG.",
+      "tool_process": "Imagen generada con ImageGen el 2026-10-20; PNG RGBA copiado sin edición.",
+      "style_family": "Ilustración estelar astronómica realista de S03, con granulación, borde difuso y resplandor tenue, sin etiquetas ni texto.",
+      "width": 1254,
+      "height": 1254,
+      "weight_bytes": 2379339,
+      "sha256": "fa99dd98280d5af5b96acff1172ffd1f3a7cd6fbb29fbb633b17514d01235dd4",
+      "alt": "Disco estelar naranja con granulación y borde difuso en el centro de una órbita circular proyectada.",
+      "caption": "La estrella es una ilustración generada con IA; la órbita y la curva muestran un modelo ideal.",
+      "generation_method": "imagegen",
+      "background_mode": "transparent-alpha",
+      "alpha_status": "pending",
+      "rights": {
+        "status": "original",
+        "note": "Ilustración generada para el curso; no observación ni simulación calibrada."
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/s03-illustrations.md",
+        "source_heading": "Ilustración focal de la pantalla 1.1",
+        "source_refs": [
+          "src/lib/s03-content.ts#s03-transit-1"
+        ],
+        "transformation": "Copia de la salida PNG elegida; sin edición posterior.",
+        "units": null,
+        "seed": null
+      },
+      "limits": [
+        "La granulación, el color y el resplandor son cualitativos y no corresponden a una observación.",
+        "La imagen solo aporta textura; posición orbital, radio y flujo permanecen definidos por el esquema y el modelo."
+      ],
+      "review": {
+        "status": "pending",
+        "inspected_at": "2026-10-20",
+        "contexts": [
+          "intrinsic-size",
+          "alpha-channel",
+          "background-dark",
+          "1280x720"
+        ],
+        "findings": [
+          "Imagen RGBA de 1254×1254 px con alfa cero en las cuatro esquinas; el render integrado se revisó sobre fondo oscuro a 1280×720.",
+          "La integración a otros tamaños y sobre fondo claro queda pendiente; la política del navegador bloqueó la vista temporal usada para esa comparación."
+        ]
+      }
+    },
+    {
+      "id": "s03-kepler-pixel-source",
+      "file": "public/images/s03/s03-kepler-pixel-source.png",
+      "type": "conceptual",
+      "unit": "S03 / 2.2",
+      "case": "Fuente puntual estelar difuminada sobre píxeles de detector conceptuales.",
+      "purpose": "Mostrar que la luz de una estrella se distribuye entre celdas antes de seleccionar una apertura y sumar sus flujos por cadencia.",
+      "tool_process": "ImageGen el 2026-10-20 produjo el halo puntual en PNG transparente; la retícula, las etiquetas, la máscara, la fórmula y la curva se implementan con HTML/CSS/SVG.",
+      "style_family": "Fuente astronómica puntual para S03, con núcleo blanco-dorado y halo suave; sin disco resuelto, texto ni retícula rasterizada.",
+      "width": 1254,
+      "height": 1254,
+      "weight_bytes": 739814,
+      "sha256": "c5b37dd95b982f7545767b198f1d68d90b7ff089d04fbf5d1ba943de030ddaff",
+      "alt": "Fuente estelar puntual con núcleo blanco y halo ámbar suave sobre transparencia; la imagen aporta el brillo que aparece bajo la retícula exacta de la escena.",
+      "caption": "El halo hace visible la luz repartida; las celdas y sus flujos se definen en la escena interactiva.",
+      "generation_method": "imagegen",
+      "background_mode": "transparent-alpha",
+      "alpha_status": "passed",
+      "rights": {
+        "status": "original",
+        "note": "Ilustración generada para el curso; no observación ni simulación calibrada."
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/s03-pixel-flux-visual.md",
+        "source_heading": "Ficha de encargo visual",
+        "source_refs": [
+          "src/lib/s03-content.ts#s03-mission-2",
+          "mast-kepler-products",
+          "nasa-kepler-data-overview",
+          "jenkins-kepler-pipeline"
+        ],
+        "transformation": "PNG RGBA generado sin edición; se escala detrás de una retícula HTML de 5 × 5 celdas.",
+        "units": null,
+        "seed": null
+      },
+      "limits": [
+        "La fuente luminosa es cualitativa; la cuadrícula, los flujos, la apertura y la curva se dibujan por separado en HTML/SVG.",
+        "No representa una exposición identificada ni una distribución medida del detector Kepler."
+      ],
+      "review": {
+        "status": "pending",
+        "inspected_at": "2026-10-20",
+        "contexts": [
+          "intrinsic-size",
+          "alpha-channel",
+          "background-dark",
+          "background-light",
+          "1299x884",
+          "390x844"
+        ],
+        "findings": [
+          "PNG RGBA de 1254×1254 px (739 814 bytes); alfa cero en las cuatro esquinas y rango muestreado de 0 a 253.",
+          "La vista integrada a 1299×884 muestra el halo tras la retícula y la apertura junto a la ecuación y la curva; el halo se distingue también sobre fondo claro.",
+          "A 390×844, el documento mide 390 px y la diapositiva 332 px de ancho, sin desbordamiento horizontal; el contenido requiere desplazamiento vertical."
+        ]
+      }
+    },
+    {
+      "id": "s03-classification-tce-conceptual",
+      "file": "public/images/s03/s03-classification-tce-conceptual.png",
+      "type": "conceptual",
+      "unit": "S03 / 4.3",
+      "case": "Señal detectada con forma de tránsito cuya causa todavía debe clasificarse.",
+      "purpose": "Presentar el evento que el sistema de búsqueda detecta como instancia de clasificación.",
+      "tool_process": "ImageGen integrado el 2026-10-20; PNG horizontal copiado sin edición; la ficha conserva el encargo.",
+      "style_family": "Ilustración astronómica realista de S03: luz sobria, espacio azul oscuro, pocos objetos y composición horizontal.",
+      "width": 1672,
+      "height": 941,
+      "weight_bytes": 1833187,
+      "sha256": "84476fd659ed6d17aaabc290e2667c054f0af53573cd261316dc8eeab6d5b6a9",
+      "alt": "Una estrella brillante vista a través de un telescopio; una pequeña silueta oscura aparece sobre el borde del disco estelar.",
+      "caption": "Señal con forma de tránsito detectada; su causa se clasifica después.",
+      "generation_method": "imagegen",
+      "background_mode": "opaque",
+      "alpha_status": "not-applicable",
+      "rights": {
+        "status": "original",
+        "note": "Ilustración generada para el curso; no observación ni simulación calibrada."
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/s03-classification-illustrations.md",
+        "source_heading": "TCE — señal detectada",
+        "source_refs": [
+          "src/lib/s03-content.ts#s03-classification-3",
+          "shallue-vanderburg-2017"
+        ],
+        "transformation": "Copia PNG sin retoque; se integra en una ventana 16:9 con object-fit: cover.",
+        "units": null,
+        "seed": null
+      },
+      "limits": [
+        "La escena representa una apariencia posible de TCE, no una detección identificada.",
+        "La figura no demuestra que el evento sea causado por un planeta."
+      ],
+      "review": {
+        "status": "pending",
+        "inspected_at": "2026-10-20",
+        "contexts": [
+          "intrinsic-size",
+          "1299x884",
+          "390x844"
+        ],
+        "findings": [
+          "Inspección intrínseca: el telescopio, la estrella y una silueta oscura son reconocibles; no hay etiquetas ni escala.",
+          "Integrada en 1299×884 y 390×844: el telescopio y la señal ocupan el encuadre 16:9; en móvil la tarjeta se apila y el texto se lee con desplazamiento vertical, sin desbordamiento horizontal."
+        ]
+      }
+    },
+    {
+      "id": "s03-classification-pc-conceptual",
+      "file": "public/images/s03/s03-classification-pc-conceptual.png",
+      "type": "conceptual",
+      "unit": "S03 / 4.3",
+      "case": "Escena conceptual de una señal compatible con un candidato planetario.",
+      "purpose": "Ilustrar la interpretación planetaria que el estudio asigna a la referencia PC.",
+      "tool_process": "ImageGen integrado el 2026-10-20; PNG horizontal copiado sin edición; la ficha conserva el encargo.",
+      "style_family": "Ilustración astronómica realista de S03: luz sobria, espacio azul oscuro, pocos objetos y composición horizontal.",
+      "width": 1672,
+      "height": 941,
+      "weight_bytes": 1816613,
+      "sha256": "5e1548ec8a994091333b6c14fb1cad8a94d840addf345c4bc473c01ba88cb4d2",
+      "alt": "Un solo cuerpo oscuro cruza el disco de una estrella brillante.",
+      "caption": "Escena conceptual de una señal compatible con un candidato planetario.",
+      "generation_method": "imagegen",
+      "background_mode": "opaque",
+      "alpha_status": "not-applicable",
+      "rights": {
+        "status": "original",
+        "note": "Ilustración generada para el curso; no observación ni simulación calibrada."
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/s03-classification-illustrations.md",
+        "source_heading": "PC — clase planetaria",
+        "source_refs": [
+          "src/lib/s03-content.ts#s03-classification-3",
+          "shallue-vanderburg-2017"
+        ],
+        "transformation": "Copia PNG sin retoque; se integra en una ventana 16:9 con object-fit: cover.",
+        "units": null,
+        "seed": null
+      },
+      "limits": [
+        "La imagen no determina el estado de confirmación de una señal del catálogo."
+      ],
+      "review": {
+        "status": "pending",
+        "inspected_at": "2026-10-20",
+        "contexts": [
+          "intrinsic-size",
+          "1299x884",
+          "390x844"
+        ],
+        "findings": [
+          "Inspección intrínseca: una sola silueta y la estrella son distinguibles; no aparecen rótulos, escala ni datos observados.",
+          "Integrada en 1299×884 y 390×844: un solo cuerpo cruza el disco estelar en el encuadre 16:9; en móvil la tarjeta se apila y conserva el ancho del documento."
+        ]
+      }
+    },
+    {
+      "id": "s03-classification-afp-conceptual",
+      "file": "public/images/s03/s03-classification-afp-conceptual.png",
+      "type": "conceptual",
+      "unit": "S03 / 4.3",
+      "case": "Binaria eclipsante como explicación astrofísica de una caída parecida a un tránsito.",
+      "purpose": "Distinguir AFP de una señal planetaria mediante una explicación astrofísica alternativa.",
+      "tool_process": "ImageGen integrado el 2026-10-20; PNG horizontal copiado sin edición; la ficha conserva el encargo.",
+      "style_family": "Ilustración astronómica realista de S03: luz sobria, espacio azul oscuro, pocos objetos y composición horizontal.",
+      "width": 1672,
+      "height": 941,
+      "weight_bytes": 1875088,
+      "sha256": "29a3c3df797223ef6d5c58d66c4e47cd298f8ddfb37497a7a7aca42b8f1cb316",
+      "alt": "Dos estrellas de distinto brillo se superponen en la línea de visión; la estrella menor eclipsa parcialmente a la mayor.",
+      "caption": "Una binaria eclipsante puede producir una caída parecida a un tránsito.",
+      "generation_method": "imagegen",
+      "background_mode": "opaque",
+      "alpha_status": "not-applicable",
+      "rights": {
+        "status": "original",
+        "note": "Ilustración generada para el curso; no observación ni simulación calibrada."
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/s03-classification-illustrations.md",
+        "source_heading": "AFP — falso positivo astrofísico",
+        "source_refs": [
+          "src/lib/s03-content.ts#s03-classification-3",
+          "shallue-vanderburg-2017"
+        ],
+        "transformation": "Copia PNG sin retoque; se integra en una ventana 16:9 con object-fit: cover.",
+        "units": null,
+        "seed": null
+      },
+      "limits": [
+        "La escena no representa un sistema concreto ni cuantifica la profundidad del eclipse.",
+        "Los tamaños y colores son cualitativos y no están a escala."
+      ],
+      "review": {
+        "status": "pending",
+        "inspected_at": "2026-10-20",
+        "contexts": [
+          "intrinsic-size",
+          "1299x884",
+          "390x844"
+        ],
+        "findings": [
+          "Inspección intrínseca: las dos estrellas y su superposición se distinguen; no hay tercer cuerpo, etiquetas ni escalas.",
+          "Integrada en 1299×884 y 390×844: la superposición de las dos estrellas se reconoce en el encuadre 16:9; la tarjeta se apila en móvil sin desbordamiento horizontal."
+        ]
+      }
+    },
+    {
+      "id": "s03-classification-ntp-conceptual",
+      "file": "public/images/s03/s03-classification-ntp-conceptual.png",
+      "type": "conceptual",
+      "unit": "S03 / 4.3",
+      "case": "Variabilidad estelar como ejemplo de señal sin tránsito planetario.",
+      "purpose": "Mostrar una causa de variación del brillo que no necesita un planeta en tránsito.",
+      "tool_process": "ImageGen integrado el 2026-10-20; PNG horizontal copiado sin edición; la ficha conserva el encargo.",
+      "style_family": "Ilustración astronómica realista de S03: luz sobria, espacio azul oscuro, pocos objetos y composición horizontal.",
+      "width": 1672,
+      "height": 941,
+      "weight_bytes": 2107136,
+      "sha256": "44f8fed695c6909673f182edf054bc177fc3a99e656707271a1ed8805ca56676",
+      "alt": "Una estrella con varias manchas oscuras sobre su superficie y sin un cuerpo que cruce delante de ella.",
+      "caption": "La actividad estelar puede variar el brillo sin un tránsito planetario.",
+      "generation_method": "imagegen",
+      "background_mode": "opaque",
+      "alpha_status": "not-applicable",
+      "rights": {
+        "status": "original",
+        "note": "Ilustración generada para el curso; no observación ni simulación calibrada."
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/s03-classification-illustrations.md",
+        "source_heading": "NTP — fenómeno no transitorio",
+        "source_refs": [
+          "src/lib/s03-content.ts#s03-classification-3",
+          "shallue-vanderburg-2017"
+        ],
+        "transformation": "Copia PNG sin retoque; se integra en una ventana 16:9 con object-fit: cover.",
+        "units": null,
+        "seed": null
+      },
+      "limits": [
+        "La variabilidad estelar es un ejemplo del grupo, no la única causa posible de un NTP.",
+        "Las manchas y el brillo son cualitativos; no identifican una estrella observada."
+      ],
+      "review": {
+        "status": "pending",
+        "inspected_at": "2026-10-20",
+        "contexts": [
+          "intrinsic-size",
+          "1920x1080",
+          "1440x900",
+          "1024x768",
+          "1299x884",
+          "390x844"
+        ],
+        "findings": [
+          "Inspección intrínseca: las manchas estelares son visibles y no hay planeta, explosión, etiquetas ni magnitudes.",
+          "Integrada en 1920×1080, 1440×900, 1024×768, 1299×884 y 390×844: la estrella y sus manchas permanecen visibles; en los formatos amplios imagen y texto van en paralelo, y en móvil se apilan sin desbordamiento horizontal."
+        ]
+      }
+    },
+    {
+      "id": "s03-classification-fp-conceptual",
+      "file": "public/images/s03/s03-classification-fp-conceptual.png",
+      "type": "conceptual",
+      "unit": "S03 / 4.3",
+      "case": "Ejemplo de señal no planetaria que recibe una predicción de planeta.",
+      "purpose": "Acompañar el desacuerdo entre la referencia negativa del catálogo y la predicción del clasificador.",
+      "tool_process": "ImageGen integrado el 2026-10-20; PNG horizontal copiado sin edición; la ficha conserva el encargo.",
+      "style_family": "Ilustración astronómica realista de S03: luz sobria, espacio azul oscuro, pocos objetos y composición horizontal.",
+      "width": 1672,
+      "height": 941,
+      "weight_bytes": 1818603,
+      "sha256": "1356e2622dd7d6a9f51789bf9978442ec4c6381544a65f9d54aac4fb9bbb064a",
+      "alt": "Una estrella con manchas se observa a través de una lente; una sombra aparente cruza la luz, aunque no se ve un planeta.",
+      "caption": "Una señal no planetaria puede recibir una predicción de planeta.",
+      "generation_method": "imagegen",
+      "background_mode": "opaque",
+      "alpha_status": "not-applicable",
+      "rights": {
+        "status": "original",
+        "note": "Ilustración generada para el curso; no observación ni simulación calibrada."
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/s03-classification-illustrations.md",
+        "source_heading": "FP — error del clasificador",
+        "source_refs": [
+          "src/lib/s03-content.ts#s03-classification-3",
+          "shallue-vanderburg-2017",
+          "geron-classification"
+        ],
+        "transformation": "Copia PNG sin retoque; se integra en una ventana 16:9 con object-fit: cover.",
+        "units": null,
+        "seed": null
+      },
+      "limits": [
+        "El caso es un ejemplo pedagógico de FP, no un error reportado por el artículo.",
+        "La imagen no muestra un puntaje ni un umbral; la relación exacta vive en HTML."
+      ],
+      "review": {
+        "status": "pending",
+        "inspected_at": "2026-10-20",
+        "contexts": [
+          "intrinsic-size",
+          "1920x1080",
+          "1024x768",
+          "1299x884",
+          "390x844"
+        ],
+        "findings": [
+          "Inspección intrínseca: una estrella con manchas y una sombra aparente son visibles; no hay texto ni etiquetas técnicas.",
+          "Integrada en 1920×1080, 1024×768, 1299×884 y 390×844: las tres etapas conservan su relación de izquierda a derecha en escritorio y se apilan en móvil; el texto y las fuentes se alcanzan con desplazamiento vertical, sin desbordamiento horizontal."
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import SlideRail from './SlideRail';
+import { S02Navigation } from './s02/S02Navigation';
+import { SessionOpening } from './SessionOpening';
+import { SessionNavigationControls } from './SessionNavigationControls';
 import { SessionPresentationFooter } from './SessionPresentationFooter';
 import S02InformationGain, { S02InformationGainIntro } from './s02/S02InformationGain';
 import S02Generalization from './s02/S02Generalization';
@@ -37,21 +39,34 @@ import './session-presentation.css';
 import './s02/s02-reading.css';
 
 export default function S02LearningJourney() {
-  const [activeStopId, setActiveStopId] = useState<S02Stop['id']>('references');
+  const [activeStopId, setActiveStopId] = useState<S02Stop['id']>('opening');
   const [displayMode, setDisplayMode] = useState<'presentation' | 'reading'>('presentation');
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('estacion') === 'cierre') setActiveStopId('limits');
-    if (params.get('modo') === 'lectura') setDisplayMode('reading');
-
-    const syncDisplayMode = () => {
-      const mode = new URLSearchParams(window.location.search).get('modo');
-      const nextMode = mode === 'lectura' ? 'reading' : 'presentation';
-      setDisplayMode(nextMode);
-      if (nextMode === 'presentation') window.scrollTo({ top: 0, behavior: 'auto' });
+    const syncLocation = () => {
+      const params = new URLSearchParams(window.location.search);
+      const hash = window.location.hash.slice(1);
+      const id =
+        hash === 'portada'
+          ? 'opening'
+          : hash === 'bibliografia' || hash === 'references' || hash === 's02-book-references'
+            ? 'sources'
+            : hash;
+      setActiveStopId(
+        params.get('estacion') === 'cierre'
+          ? 'limits'
+          : s02Stops.some((stop) => stop.id === id)
+            ? id
+            : 'opening',
+      );
+      setDisplayMode(params.get('modo') === 'lectura' ? 'reading' : 'presentation');
     };
-    window.addEventListener('popstate', syncDisplayMode);
-    return () => window.removeEventListener('popstate', syncDisplayMode);
+    syncLocation();
+    window.addEventListener('popstate', syncLocation);
+    window.addEventListener('hashchange', syncLocation);
+    return () => {
+      window.removeEventListener('popstate', syncLocation);
+      window.removeEventListener('hashchange', syncLocation);
+    };
   }, []);
   const handleActiveStopChange = useCallback((stopId: S02Stop['id']) => {
     setActiveStopId(stopId);
@@ -65,22 +80,16 @@ export default function S02LearningJourney() {
   const stationIndex = s02TeachingStations.findIndex((station) => station.id === activeStation.id);
   const substations = s02Stops.filter((stop) => stop.stationId === activeStation.id);
   const substationIndex = substations.findIndex((stop) => stop.id === activeStop.id);
-  const activeLabel =
-    activeStop.id === 'references'
-      ? 'Bibliografía inicial'
-      : `${activeStation.title} · ${activeStop.title}`;
-  const railStops = s02Stops.map((stop) => {
-    const stationStops = s02Stops.filter((candidate) => candidate.stationId === stop.stationId);
-    return {
-      ...stop,
-      partIndex: stationStops.findIndex((candidate) => candidate.id === stop.id),
-      partLabels: stationStops.map((candidate) => candidate.title),
-    };
-  });
-
   function moveTo(index: number) {
     const stop = s02Stops[Math.min(Math.max(index, 0), s02Stops.length - 1)];
-    if (stop) setActiveStopId(stop.id);
+    if (stop) {
+      setActiveStopId(stop.id);
+      const url = new URL(window.location.href);
+      url.searchParams.delete('estacion');
+      url.hash =
+        stop.id === 'opening' ? 'portada' : stop.id === 'sources' ? 'bibliografia' : stop.id;
+      window.history.pushState({}, '', url);
+    }
   }
 
   function changeDisplayMode(mode: 'presentation' | 'reading') {
@@ -88,6 +97,10 @@ export default function S02LearningJourney() {
     const url = new URL(window.location.href);
     if (mode === 'reading') url.searchParams.set('modo', 'lectura');
     else url.searchParams.delete('modo');
+    if (displayMode === 'reading' && mode === 'presentation') {
+      url.searchParams.delete('estacion');
+      url.hash = activeStopId === 'sources' ? 'bibliografia' : activeStopId;
+    }
     window.history.pushState({ s02DisplayMode: mode }, '', url);
     setDisplayMode(mode);
 
@@ -102,6 +115,9 @@ export default function S02LearningJourney() {
     <section
       className="session-presentation s02-journey"
       data-display-mode={displayMode}
+      data-slide-role={activeStop.role ?? 'content'}
+      data-active-slide={activeIndex}
+      data-slide-count={s02Stops.length}
       aria-labelledby="s02-journey-title"
     >
       <header className="s02-journey__header">
@@ -131,6 +147,15 @@ export default function S02LearningJourney() {
               Lectura
             </button>
           </div>
+          <button
+            type="button"
+            onClick={() => {
+              changeDisplayMode('presentation');
+              moveTo(s02Stops.length - 1);
+            }}
+          >
+            Referencias
+          </button>
           <a className="s02-journey__sessions-link" href={withBase('/sesiones/')}>
             Sesiones
           </a>
@@ -139,36 +164,15 @@ export default function S02LearningJourney() {
 
       {displayMode === 'presentation' ? (
         <>
-          <SlideRail
-            slides={railStops}
-            activeIndex={activeIndex}
-            activeLabel={activeLabel}
-            ariaLabel="Recorrido de diapositivas S02"
-            progressLabel="Avance de la sesión 02"
-            visibleCount={5}
-            compactCaption
-            className="slide-rail--session-presentation"
-            onSelect={(_stop, index) => moveTo(index)}
-            getIndexLabel={(stop) => {
-              if (stop.stationId === 'references') return '00';
-              const stopStationIndex = s02TeachingStations.findIndex(
-                (station) => station.id === stop.stationId,
-              );
-              return `${String(stopStationIndex + 1).padStart(2, '0')}.${(stop.partIndex ?? 0) + 1}`;
-            }}
-            getAriaLabel={(stop, index) => {
-              if (stop.stationId === 'references') {
-                return `Diapositiva 0, bibliografía de S02. Diapositiva ${index + 1} de ${s02Stops.length}.`;
-              }
-              const stopStationIndex = s02TeachingStations.findIndex(
-                (station) => station.id === stop.stationId,
-              );
-              return `${stopStationIndex + 1}.${(stop.partIndex ?? 0) + 1} ${stop.groupLabel}, subestación ${stop.title}: ${stop.partLabel}. Diapositiva ${index + 1} de ${s02Stops.length}.`;
-            }}
-          />
+          <S02Navigation index={activeIndex} onSelect={moveTo} />
 
-          <article className="s02-journey__slide" aria-labelledby={`s02-${activeStop.id}-title`}>
-            <header className="s02-journey__slide-heading">
+          <article
+            className="s02-journey__slide"
+            aria-labelledby={
+              activeStop.id === 'opening' ? 'S02-opening-title' : `s02-${activeStop.id}-title`
+            }
+          >
+            <header className="s02-journey__slide-heading" hidden={activeStop.id === 'opening'}>
               <div>
                 <p className="s02-journey__eyebrow">{activeStop.eyebrow}</p>
                 <h2 id={`s02-${activeStop.id}-title`} tabIndex={-1}>
@@ -195,19 +199,19 @@ export default function S02LearningJourney() {
           </article>
 
           <SessionPresentationFooter className="s02-journey__footer">
+            <SessionNavigationControls
+              index={activeIndex}
+              count={s02Stops.length}
+              onMove={(delta) => moveTo(activeIndex + delta)}
+            />
             <button
               type="button"
-              onClick={() => moveTo(activeIndex - 1)}
-              disabled={activeIndex === 0}
+              onClick={() => {
+                changeDisplayMode('presentation');
+                moveTo(0);
+              }}
             >
-              Anterior
-            </button>
-            <button
-              type="button"
-              onClick={() => moveTo(activeIndex + 1)}
-              disabled={activeIndex === s02Stops.length - 1}
-            >
-              Siguiente
+              Reiniciar
             </button>
           </SessionPresentationFooter>
         </>
@@ -307,14 +311,19 @@ predicciones = arbol.predict(X_test)`;
 }
 
 function StopContent({ stop }: { stop: S02Stop }) {
-  if (stop.id === 'references') {
+  if (stop.id === 'opening') return <SessionOpening session="S02" />;
+  if (stop.id === 'sources') {
     return (
       <div className="s02-journey__references">
         <p>Fuentes de datos, astronomía planetaria y métodos de la sesión.</p>
         <ul className="s02-journey__references-list">
-          {s02OpeningSources.map((source) => (
+          {[
+            ...new Map(
+              [...s02OpeningSources, ...s02Sources].map((source) => [source.href, source]),
+            ).values(),
+          ].map((source) => (
             <li key={source.href}>
-              <span>{source.group}</span>
+              <span>{'group' in source ? String(source.group) : 'Métodos'}</span>
               <a href={source.href} target="_blank" rel="noreferrer">
                 {source.label}
               </a>
@@ -394,114 +403,6 @@ function StopContent({ stop }: { stop: S02Stop }) {
           >
             Abrir la actividad en Colab ↗
           </a>
-        </aside>
-      </div>
-    );
-  }
-
-  if (stop.id === 'sources') {
-    return (
-      <div className="s02-journey__sources-layout">
-        <p>Referencias de datos y algoritmos para revisar antes de adaptar la actividad.</p>
-        <ul>
-          {s02Sources.map((source) => (
-            <li key={source.href}>
-              <a href={source.href} target="_blank" rel="noreferrer">
-                {source.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p className="s02-journey__source-note">
-          Las referencias y paráfrasis de la nota de origen siguen pendientes de revisión de
-          derechos.
-        </p>
-      </div>
-    );
-  }
-
-  if (stop.id === 'limits') {
-    return (
-      <div className="s02-journey__content-grid s02-journey__closing-grid">
-        <section className="s02-journey__concept-card">
-          <h3>Muestra del corte guardado</h3>
-          <p className="s02-journey__closing-count">
-            <span>
-              <strong>1.529</strong>
-              <small>planetas</small>
-            </span>
-            <span>
-              <strong>1.249</strong>
-              <small>sistemas</small>
-            </span>
-          </p>
-          <p>
-            Planetas en tránsito y no controvertidos, con masa reportada como <code>Mass</code>.
-            Masa, insolación y radio son valores centrales, positivos y completos; masa y radio
-            tienen referencia publicada.
-          </p>
-          <p>Se excluyen radios calculados a partir de la masa.</p>
-          <small className="s02-journey__closing-note">
-            CSV de PSCompPars descargado el 29 de septiembre de 2026.
-          </small>
-        </section>
-
-        <section className="s02-journey__concept-card">
-          <h3>¿Qué cambia al añadir insolación?</h3>
-          <p>Salida guardada · Random Forest · prueba aleatoria: 306 planetas</p>
-          <table
-            className="s02-journey__closing-table"
-            aria-label="Resultados en el conjunto de prueba"
-          >
-            <thead>
-              <tr>
-                <th scope="col">Predictores</th>
-                <th scope="col">MAE (R⊕)</th>
-                <th scope="col">R²</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Mediana</th>
-                <td>4,897</td>
-                <td>-0,003</td>
-              </tr>
-              <tr>
-                <th scope="row">Árbol: masa</th>
-                <td>1,751</td>
-                <td>0,805</td>
-              </tr>
-              <tr>
-                <th scope="row">Random Forest: masa</th>
-                <td>1,673</td>
-                <td>0,814</td>
-              </tr>
-              <tr>
-                <th scope="row">Random Forest: masa + insolación</th>
-                <td>1,191</td>
-                <td>0,889</td>
-              </tr>
-            </tbody>
-          </table>
-          <p>
-            En esta salida, añadir insolación redujo el MAE en 0,482 R⊕ y elevó R² en 0,075 frente
-            al bosque con masa. R² = 1 indica predicción perfecta; R² = 0 iguala la referencia del
-            radio medio de prueba.
-          </p>
-        </section>
-
-        <aside className="s02-journey__prompt">
-          <strong>Límite de la comparación</strong>
-          <p>
-            train_test_split reservó al azar 306 planetas para prueba (20 %). La división se hace
-            por planeta, así que una estrella puede tener planetas en ambos conjuntos. Las métricas
-            no miden el desempeño en sistemas estelares completamente nuevos.
-          </p>
-          <p>
-            La importancia MDI se calcula durante el entrenamiento: no demuestra causalidad ni
-            reemplaza las métricas de prueba. El análisis tampoco incorpora las incertidumbres de
-            las mediciones.
-          </p>
         </aside>
       </div>
     );

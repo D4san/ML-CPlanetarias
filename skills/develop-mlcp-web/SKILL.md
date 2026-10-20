@@ -10,7 +10,7 @@ Construir el producto web sin romper la frontera con Obsidian, la procedencia ni
 ## Preflight
 
 1. Leer `AGENTS.md`, `README.md` y `docs/architecture/OBSIDIAN_BRIDGE.md`.
-2. Leer `docs/architecture/decisions/ADR-0001-site-stack.md` para trabajo técnico.
+2. Leer `docs/architecture/decisions/ADR-0001-site-stack.md` para trabajo técnico y ADR-0003 para portada, referencias y navegación.
 3. Clasificar la tarea y cargar solo los contratos pertinentes:
    - contenido o estados: `docs/protocols/CONTENT_LIFECYCLE.md`;
    - fuentes, datos o figuras: `docs/protocols/PROVENANCE_AND_RIGHTS.md`;
@@ -23,10 +23,10 @@ Construir el producto web sin romper la frontera con Obsidian, la procedencia ni
 
 1. Confirmar la pregunta de aprendizaje, audiencia, objeto mínimo y límite de la página.
 2. Verificar `status`, `visibility`, `publish_ready`, procedencia y derechos. No cargar ni copiar automáticamente `inbox/` al sitio.
-3. Para una interacción principal, completar una ficha desde `docs/specs/interactions/_template.md` antes de implementarla.
+3. Conservar portada 0 y referencias finales; reutilizar `SessionOpening` y `SessionNavigationControls`. En cálculos, conectar conteos/símbolos, operación, resultados visibles e interpretación; desarrollar el ejemplo guiado antes de explorar. Para una interacción principal, completar una ficha desde `docs/specs/interactions/_template.md` antes de implementarla.
 4. Usar Astro/HTML/CSS para contenido y React solo cuando exista estado interactivo real. No añadir otro framework.
 5. Reutilizar `src/styles/tokens.css`, layouts y componentes existentes. Mantener una lectura útil sin JavaScript, resumen de estado, reinicio, teclado, móvil y movimiento reducido.
-6. Mantener conceptos por ID y calcular relaciones inversas durante el build; no duplicar backlinks manuales.
+6. Aplicar `PEDAGOGICAL_CODE.md` al código que ve el estudiante y documentar qué cambia/re-ejecuta. Mantener conceptos por ID y calcular relaciones inversas durante el build; no duplicar backlinks manuales.
 7. Ejecutar gates proporcionales. Para interacciones, incluir como mínimo `npm run check`, `npm run test:unit`, `npm run build:subpath` y las suites Playwright afectadas.
 8. Registrar en `outbox/` cualquier corrección o decisión que deba regresar al vault.
 

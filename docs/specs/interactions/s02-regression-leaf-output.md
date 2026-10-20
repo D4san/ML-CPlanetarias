@@ -39,6 +39,13 @@ Con el corte ilustrativo fijo `x ≤ 2.5`, la hoja izquierda contiene `y={1,2}` 
 - Si se divide la hoja derecha con `x ≤ 3.5`, quedan predicciones `1.5`, `30` y `8`, y el SSE total baja a `2.5`.
 - Con el árbol fijo en `x ≤ 2.5`, una entrada nueva `x=4.4` recorre la rama derecha y recibe `ŷ=13.5`; la predicción no requiere conocer su `y`.
 
+### Ampliación I03 · residuos y feedback
+
+- Cada observación se une a la media de su hoja con una flecha vertical: el residuo es `yᵢ − ŷᵢ`; su cuadrado contribuye al SSE.
+- Se muestran SSE y MSE juntos. Corte `2.5`: `365.5 / 6 = 60.9167`; corte `3.5`: `544 / 6 = 90.6667`; segundo corte derecho `3.5` tras raíz `2.5`: `2.5 / 6 = 0.4167`.
+- Control → regla visible → región/hoja y media → residuos/SSE/MSE → interpretación: el ajuste puede mejorar el error de entrenamiento; generalización requiere casos reservados.
+- Implementación: `S02RegressionExplorer.tsx` y `S02RegressionThresholdExplorer.tsx`. Evidencia de valores, flechas y reinicio: `S02LearningJourney.test.tsx` y `session-feedback.e2e.spec.ts`; revisión I03 separada de las casillas históricas de esta ficha.
+
 ## Experiencia fija: `01.5`
 
 - La explicación ocupa la columna izquierda e identifica el origen de los datos, el uso de la media, la diferencia con la mediana, la comparación de SSE y la predicción para `x=4.4`.

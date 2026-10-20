@@ -18,7 +18,6 @@ import {
   s00Branches,
   s00ClosureSteps,
   s00ConceptCards,
-  s00Concepts,
   s00DataCards,
   s00Glossary,
   s00ImpactCases,
@@ -43,10 +42,13 @@ import {
   referenceHref,
   referenceMeta,
 } from './CourseContent';
-import { ConceptTerm } from './ConceptTerm';
 import { MathExpression } from './MathExpression';
 import { SessionPresentationFooter } from './SessionPresentationFooter';
-import SlideRail from './SlideRail';
+import { S00Navigation } from './s00/S00Navigation';
+import { SessionOpening } from './SessionOpening';
+import { SessionNavigationControls } from './SessionNavigationControls';
+import { BookInstrument, BookReading } from './BookReading';
+import { s00Book } from '../../lib/s00-reading';
 import './course-content.css';
 import './s00-learning-journey.css';
 import './session-presentation.css';
@@ -76,18 +78,6 @@ function PaperFigureCredit({
       </a>
       . {credit.changes}
     </p>
-  );
-}
-
-function ConceptStrip({ unit }: { unit: S00Unit }) {
-  const concepts = s00Concepts.filter((concept) => unit.conceptIds.includes(concept.id));
-  if (concepts.length === 0) return null;
-  return (
-    <div className="s00-focus__concepts" aria-label={'Conceptos de ' + unit.title}>
-      {concepts.map((concept) => (
-        <ConceptTerm key={concept.id} concept={concept} />
-      ))}
-    </div>
   );
 }
 
@@ -194,8 +184,8 @@ function ImageLightbox({
 function TransitLightCurveDiagram() {
   return (
     <svg
-      viewBox="0 0 580 130"
-      className="s00-schematic-svg"
+      viewBox="0 0 600 130"
+      className="s00-schematic-svg s00-schematic-svg--transit"
       role="img"
       aria-label="Diagrama de tránsito planetario: geometría de eclipse y curva de luz con contactos t1 a t4"
     >
@@ -275,24 +265,24 @@ function TransitLightCurveDiagram() {
           Rp
         </text>
         <text x="90" y="93" fill="#94a3b8" fontSize="9" fontWeight="600" textAnchor="middle">
-          Geometría de alineación visual
+          Alineación visual
         </text>
       </g>
 
       <path
-        d="M198,65 L232,65"
+        d="M198,65 L252,65"
         stroke="#2dd4bf"
         strokeWidth="2"
         markerEnd="url(#arrow-teal-transit)"
       />
-      <text x="215" y="52" fill="#2dd4bf" fontSize="8" fontWeight="600" textAnchor="middle">
+      <text x="225" y="50" fill="#2dd4bf" fontSize="8" fontWeight="600" textAnchor="middle">
         ΔF / F★
       </text>
-      <text x="215" y="78" fill="#5eead4" fontSize="8" fontFamily="monospace" textAnchor="middle">
+      <text x="225" y="84" fill="#5eead4" fontSize="8" fontFamily="monospace" textAnchor="middle">
         (Rp/R★)²
       </text>
 
-      <g transform="translate(240, 15)">
+      <g transform="translate(260, 15)">
         <rect
           width="330"
           height="100"
@@ -303,13 +293,13 @@ function TransitLightCurveDiagram() {
         />
         <line x1="30" y1="20" x2="30" y2="82" stroke="#475569" strokeWidth="1" />
         <line x1="30" y1="82" x2="315" y2="82" stroke="#475569" strokeWidth="1" />
-        <text x="14" y="28" fill="#94a3b8" fontSize="8" fontFamily="monospace">
+        <text x="26" y="28" fill="#94a3b8" fontSize="8" fontFamily="monospace" textAnchor="end">
           1.0
         </text>
-        <text x="10" y="62" fill="#2dd4bf" fontSize="8" fontFamily="monospace">
+        <text x="26" y="62" fill="#2dd4bf" fontSize="8" fontFamily="monospace" textAnchor="end">
           1-δ
         </text>
-        <text x="310" y="93" fill="#94a3b8" fontSize="8">
+        <text x="320" y="93" fill="#94a3b8" fontSize="8" textAnchor="end">
           Tiempo
         </text>
 
@@ -956,7 +946,7 @@ function DataLandscapeSchematic({ cardId }: { cardId: string }) {
     return (
       <svg
         viewBox="0 0 580 140"
-        className="s00-schematic-svg"
+        className="s00-schematic-svg s00-schematic-svg--data-observation"
         role="img"
         aria-label="Esquema de serie temporal fotométrica cruda con variabilidad y gaps"
       >
@@ -972,10 +962,10 @@ function DataLandscapeSchematic({ cardId }: { cardId: string }) {
         />
         <line x1="40" y1="105" x2="540" y2="105" stroke="#475569" strokeWidth="1" />
         <line x1="40" y1="25" x2="40" y2="105" stroke="#475569" strokeWidth="1" />
-        <text x="35" y="32" fill="#94a3b8" fontSize="9" textAnchor="end">
+        <text x="48" y="28" fill="#94a3b8" fontSize="9">
           Flujo F(t)
         </text>
-        <text x="535" y="118" fill="#94a3b8" fontSize="9" textAnchor="end">
+        <text x="540" y="28" fill="#94a3b8" fontSize="9" textAnchor="end">
           Tiempo t (días)
         </text>
         <path
@@ -1004,7 +994,7 @@ function DataLandscapeSchematic({ cardId }: { cardId: string }) {
           rx="4"
         />
         <text x="232" y="72" fill="#f87171" fontSize="8" textAnchor="middle">
-          Gap orbital
+          Gap
         </text>
         <path
           d="M260,63 L285,61 L310,66 L335,62 L345,86 L353,93 L361,86 L370,64 L395,61 L420,65 L445,60 L470,64 L495,62 L520,63 L535,61"
@@ -1021,8 +1011,13 @@ function DataLandscapeSchematic({ cardId }: { cardId: string }) {
           strokeWidth="1.5"
           strokeDasharray="2 2"
         />
-        <text x="138" y="118" fill="#f59e0b" fontSize="9" textAnchor="middle" fontWeight="600">
-          Tránsito 1 (ΔF ≈ 420 ppm)
+        <text x="138" y="112" fill="#f59e0b" fontSize="9" textAnchor="middle" fontWeight="600">
+          <tspan x="138" dy="0">
+            Tránsito 1
+          </tspan>
+          <tspan x="138" dy="15">
+            ΔF ≈ 420 ppm
+          </tspan>
         </text>
         <circle
           cx="353"
@@ -1033,8 +1028,13 @@ function DataLandscapeSchematic({ cardId }: { cardId: string }) {
           strokeWidth="1.5"
           strokeDasharray="2 2"
         />
-        <text x="353" y="118" fill="#f59e0b" fontSize="9" textAnchor="middle" fontWeight="600">
-          Tránsito 2 (P = 14.45 d)
+        <text x="353" y="112" fill="#f59e0b" fontSize="9" textAnchor="middle" fontWeight="600">
+          <tspan x="353" dy="0">
+            Tránsito 2
+          </tspan>
+          <tspan x="353" dy="15">
+            P = 14.45 d
+          </tspan>
         </text>
       </svg>
     );
@@ -3723,57 +3723,6 @@ function S00OpeningStage({
   );
 }
 
-function S00ReadingSection({
-  unit,
-  index,
-  teacherMode,
-}: {
-  unit: S00Unit;
-  index: number;
-  teacherMode: boolean;
-}) {
-  return (
-    <section
-      className="s00-reading__section"
-      data-tone={unit.tone}
-      id={'s00-reading-' + unit.id}
-      aria-labelledby={'s00-reading-' + unit.id + '-title'}
-    >
-      <div className="s00-reading__counter">
-        {String(index + 1).padStart(2, '0')} / {String(s00Units.length).padStart(2, '0')} ·{' '}
-        {unit.groupLabel}
-      </div>
-      <div className="s00-reading__grid">
-        <div className="s00-reading__text">
-          <p className="s00-reading__label">{unit.partLabel}</p>
-          <h2 id={'s00-reading-' + unit.id + '-title'}>{unit.title}</h2>
-          <div className="s00-reading__question">
-            <span>Pregunta de lectura</span>
-            <p>{unit.question}</p>
-          </div>
-          <p className="s00-reading__idea">{unit.idea}</p>
-          <p>{unit.content}</p>
-          <div className="s00-reading__interpretation">
-            <p>
-              <strong>Interpretación:</strong> {unit.interpretation}
-            </p>
-            <p>
-              <strong>Límite:</strong> {unit.limits}
-            </p>
-          </div>
-          <ConceptStrip unit={unit} />
-          <CautionBox caution={unit.caution} />
-          {teacherMode && <TeacherPrompt prompt={unit.teacherPrompt} teacherMode={teacherMode} />}
-        </div>
-        <div className="s00-reading__visual">
-          <VisualFrame unit={unit} compact />
-          <p className="s00-visual__caption">{unit.visualCaption}</p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function S00Glossary() {
   return (
     <section className="s00-glossary" aria-labelledby="s00-glossary-title">
@@ -4194,7 +4143,7 @@ function S00BibliographyStage() {
 export default function S00LearningJourney({ config }: { config: CourseConfig }) {
   const settings = useMemo(() => defineCourseConfig(config), [config]);
   const [hydrated, setHydrated] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [displayMode, setDisplayMode] = useState<CourseDisplayMode>(settings.defaultView);
   const [activityAnswers, setActivityAnswers] = useState<ActivityAnswers>({});
   const [selectedConceptId, setSelectedConceptId] = useState<
@@ -4204,7 +4153,7 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
   const [selectedVerb, setSelectedVerb] = useState('detectar');
   const [selectedImpactCaseId, setSelectedImpactCaseId] = useState('astronet');
   const [selectedBranchId, setSelectedBranchId] = useState('astronomia');
-  const activeSlide: S00Slide | undefined = activeIndex > 0 ? s00Slides[activeIndex] : undefined;
+  const activeSlide: S00Slide | undefined = s00Slides[activeIndex];
   const activeUnit = activeSlide ? s00Units[activeSlide.unitIndex] : undefined;
   const activePart = activeSlide
     ? getS00Part(activeSlide.unitId, activeSlide.partIndex)
@@ -4227,8 +4176,10 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
               ? 'presentation'
               : settings.defaultView;
       setDisplayMode(resolvedMode);
-      const index = getS00SlideIndexFromHash(window.location.hash);
-      setActiveIndex(index === null ? 1 : index);
+      const index = getS00SlideIndexFromHash(
+        window.location.hash === '#s00-book-references' ? '#bibliografia' : window.location.hash,
+      );
+      setActiveIndex(index === null ? 0 : index);
     }
 
     setHydrated(true);
@@ -4245,6 +4196,12 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
     if (displayMode !== 'presentation') return;
 
     function handleGlobalKeyDown(event: KeyboardEvent) {
+      if (event.defaultPrevented) return;
+      if (
+        event.target instanceof Element &&
+        event.target.closest('select, [role="tablist"], [contenteditable="true"]')
+      )
+        return;
       const hasModal = !!document.querySelector('[role="dialog"]');
       if (hasModal) return;
 
@@ -4305,15 +4262,19 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
     if (nextMode === 'reading') url.searchParams.set('modo', 'lectura');
     else if (nextMode === 'activities') url.searchParams.set('modo', 'actividades');
     else url.searchParams.delete('modo');
+    if (displayMode === 'reading' && nextMode === 'presentation')
+      url.hash = getS00SlideHash(activeIndex);
     window.history.pushState(window.history.state, '', url.pathname + url.search + url.hash);
   }
 
   function reset() {
-    setActiveIndex(1);
+    setActiveIndex(0);
+    setDisplayMode('presentation');
     setSelectedConceptId('transito');
     setActivityAnswers({});
     const url = new URL(window.location.href);
-    url.hash = 'pregunta';
+    url.hash = 'portada';
+    url.searchParams.delete('modo');
     window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash);
   }
 
@@ -4331,7 +4292,8 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
       data-active-slide={activeIndex}
       data-slide-count={s00Slides.length}
       data-display-mode={displayMode}
-      data-bibliography={activeIndex === 0}
+      data-bibliography={activeSlide?.role === 'references'}
+      data-slide-role={activeSlide?.role}
       data-active-unit={activeSlide?.unitId}
       data-active-part={activeSlide?.partId}
       data-part-index={activeSlide?.partIndex ?? 0}
@@ -4347,7 +4309,14 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
           <p>Una señal débil, una pregunta científica, una cadena de decisiones.</p>
         </div>
         <div className="s00-journey__toggles">
-          <button type="button" className="s00-overview-toggle" onClick={() => selectSlide(0)}>
+          <button
+            type="button"
+            className="s00-overview-toggle"
+            onClick={() => {
+              changeDisplayMode('presentation');
+              selectSlide(s00Slides.length - 1);
+            }}
+          >
             Fuentes
           </button>
           <div className="s00-display-switch" aria-label="Modo de lectura">
@@ -4377,30 +4346,7 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
       </header>
 
       {displayMode === 'presentation' && (
-        <SlideRail
-          slides={s00Slides}
-          activeIndex={activeIndex}
-          activeLabel={
-            activeIndex === 0
-              ? 'Fuentes'
-              : activeUnit?.shortLabel === activePart?.label
-                ? (activePart?.label ?? 'S00')
-                : (activeUnit?.shortLabel ?? 'S00') + ' · ' + (activePart?.label ?? '')
-          }
-          className="slide-rail--session-presentation"
-          compactCaption
-          ariaLabel="Diapositivas de S00"
-          progressLabel="Avance de las diapositivas de S00"
-          getIndexLabel={(slide) => getS00SlideNumber(slide)}
-          getAriaLabel={(slide, index) =>
-            index === 0
-              ? '0. Fuentes de S00'
-              : slide.partIndex === 0
-                ? `${slide.unitIndex + 1}. ${slide.title}`
-                : `Subslide ${getS00SlideNumber(slide)} · ${slide.groupLabel} · ${slide.partLabel}`
-          }
-          onSelect={(_slide, index) => selectSlide(index)}
-        />
+        <S00Navigation index={activeIndex} onSelect={selectSlide} />
       )}
 
       <div className="s00-journey__content">
@@ -4413,49 +4359,69 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
             onReset={() => setActivityAnswers({})}
           />
         ) : displayMode === 'reading' ? (
-          <article className="s00-reading" aria-labelledby="s00-reading-title">
-            <header className="s00-reading__header">
-              <p className="s00-reading__label">Lectura lineal · siete estaciones</p>
-              <h2 id="s00-reading-title">La pregunta viaja con la evidencia</h2>
-              <p>
-                La lectura conserva la cadena completa, sus visuales, las fuentes y los límites.
-                Cada estación tiene solo las partes que necesita para presentar su idea.
-              </p>
-            </header>
-            <SessionBibliography {...s00Bibliography} />
-            <div className="s00-reading__body">
-              {s00Units.map((unit, index) => (
-                <S00ReadingSection
-                  key={unit.id}
-                  unit={unit}
-                  index={index}
-                  teacherMode={settings.teacherMode}
-                />
-              ))}
-            </div>
-            <S00Glossary />
-            <aside className="s00-reading-activity-cta">
-              <div className="s00-reading-activity-cta__content">
-                <span className="s00-stage-tag" data-tone="transfer">
-                  TALLER METODOLÓGICO
-                </span>
-                <h3>Pon a prueba la cadena de investigación</h3>
-                <p>
-                  Pasa al modo interactivo de actividades para construir las 7 decisiones que
-                  conectan un mundo físico con la evidencia condicionada de Machine Learning.
-                </p>
-              </div>
-              <button
-                type="button"
-                className="s00-reading-activity-cta__btn"
-                onClick={() => changeDisplayMode('activities')}
-              >
-                <span>Ir al taller de actividades</span>
-                <span aria-hidden="true">→</span>
-              </button>
-            </aside>
-          </article>
-        ) : activeIndex === 0 ? (
+          <BookReading
+            book={s00Book}
+            activeUnitId={activeSlide?.unitId}
+            anchorForChapter={(id) =>
+              id === 's00-bibliografia' ? 's00-book-references' : `s00-reading-${id}`
+            }
+            hashForChapter={(id) => getS00SlideHash(getS00SlideIndex(id))}
+            onNavigate={(id) => selectSlide(getS00SlideIndex(id))}
+            onVisibleChapter={(id) => setActiveIndex(getS00SlideIndex(id))}
+            onReferencesVisible={() => setActiveIndex(s00Slides.length - 1)}
+            renderInstruments={(chapter) => {
+              const unit = s00Units.find((item) => item.id === chapter.id)!;
+              return (
+                <BookInstrument
+                  title={unit.title}
+                  prompt={unit.question}
+                  interpretation={unit.visualCaption}
+                >
+                  <VisualFrame unit={unit} compact />
+                </BookInstrument>
+              );
+            }}
+            renderContext={(chapter) => {
+              const unit = s00Units.find((item) => item.id === chapter.id)!;
+              return (
+                <>
+                  <CautionBox caution={unit.caution} />
+                  {settings.teacherMode && (
+                    <TeacherPrompt prompt={unit.teacherPrompt} teacherMode />
+                  )}
+                </>
+              );
+            }}
+            references={<SessionBibliography {...s00Bibliography} />}
+            afterword={
+              <>
+                <S00Glossary />
+                <aside className="s00-reading-activity-cta">
+                  <div className="s00-reading-activity-cta__content">
+                    <span className="s00-stage-tag" data-tone="transfer">
+                      TALLER METODOLÓGICO
+                    </span>
+                    <h3>Pon a prueba la cadena de investigación</h3>
+                    <p>
+                      Pasa al modo interactivo de actividades para construir las 7 decisiones que
+                      conectan un mundo físico con la evidencia condicionada de Machine Learning.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="s00-reading-activity-cta__btn"
+                    onClick={() => changeDisplayMode('activities')}
+                  >
+                    <span>Ir al taller de actividades</span>
+                    <span aria-hidden="true">→</span>
+                  </button>
+                </aside>
+              </>
+            }
+          />
+        ) : activeSlide?.role === 'opening' ? (
+          <SessionOpening session="S00" />
+        ) : activeSlide?.role === 'references' ? (
           <S00BibliographyStage />
         ) : activeUnit && activeSlide && activePart ? (
           <div
@@ -4518,7 +4484,7 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
                             aria-label="Diapositiva anterior"
                             title="Diapositiva anterior (←)"
                           >
-                            ← Anterior
+                            Paso anterior
                           </button>
                           <button
                             type="button"
@@ -4528,7 +4494,7 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
                             aria-label="Diapositiva siguiente"
                             title="Diapositiva siguiente (→)"
                           >
-                            Siguiente →
+                            Paso siguiente
                           </button>
                         </div>
                       )}
@@ -4590,7 +4556,7 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
               s00ClosureSteps.length +
               ' pasos metodológicos completados.'
             : activeIndex === 0
-              ? 'Diapositiva 0. Fuentes de S00.'
+              ? 'Diapositiva 0. Portada de S00.'
               : 'Modo ' +
                 (displayMode === 'reading' ? 'lectura lineal' : 'presentación') +
                 '. Subpantalla ' +
@@ -4603,22 +4569,11 @@ export default function S00LearningJourney({ config }: { config: CourseConfig })
         }
       >
         {displayMode === 'presentation' ? (
-          <>
-            <button
-              type="button"
-              onClick={() => selectSlide(activeIndex - 1)}
-              disabled={activeIndex === 0}
-            >
-              ← Anterior
-            </button>
-            <button
-              type="button"
-              onClick={() => selectSlide(activeIndex + 1)}
-              disabled={activeIndex === s00Slides.length - 1}
-            >
-              Siguiente →
-            </button>
-          </>
+          <SessionNavigationControls
+            index={activeIndex}
+            count={s00Slides.length}
+            onMove={(delta) => selectSlide(activeIndex + delta)}
+          />
         ) : displayMode === 'reading' ? (
           <button
             type="button"

@@ -1,0 +1,46 @@
+# Manifiesto de un asset. Mantener rutas relativas al repositorio.
+id: asset-id
+type: conceptual # conceptual | simulated | observed
+file: path/relative/to/repository.ext
+unit: S01 / station / unit
+case: "Caso concreto"
+purpose: "Relación o decisión didáctica que hace visible"
+tool_process: "Herramienta o proceso; incluir versión solo si fue comprobada"
+generation_method: imagegen # imagegen para ilustraciones cualitativas; exact-code o reproducible-code en otros medios
+style_family: "MLCP editorial line-art v1"
+background_mode: transparent-alpha # transparent-alpha | opaque
+alpha_status: pending # pending | passed | failed | not-applicable
+width: 0
+height: 0
+weight_bytes: 0
+alt: "Descripción breve de lo visible y de la relación útil"
+caption: "Contexto, tipo de asset y límite de interpretación"
+
+provenance:
+  origin: repo # repo | obsidian
+  source_path: docs/path/to/real/source.md
+  source_heading: Encabezado real de la fuente
+  # Para origin: obsidian, usar estos campos en lugar de source_path:
+  # source_vault: DASAN
+  # source_note: Ruta relativa a la raíz del vault
+  # source_block: block-id opcional
+  source_refs: []
+  transformation: "Recorte, conversión, normalización o generación"
+  units: "Unidades o null si no aplica"
+  seed: null
+
+rights:
+  status: original # original | open-license | permission | hold
+  note: "Licencia o autorización y condición para promoción"
+
+limits:
+  - "Límite de evidencia o uso"
+review:
+  status: pending # pending | ready-for-review | returned
+  inspected_at: YYYY-MM-DD
+  contexts:
+    - intrinsic-size
+    - 1920x1080
+    - 1440x900
+    - 390x844
+  findings: []

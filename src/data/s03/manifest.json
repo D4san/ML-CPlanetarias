@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "dataset_id": "kepler-10-kic11904151-q1-long-cadence-window-v1",
+  "evidence_type": "observed_archival_data",
+  "status": "sample retrieved and parsed; internal FITS checksum warnings documented",
+  "target": {
+    "name": "Kepler-10",
+    "kic": 11904151,
+    "catalog_page": "https://exoplanetarchive.ipac.caltech.edu/overview/KIC%2011904151"
+  },
+  "source_product": {
+    "archive": "Mikulski Archive for Space Telescopes (MAST)",
+    "mission": "Kepler prime mission",
+    "product": "Q1 long-cadence light-curve FITS",
+    "filename": "kplr011904151-2009166043257_llc.fits",
+    "url": "https://archive.stsci.edu/missions/kepler/lightcurves/0119/011904151/kplr011904151-2009166043257_llc.fits",
+    "retrieved_on": "2026-10-19",
+    "bytes": 192960,
+    "sha256": "a47542bd31fa92111f280a29885f6fbe860f0956012b442f780ca6d2cc3a19c6",
+    "repeat_download_sha256_matches": true,
+    "fits_integrity": {
+      "PRIMARY_CHECKSUM": "valid",
+      "LIGHTCURVE_CHECKSUM": "invalid according to astropy.io.fits.verify_checksum",
+      "APERTURE_CHECKSUM": "invalid according to astropy.io.fits.verify_checksum",
+      "DATASUM": "not present in the three HDUs",
+      "handling": "The FITS file opens and parses to 1,639 light-curve rows; preserve the original bytes and identify them by the recorded SHA-256. Do not treat failed HDU checksums as a clean validation."
+    }
+  },
+  "files": {
+    "raw_fits": "kplr011904151-2009166043257_llc.fits",
+    "derived_window": "kepler10-q1-transit-window.json",
+    "extraction_script": "prepare_kepler10_q1.py",
+    "derived_window_sha256": "00c10f30fe77b8e6cb3b07aecd7317c9315795b2df02120a9e7538c29c934f5c",
+    "window_rows": 25
+  },
+  "selection": {
+    "source_hdu": "LIGHTCURVE",
+    "source_rows_total": 1639,
+    "source_time_range_bkjd": [131.51231488081976, 164.9833906286949],
+    "derived_window_center_bjd_tdb": 2454965.411245,
+    "center_definition": "Batalha et al. (2011) discovery epoch + one discovery-period interval",
+    "half_width_days": 0.25,
+    "finite_flux_rows_in_quarter": 1624,
+    "rows_with_sap_quality_zero": 1432,
+    "window_rows": 25,
+    "quality_policy": "Retain original SAP_QUALITY integer for every selected cadence. No bitmask is recoded and no quality-based row filtering is applied to the window. The Q1 counts are reported separately."
+  },
+  "columns_and_units": {
+    "TIME": "BKJD = BJD_TDB - 2454833, days",
+    "PDCSAP_FLUX": "e-/s",
+    "PDCSAP_FLUX_ERR": "e-/s",
+    "SAP_QUALITY": "original integer bitmask; no recoding",
+    "relative_flux_ppm": "Derived as (PDCSAP_FLUX / Q1 median of finite SAP_QUALITY=0 rows - 1) * 1e6",
+    "relative_flux_err_ppm": "Derived as PDCSAP_FLUX_ERR / same Q1 median * 1e6"
+  },
+  "quarter_quality_counts": [
+    {
+      "sap_quality": 0,
+      "rows": 1432
+    },
+    {
+      "sap_quality": 16,
+      "rows": 104
+    },
+    {
+      "sap_quality": 128,
+      "rows": 26
+    },
+    {
+      "sap_quality": 144,
+      "rows": 1
+    },
+    {
+      "sap_quality": 2176,
+      "rows": 1
+    },
+    {
+      "sap_quality": 2192,
+      "rows": 1
+    },
+    {
+      "sap_quality": 4160,
+      "rows": 1
+    },
+    {
+      "sap_quality": 8192,
+      "rows": 55
+    },
+    {
+      "sap_quality": 8208,
+      "rows": 4
+    },
+    {
+      "sap_quality": 12352,
+      "rows": 1
+    },
+    {
+      "sap_quality": 16384,
+      "rows": 2
+    },
+    {
+      "sap_quality": 32800,
+      "rows": 10
+    },
+    {
+      "sap_quality": 32816,
+      "rows": 1
+    }
+  ],
+  "transit_parameters": {
+    "planet": "Kepler-10 b",
+    "source_id": "kepler10-discovery",
+    "source": "Batalha et al. (2011), https://arxiv.org/abs/1102.0605",
+    "period_days": "0.837495 +0.000004/-0.000005",
+    "depth_ppm": "152 +/- 4",
+    "duration_hours": "1.811 +/- 0.024",
+    "scope": "Values reported in the discovery paper; they are not refit from the 25-row instructional window."
+  },
+  "reproduction": {
+    "command": "python src/data/s03/prepare_kepler10_q1.py && npx prettier --write src/data/s03/kepler10-q1-transit-window.json",
+    "dependencies": "Python 3, NumPy, Astropy, and the repository's Node.js dependencies",
+    "note": "The script reads the archived FITS already stored in this folder and regenerates the compact observed-data JSON. The recorded derived_window_sha256 is calculated after the Prettier step; running extraction alone produces a different byte-level JSON serialization."
+  },
+  "rights_and_presentation": {
+    "observed_data": "Public MAST mission product; source URL and retrieval hash accompany the local teaching subset.",
+    "generated_images": "Conceptual illustrations; never represented as Kepler observations.",
+    "paper_figures": "Figures 3, 6, 8, 10, and 11 are displayed with visible citation and a link to the source article.",
+    "paper_figures_manifest": "../../../docs/guides/s03-paper-figures.manifest.json"
+  }
+}

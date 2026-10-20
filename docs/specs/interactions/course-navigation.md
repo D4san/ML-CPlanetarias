@@ -13,7 +13,7 @@
 ## Estado inicial determinista
 
 1. Resolver `enabledSessionIds`, defaults globales y overrides de la sesión.
-2. Abrir la bibliografía de la sesión como diapositiva 0.
+2. Abrir la portada de la sesión como diapositiva 0; colocar las referencias al final (ADR-0003).
 3. Elegir la ruta inicial declarada y validar que esté habilitada.
 4. Seleccionar vista `presentation` salvo que `defaultView` resuelva otra vista válida.
 5. Ignorar hash/query de una sesión o ruta excluida; responder 404 en una URL de sesión no
@@ -36,7 +36,7 @@ nunca se infiere de `interactionMode`.
 | Docente | `true`, `false` | preguntas y orientaciones contextuales |
 
 Los botones del carril son controles nativos. Cada uno recibe etiqueta de estación/unidad,
-estado seleccionado y posición accesible. `Anterior`, `Siguiente`, `Inicio`/bibliografía,
+estado seleccionado y posición accesible. `Anterior`, `Siguiente`, `Inicio`/portada,
 selector de ruta, selector de vista, `Reset` y enlaces de ejemplo deben poder operarse con
 teclado y toque.
 
@@ -53,7 +53,7 @@ control; su representación visual no puede ser la única forma de conocer el or
 
 - `Tab` recorre controles en orden DOM.
 - Flechas izquierda/derecha y arriba/abajo avanzan o retroceden en la secuencia; `Home` abre
-  bibliografía y `End` va al último elemento disponible.
+  portada y `End` va a las referencias finales.
 - Enter/espacio selecciona el control enfocado. La selección actualiza etiqueta, contenido,
   hash e historial sin recarga completa.
 - Anterior/Siguiente cruzan unidades y estaciones según los arrays declarados. Los límites se
@@ -72,16 +72,16 @@ control; su representación visual no puede ser la única forma de conocer el or
   conserva la anticipación y el revelado. Ninguno modifica el estado de la actividad.
 - El modo docente añade preguntas y orientación cerca del concepto o unidad. Apagarlo no
   elimina definiciones, ejemplos, precauciones ni límites.
-- `Reset` devuelve a bibliografía y la ruta inicial resuelta, conserva la vista escogida y
+- `Reset` devuelve a portada y la ruta inicial resuelta en presentación y
   deja intacto el registro de una respuesta solo si la actividad tiene un reinicio explícito.
 
 ### Móvil, sin JavaScript y movimiento reducido
 
-- En 390×844 y 390×480 el carril pasa a flujo vertical; no se permite desbordamiento
-  horizontal ni solapamiento de etiquetas/controles.
+- En 390×844 y 390×480 la ventana del carril permite desplazamiento horizontal interno;
+  la página conserva el ancho y los controles globales permanecen fijos al borde inferior.
 - En 1440×900 y 1920×1080 hay una unidad principal legible; el apilado no oculta el progreso
   ni las puntas/indicadores necesarios.
-- El HTML inicial contiene título, bibliografía, orden, texto esencial y enlaces de fallback.
+- El HTML inicial contiene portada, contenido, referencias finales y enlaces de fallback.
   JavaScript añade selección, historial y composición interactiva.
 - Con `prefers-reduced-motion`, las transiciones quedan instantáneas o reducidas y ningún
   estado depende de una animación.
@@ -119,3 +119,6 @@ assets públicos. Un ejemplo ilustrativo tampoco es una medición.
 | Responsive | 1920×1080, 1440×900, 390×844 y diálogo 390×480 |
 | Sin JS | contenido inicial, enlaces, bibliografía y orden legible |
 | Movimiento | `prefers-reduced-motion` sin dependencia de transición |
+
+
+Actualización I03 / ADR-0003: portada 0, contenido y cierre, referencias al final; controles globales visibles y pasos locales diferenciados.

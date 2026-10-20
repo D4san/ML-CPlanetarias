@@ -10,6 +10,7 @@ import {
   type S01ScenarioId,
   type S01Stop,
 } from '../../../lib/s01-journey';
+import { SessionNavigationControls } from '../SessionNavigationControls';
 import { SessionPresentationFooter } from '../SessionPresentationFooter';
 import SlideRail from '../SlideRail';
 
@@ -21,6 +22,7 @@ export interface S01NavigationProps {
   activeSlideIndex: number;
   partIndex: number;
   bibliography: boolean;
+  opening: boolean;
   invalidHash: boolean;
   pilot: boolean;
   parts: readonly { id: string; label: string }[];
@@ -46,6 +48,7 @@ export function S01Navigation({
   activeSlideIndex,
   partIndex,
   bibliography,
+  opening,
   invalidHash,
   pilot,
   parts,
@@ -142,8 +145,10 @@ export function S01Navigation({
           activeIndex={activeSlideIndex}
           activeLabel={
             bibliography
-              ? 'Bibliografía'
-              : `${activeStop.shortLabel} · ${parts[partIndex]?.label ?? activeStop.title}`
+              ? 'Referencias'
+              : opening
+                ? 'Portada'
+                : `${activeStop.shortLabel} · ${parts[partIndex]?.label ?? activeStop.title}`
           }
           className="slide-rail--session-presentation"
           compactCaption
@@ -153,11 +158,13 @@ export function S01Navigation({
           onSelect={onSelectSlide}
           getIndexLabel={getS01SlideNumber}
           getAriaLabel={(slide) =>
-            slide.stopId === null
-              ? '0. Bibliografía de S01'
-              : slide.partIndex === 0
-                ? `${slide.stopIndex + 1}. ${slide.stopTitle}`
-                : `Subslide ${slide.partIndex + 1} · ${slide.stopLabel} · ${slide.partLabel}`
+            slide.role === 'opening'
+              ? '0. Portada de S01'
+              : slide.role === 'references'
+                ? 'Referencias de S01'
+                : slide.partIndex === 0
+                  ? `${slide.stopIndex + 1}. ${slide.stopTitle}`
+                  : `Subslide ${slide.partIndex + 1} · ${slide.stopLabel} · ${slide.partLabel}`
           }
         />
       )}
@@ -179,30 +186,18 @@ export function S01Navigation({
           state.displayMode === 'activities'
             ? `Rama de actividades. ${s01Activities.length} retos breves; elige una respuesta y vuelve a la parada correspondiente.`
             : bibliography && state.displayMode === 'presentation'
-              ? 'Diapositiva 0. Bibliografía de S01.'
-              : `Modo ${state.displayMode === 'reading' ? 'lectura lineal' : 'presentación'}. Parada ${activeIndex + 1} de ${s01Stops.length}: ${activeStop.title}. Ruta ${scenario.label}. ${pilot && state.displayMode === 'presentation' ? `Parte ${partIndex + 1} de ${parts.length}: ${parts[partIndex]?.label}.` : ''}`
+              ? 'Referencias de S01.'
+              : opening
+                ? 'Diapositiva 0. Portada de S01.'
+                : `Modo ${state.displayMode === 'reading' ? 'lectura lineal' : 'presentación'}. Parada ${activeIndex + 1} de ${s01Stops.length}: ${activeStop.title}. Ruta ${scenario.label}. ${pilot && state.displayMode === 'presentation' ? `Parte ${partIndex + 1} de ${parts.length}: ${parts[partIndex]?.label}.` : ''}`
         }
       >
         {state.displayMode === 'presentation' ? (
-          <>
-            <button
-              type="button"
-              onClick={() => onMove(-1)}
-              disabled={bibliography || state.view === 'overview'}
-            >
-              ← Anterior
-            </button>
-            <button
-              type="button"
-              onClick={() => onMove(1)}
-              disabled={
-                (!bibliography && activeSlideIndex >= slides.length - 1) ||
-                state.view === 'overview'
-              }
-            >
-              Siguiente →
-            </button>
-          </>
+          <SessionNavigationControls
+            index={activeSlideIndex}
+            count={slides.length}
+            onMove={onMove}
+          />
         ) : state.displayMode === 'reading' ? (
           <button type="button" onClick={onReadingHome}>
             ↑ Volver al inicio

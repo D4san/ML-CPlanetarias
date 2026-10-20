@@ -1418,7 +1418,80 @@ No se deben registrar aquí credenciales, datos privados, copias de libros, info
 - **Estado propuesto:** entregada para revisión docente.
 - **Siguiente acción:** revisar la vista Lectura en `http://127.0.0.1:4321/sesiones/s02/?modo=lectura`.
 
+### 2026-09-29 — Inicio I01: organizar observaciones de S00 y S01
+
+- **Tarea o frente:** I01.
+- **Responsable:** Codex integrador, con dos agentes de lectura separados para S00 y S01.
+- **Tipo:** inicio y reserva de alcance.
+- **Alcance y archivos reservados:** `docs/planning/agent-execution/tasks/I01.md`, `evidence/I01.md`, `BOARD.md`, `BITACORA.md`, `README.md`, `docs/architecture/COURSE_EVOLUTION.md` y `PLAN_REVIEW.md`. Las fuentes de S00/S01 se consultan en solo lectura.
+- **Resultado:** revisión organizada por sesión; se excluyen cambios de producto y cualquier archivo que afecte S02.
+- **Evidencia:** [`evidence/I01.md`](evidence/I01.md).
+- **Ideas y decisiones:** identificar por separado los paquetes técnico y pedagógico de S00; reutilizar tareas existentes para evitar duplicados.
+- **Bloqueos:** decisiones editoriales abiertas y dependencias existentes se conservan como abiertas.
+- **Siguiente acción:** completar la matriz con las dos revisiones y registrar el cierre de I01.
+
+### 2026-09-29 — Cierre I01: solicitudes S00/S01 organizadas
+
+- **Tarea o frente:** I01.
+- **Responsable:** Codex integrador; agentes `organize_s0` y `organize_s1` aportaron inventarios independientes.
+- **Tipo:** cierre de revisión y planificación.
+- **Alcance y archivos:** planificación y evidencia I01; sin cambios a paquetes fuente, `outbox/`, código, configuración, pruebas, notebooks o recursos de S02.
+- **Resultado:** R01–R16 quedan agrupadas por sesión y frente; se distinguen los dos paquetes S00, los estados del tablero, las salidas editoriales abiertas y el orden F03/F04/G03/H01/H02.
+- **Evidencia:** [`evidence/I01.md`](evidence/I01.md) y la [ficha I01](tasks/I01.md).
+- **Ideas y decisiones:** las salidas `open` y los estados internos se mantienen hasta revisión editorial; la aceptación técnica no promueve contenido.
+- **Bloqueos:** F03 continúa bloqueada; F04 y G03 siguen pendientes; H01/H02 esperan sus dependencias. El informe de regresión S00 citado es evidencia previa y no se reejecutó.
+- **Estado propuesto:** entregada para revisión.
+- **Siguiente acción:** resolver F03/F04 y la decisión editorial sobre los paquetes S00; después continuar G03, H01 y H02 según dependencias. No modificar S02.
+
+### 2026-09-29 — I01: incorporar feedback docente visual de S00
+
+- **Tarea o frente:** I01, ampliación de la trazabilidad de solicitudes S00.
+- **Responsable:** Codex integrador.
+- **Tipo:** avance documental.
+- **Alcance y archivos:** `docs/planning/agent-execution/evidence/I01.md`, esta bitácora y la ficha I01. Solo se consultaron registros de S00; no se modificó S02.
+- **Resultado:** se vinculó el feedback docente de la presentación del 15 sep. con los ajustes de escala tipográfica y las cuatro figuras de papers registradas el 27 sep. Se separaron las mejoras aplicadas de los puntos pendientes sobre marca de agua, legibilidad de módulos densos y formato reutilizable para docentes.
+- **Evidencia:** [matriz I01](evidence/I01.md), [figuras de papers](evidence/S00-PAPER-FIGURES.md) e informe de regresión S00.
+- **Ideas y decisiones:** las propuestas de la reunión no se trataron todas como acuerdos cerrados.
+- **Bloqueos:** la revisión renderizada general en proyección y la decisión editorial sobre reutilización siguen pendientes.
+- **Siguiente acción:** revisar las láminas densas en proyección y decidir con el equipo docente el formato de reutilización. Mantener S02 fuera del alcance.
+
+### 2026-10-18 — Revisión documental de la reunión S02 sobre árboles y Random Forest
+
+- **Tarea o frente:** revisión puntual de retroalimentación, sin ID asignado en `BOARD.md`.
+- **Responsable:** Codex integrador.
+- **Tipo:** revisión documental.
+- **Alcance y archivos:** transcripción, resumen automático y notas manuscritas proporcionados por el usuario; lectura de `notebooks/S02_arboles_decision_random_forest.ipynb`; nueva evidencia de síntesis. Sin cambios al notebook, la interfaz, los datos ni el tablero.
+- **Resultado:** se separaron recomendaciones respaldadas por marcas de tiempo, aclaraciones confirmadas por el usuario y propuestas exploratorias. Los ejes incluyen navegación global, ejemplo numérico de impureza, valores visibles en controles interactivos, visualización de regresión escalonada, diagrama de Random Forest, prefijo `cond_`, ocultamiento de warnings y un split por configuración del dataset.
+- **Evidencia:** [síntesis de la reunión](evidence/S02-REUNION-RF-2026-09-29.md).
+- **Ideas y decisiones:** `random_state=42` ya aparece en el notebook; el uso de `display` se acordó de forma selectiva. El usuario confirmó que la reunión recomendó ocultar warnings y dividir cada configuración por separado, con la misma semilla y proporción para comparar los mismos planetas. Unity, Gem y el taller infantil quedan como propuestas exploratorias.
+- **Bloqueos:** la transcripción termina a 01:12:24 y atribuye todos los bloques a una sola persona; no permite confirmar la atribución individual ni el contenido posterior.
+- **Siguiente acción:** usar la síntesis como guía si se solicita aplicar las recomendaciones; revisar los cálculos manuscritos antes de reutilizarlos.
+
 ## Ideas abiertas
+
+### 2026-09-29 — Inicio de I02: legibilidad visual en S00 y S01
+
+- **Tarea o frente:** I02, aplicar las mejoras tipográficas locales que organizó I01.
+- **Responsable:** Codex integrador, con ejecución separada por sesión.
+- **Tipo:** inicio.
+- **Alcance y archivos:** `src/lib/s00-content.ts`, `src/components/react/S00LearningJourney.tsx`, `src/components/react/s00-learning-journey.css` y `src/components/react/s01-learning-journey.css`; ficha y evidencia I02. No se reservan tokens globales, `SlideRail` compartido ni archivos de S02.
+- **Resultado:** se inicia el trabajo sobre texto alternativo, caption técnico y texto pequeño en diagramas y módulos densos. Los cambios se dividen por sesión para evitar colisiones.
+- **Evidencia:** [I02](tasks/I02.md) y [registro I02](evidence/I02.md).
+- **Ideas y decisiones:** se ajustará tipografía a los mínimos existentes en `VISUAL_SYSTEM.md`; las decisiones sobre marca de agua y reutilización docente permanecen abiertas.
+- **Bloqueos:** ninguno identificado al inicio.
+- **Siguiente acción:** completar los cambios locales, revisar el resultado renderizado y documentar cualquier pendiente editorial.
+
+### 2026-09-29 — Avance de I02: diagramas y rótulos de proyección
+
+- **Tarea o frente:** I02, corregir las discrepancias registradas y ampliar el texto pequeño de S00/S01.
+- **Responsable:** Codex integrador; ejecución de CSS de S01 por agente asignado.
+- **Tipo:** avance.
+- **Alcance y archivos:** cuatro archivos locales de contenido/estilo de S00/S01, ficha y evidencia I02. Sin tokens globales, `SlideRail` compartido ni archivos S02.
+- **Resultado:** se completaron el alt de HR 8799 y el ocultamiento del caption técnico en S00, manteniendo el nombre accesible del progreso. En Presentación se ampliaron y ajustaron rótulos del tránsito y la serie temporal; tarjetas y descripciones densas permiten envolver texto. S01 aplica mínimos de 13/15 px para metadatos/controles, 15 px en el mapa formal y 16 px en el tronco de señal.
+- **Evidencia:** [I02](tasks/I02.md) y [revisión visual y límites](evidence/I02.md).
+- **Ideas y decisiones:** las figuras de papers con créditos ya constan en I01. Sigue abierta la decisión sobre marca de agua y reutilización docente.
+- **Bloqueos:** la escena S01 no se pudo revisar renderizada porque el navegador permaneció en Bibliografía pese a cargar `#senal`; no se afirma aceptación visual completa.
+- **Siguiente acción:** revisar las escenas S01 modificadas en un estado navegable del navegador; después actualizar el tablero y cerrar AC3/AC5 con evidencia. No modificar S02.
 
 
 
@@ -1429,6 +1502,24 @@ Estas ideas no son todavía requisitos ni cambios aprobados:
 | 2026-09-08 | Mantener una entrada breve de inicio y cierre para cada tarea, con una sola siguiente acción verificable. | Integrador | Propuesta |
 | 2026-09-08 | Usar la bitácora para anotar decisiones pedagógicas y editoriales que después puedan convertirse en una actualización de `CONTRACTS.md`, una tarea o una salida a `outbox/`. | Integrador y revisión editorial | Propuesta |
 | 2026-09-27 | Crear una skill de voz editorial con ejemplos aprobados, tono, ritmo y reglas para redactar los materiales del curso con estilo propio. | Responsable de D04 y revisión editorial | Propuesta |
+
+### 2026-10-18 — Inicio I04: libro interactivo
+
+- **Responsable:** Codex integrador.
+- **Autorización:** solicitud directa de organizar todo el modo Lectura y escribir las explicaciones que dependían del profesor.
+- **Alcance/reservas:** componentes de lectura S00–S02, prosa propia del libro, fallback sin JavaScript, estilos comunes de lectura, ficha, guía y pruebas. Se preserva el trabajo previo de I02/I03.
+- **Decisión editorial:** capítulos con exposición propia y correspondencia explícita a las unidades; ejemplos razonados antes de explorar, comprobación de comprensión y referencias finales. [Inventario I04](tasks/I04.md) y [ficha](../../specs/interactions/session-book-reading.md).
+- **Siguiente acción:** implementar con `develop-mlcp-web`, comprobar navegación y lectura autónoma. Sin commit, push ni publicación.
+
+### 2026-10-19 — Cierre I04: veinte capítulos de libro interactivo
+
+- **Responsable:** Codex integrador.
+- **Resultado:** S00/S01 con siete capítulos y S02 con seis; prosa autónoma, veinte ejemplos resueltos, respuestas razonadas, transiciones y fuentes. La exposición esencial se conserva con modo docente apagado y sin JavaScript. Cada exploración incluye consigna e interpretación; la presentación conserva sus unidades y enlaces.
+- **Decisiones:** `READING_BOOK.md` fija el criterio y la guía de creación lo incorpora; ADR-0003 aclara la correspondencia de unidades entre modalidades. La ficha histórica de lectura S02 queda sustituida por `session-book-reading`. El desplazamiento inmediato evita cambios accidentales de capítulo al volver a los controles superiores.
+- **Comprobaciones:** 118 unitarias con cobertura; builds raíz/subruta; 69 E2E/axe/movimiento reducido bajo `/preview`, y 11 comprobaciones finales de accesibilidad en raíz. Doce capturas locales escritorio/móvil; corregidos contraste y retorno a presentación. [Evidencia I04](evidence/I04.md).
+- **Problema de entorno:** la consulta Docker está denegada en el sandbox y no responde fuera de él; se detiene sin iniciar ni modificar el motor. Los baselines Linux conservan su gate pendiente.
+- **Estado propuesto:** I04 `entregada` para revisión del usuario/tutor; archivos liberados. Aceptación editorial/científica y comparación visual Linux pendientes. No se hicieron commit, push ni publicación.
+- **Siguiente acción:** leer y valorar un capítulo completo en la vista local; revisar las ubicaciones bibliográficas pendientes. [Propuesta al vault](../../../outbox/2026-10-19-lectura-libro-interactivo.md); el vault no se modificó.
 
 ## Plantilla para nuevas entradas
 
@@ -1445,3 +1536,503 @@ Estas ideas no son todavía requisitos ni cambios aprobados:
 - **Bloqueos:** condición concreta, si existe.
 - **Siguiente acción:** paso verificable y responsable sugerido.
 ```
+
+### 2026-10-18 — Inicio I03: retroalimentación RF y autoría S00–S02
+
+- **Responsable:** Codex integrador.
+- **Autorización:** plan completo solicitado por el usuario; portada 0, referencias al final y recorrido guiado antes de explorar.
+- **Alcance/reservas:** navegación y contenido S00–S02, notebook S02, componentes comunes, contratos/protocolos, skills canónicas/espejos y pruebas afectadas. Los cambios existentes de I02 son la base de integración.
+- **Siguiente acción:** implementar por subsistema y registrar matriz AC1–AC6 en evidencia I03. Sin commit, push ni publicación.
+
+### 2026-10-18 — Avance I03: recorrido común, explicación RF y notebook
+
+- **Responsable:** Codex integrador.
+- **Alcance:** archivos reservados en I03; se conservaron los cambios previos de I02 y del checkout.
+- **Resultado:** portadas iniciales y fuentes finales en S00–S02, roles explícitos, adaptadores de navegación y controles comunes; ejemplo guiado de Gini antes de explorar entropía; regresión con residuos/SSE/MSE y bosque con variables por nodo y agregación por tarea. Notebook con warnings ocultos, imports reunidos, `cond_`, dos splits alineados, salidas selectivas y guía de parámetros.
+- **Comprobaciones:** 116 unitarias y 53 pruebas E2E/axe/movimiento reducido en raíz y subruta; comparación del notebook anterior y modificado en kernels nuevos sobre la misma instantánea (1529 casos, 306 de prueba, índices y métricas idénticos). Los retoques visuales agregaron comprobaciones de posición del footer y de ausencia de solapamiento en las tarjetas del bosque.
+- **Decisiones:** ADR-0003 reemplaza la ubicación inicial de bibliografía. Protocolos, guía, plantillas y skills activos actualizados. Las cinco skills están sincronizadas en ambos espejos; `validate:skills:strict` resuelve el defecto abierto de D04. La revisión navegable de S01 `#senal` que faltaba en I02 se comprueba en I03.
+- **Evidencia:** [matriz I03](evidence/I03.md) y [registro del notebook](evidence/I03-notebook-validation.json); logs y 21 capturas locales en carpetas ignoradas. [Salida al vault](../../../outbox/2026-10-18-s02-feedback-and-authoring.md), sin editar el vault.
+- **Problema de entorno:** Docker Desktop falla al abrir `dockerInference`; no permite generar baselines en la imagen Linux fijada. Se conserva ese gate pendiente y no se aprueban goldens Windows.
+- **Estado propuesto:** implementación local revisable; I03 permanece `en curso` hasta cerrar AC6 y la revisión. D04 pasa a `entregada`, con aceptación editorial pendiente. «Caso aplicativo» conserva su incertidumbre.
+- **Siguiente acción:** revisar las pantallas con el usuario/tutor; cuando el motor Docker funcione, ejecutar actualización visual Linux, revisar capturas y repetir comparación. No se hicieron commit, push ni publicación.
+
+### 2026-10-19 — Inicio: paquete de entrada S03 sobre tránsitos y métricas
+
+- **Tarea o frente:** transferencia Obsidian → inbox, S03.
+- **Responsable:** Codex integrador.
+- **Tipo:** inicio.
+- **Alcance y archivos:** nuevo paquete inbox/sessions/S03-de-un-transito-a-las-metricas/, recursos de revisión locales inbox-private/sessions/S03-de-un-transito-a-las-metricas/, índice del inbox y esta bitácora. docs/content/, notebooks, ejercicios publicados y estado de Git quedan fuera del alcance.
+- **Autorización:** solicitud directa del usuario para enviar toda la información necesaria al inbox del repo.
+- **Decisión de procedencia:** conservar literalmente el guion y la nota de métricas. Guardar localmente las figuras del artículo bajo inbox-private/ porque la licencia consultada de arXiv no expresa permiso abierto de reutilización; incluir en el inbox rastreable la figura didáctica propia.
+- **Siguiente acción:** completar el paquete, registrar su fila en el índice y verificar copias, recursos y cambios del repo. Sin commit, push ni publicación.
+
+### 2026-10-19 — Cierre: paquete S03 transferido al inbox interno
+
+- **Tarea o frente:** transferencia Obsidian → inbox, S03.
+- **Responsable:** Codex integrador.
+- **Tipo:** cierre.
+- **Alcance y archivos:** inbox/sessions/S03-de-un-transito-a-las-metricas/, fila de inbox/INDEX.md, esta bitácora e imágenes de consulta local en inbox-private/sessions/S03-de-un-transito-a-las-metricas/.
+- **Resultado:** se copió el guion literal de 48 032 bytes y la nota conceptual literal de 10 919 bytes; hashes SHA-256 coinciden con DASAN. Se añadió manifiesto, README y ficha de figuras. La curva didáctica propia acompaña el paquete rastreable; las cinco figuras del artículo están en la carpeta privada ignorada.
+- **Evidencia:** git check-ignore confirmó la regla inbox-private/. El paquete permanece con status: drafting, visibility: internal, publish_ready: false y rights: pending. docs/content/ no cambió. El checkout ya contenía cambios locales de otras tareas; se conservaron.
+- **Estado propuesto:** transferencia completa; revisión científica/editorial y de derechos pendiente.
+- **Siguiente acción:** revisar el paquete y resolver derechos antes de derivar contenido para docs/. Sin commit, push ni publicación.
+
+### 2026-10-19 — Inicio: revisión y propuesta de implementación S03
+
+- **Tarea o frente:** revisar el nuevo paquete S03 y proponer su aterrizaje educativo y web.
+- **Responsable:** Codex integrador.
+- **Tipo:** inicio.
+- **Alcance y archivos reservados:** esta bitácora y una propuesta de revisión en `outbox/`; lectura del paquete S03, contratos y componentes reutilizables. Se conservan los cambios locales existentes.
+- **Autorización:** solicitud del usuario de revisar la sesión y explicar cómo implementarla.
+- **Siguiente acción:** contrastar guion, conceptos, fuentes y figuras; entregar secuencia, interacciones y fases como propuesta abierta. Sin implementar la web ni promover contenido.
+
+### 2026-10-19 — Cierre: revisión y propuesta web de S03
+
+- **Tarea o frente:** revisión del paquete S03 y propuesta de implementación.
+- **Responsable:** Codex integrador.
+- **Tipo:** revisión y cierre.
+- **Resultado:** propuesta abierta de siete estaciones y tres interacciones (tránsito/flujo, preparación y vistas, laboratorio de umbrales/matriz/PR/ROC). Lectura autónoma, presentación y actividades mantienen correspondencia. Se identificaron cronograma inconsistente, denominador de la línea base, distinción entrenamiento/inferencia, conceptos pendientes y estado documental histórico.
+- **Evidencia:** [revisión y propuesta S03](../../../outbox/2026-10-19-s03-revision-propuesta-web.md). Leídos guion, manifiesto, concepto y figuras; inspeccionadas ROC propia y Figura 3 local. Contraste acotado con artículo v1, secciones 3–5, y revisión de componentes/contratos vigentes.
+- **Comprobaciones:** recálculo independiente de matrices para umbrales 0,80 y 0,50, extremos con cero/todas predicciones positivas, AUC por pares 8/9 y baseline de catálogo 12 137/15 737. La propuesta es documental; no se ejecutaron gates de aplicación ni se atribuyen pruebas web nuevas.
+- **Estado propuesto:** revisión entregada al usuario; implementación y decisiones editoriales abiertas. No se cambia el tablero de implementación ni el manifiesto del paquete. Archivos liberados.
+- **Siguiente acción:** usuario/tutor valora recorrido y núcleo interactivo; convertir después el alcance elegido en tareas y fichas. Sin cambios en vault, código, contenido público, commit, push o publicación.
+
+### 2026-10-19 — Inicio: storyboard de la presentación S03
+
+- **Responsable:** Codex integrador.
+- **Tipo:** inicio.
+- **Autorización y alcance:** el usuario precisa una presentación como las existentes y pide ver cada estación, su composición visual y el uso de figuras/información del paper.
+- **Archivos reservados:** nueva propuesta de storyboard en `outbox/`, enlace desde la propuesta anterior y esta bitácora. Las imágenes privadas se inspeccionan sin modificar.
+- **Decisión de trabajo:** concretar portada, siete estaciones, subdiapositivas y referencias con la plantilla común; la primera propuesta funcional queda subordinada a este recorrido de presentación.
+- **Siguiente acción:** entregar el guion visual completo, con figuras 3/6/11 en el recorrido y 8/10 como ampliaciones propuestas.
+
+### 2026-10-19 — Cierre: storyboard visual de S03
+
+- **Responsable:** Codex integrador.
+- **Tipo:** revisión y cierre.
+- **Resultado:** propuesta de presentación con portada, siete estaciones, 24 subdiapositivas y referencias (26 pantallas base); dos ampliaciones opcionales. Figuras 3/6/11 en el recorrido principal y 8/10 en ampliaciones, con lectura guiada, anotaciones externas, escalas y fuente visibles.
+- **Evidencia:** [storyboard de presentación](../../../outbox/2026-10-19-s03-storyboard-presentacion.md). La propuesta anterior enlaza el storyboard como actualización de la secuencia tras la aclaración del usuario.
+- **Comprobaciones:** inspección de las cinco figuras del paper; recuento de 24 IDs base únicos y existencia de las cinco imágenes; coherencia con el marco común, roles visuales y cierre bibliográfico. Sin generación o edición de imágenes ni implementación/pruebas de aplicación.
+- **Estado propuesto:** diseño entregado para revisión del usuario; derechos de las figuras conservan su pendiente antes de una incorporación pública. Archivos liberados; estados de implementación sin cambios.
+- **Siguiente acción:** valorar estaciones y partes del storyboard; desarrollar luego la presentación con el alcance acordado.
+
+### 2026-10-19 — Inicio S03: implementación coordinada con tres agentes Luna max
+
+- **Responsable:** Codex integrador y agentes `s03_geometria`, `s03_datos_visuales`, `s03_metricas_integracion` (gpt-6-luna, esfuerzo max), por instrucción expresa del usuario.
+- **Tipo:** inicio.
+- **Autorización:** diseño final de nueve estaciones aprobado; el usuario pide hacer seguimiento y coordinar la ejecución completa.
+- **Alcance:** 33 pantallas base, animación geométrica, datos Kepler, imágenes realistas, clasificación, matriz, siete métricas y curvas, resultados y lectura/fallback. La secuencia final sustituye las propuestas anteriores de siete estaciones.
+- **Reservas:** geometría: `s03-transit` y componentes `S03Transit*`; datos: `s03-content`, `S03ScienceScenes`, datos/recursos S03; métricas: `s03-metrics`, `S03EvaluationScenes`. Integrador: wrapper/navegación, lectura, configuración/disponibilidad, pruebas de integración, imágenes generadas, tablero, bitácora y evidencia. Cada bloque reserva también sus estilos, ficha y pruebas específicas.
+- **Criterios:** preservar cambios locales preexistentes; no modificar vault ni publicar. Figuras privadas del artículo conservarán derechos pendientes y enlaces acreditados hasta disponer de autorización de reutilización.
+- **Siguiente acción:** implementar bloques en paralelo, integrar contratos y ejecutar comprobaciones científicas, funcionales y visuales.
+
+### 2026-10-19 — Entrega S03: integración, seguimiento y comprobaciones
+
+- **Responsable:** Codex integrador, con tres agentes gpt-6-luna/esfuerzo max. Geometría entregó el modelo y tres escenas; datos entregó registro editorial, escenas científicas y muestra observada; métricas entregó evaluación, siete métricas y curvas. El integrador revisó contratos, devolvió defectos concretos, coordinó reservas y congeló los bloques antes del cierre.
+- **Resultado:** 33 pantallas en nueve estaciones, libro de nueve capítulos con 31 instrumentos y fallback completo; recursos con procedencia y leyendas. Marco común de portada, carril y controles. Disponible como prototipo interno en `/sesiones/s03/` y vista previa local bajo `/preview`.
+- **Decisiones y correcciones:** se resolvieron captura diferida del evento de slider, IDs y regiones repetidas, contraste en Lectura, jerarquía de títulos, `withBase` en recursos, incertidumbres sin inflación visual, ticks numéricos, identificación del segundo tránsito Kepler-10, hash reproducible tras formato y YAML del paquete. Las dos propuestas de siete estaciones quedaron diferidas e identificadas como históricas. Se añadió bibliografía primaria de geometría; las figuras del paper siguen enlazadas mientras se revisan derechos.
+- **Comprobaciones:** calidad global y gates de contenido/ejemplos/skills; 190/190 unitarias con cobertura superior a umbrales; builds raíz y `/preview`; 15/15 controles S03 en cada montaje; 16 regresiones de Lectura S00–S02; 44 capturas en cuatro tamaños. Un build separado probó exclusión real al desactivar S03 y restauró la configuración byte por byte. El FITS conserva advertencias de checksum internas y hashes coincidentes con dos descargas; no se presenta como validación limpia.
+- **Evidencia:** [I05](evidence/I05.md), fichas `s03-*`, manifiestos/guías y [retorno para revisión](../../../outbox/2026-10-19-s03-implementacion-integrada.md). Capturas y reporte en `output/playwright/`; cobertura en `coverage/`.
+- **Estado propuesto:** I05 `entregada`, revisión usuario/tutor pendiente. Goldens Linux pendientes: sandbox deniega acceso Docker y la consulta fuera del sandbox no responde; se detuvo. No se aprobaron baselines Windows. En ventanas bajas las escenas densas permiten desplazamiento vertical.
+- **Siguiente acción:** revisión editorial/científica con el usuario; ejecutar comparación Linux cuando el motor esté disponible. Sin cambios en el vault, commit, push ni despliegue. Archivos de agentes liberados; cambios locales preexistentes preservados.
+
+### 2026-10-19 — Comparación visual de S03 con S02
+
+- **Responsable y alcance:** Codex integrador; el usuario pide comparar las sesiones y aclarar el uso de la guía visual. Reserva documental: esta bitácora y evidencia/estado I05. Sin cambios de código, nuevas imágenes o publicación.
+- **Revisión:** páginas locales de clasificación y cálculos en ambas sesiones, sistema visual, guía de assets y brief S03. Se usaron pestañas temporales; la pestaña original del usuario se conserva.
+- **Hallazgo:** S03 comparte componentes y tokens, pero altera el marco, uniforma el carril como datos, separa explicación y objetos y muestra cálculos como listas/código. La navegación fija y la altura de escena dificultan comprender algunas relaciones en el primer encuadre. Las imágenes siguen el medio y la procedencia exigidos, con familia realista declarada, pero su integración didáctica se aleja de S02.
+- **Evidencia:** [revisión visual I05](evidence/I05-VISUAL-REVIEW.md). La entrega funcional y las pruebas previas conservan su alcance; la coherencia visual requiere corrección y no se considera aceptada por esos resultados.
+- **Siguiente acción propuesta:** reconstruir tres escenas piloto sobre la composición de S02 —geometría, clasificación de una señal y precision— y extender el patrón tras comparar a igual viewport. La secuencia aprobada y el realismo solicitado se preservan.
+
+### 2026-10-19 — Corrección de composición visual S03
+
+- **Responsable:** Codex integrador.
+- **Tipo:** corrección posterior a comparación.
+- **Autorización y alcance:** el usuario pide organizar la corrección tras comparar S03 con S02. Se ajustan marco, carril, pantallas 1.1/1.2, 4.1 y precision, además de sus fichas y evidencia. Se conservan los cambios preexistentes y la secuencia aprobada.
+- **Resultado:** S03 retiene la estructura de presentación compartida y el carril semántico; se corrige el scroll de la ventana del carril; 1.1 abre con definición de tránsito y enlaza repetición con período y profundidad con razón de radios; 4.1 representa la clasificación de una TCE de curva a umbral; precision construye TP/(TP+FP) con PC-01 y NEG-01 desde una matriz separada. Las ilustraciones realistas conceptuales acompañan los diagramas diagnósticos propios; figuras del artículo siguen enlazadas hasta resolver derechos.
+- **Verificación:** `npm run check` completado con 0 errores, 0 advertencias y 0 hints; quedan avisos auxiliares previos del repositorio. Build `/preview` y comprobación visual final en escritorio/móvil se completan antes del cierre. Evidencia: [I05](evidence/I05.md), [revisión visual](evidence/I05-VISUAL-REVIEW.md), fichas `s03-transit`, `s03-science-scenes` y `s03-evaluation`.
+- **Estado propuesto:** I05 entregada para revisión usuario/tutor; no aceptada todavía. Goldens Linux pendientes. Sin cambios en vault, commit, push o despliegue.
+- **Siguiente acción:** terminar el build `/preview`, verificar vistas 1.1, 1.2, 4.1 y 7.3 a 1280×720, y revisar 1.1 y 7.3 a 390×844.
+
+### 2026-10-20 — Verificación final de composición S03
+
+- **Responsable:** Codex integrador. Al consultar el seguimiento, geometría y métricas ya estaban completados; el agente `s03_datos_visuales` había alcanzado su límite de uso y no pudo cerrar la coordinación. El integrador completó las verificaciones visuales restantes.
+- **Resultado:** 1.1, 1.2, 1.3, 4.1 y 7.3 caben en el primer cuadro de 1280×720 sin desplazamiento interno. Las pruebas a 390×844 de tránsito, clasificación y precision no muestran desbordamiento horizontal. Se confirma el marco común de S02, la definición de tránsito, el enlace geométrico entre modelo y señal, la clasificación de la TCE ficticia y la construcción interactiva de precision.
+- **Controles comprobados:** el preset sin tránsito presenta `b = 1.20 R*`, `F/F₀ = 1.000` y `ΔF = 0.00 %`; el perfil de oscurecimiento al limbo cambia el flujo; subir el umbral a `0.95` cambia la predicción de TP a FN mientras PC queda como referencia; mover PC-01 actualiza y permite restaurar matriz, conteos e interpretación.
+- **Comprobaciones:** `npm run check` y `npm run build:subpath` pasan; se generaron 10 páginas. Las suites S03 de clasificación y evaluación pasan 41 pruebas. La repetición completa encontró `EPERM` con el temporal de Windows y quedó sin progreso por más de dos minutos al reubicarlo; el pase previo 190/190 sigue como evidencia de su propia ejecución. Revisión: [I05](evidence/I05.md) y [comparación visual](evidence/I05-VISUAL-REVIEW.md).
+- **Estado propuesto:** I05 continúa `entregada` para revisión del usuario/tutor. Goldens Linux, aceptación editorial y revisión científica permanecen pendientes. Sin cambios en vault, commit, push ni despliegue.
+- **Siguiente acción:** revisión editorial con el usuario en la vista local `/preview/sesiones/s03/`.
+
+### 2026-10-20 — Ajustes de portada S03 según comentarios del usuario
+
+- **Responsable:** Codex integrador.
+- **Alcance y reserva:** aplicar tres observaciones sobre la portada de S03 en `SessionOpening.tsx`, `session-presentation.css`, `session-openings.ts` y la prueba integrada; registrar la evidencia en I05. Se conservan los demás cambios locales.
+- **Resultado:** se retiró la instrucción redundante sobre los controles; el recorrido se rediseñó con cuatro hitos numerados y conectores, en línea para escritorio y vertical en móvil; el pie de imagen ahora dice «Ilustración generada con IA.»
+- **Comprobaciones:** `npm run check` pasó con 0 errores, 0 advertencias y 0 hints en Astro; `S03LearningJourney` pasó 4/4 con Vitest y cobertura desactivada para aislar el pase; `npm run build:subpath` generó 10 páginas. Revisión de portada a 1074×884 y 390×844: sin desbordamiento horizontal.
+- **Evidencia y estado:** [revisión visual I05](evidence/I05-VISUAL-REVIEW.md). Corrección aplicada; I05 sigue entregada para revisión del usuario/tutor. Sin cambios en el vault, commit, push o despliegue.
+- **Siguiente acción:** revisar la portada en la vista local `/preview/sesiones/s03/#portada`.
+
+### 2026-10-20 — Ajustes de animación orbital S03 según comentarios del usuario
+
+- **Responsable y alcance:** Codex integrador; atender cinco comentarios sobre la pantalla 1.1: reducir espacio vacío en la curva, enriquecer el disco estelar, simplificar controles, corregir la señal del observador y nombrar la vista frontal.
+- **Resultado:** la curva aprovecha mejor el panel y rotula el eje ampliado; la animación usa reproducir/pausar, reiniciar y fase; el observador queda en `+z` mirando `−z` con marcador `×`, y el texto dice que vemos el tránsito de frente. Se integró una estrella realista generada con IA manteniendo órbita y anotaciones en SVG.
+- **Comprobaciones y límites:** `npm run check` pasó (163 archivos Astro, 0 errores/advertencias/hints; dos avisos preexistentes en otros paquetes) y `npm run build:subpath` compiló 10 páginas. Vista local de 1.1 revisada a 1280×720. La comparación de fondo claro y otros tamaños de esta imagen nueva sigue pendiente; la vista temporal `data:` fue rechazada por la política del navegador. La suite E2E nueva queda pendiente: Playwright no avanzó al conectarse al preview y se canceló sin resultado de prueba. Las unitarias S03 de tránsito pasaron 7/7 y la suite completa, 192/192, en la corrida ya registrada. Detalle: [revisión de tránsito 1.1](evidence/S03-TRANSIT-1.1-REVISION.md).
+- **Estado propuesto:** corrección aplicada; I05 continúa entregada para revisión del usuario/tutor, sin aceptación editorial implícita. Sin cambios en vault, commit, push ni despliegue.
+- **Siguiente acción:** revisar la pantalla 1.1 en `/preview/sesiones/s03/#s03-transit-1`; si el aspecto de la estrella convence, revisar su render sobre fondo claro y completar la prueba E2E cuando el servidor de Playwright esté disponible.
+
+### 2026-10-20 — Imagen ampliable de Kepler en S03
+
+- **Responsable y alcance:** Codex integrador, a partir de la solicitud del usuario; reemplazar la imagen de la nave en la estación 2.1 por NASA PIA18904 y garantizar una vista íntegra, ampliable y con fuente visible.
+- **Resultado:** la pantalla usa el concepto artístico NASA/JPL de Kepler durante K2, en una miniatura 5:4 con `object-fit: contain`. La estación ubica misión y contexto a la izquierda e imagen a la derecha; en móvil la imagen aparece primero. Al activarla abre un diálogo con el original completo, crédito, fecha, resolución y enlace NASA; Cerrar, Escape y fondo lo cierran, y el foco regresa al enlace. El JPEG también queda como fallback directo sin JavaScript.
+- **Procedencia:** ficha [PIA18904](https://science.nasa.gov/image-detail/amf-pia18904/) y directrices de [uso de imágenes NASA](https://www.nasa.gov/nasa-brand-center/images-and-media/). La ficha se presenta como concepto artístico, con crédito NASA/JPL; no se rotula como observación ni fotografía de operación. Archivo local: `public/images/s03/kepler-k2-artist-concept-nasa.jpg`; ficha del curso: [s03-kepler-image](../../guides/s03-kepler-image.md).
+- **Comprobaciones:** `npm run check` pasó: Prettier, ESLint, Astro (163 archivos; 0 errores, advertencias o hints), contenido, ejemplos y espejos de skills. `S03ScienceScenes.test.tsx`, 30/30, y `S03EvaluationScenes.test.tsx`, 12/12, tras integrar las correcciones de la estación de métricas. `npm run build:subpath` compiló 10 páginas. Revisión en navegador con vista de 1280×720 y 390×844: imagen nativa de 1920×1536, proporción íntegra, fuente legible en el diálogo y retorno de foco tras Escape. Capturas: `output/playwright/s03/kepler-pia18904-dialog-1280x720.png` y `output/playwright/s03/kepler-pia18904-dialog-390x844.png`. La suite E2E por CLI quedó sin respuesta del servidor de comprobación y se interrumpió; esa ejecución no se reporta como aprobada.
+- **Evidencia y estado:** [procedencia](../../guides/s03-kepler-image.md), [especificación de ampliación](../../specs/interactions/s03-kepler-image-lightbox.md), [evidencia I05](evidence/I05.md). I05 sigue entregada para revisión del usuario/tutor; quedan pendientes la revisión de zoom y goldens Linux. Sin cambios en el vault, commit, push ni publicación.
+- **Siguiente acción:** revisar la estación 2.1 en `/preview/sesiones/s03/#s03-mission-1`.
+### 2026-10-20 — Inicio: revisión amplia de imágenes e interacciones S03
+
+- **Responsable:** Codex integrador.
+- **Solicitud:** integrar imágenes originales del paper con citas, extender animación y estilo a todas las diapositivas, mejorar el tramo final con información, diagramas e interacción, hacer visible el oscurecimiento al limbo y explicar conceptos al pulsar `?`.
+- **Alcance reservado:** `src/components/react/S03LearningJourney.tsx`, componentes y estilos `src/components/react/s03/`, `src/lib/s03-content.ts`, pruebas S03, fichas de interacción, guía y manifiesto de figuras, evidencia I05, BOARD y esta bitácora. Se preservan los demás cambios locales.
+- **Procedencia visual:** cinco figuras originales de Shallue y Vanderburg (2017) ya descargadas desde la versión HTML del artículo y verificadas localmente; cada reproducción tendrá autoría, número de figura y enlace a la fuente, además de ampliación completa.
+- **Estado:** en curso; el detalle de uso y pruebas se registrará al cerrar.
+- **Siguiente acción:** completar primero las fichas de las nuevas interacciones y después integrar y revisar las escenas.
+
+### 2026-10-20 — Cierre: figuras, animación e interacción S03
+
+- **Responsable y alcance:** Codex integrador; revisión amplia pedida por el usuario sobre figuras originales, continuidad visual, resultados, limbo y conceptos contextuales.
+- **Resultado:** Figuras 3, 6, 8, 10 y 11 incorporadas completas con cita visible y diálogo de ampliación; mini tránsito y caída de flujo acompañan las estaciones posteriores; el perfil de oscurecimiento al limbo se representa con discos e intensidad normalizada y sigue el control; las ayudas `?` definen conceptos en el contexto de la sesión. Las pantallas finales comparan Accuracy/ROC-AUC y permiten recorrer la selección 513 → 30 → 9 junto a las figuras 8, 10 y 11 y la cadena de validación.
+- **Comprobaciones:** 54/54 pruebas unitarias S03; `npm run check` pasó (Prettier, ESLint, Astro sin errores/advertencias/hints, contenido, ejemplos y skills); `npm run build:subpath` compiló 10 páginas; Playwright S03 pasó 17/17 pruebas funcionales, axe y movimiento reducido sobre `/preview`. Inspección directa a 1280×900 de las pantallas 1.2, 9.1 y 9.2, Figuras 6 y 11 ampliadas, ayuda de parámetro de impacto y control visual del limbo.
+- **Estado propuesto:** I05 entregada para revisión editorial; goldens Linux y aceptación del usuario/tutor pendientes. Evidencia ampliada en [I05](evidence/I05.md) y fuentes/activos en [guía de figuras](../../guides/s03-paper-figures.md). Vista local: `http://127.0.0.1:4327/preview/sesiones/s03/`.
+- **Siguiente acción:** revisar la sesión en la vista previa y registrar las correcciones editoriales que indique el usuario. Sin cambios en el vault, commit, push o publicación.
+
+### 2026-10-20 — Inicio: compactar encabezado de presentación S03
+
+- **Responsable:** Codex integrador.
+- **Solicitud:** el usuario señala que el encabezado y el carril superiores ocupan demasiado alto en la diapositiva 1.1; propone plegarlos y dejar visibles el título de sesión, el número de diapositiva y un control para desplegar.
+- **Alcance reservado:** `src/components/react/S03LearningJourney.tsx`, `src/components/react/s03-learning-journey.css`, `docs/specs/interactions/s03-presentation.md`, `docs/planning/agent-execution/evidence/I05-VISUAL-REVIEW.md` y esta bitácora. Se preservan los demás cambios locales.
+- **Decisión de trabajo:** usar un disclosure nativo cerrado por defecto solo en Presentación; al abrirlo quedan accesibles el encabezado completo, sus acciones y el carril. Lectura y Actividades conservan su encabezado actual; los controles globales anterior/siguiente permanecen visibles.
+- **Estado:** en curso. Se revisará la composición en la vista previa horizontal de 1280×720 y en el ancho móvil antes del cierre.
+- **Siguiente acción:** implementar el resumen plegable y documentar el comportamiento en la ficha de S03.
+
+### 2026-10-20 — Cierre: compactar navegación superior de S03
+
+- **Responsable:** Codex integrador.
+- **Resultado:** en Presentación, el título de sesión, el contador `n / 33` y un control con chevrón ocupan una franja compacta. El disclosure nativo devuelve la pregunta, todos los accesos de sesión y `SlideRail`; Lectura y Actividades mantienen el encabezado completo. El pie Anterior/Siguiente permanece visible.
+- **Evidencia:** inspección manual de los estados cerrado y desplegado en la vista previa; [revisión visual I05](evidence/I05-VISUAL-REVIEW.md). Ficha actualizada en [S03 — Presentación](../../specs/interactions/s03-presentation.md).
+- **Comprobaciones:** Prettier pasó en los cinco archivos reservados; `npm run build:subpath` terminó y generó 10 páginas, con avisos de las colecciones editoriales vacías. No se ejecutaron suites de prueba. La adaptación móvil quedó implementada por CSS, pendiente de inspección visual a 390×844.
+- **Estado propuesto:** corrección entregada para revisión del usuario; I05 sigue `entregada` y pendiente de revisión editorial. Sin cambios en vault, commit, push o publicación. Archivos liberados.
+- **Siguiente acción:** revisar el encabezado plegado en la vista S03; si aprueba la composición, incorporar las demás observaciones de layout de esta sesión.
+
+### 2026-10-20 — Inicio: mostrar oscurecimiento al limbo en el disco principal
+
+- **Responsable:** Codex integrador.
+- **Solicitud:** retirar el diagrama auxiliar de comparación del limbo y hacer que el control cambie de forma visible el brillo radial del disco estelar de la escena 1.2.
+- **Alcance reservado:** `S03TransitGeometry.tsx`, `s03-transit.css`, `S03Transit.test.tsx`, `s03-transit.md`, evidencia I05 y esta bitácora. Se conservan los demás cambios locales.
+- **Estado:** en curso; verificar con pruebas que el mismo disco y la curva reaccionen al control, y revisar la escena en navegador.
+- **Siguiente acción:** integrar el gradiente radial directo, quitar la figura auxiliar y validar los estados uniforme/limbo.
+
+### 2026-10-20 — Cierre: oscurecimiento al limbo en el disco principal
+
+- **Resultado:** se eliminó el diagrama auxiliar; el control ahora transforma el disco principal de brillo uniforme a gradiente radial opaco, con intensidad normalizada 1 en el centro y 0,4 en el borde para `u=0,6`. La curva comparte el perfil y la opción «Uniforme» restaura el disco plano. La ficha y evidencia I05 describen el comportamiento actualizado.
+- **Comprobaciones:** `npm run check`, `npm run build:subpath` y las 9 pruebas de `S03Transit.test.tsx` pasaron. En navegador comprobé el perfil activo, los siete niveles radiales, la curva y la ausencia de la comparación separada. E2E por CLI quedó sin respuesta del servidor local y no se cuenta como pase.
+- **Estado propuesto:** corrección aplicada para revisión del usuario; I05 continúa entregada, con aceptación editorial pendiente. Sin cambios en el vault, commit, push o publicación. Archivos liberados.
+- **Siguiente acción:** revisar la pantalla 1.2 en `/preview/sesiones/s03/#s03-transit-2`.
+
+### 2026-10-20 — Inicio: replantear la pantalla 1.3 de S03
+
+- **Responsable:** Codex integrador.
+- **Solicitud:** presentar una serie temporal más parecida a una curva fotométrica observada, con muchos puntos, ruido y varias caídas; retirar los controles locales y explicar que una caída aislada admite varias causas, mientras que una forma repetida con periodicidad orienta una hipótesis sobre su origen.
+- **Alcance reservado:** `src/components/react/s03/S03TransitMetrics.tsx`, `src/components/react/s03/s03-transit.css`, `src/lib/s03-content.ts`, `docs/specs/interactions/s03-transit.md`, `src/components/react/s03/S03Transit.test.tsx`, evidencia I05 y esta bitácora. Se preservan los demás cambios locales.
+- **Decisión de trabajo:** representar una serie sintética, identificada como tal y sin controles de escena; distinguir hipótesis de confirmación y nombrar causas alternativas compatibles con una señal periódica.
+- **Estado:** en curso.
+- **Siguiente acción:** reemplazar la línea temporal idealizada, actualizar la ficha y verificar el contenido, la accesibilidad y el ajuste en escritorio y móvil.
+
+### 2026-10-20 — Inicio: integrar la explicación de los datos de Kepler en 2.1
+
+- **Responsable y solicitud:** Codex integrador; el usuario pidió trasladar el texto «Datos de Kepler» desde su burbuja de pregunta al texto principal y quitar una cautela innecesaria en la misma diapositiva.
+- **Alcance reservado:** `src/lib/s03-content.ts`, `src/components/react/s03/S03ContextHelp.tsx`, `src/components/react/s03/S03ScienceScenes.tsx`, fichas `s03-science-scenes.md` y `s03-paper-figures-and-help.md`, evidencia visual I05 y esta bitácora. Se preservan los demás cambios locales.
+- **Estado:** en curso; revisar el texto y el control de conceptos en la vista previa 2.1, actualizar las fichas y validar el build de subruta.
+
+### 2026-10-20 — Cierre: integrar la explicación de los datos de Kepler en 2.1
+
+- **Resultado:** el texto de apertura ahora explica qué mide Kepler y qué conserva su archivo; 2.1 mantiene la ayuda «Cadencia y flujo» y ya no muestra la ayuda «Datos de Kepler». Se retiró la nota que advertía que el total de estrellas era histórico.
+- **Comprobaciones:** revisión de navegador en `/preview/sesiones/s03/#s03-mission-1` a 1299 × 882; texto en dos líneas y composición dentro de la diapositiva. El árbol de accesibilidad confirma la ayuda contextual restante y ausencia de la nota. `npx prettier --check` pasó y `npm run build:subpath` generó 10 páginas con avisos de colecciones vacías. El primer intento de build falló por `EPERM` al reemplazar `.astro/content-assets.mjs`; la repetición pasó. No se ejecutaron pruebas automatizadas.
+- **Estado propuesto:** corrección entregada para revisión del usuario; I05 sigue `entregada` y pendiente de revisión editorial. Sin cambios en el vault, commit, push o publicación. Archivos liberados.
+- **Siguiente acción:** revisar la diapositiva 2.1 en la vista previa S03.
+
+### 2026-10-20 — Inicio: rehacer la escena de píxeles de Kepler y retirar la viñeta global
+
+- **Responsable y solicitud:** Codex integrador; el usuario pidió aclarar 2.2 con la luz estelar detrás de una retícula y el aporte de cada píxel al flujo, evitar el término TPF sin definición, quitar el disclaimer de la escena y retirar la viñeta de tránsito pequeña de todas las diapositivas.
+- **Alcance reservado:** `src/components/react/S03LearningJourney.tsx`, componentes y estilos de escenas S03, `src/lib/s03-content.ts`, `scripts/s03-illustrations-manifest.mjs`, PNG y manifiesto de la ilustración, guía visual, fichas `s03-science-scenes.md` y `s03-paper-figures-and-help.md`, evidencia I05 y esta bitácora. Se preservan los demás cambios locales.
+- **Estado:** en curso; definir la visualización, actualizar texto y composición, y comprobar 2.2 en escritorio y móvil.
+
+### 2026-10-20 — Inicio: rehacer la parada 5.2 como reporte metodológico
+
+- **Responsable:** Codex integrador.
+- **Solicitud:** el usuario pide cambiar de fondo la parada 5.2: explicar primero por qué se analizan juntas las escalas local y global; desarrollarlas en dos columnas con el método; definir el plegado por fase y la aumentación de datos; quitar el esquema y las ayudas de concepto que solo los nombran.
+- **Alcance reservado:** `src/lib/s03-content.ts`, `S03ScienceScenes.tsx`, `S03ContextHelp.tsx`, `s03-science.css`, prueba de escenas científicas, fichas `s03-science-scenes.md` y `s03-paper-figures-and-help.md`, evidencia I06 y esta bitácora. Se conservan los demás cambios locales.
+- **Decisión científica inicial:** usar la descripción del artículo de las vistas de longitud 2001 y 201, los parámetros de la configuración CNN seleccionada, el pliegue de la curva aplanada en el período del TCE y los reflejos horizontales aleatorios durante entrenamiento. Presentar el espejo como aumentación de entradas de entrenamiento, sin describirlo como observación nueva.
+- **Estado:** en curso; verificar contenido con la fuente primaria, accesibilidad, encuadre de Figura 3 y lectura dentro del primer cuadro proyectado.
+- **Siguiente acción:** sustituir el esquema y los controles de solo nombre por dos columnas metodológicas, un resumen común del plegado/normalización y una explicación visible de la aumentación.
+
+### 2026-10-20 — Entrega: reporte metodológico de la parada 5.2
+
+- **Resultado:** la apertura declara por qué la CNN seleccionada usa las escalas local y global. Dos columnas reportan cómo se formaron: plegado con el período del TCE, medianas en 2 001 bins globales con `λ = δ = P/2001`, y recorte local `±4d` con 201 bins, `λ = 8d/201`, `δ = 0,16d` y solapamiento. Se define la fase con `φ = frac[(t − T₀) / P]`, los roles de `T₀`/`P` y la normalización común. El espejo horizontal aleatorio se describe como aumentación de entrenamiento con la misma etiqueta. La Figura 3 original conserva cita, enlace y diálogo de ampliación; todas las partes caben en la pantalla de escritorio.
+- **Comprobaciones:** `S03ScienceScenes.test.tsx` 30/30; suite completa con cobertura 195/195 en 29 archivos; Prettier dirigido a I06; Astro (0 errores/advertencias, un hint ajeno), validadores de contenido/ejemplos/skills y build `/preview` (10 páginas) pasan. Inspección visual y árbol accesible en `/preview/sesiones/s03/#s03-representation-2` a 1880×884; Figura 3 y fuente se ven junto con la explicación. `npm run check` continúa fallando en formato de `s03-transit.css` y `S03TransitGeometry.tsx`; ESLint reporta `kind` sin uso en `S03TransitGeometry.tsx:505`, fuera del alcance. Vista móvil no inspeccionada. Evidencia detallada en [I06](evidence/I06.md).
+- **Estado propuesto:** I06 entregada para revisión editorial del usuario. Sin cambios del vault, commit, push o publicación; se preservan los demás cambios locales.
+- **Siguiente acción:** revisión del usuario de la 5.2 en la vista previa.
+### 2026-10-20 — Cierre: serie temporal de la estación 1.3
+
+- **Responsable y alcance:** Codex integrador; atender la preferencia del usuario por una señal fotométrica con muchos puntos, varias caídas y lectura sin controles locales. Se actualizan `S03TransitInference.tsx`, `S03LearningJourney.tsx`, `S03ContextHelp.tsx`, los estilos de tránsito, `s03-content.ts`, la ficha de interacción, las pruebas y evidencia I05.
+- **Resultado:** la estación muestra 481 mediciones sintéticas con ruido y variación suave durante 24 días, tres caídas similares separadas por `P ≈ 8 días`, una caída aislada con cuatro causas posibles y una explicación de por qué repetición y forma apoyan una hipótesis que aún debe contrastarse. La binaria eclipsante permanece como alternativa periódica. No hay controles propios de la escena.
+- **Comprobaciones:** `npm run check`; `npm run test:unit` (195/195, 29 suites, temporal bajo `node_modules`); `npm run build` y `npm run build:subpath` (10 páginas). La vista `/preview/sesiones/s03/#s03-transit-3` confirma visual y accesiblemente la serie, los tres eventos y ausencia de controles locales. Playwright E2E por CLI no pudo iniciar su servidor porque el entorno bloqueó el socket local; se interrumpió sin reportarlo como pase. La evidencia está en [I05](evidence/I05.md).
+- **Estado propuesto:** I05 sigue `entregada` para revisión del usuario/tutor. Goldens Linux y aceptación editorial/científica pendientes. Sin cambios en vault, commit, push o publicación.
+- **Siguiente acción:** revisar la escena 1.3 en la vista previa; decidir si la lectura científica y la densidad visual representan la idea que el usuario busca.
+### 2026-10-20 — Inicio: ajustar la lectura visual de la estación 1.3
+
+- **Responsable:** Codex integrador.
+- **Solicitud:** aplicar tres comentarios del usuario: reducir el pie a «Ejemplo sintético», organizar mejor el rótulo del eje Y y encuadrar la limitación de la hipótesis como advertencia visible.
+- **Alcance reservado:** `S03TransitInference.tsx`, estilos de tránsito, prueba unitaria y E2E de S03, `s03-transit.md`, evidencia I05, revisión visual y esta bitácora. Se preservan los demás cambios locales.
+- **Decisión inicial:** conservar los detalles numéricos en la descripción accesible y en la ficha; mantener el orden de lectura y destacar la tercera nota con el token visual de estado aprobado para el proyecto.
+- **Estado:** en curso.
+- **Siguiente acción:** revisar tokens y patrones de warning, aplicar los tres cambios y verificar la vista /preview.
+
+### 2026-10-20 — Inicio: simplificar controles y gráfica de la escena 1.2
+
+- **Responsable:** Codex integrador.
+- **Solicitud:** aplicar los comentarios del usuario: quitar presets de orientación, reemplazar las opciones de perfil por un único conmutador, retirar el disclaimer y el resumen duplicado, quitar el pie de la curva y darle una proporción más cuadrada.
+- **Alcance reservado:** `src/components/react/s03/S03TransitGeometry.tsx`, `src/components/react/s03/s03-transit.css`, `src/components/react/s03/S03Transit.test.tsx`, `tests/e2e/s03-presentation.e2e.spec.ts`, `docs/specs/interactions/s03-transit.md` y esta bitácora. Se preservan los demás cambios locales.
+- **Estado:** en curso; conservar la interacción del deslizador de inclinación, actualizar las pruebas y comprobar la composición en la vista previa.
+- **Siguiente acción:** integrar los cambios, validar los gates del repo y revisar el perfil activo en navegador.
+### 2026-10-20 — Cierre: ajuste editorial de la estación 1.3
+
+- **Resultado:** el pie quedó en «Ejemplo sintético.»; el eje Y ganó espacio frente a sus ticks; la hipótesis alternativa de binaria eclipsante quedó en un cuadro rojo con rótulo «Advertencia» y rol accesible `note`.
+- **Comprobaciones:** `S03Transit.test.tsx` pasó 9/9; `npm run check` pasó (166 archivos Astro, 0 errores, advertencias o hints); `npm run build:subpath` compiló 10 páginas. La vista `/preview/sesiones/s03/#s03-transit-3` y el árbol accesible se revisaron a 1299×884. No se ejecutaron E2E ni captura móvil en esta corrección.
+- **Estado propuesto:** ajuste aplicado; I05 continúa entregada para revisión del usuario/tutor, con aceptación editorial y goldens Linux pendientes. Sin cambios en vault, commit, push o publicación.
+- **Siguiente acción:** revisar la vista actualizada; completar la inspección móvil y el pase E2E cuando el entorno permita iniciar el servidor local.
+
+### 2026-10-20 — Inicio: aclarar la lectura del ejemplo observado de Kepler-10
+
+- **Responsable y solicitud:** Codex integrador; el usuario observa que la diapositiva 2.3 muestra un plot sin explicar qué lectura permite ni de dónde vienen los datos, y pide quitar la línea que une mediciones.
+- **Alcance reservado:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, `docs/specs/interactions/s03-science-scenes.md` y esta bitácora. Se preservan los demás cambios locales.
+- **Decisión inicial:** presentar en el primer cuadro la procedencia MAST/Q1/PDCSAP y una lectura directa del descenso y recuperación; mostrar puntos y barras de incertidumbre sin interpolación entre cadencias.
+- **Estado:** en curso.
+- **Siguiente acción:** ajustar texto y figura y revisar la vista 2.3 en el navegador.
+
+### 2026-10-20 — Cierre: aclarar la lectura del ejemplo observado de Kepler-10
+
+- **Resultado:** la vista 2.3 identifica los datos como una curva de Kepler Q1/PDCSAP de MAST para KIC 11904151. El texto explica la caída bajo la mediana Q1 y la recuperación como una forma compatible con tránsito, y conecta la periodicidad con comparar otros ciclos. Se eliminaron las líneas que unían mediciones; quedan puntos independientes y barras de incertidumbre. El pie define la cadencia, la referencia de 0 ppm y la selección de la ventana con la época y el período publicados. Se actualizó la ficha de escenas.
+- **Comprobaciones:** Prettier pasó para los archivos de la tarea. `npm run build:subpath` compiló 10 páginas; Astro mostró avisos por las colecciones de contenido vacías. Revisión visual y accesible en `/preview/sesiones/s03/#s03-mission-3` a 1299×884: procedencia, lectura, puntos sin unir y pie visibles junto al gráfico. No se ejecutaron pruebas automatizadas.
+- **Estado propuesto:** corrección entregada para revisión editorial del usuario; los datos y el manifiesto de procedencia permanecen sin cambios. Sin cambios en el vault, commit, push o publicación.
+- **Siguiente acción:** revisar el texto y la lectura de 2.3 en la vista previa.
+
+### 2026-10-20 — Cierre: simplificar controles y gráfica de la escena 1.2
+
+- **Resultado:** la escena mantiene el deslizador de inclinación y elimina los tres presets. «Oscurecimiento al limbo» funciona como único conmutador accesible (`aria-pressed`); al activarlo, el disco y la curva cambian juntos. Se retiraron el texto repetido del perfil, el resumen que duplicaba los diagramas y el pie de la curva. La gráfica usa una proporción 520×340.
+- **Comprobaciones:** `S03Transit.test.tsx` pasó 9/9; Prettier y ESLint pasaron para los archivos de esta corrección; `astro check` informó 0 errores, advertencias o hints; `npm run build:subpath` generó 10 páginas. Inspección en navegador a 1299×884 y 390×844; en móvil los diagramas se apilan y no hay desbordamiento horizontal. La prueba E2E se actualizó, pero no se ejecutó por CLI.
+- **Nota del gate global:** la última corrida de `npm run check` se detuvo en Prettier por tres archivos de otras ediciones (`s03-learning-journey.css`, `s03-science.css` y `S03ScienceScenes.tsx`). Para preservar esos cambios, no los formateé dentro de esta corrección.
+- **Estado propuesto:** lista para revisión del usuario; I05 sigue entregada para revisión editorial. Sin cambios en vault, commit, push o publicación.
+- **Siguiente acción:** revisar la pantalla 1.2 en la vista previa actualizada.
+
+### 2026-10-20 — Inicio: animar variabilidad estelar por rotación
+
+- **Responsable y solicitud:** Codex integrador; el usuario pide reemplazar la imagen conceptual de la escena 3.1 por una animación sencilla asociada al plot, donde una estrella rota y la cobertura de manchas modifica el brillo total.
+- **Alcance reservado:** `S03ScienceScenes.tsx`, `s03-science.css`, `S03ScienceScenes.test.tsx`, `tests/e2e/s03-presentation.e2e.spec.ts`, `docs/specs/interactions/s03-science-scenes.md`, evidencia I05 y esta bitácora. Se preservan los demás cambios locales.
+- **Decisión inicial:** enlazar disco estelar y curva con una misma fase; representar manchas de igual contraste en una superficie que rota. Explicar que la modulación depende del área, contraste y distribución longitudinal, y ofrecer control de movimiento reducido.
+- **Estado:** en curso.
+- **Siguiente acción:** definir ficha y estados accesibles, implementar la escena y revisar navegador, teclado, móvil y pruebas.
+
+### 2026-10-20 — Cierre: animación de variabilidad estelar en la estación 3.1
+
+- **Resultado:** la imagen conceptual se reemplazó por un disco estelar con manchas que rotan dentro y fuera de vista. El deslizador cambia el total de manchas y actualiza tanto el disco como la curva; el marcador mantiene la fase común. Un solo botón pausa/reanuda. El flujo lleva nivel base 1, la nota distingue esta distribución agrupada de una distribución simétrica y el material cita Basri et al. (2011). La ficha y las pruebas reflejan el modelo y sus límites.
+- **Comprobaciones:** `npm run check` pasó; `npm run test:unit` pasó 195/195 en 29 suites; `npm run build:subpath` generó 10 páginas. Revisión de navegador a 1299×884 y 390×844; variación de 3 a 5 manchas, punto sincronizado y respeto a cambios de `prefers-reduced-motion` verificados manualmente. Consola sin errores. Playwright E2E por CLI quedó esperando el servidor local y se detuvo; no se cuenta como pase.
+- **Estado propuesto:** cambio entregado para revisión del usuario; I05 conserva estado `entregada` con aceptación editorial y goldens Linux pendientes. Sin cambios al vault, commit, push o publicación.
+- **Siguiente acción:** revisar la escena 3.1 en la vista previa y decidir si la representación del giro y el contraste entre número de manchas y modulación se entienden bien.
+
+### 2026-10-20 — Inicio: reubicar y explicar la aumentación de la pantalla 5.2
+
+- **Responsable y solicitud:** Codex integrador; el usuario pregunta si el reflejo horizontal encaja en 5.2 y pide explicar qué significa.
+- **Alcance reservado:** `src/lib/s03-content.ts`, `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, prueba `S03ScienceScenes`, `tests/e2e/s03-presentation.e2e.spec.ts`, fichas `s03-science-scenes.md` y `s03-paper-figures-and-help.md`, evidencia I06, BOARD y BITACORA. Se conservan los demás cambios locales.
+- **Decisión inicial:** la metodología de § III.3 presenta las vistas y el plegado; § IV.2 ubica los reflejos aleatorios en el entrenamiento. Mantener 5.2 en representaciones/Figura 3 y explicar el reflejo como inversión del orden de bins en 5.3, conservando la clase y diferenciando entrenamiento de inferencia.
+- **Estado:** en curso.
+- **Siguiente acción:** actualizar componente, contenido y ficha; probar los dos estados y verificar el build de `/preview`.
+
+### 2026-10-20 — Cierre: reubicar y explicar la aumentación de datos
+
+- **Resultado:** 5.2 queda centrada en las vistas global/local, el plegado y la Figura 3. 5.3 muestra por defecto el entrenamiento y explica el reflejo horizontal con un diagrama, la inversión de bins, la etiqueta conservada y la ausencia de nuevas observaciones. En inferencia, el diagrama desaparece y se puntúan las vistas originales.
+- **Comprobaciones:** `S03ScienceScenes.test.tsx` 30/30; unidad completa 195/195 en 29 archivos; `npm run check` y `npm run build:subpath` pasan. Inspección manual en navegador a 1864×884 y 390×844; el conmutador entrenamiento/inferencia funciona y no hay desbordamiento móvil. Se añadió un caso E2E dedicado, aunque el runner no logró iniciar conexión con su servidor local por la restricción de sockets del entorno.
+- **Estado propuesto:** I06 entregada para revisión editorial del usuario. Se actualizan ficha de interacción, tarea, evidencia y Board. No se hizo commit, push ni publicación, y no se editó el vault.
+
+### 2026-10-20 — Cierre: flujo de píxeles y limpieza visual de S03
+
+- **Responsable y alcance:** Codex integrador; revisión de 2.2 y retiro de la viñeta común, conservando los demás cambios locales.
+- **Resultado:** `De los píxeles al flujo` muestra un halo estelar transparente detrás de 25 celdas etiquetadas con sus flujos. La secuencia resalta una apertura de nueve píxeles, formula la suma SAP y presenta su curva de luz. El texto define SAP, evita Target Pixel File/TPF y elimina el disclaimer de la diapositiva. Se retiró el componente y sus estilos para que el número de cada slide quede solo en el encabezado. La ayuda «Datos de Kepler» tampoco se repite en 2.2.
+- **Comprobaciones:** revisión de los tres estados en `/preview/sesiones/s03/#s03-mission-2` a 1299 × 884. El encabezado muestra 6/33 y 2.2 sin viñeta; la retícula, apertura, fórmula, curva, fuentes y navegación caben en el estado final. El PNG se revisó sobre fondos oscuro y claro. A 390 × 844 no hay desbordamiento horizontal; la diapositiva se desplaza verticalmente. `npx prettier --write` terminó sin errores; `npm run build:subpath` generó 10 páginas, con los avisos esperados de colecciones vacías. No se ejecutaron pruebas automatizadas.
+- **Estado propuesto:** ajuste entregado para revisión del usuario; I05 continúa entregada y pendiente de revisión editorial. Sin cambios en el vault, commit, push o publicación.
+- **Siguiente acción:** revisar 2.2 en la vista previa S03.
+
+### 2026-10-20 — Inicio: dar una lectura narrativa a la curva de Kepler-10
+
+- **Responsable y solicitud:** Codex integrador; aplicar los comentarios del usuario a 2.3: retirar tarjetas, tabla y recuentos técnicos; narrar cómo el ruido puede ocultar, aislar o repetir caídas y señalar la bajada central como candidata.
+- **Alcance reservado:** `src/components/react/s03/S03ScienceScenes.tsx`, estilos de esa escena, `src/lib/s03-content.ts`, su prueba unitaria, ficha `docs/specs/interactions/s03-science-scenes.md` y esta bitácora. Se preservan datos, manifiesto y demás cambios locales.
+- **Decisión inicial:** conservar puntos sin unir, barras de incertidumbre y atribución a MAST; mencionar que el recorte se centró con los parámetros publicados para no presentar la selección como una búsqueda ciega.
+- **Estado:** en curso.
+- **Siguiente acción:** editar la narración visible, retirar los elementos auxiliares y revisar el estado de presentación 2.3 en navegador.
+
+### 2026-10-20 — Cierre: narrar la curva observada de Kepler-10
+
+- **Responsable y alcance:** Codex integrador; 2.3 en `S03ScienceScenes.tsx`, sus estilos, `s03-content.ts`, la prueba de escenas, la ficha `s03-science-scenes.md` y esta bitácora.
+- **Resultado:** se retiraron del slide las tarjetas estadísticas, la tabla de cadencias, los conteos de calidad y los parámetros publicados. La pregunta y el texto guían la lectura de una curva ruidosa: puede no distinguirse una caída, destacar una aislada o verse varias repetidas; la bajada central y su recuperación se presentan como candidata que habría que contrastar en otros ciclos. Permanecen la fuente MAST/Q1/PDCSAP, los 25 puntos sin unir, las barras de incertidumbre y un pie conciso que explica la referencia y la selección del recorte. Datos y manifiesto no se modificaron.
+- **Hallazgo auxiliar:** se corrigió una etiqueta de cierre JSX desparejada en el componente que impedía analizar el archivo completo con Prettier.
+- **Comprobaciones:** Prettier pasó en los archivos de código y ficha revisados; `npm run build:subpath` compiló 10 páginas. La vista previa y el árbol accesible de `/preview/sesiones/s03/#s03-mission-3` se revisaron a 1299×884: lectura, curva, pie y fuentes caben juntos y no hay tabla ni tarjetas de datos. No se ejecutaron pruebas automatizadas; se actualizaron las aserciones afectadas.
+- **Nota de build:** Astro avisó que las colecciones públicas `sessions`, `concepts` y `exercises` están vacías; compiló sin errores.
+- **Estado propuesto:** ajuste entregado para revisión del usuario; I05 continúa `entregada` para revisión editorial. Sin cambios en el vault, commit, push ni publicación.
+- **Siguiente acción:** revisar la versión actualizada de 2.3 en la vista previa.
+
+### 2026-10-20 — Inicio: animar la binaria eclipsante de la estación 3.2
+
+- **Responsable y solicitud:** Codex integrador; el usuario propone una animación sencilla y atractiva en la pantalla 3.2, junto a la curva de binarias eclipsantes.
+- **Alcance reservado:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, pruebas unitaria/E2E/movimiento/accesibilidad, ficha `docs/specs/interactions/s03-science-scenes.md`, evidencia I05 y esta bitácora. Se preservan los demás cambios locales.
+- **Decisión inicial:** reemplazar la ilustración generada por dos diagramas responsivos —órbita lateral y proyección telescópica— sincronizados con una curva calculada. Mostrar eclipses primario/secundario y la dilución producida por una fuente vecina dentro de la apertura, con un único botón de reproducción.
+- **Estado:** en curso.
+- **Siguiente acción:** validar el modelo geométrico y la curva, adaptar la legibilidad en móvil, y comprobar reducción de movimiento, accesibilidad y la vista previa.
+
+### 2026-10-20 — Inicio: narrar la selección y validación de planetas en S03 9.2
+
+- **Responsable y solicitud:** Codex integrador; aplicar los comentarios del usuario a 9.2: mejorar legibilidad de las figuras del artículo con fondo blanco, escribir en español el nombre del evento de detección y narrar cómo el ranking condujo a la validación de nuevos planetas y a una regla general de ML.
+- **Alcance reservado:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/S03ScienceScenes.test.tsx`, `src/components/react/s03/s03-science.css`, `src/components/react/s03/S03PaperFigure.tsx`, `src/components/react/s03/s03-paper-figure.css`, `src/lib/s03-content.ts`, ficha `docs/specs/interactions/s03-science-scenes.md`, pruebas S03 E2E/motion, tarea I07, evidencia I07, `BOARD.md` y esta bitácora. Se conservan los demás cambios locales.
+- **Decisión inicial:** mostrar 513 → 30 → 9 → 4 con umbrales explícitos; narrar las comprobaciones astronómicas y el cálculo estadístico que llevaron a Kepler-80 g y Kepler-90 i; mantener separado el puntaje predictivo de la validación.
+- **Estado:** en curso.
+- **Siguiente acción:** implementar el relato y la superficie blanca de las figuras; comprobar exactitud científica, interacción, adaptación visual y build de `/preview`.
+
+### 2026-10-20 — Cierre: narrar la selección y validación de planetas en S03 9.2
+
+- **Resultado:** 9.2 recorre 513 señales en 670 estrellas y los cortes 0,5 → 30, 0,8 → 9 y 0,9 → 4. Explica por qué Kepler-534 y Kepler-647 no avanzaron y cómo los diagnósticos y las probabilidades de falso positivo permitieron validar Kepler-80 g y Kepler-90 i. La conclusión explicita que el puntaje prioriza la revisión y la evidencia independiente sostiene la decisión. Las Figuras 11, 8 y 10 usan superficie blanca y conservan ampliación, explicación y fuente; la Figura 11 queda seleccionada en la vista previa.
+- **Comprobaciones:** `npm run check` pasó (166 archivos Astro, 0 errores, advertencias ni hints); `npm run test:unit` pasó (195 pruebas en 29 archivos); `npm run build:subpath` generó las 10 páginas bajo `/preview`. Revisión manual en navegador de 9.2 en escritorio y estados del selector; el diálogo ampliado de la Figura 10 conserva fondo blanco, explicación y enlace a la fuente. La ejecución E2E se quedó esperando el servidor local y se interrumpió; la revisión automatizada móvil queda pendiente.
+- **Estado propuesto:** I07 entregada para revisión editorial. No se editaron archivos del vault ni se hizo commit, push o publicación.
+- **Siguiente acción:** revisar la diapositiva abierta en la Figura 11; volver a ejecutar E2E y comprobar móvil cuando el servidor local esté accesible al runner.
+
+### 2026-10-20 — Inicio: codificar por color las celdas de la matriz S03 6.2
+
+- **Responsable y solicitud:** Codex integrador; aplicar el comentario del usuario a la matriz: asignar un color propio a cada una de las cuatro celdas, rotular las clases visibles como «Tránsito» y «NTránsito», y actualizar el rótulo/color de cada caso al cambiar su predicción y moverse de celda.
+- **Alcance reservado:** `src/components/react/s03/S03EvaluationScenes.tsx`, `src/components/react/s03/s03-evaluation.css`, `src/components/react/s03/S03EvaluationScenes.test.tsx`, `src/lib/s03-content.ts`, `docs/specs/interactions/s03-evaluation.md`, nueva tarea/evidencia I08, `BOARD.md` y esta bitácora. Se preservan los demás cambios locales.
+- **Decisión inicial:** usar cuatro roles existentes del sistema visual; mantener TP/FN/FP/TN y definir en la propia matriz que Tránsito corresponde a PC y NTránsito agrupa AFP/NTP. El color acompaña al texto, la referencia y la posición, sin ser la única señal.
+- **Estado:** en curso.
+- **Siguiente acción:** actualizar matriz y etiquetas dinámicas; verificar movimiento del caso, legibilidad, pruebas y vista `/preview`.
+
+### 2026-10-20 — Cierre: colorear y rotular la matriz interactiva S03 6.2
+
+- **Resultado:** cada cuadrante TP, FN, FP y TN tiene un color propio y conserva su rótulo. Las filas y columnas muestran «Tránsito» y «NTránsito»; la matriz define Tránsito como PC y NTránsito como AFP/NTP. Cada ficha enseña su predicción actual y cambia de clase visible y color al moverse de columna. La referencia fija del caso sigue visible y el color acompaña al texto y a la posición.
+- **Archivos:** `src/components/react/s03/S03EvaluationScenes.tsx`, `src/components/react/s03/s03-evaluation.css`, `src/components/react/s03/S03EvaluationScenes.test.tsx`, `src/components/react/s03/S03ContextHelp.tsx`, `src/components/react/s03/S03ScienceScenes.test.tsx` (aserciones obsoletas alineadas), `src/lib/s03-content.ts`, `docs/specs/interactions/s03-evaluation.md`, tarea I08 y evidencia I08.
+- **Comprobaciones:** `npm run check` pasó; `npm run test:unit` pasó con 196 pruebas en 29 archivos; `npm run build:subpath` generó 10 páginas. Revisión manual en `/preview/sesiones/s03/#s03-errors-2` a 1299 × 884: PC-01 pasó de TP a FN; la etiqueta accesible, el conteo y el color cambiaron juntos, y su referencia permaneció fija. La prueba E2E focalizada no completó: Playwright quedó esperando el servidor/pruebas sin iniciar; se interrumpió y no se cuenta como pase. La ejecución directa de la vista previa local sí inició. Persisten avisos informativos del build por colecciones editoriales públicas vacías.
+- **Estado propuesto:** I08 entregada para revisión editorial del usuario. Sin cambios en el vault, commit, push o publicación.
+- **Siguiente acción:** revisar la matriz en la vista previa de S03 6.2.
+
+### 2026-10-20 — Inicio: aclarar la diapositiva 3.3 sobre movimiento y apertura
+
+- **Responsable y solicitud:** Codex integrador; el usuario indica que 3.3 no se entiende y pide retirar la frase sobre la escala y el detector Kepler.
+- **Alcance reservado:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, ficha `docs/specs/interactions/s03-science-scenes.md`, guía/manifiesto de ilustraciones S03, evidencia I05 y esta bitácora. Se preservan los demás cambios locales.
+- **Decisión inicial:** mostrar la misma fuente en dos momentos sobre una apertura fija, con un desplazamiento legible y trazas simultáneas de flujo sumado y centroide. La figura y el texto deben explicar la asociación sin una nota de cautela visible.
+- **Estado:** en curso.
+- **Siguiente acción:** actualizar escena y procedencia, y revisar la diapositiva 3.3 en la vista previa.
+
+### 2026-10-20 — Cierre: aclarar la diapositiva 3.3 sobre movimiento y apertura
+
+- **Resultado:** se retiró la imagen de dos destellos y se reemplazó por dos vistas de la misma estrella sobre retículas de 5 × 5. La apertura `A` permanece fija; el halo se desplaza entre `t₀` y `t₁`. El gráfico conecta la caída del flujo sumado con el movimiento del centroide y define este término junto a la figura. El texto seleccionado por el usuario desapareció de la diapositiva; el raster anterior salió del manifiesto y del directorio público. Se actualizaron contenido, ficha y guía visual.
+- **Comprobaciones:** `npx prettier --write` pasó para los archivos de código incluidos. `npm run validate:content` reportó contenido válido con dos avisos existentes sobre metadatos auxiliares del inbox. `npm run check:astro` pasó con 166 archivos, 0 errores, advertencias ni hints. `npm run build:subpath` generó 10 páginas; persisten avisos por colecciones editoriales vacías. En el navegador, la vista 3.3 a 1299 × 884 muestra toda la relación; a 390 × 844, documento de 390 px, diapositiva de 332 px y sin desbordamiento horizontal. Los dos instantes y el gráfico se apilan en móvil. No se ejecutaron pruebas automatizadas.
+- **Estado propuesto:** I05 continúa `entregada`, pendiente de revisión editorial. Sin cambios en el vault, commit, push o publicación.
+- **Siguiente acción:** revisar la vista actualizada de 3.3 en la presentación.
+
+### 2026-10-20 — Inicio: simplificar el diagrama de clasificación de S03 4.1
+
+- **Responsable y solicitud:** Codex integrador; convertir la escena 4.1 en un diagrama sencillo de puntos con dos casos, tránsito y no tránsito.
+- **Alcance reservado:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, ficha `docs/specs/interactions/s03-science-scenes.md` y esta bitácora. Se preservan los demás cambios locales.
+- **Decisión inicial:** retirar los puntajes, umbral manipulable, vistas duplicadas y texto explicativo de la diapositiva. Mostrar únicamente dos señales esquemáticas representadas por mediciones independientes y la clase asignada a cada una.
+- **Estado:** en curso.
+- **Siguiente acción:** implementar el diagrama, actualizar la ficha y revisar la presentación 4.1.
+
+### 2026-10-20 — Cierre: simplificar el diagrama de clasificación de S03 4.1
+
+- **Resultado:** la diapositiva muestra dos series sintéticas de puntos sin unir. La señal A tiene tres descensos repetidos y se clasifica como «Tránsito»; la señal B muestra fluctuaciones sin ese patrón y se clasifica como «No tránsito». Se retiraron las vistas duplicadas, el puntaje, el umbral manipulable, la referencia de catálogo y el texto de evaluación. La frase de entrada nombra directamente las dos clases y la ficha describe el diagrama estático.
+- **Comprobaciones:** Prettier no encontró cambios de formato. `npm run build:subpath` compiló las 10 páginas. La vista previa `/preview/sesiones/s03/#s03-classification-1` se revisó en navegador a 1299 × 884; ambas señales y sus clases aparecen juntas, sin líneas que conecten los puntos ni controles del diseño anterior. No se ejecutaron pruebas automatizadas.
+- **Nota de build:** se mantienen los avisos existentes porque las colecciones públicas `sessions`, `concepts` y `exercises` están vacías; el build terminó sin errores.
+- **Estado propuesto:** ajuste entregado para revisión del usuario. Sin cambios en el vault, commit, push ni publicación.
+- **Siguiente acción:** revisar la versión actualizada de 4.1 en la presentación.
+
+### 2026-10-20 — Inicio: explicar el preprocesamiento en S03 5.1
+
+- **Responsable y solicitud:** Codex integrador; atender la observación del usuario de que 5.1 no narra qué significa preparar la curva ni define `t`, `F`, `σ` y `q`.
+- **Alcance reservado:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, ficha `docs/specs/interactions/s03-science-scenes.md` y esta bitácora. Se preservan los demás cambios locales y los datos.
+- **Decisión inicial:** sustituir la selección de símbolos abstractos por una secuencia visible que explique qué mide Kepler, cómo el artículo limpia y aplana la señal, y cómo alinea, resume y normaliza las curvas para generar las vistas de entrada.
+- **Estado:** en curso.
+- **Siguiente acción:** implementar la narración, revisar la precisión de los pasos y observar 5.1 en la presentación.
+
+### 2026-10-20 — Animar binarias eclipsantes y dilución (estación 3.2)
+
+- **Resultado:** la diapositiva 3.2 ahora vincula la órbita de una binaria eclipsante, la apertura del telescopio y una curva sintética en fase compartida. La fuente vecina añade flujo constante y reduce la profundidad aparente de ambos eclipses. La interacción conserva un único control de pausa/reanudación y movimiento reducido.
+- **Comprobaciones:** 195/195 pruebas unitarias en 29 suites; `npm run check` y `npm run build:subpath` pasaron. Revisión manual en navegador a 1299 × 884. El E2E de Playwright no se cuenta como pase: el entorno negó la conexión local al servidor. Evidencia: `evidence/I05.md` y `evidence/I05-VISUAL-REVIEW.md`.
+- **Estado propuesto:** I05 continúa `entregada`, pendiente de revisión editorial y científica. Sin cambios en el vault, commit, push o publicación.
+- **Siguiente acción:** revisar en la vista previa la relación entre geometría, dos eclipses y dilución.
+
+### 2026-10-20 — Inicio: dar una función clara a la diapositiva 4.2
+
+- **Responsable y solicitud:** Codex integrador; el usuario cuestiona si «Entrada y salida» aporta información suficiente y señala que el flujo actual no se entiende.
+- **Alcance reservado:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, ficha `docs/specs/interactions/s03-science-scenes.md`, evidencia I05 y esta bitácora. Se preservan los demás cambios locales.
+- **Decisión inicial:** mantener la pantalla cuando explique qué papel cumplen las etiquetas conocidas durante el entrenamiento y qué recibe una señal nueva durante la inferencia. Separar puntaje, umbral y predicción, y tener en cuenta el ajuste pendiente de la escena 4.1.
+- **Estado:** en curso.
+- **Siguiente acción:** aclarar la secuencia de clasificación 4.1–4.2 y revisarla en la vista previa.
+
+### 2026-10-20 — Cierre: aclarar entrenamiento e inferencia en S03 4.2
+
+- **Resultado:** se conservó la diapositiva 4.2 como puente entre los dos ejemplos de 4.1 y la metodología específica de la CNN en 5.3. El estado inicial muestra señal con etiqueta de catálogo → puntaje para PC → ajuste de parámetros. Inferencia muestra una señal nueva sin etiqueta → modelo entrenado y puntaje → comparación con umbral y predicción. La referencia queda para evaluar después. Se reemplazaron «Entrada y salida», las cajas genéricas y la asignación errónea de la etiqueta como salida del entrenamiento.
+- **Archivos:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, `src/components/react/s03/S03ScienceScenes.test.tsx`, `docs/specs/interactions/s03-science-scenes.md`, evidencia I05 y esta bitácora.
+- **Comprobaciones:** Prettier, `npm run validate:content`, `npm run check:astro` (166 archivos; 0 errores, advertencias ni hints) y `npm run build:subpath` (10 páginas) pasaron. En navegador, ambas variantes caben en `/preview/sesiones/s03/#s03-classification-2` a 1299 × 884. A 390 × 844, el documento conserva 390 px de ancho, la diapositiva 332 px, las tres etapas se apilan y no hay desbordamiento horizontal. Se actualizó una aserción existente; no se ejecutaron pruebas automatizadas. Persisten avisos de build por colecciones públicas vacías y dos avisos del validador sobre metadatos auxiliares existentes.
+- **Estado propuesto:** I05 continúa `entregada`, pendiente de revisión editorial. Sin cambios en el vault, commit, push o publicación.
+- **Siguiente acción:** revisar en la vista previa la diferencia entre ajuste con etiquetas y predicción de una señal nueva.
+
+### 2026-10-20 — Inicio: narrar el artículo e ilustrar las clases en S03 4.3
+
+- **Tarea:** abrir con el contexto del artículo, explicar qué significan TCE, PC, AFP, NTP y FP, y crear una ilustración para cada caso según la guía visual de S03.
+- **Responsable:** Codex integrador.
+- **Alcance:** narrar la tarea del estudio y la relación entre las tres etiquetas del catálogo y la decisión binaria del modelo; separar las etiquetas de referencia del error FP; producir cinco imágenes cualitativas, una por término.
+- **Archivos reservados:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, prueba unitaria de `S03ScienceScenes`, ficha `docs/specs/interactions/s03-science-scenes.md`, ficha visual, manifiesto S03, evidencia I05 y esta bitácora.
+- **Decisión inicial:** las siglas se desarrollan y traducen en el contenido visible; el flujo exacto de etiqueta y predicción vive en HTML, mientras que ImageGen ilustra el caso astronómico sin texto ni escalas.
+- **Estado:** en curso.
+- **Siguiente acción:** preparar la familia visual, integrar las cinco imágenes con sus descripciones y comprobar la diapositiva en la vista previa.
+
+### 2026-10-20 — Cierre: narrar el artículo e ilustrar las clases en S03 4.3
+
+- **Resultado:** la entrada explica la tarea de Shallue y Vanderburg y cómo las referencias PC, AFP y NTP se agrupan en planeta/falso positivo. TCE queda definido como evento detectado; FP, como error cuando una referencia AFP/NTP recibe predicción de planeta. Cada término tiene nombre desarrollado, explicación e ilustración 16:9. El disclaimer retirado no reaparece.
+- **Archivos:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, `docs/specs/interactions/s03-science-scenes.md`, `docs/guides/s03-classification-illustrations.md`, `scripts/s03-illustrations-manifest.mjs`, `public/images/s03/s03-illustrations.manifest.json`, cinco PNG de clasificación y evidencia I05.
+- **Comprobaciones:** revisión manual a 1920×1080, 1440×900, 1024×768, 1299×884 y 390×844, con selección de los cinco términos en móvil. Las tarjetas se apilan en móvil; el flujo FP queda en columna y la composición conserva el ancho. `npm run check` y `npm run build:subpath` pasaron; se conservan dos avisos de metadatos auxiliares del inbox y avisos por colecciones públicas vacías. No se ejecutaron pruebas automatizadas.
+- **Estado propuesto:** I05 sigue `entregada`, pendiente de revisión editorial. Sin cambios en el vault, commit, push o publicación.
+- **Siguiente acción:** revisión editorial de la secuencia y de las cinco ilustraciones.
+
+### 2026-10-20 — Cierre: explicar el preprocesamiento en S03 5.1
+
+- **Resultado:** 5.1 ahora cuenta el recorrido desde cada medición de Kepler hasta la representación que recibe el clasificador. Define `t`, `F(t)`, `σ` y `q`; identifica `q` como bandera SAP_QUALITY y aclara que no es un canal adicional de la CNN. Explica el retiro de tránsitos de otros planetas confirmados, el ajuste de la spline `B(t)` con el evento objetivo enmascarado, la división `F(t)/B(t)`, el recorte iterativo de puntos a más de 3σ, el plegado por período, el binning y la normalización. Las tres etapas están visibles, sin esconder el relato detrás de controles. También se corrigió la operación de restar tendencia que aparecía en el diseño anterior.
+- **Archivos:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, `docs/specs/interactions/s03-science-scenes.md` y esta bitácora.
+- **Comprobaciones:** Prettier, `npm run validate:content` y `npm run build:subpath` pasaron; el build compiló 10 páginas. Revisión de la vista previa `/preview/sesiones/s03/#s03-representation-1` a 1299 × 884: las definiciones, las tres etapas y la nota final caben en la diapositiva. No se ejecutaron pruebas automatizadas. Persisten avisos de build por colecciones públicas vacías y dos avisos del validador sobre metadatos auxiliares existentes.
+- **Estado propuesto:** ajuste entregado para revisión del usuario. Sin cambios en el vault, commit, push ni publicación.
+- **Siguiente acción:** revisar que la secuencia explique con claridad qué decisiones transforman la curva original en las vistas global y local.
+
+### 2026-10-20 — Cierre: contextualizar las etiquetas del catálogo en S03 4.2
+
+- **Resultado:** la diapositiva abre con el propósito del trabajo de Shallue y Vanderburg y desarrolla PC, AFP y NTP antes de presentar el ajuste del modelo. Cada tarjeta ofrece nombre expandido, traducción, conteo y significado; la agrupación binaria y el límite de una candidatura también quedan visibles. Entrenamiento e inferencia conservan secuencias distintas.
+- **Archivos:** `src/components/react/s03/S03ScienceScenes.tsx`, `src/components/react/s03/s03-science.css`, `src/lib/s03-content.ts`, sus pruebas, `docs/specs/interactions/s03-science-scenes.md`, evidencia I05, revisión visual y outbox S03.
+- **Comprobaciones:** 196/196 pruebas unitarias en 29 suites; `npm run check`; `npm run build:subpath` con 10 páginas. Inspección manual de ambos estados en `/preview/sesiones/s03/#s03-classification-2` a 1299 × 884. Las colecciones editoriales públicas vacías generan avisos informativos.
+- **Estado propuesto:** I05 entregada para revisión editorial/científica del usuario o tutor. La observación se devuelve abierta al paquete fuente; no se editó el vault ni se hizo commit, push o publicación.
+- **Siguiente acción:** revisión editorial de claridad y aceptación del contenido.
+
+### 2026-10-20 — Inicio: publicar la actualización de la app y el sitio
+
+- **Solicitud:** el usuario pidió actualizar la aplicación en GitHub y el webpage; el push a `main` activa el despliegue configurado de GitHub Pages.
+- **Alcance reservado:** integrar la app y las sesiones S00–S03 en `src/`, pruebas y `public/`; conservar atribución CC BY 3.0 para las figuras originales de S03; ejecutar los gates antes del push y verificar el despliegue.
+- **Límites de publicación:** no incluir paquetes internos de `inbox/`/`outbox/` ni extracciones de datos/notebook que no forman parte de la app web.
+- **Estado:** en curso; rama `main`, HEAD inicial `58a3efb` igual a `origin/main`.
+- **Siguiente acción:** completar calidad, pruebas y builds; revisar el conjunto staged antes del commit y push.
+
+- **Avance de validación:** `npm run check` pasó; `npm run test:unit -- --maxWorkers=1 --no-file-parallelism --testTimeout=20000` pasó con 197/197 pruebas; `npm run build:subpath` y `npm run build` con `BASE_PATH=/ML-CPlanetarias` y `SITE_URL=https://d4san.github.io` compilaron 10 páginas. Persisten avisos informativos por colecciones públicas vacías y metadatos auxiliares pendientes.
+- **Límite local:** Playwright E2E no pudo iniciar el servidor de vista previa; el sistema negó el socket local `127.0.0.1:4321`. El flujo de CI en GitHub debe verificar E2E y visuales antes de integrar a `main`.
+- **Estado:** commit local `54f5e4e` en la rama revisable `codex/site-update-2026-10-20`; aún sin push ni despliegue.
+- **Siguiente acción:** actualizar la bitácora de cierre tras CI, integración y verificación de la URL pública.

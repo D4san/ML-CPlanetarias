@@ -1,0 +1,87 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import S03LearningJourney from './react/S03LearningJourney';
+import SessionBookFallback from './SessionBookFallback.astro';
+---
+
+<SiteLayout
+  title="S03 · De un tránsito a las métricas"
+  description="Presentación interactiva: geometría del tránsito, datos Kepler, clasificación y evaluación matemática."
+  noindex
+  theme="dark"
+  fullBleed
+>
+  <div class="s03-session-shell">
+    <section class="site-shell s03-instrument" aria-label="Presentación de la sesión 03">
+      <S03LearningJourney client:load />
+    </section>
+    <noscript><SessionBookFallback session="S03" /></noscript>
+  </div>
+</SiteLayout>
+
+<style>
+  .s03-session-shell {
+    position: fixed;
+    z-index: 30;
+    inset: 0;
+    display: grid;
+    overflow: hidden;
+    place-items: center;
+    background: var(--ink-950);
+  }
+  .s03-instrument {
+    width: min(100vw, 177.7778svh);
+    height: min(100svh, 56.25vw);
+    aspect-ratio: 16 / 9;
+    padding: 0;
+  }
+  .s03-fallback {
+    position: fixed;
+    z-index: 50;
+    inset: 0;
+    overflow-y: auto;
+    padding: var(--space-8);
+    color: var(--paper-100);
+    background: var(--ink-950);
+  }
+  :global(body:has(.s03-session-shell)) {
+    overflow: hidden;
+    background: var(--ink-950);
+  }
+  :global(body:has(.s03-session-shell) .site-header),
+  :global(body:has(.s03-session-shell) .site-footer) {
+    display: none;
+  }
+  :global(body:has(.s03-session-shell) #contenido) {
+    margin: 0;
+  }
+
+  @media (min-width: 49rem) and (max-aspect-ratio: 16 / 9) {
+    .s03-instrument {
+      width: 100vw;
+      height: 100svh;
+      aspect-ratio: auto;
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .s03-session-shell {
+      position: relative;
+      display: block;
+      overflow: visible;
+    }
+    .s03-instrument {
+      width: 100%;
+      height: auto;
+      aspect-ratio: auto;
+      padding-block: var(--space-3);
+    }
+    :global(body:has(.s03-session-shell)) {
+      overflow: auto;
+    }
+    :global(body:has(.s03-session-shell) .site-header),
+    :global(body:has(.s03-session-shell) .site-footer) {
+      display: block;
+    }
+  }
+</style>

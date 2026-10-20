@@ -2,7 +2,7 @@
 
 Fecha: 2026-09-07. Estado: propuesta técnica para implementar la [primera retroalimentación](../planning/FEEDBACK-01.md).
 
-La ejecución detallada está en el [plan para agentes](../planning/agent-execution/README.md): 32 fichas con dependencias, tareas y criterios de aceptación. El piloto ya implementa bibliografía de S01, subslides de Pregunta/Instancia y configuración de interacción, ayudas docentes y rutas; consultar la [guía funcional](../guides/FORK_CONFIGURATION.md). El contrato común vigente quedó fijado en [ADR-0002](decisions/ADR-0002-course-content-contract.md) y su ficha de navegación en [course-navigation.md](../specs/interactions/course-navigation.md). El plan distingue explícitamente lo implementado, lo aceptado y lo pendiente.
+La ejecución detallada está en el [plan para agentes](../planning/agent-execution/README.md): 33 fichas con dependencias, tareas y criterios de aceptación. El piloto ya implementa bibliografía de S01, subslides de Pregunta/Instancia y configuración de interacción, ayudas docentes y rutas; consultar la [guía funcional](../guides/FORK_CONFIGURATION.md). El contrato común vigente quedó fijado en [ADR-0002](decisions/ADR-0002-course-content-contract.md) y su ficha de navegación en [course-navigation.md](../specs/interactions/course-navigation.md). El plan distingue explícitamente lo implementado, lo aceptado y lo pendiente.
 
 Este documento conserva el razonamiento y las propuestas de evolución que dieron origen al plan. Para entidades, campos, IDs, precedencia y navegación implementables manda ADR-0002; las propuestas que no estén adoptadas allí siguen siendo trabajo pendiente. La ADR activa, los protocolos y los esquemas ejecutables mantienen su autoridad.
 

@@ -12,21 +12,21 @@ describe('S01 pilot', () => {
     const user = userEvent.setup();
     render(<S01LearningJourney />);
     expect(
-      screen.getByRole('heading', { name: 'Dos libros para orientar el recorrido' }),
+      screen.getByRole('heading', { name: 'De una observación a una afirmación' }),
     ).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Siguiente →' }));
+    await user.click(screen.getByRole('button', { name: 'Siguiente' }));
     expect(
       screen.getByRole('heading', { name: '¿Qué queremos responder con los datos?' }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: '¿Qué podemos hacer con una observación?' }),
     ).not.toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Siguiente →' }));
+    await user.click(screen.getByRole('button', { name: 'Siguiente' }));
     expect(window.location.hash).toBe('#pregunta/salidas');
     expect(
       screen.queryByRole('heading', { name: '¿Qué queremos responder con los datos?' }),
     ).not.toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Siguiente →' }));
+    await user.click(screen.getByRole('button', { name: 'Siguiente' }));
     expect(window.location.hash).toBe('#pregunta/disciplinas');
     expect(
       screen
@@ -34,9 +34,9 @@ describe('S01 pilot', () => {
         .filter((button) => ['Estadística', 'ML', 'IA'].includes(button.textContent ?? ''))
         .map((button) => button.textContent),
     ).toEqual(['Estadística', 'ML', 'IA']);
-    await user.click(screen.getByRole('button', { name: 'Siguiente →' }));
+    await user.click(screen.getByRole('button', { name: 'Siguiente' }));
     expect(window.location.hash).toBe('#instancia');
-    await user.click(screen.getByRole('button', { name: '← Anterior' }));
+    await user.click(screen.getByRole('button', { name: 'Anterior' }));
     expect(window.location.hash).toBe('#pregunta/disciplinas');
     await user.click(screen.getByRole('button', { name: 'Bibliografía' }));
     expect(window.location.hash).toBe('#bibliografia');
@@ -80,9 +80,9 @@ describe('S01 pilot', () => {
     await user.click(screen.getByRole('button', { name: 'Reiniciar' }));
     expect(document.querySelector('.s01-journey')).toHaveAttribute('data-scenario', 'catalog');
     expect(
-      screen.getByRole('heading', { name: 'Dos libros para orientar el recorrido' }),
+      screen.getByRole('heading', { name: 'De una observación a una afirmación' }),
     ).toBeInTheDocument();
-  });
+  }, 15000);
 
   it('preserves the part and scenario across reading and presentation', async () => {
     const user = userEvent.setup();

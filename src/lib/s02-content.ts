@@ -1,3 +1,4 @@
+import type { SessionSlideRole } from './session-openings';
 import type { SlideRailItem } from './slide-rail';
 
 export type S02StationId =
@@ -10,6 +11,7 @@ export type S02Station = {
 };
 
 export type S02Stop = SlideRailItem & {
+  role: SessionSlideRole;
   stationId: S02StationId;
   eyebrow: string;
   intro: string;
@@ -29,17 +31,19 @@ export const s02TeachingStations = s02Stations.filter((station) => station.id !=
 
 export const s02Stops: readonly S02Stop[] = [
   {
-    id: 'references',
+    id: 'opening',
+    role: 'opening',
     stationId: 'references',
-    groupLabel: 'Referencias',
-    title: 'Bibliografía',
-    partLabel: 'Fuentes de la sesión',
+    groupLabel: 'Inicio',
+    title: 'Portada',
+    partLabel: 'La pregunta de la sesión',
     tone: 'transfer',
-    eyebrow: 'Diapositiva 00 · Referencias',
-    intro: 'Fuentes de astronomía, catálogo y métodos que orientan esta sesión.',
+    eyebrow: 'Diapositiva 0 · Portada',
+    intro: 'De una regla sobre los datos a una predicción evaluada.',
   },
   {
     id: 'planet-classification',
+    role: 'content',
     stationId: 'trees',
     groupLabel: 'Árboles',
     title: 'Clasificación',
@@ -50,6 +54,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'rules',
+    role: 'content',
     stationId: 'trees',
     groupLabel: 'Árboles',
     title: 'Árboles de decisión',
@@ -61,6 +66,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'information-gain',
+    role: 'content',
     stationId: 'trees',
     groupLabel: 'Árboles',
     title: 'Información',
@@ -71,6 +77,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'tree-code',
+    role: 'content',
     stationId: 'trees',
     groupLabel: 'Árboles',
     title: 'scikit-learn',
@@ -82,6 +89,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'regression',
+    role: 'content',
     stationId: 'trees',
     groupLabel: 'Árboles',
     title: 'Regresión',
@@ -93,6 +101,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'regression-error',
+    role: 'content',
     stationId: 'trees',
     groupLabel: 'Árboles',
     title: 'Explorar los cortes',
@@ -104,6 +113,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'overfit',
+    role: 'content',
     stationId: 'generalization',
     groupLabel: 'Generalización',
     title: 'Sobreajuste',
@@ -115,6 +125,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'bootstrap',
+    role: 'content',
     stationId: 'ensembles',
     groupLabel: 'Ensambles',
     title: 'Bootstrap',
@@ -126,6 +137,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'forest',
+    role: 'content',
     stationId: 'ensembles',
     groupLabel: 'Ensambles',
     title: 'Random Forest',
@@ -137,6 +149,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'dataset',
+    role: 'content',
     stationId: 'data',
     groupLabel: 'Datos',
     title: 'Actividad',
@@ -148,6 +161,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'data-quality',
+    role: 'content',
     stationId: 'data',
     groupLabel: 'Datos',
     title: 'Procedencia',
@@ -159,6 +173,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'colab-activity',
+    role: 'content',
     stationId: 'colab',
     groupLabel: 'Práctica',
     title: 'Actividad',
@@ -170,6 +185,7 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'limits',
+    role: 'content',
     stationId: 'closing',
     groupLabel: 'Cierre',
     title: 'Interpretación',
@@ -181,9 +197,10 @@ export const s02Stops: readonly S02Stop[] = [
   },
   {
     id: 'sources',
+    role: 'references',
     stationId: 'closing',
     groupLabel: 'Cierre',
-    title: 'Fuentes',
+    title: 'Referencias',
     partLabel: 'Seguir explorando',
     tone: 'transfer',
     eyebrow: 'Estación 6 · subestación 2',

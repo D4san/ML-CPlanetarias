@@ -1,0 +1,72 @@
+---
+import { BookReading } from './react/BookReading';
+import { s00Book } from '../lib/s00-reading';
+import { s01Book } from '../lib/s01-reading';
+import { s02Book } from '../lib/s02-reading';
+import { s03Book } from '../lib/s03-reading';
+import { S03_BIBLIOGRAPHY } from '../lib/s03-content';
+import { s01InstanceTerms, s01Stops } from '../lib/s01-journey';
+import { s00Bibliography } from '../lib/s00-content';
+import { s01Bibliography } from '../lib/pedagogical-content';
+import { referenceHref } from './react/CourseContent';
+import { s02OpeningSources, s02Sources } from '../lib/s02-content';
+
+interface Props {
+  session: 'S00' | 'S01' | 'S02' | 'S03';
+}
+const { session } = Astro.props;
+const book = { S00: s00Book, S01: s01Book, S02: s02Book, S03: s03Book }[session];
+const bibliography =
+  session === 'S00' ? s00Bibliography : session === 'S01' ? s01Bibliography : undefined;
+const referenceItems = bibliography
+  ? bibliography.references.flatMap((reference) => {
+      const href = referenceHref(reference);
+      return href ? [{ label: reference.title, href }] : [];
+    })
+  : session === 'S03'
+    ? S03_BIBLIOGRAPHY.map((source) => ({ label: source.label, href: source.href }))
+    : [...s02OpeningSources, ...s02Sources].map((source) => ({
+        label: source.label,
+        href: source.href,
+      }));
+const anchorForChapter = (id: string) =>
+  session === 'S01'
+    ? `lectura-${s01Stops.find((stop) => stop.id === id)!.hash}`
+    : `${session.toLowerCase()}-reading-${id}`;
+---
+
+<section class="site-shell book-fallback" aria-label={`Libro de ${session} sin JavaScript`}>
+  <p>
+    Lectura sin JavaScript. Los ejemplos resueltos y las respuestas están completos; las figuras
+    interactivas están disponibles al activar JavaScript.
+  </p>
+  {
+    session === 'S00' && (
+      <p class="s00-fallback__status">
+        S00 conserva status: drafting, visibility: internal, publish_ready: false y rights: pending.
+        La lectura no promueve el paquete a contenido público.
+      </p>
+    )
+  }
+  <BookReading
+    book={book}
+    anchorForChapter={anchorForChapter}
+    hashForChapter={anchorForChapter}
+    referenceItems={referenceItems}
+    referenceTitle={bibliography?.title}
+    definitions={session === 'S01'
+      ? s01InstanceTerms.map((term) => ({
+          term: term.label,
+          definition: term.definition,
+        }))
+      : undefined}
+  />
+</section>
+
+<style>
+  .book-fallback {
+    padding: var(--space-6);
+    background: var(--paper-50);
+    color: var(--ink-950);
+  }
+</style>

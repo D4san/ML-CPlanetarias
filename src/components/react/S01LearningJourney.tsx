@@ -17,7 +17,6 @@ import {
   getS01Parts,
   getS01SlideHash,
   getS01SlideIndex,
-  moveS01Slide,
   parseS01SlideHash,
   s01Slides,
   type S01Slide,
@@ -27,6 +26,7 @@ import { ActivitiesView } from './s01/ActivitiesView';
 import { Overview } from './s01/Overview';
 import { ReadingView } from './s01/ReadingView';
 import { SceneForStop } from './s01/SceneForStop';
+import { SessionOpening } from './SessionOpening';
 import { S01Navigation } from './s01/S01Navigation';
 import './s01-learning-journey.css';
 import './s01-pilot.css';
@@ -56,7 +56,8 @@ function S01JourneyContent() {
     scenarioId: defaultRouteId,
   });
   const [partIndex, setPartIndex] = useState(0);
-  const [bibliography, setBibliography] = useState(true);
+  const [bibliography, setBibliography] = useState(false);
+  const [opening, setOpening] = useState(true);
   const [invalidHash, setInvalidHash] = useState(false);
   const [activityResetKey, setActivityResetKey] = useState(0);
   const scenario = getS01Scenario(state.scenarioId);
@@ -64,7 +65,11 @@ function S01JourneyContent() {
   const activeIndex = getS01StopIndex(state.stopId);
   const parts = getS01Parts(state.stopId);
   const pilot = parts.length > 1;
-  const activeSlideIndex = bibliography ? 0 : getS01SlideIndex(state.stopId, partIndex);
+  const activeSlideIndex = opening
+    ? 0
+    : bibliography
+      ? s01Slides.length - 1
+      : getS01SlideIndex(state.stopId, partIndex);
   const availableScenarios = config.s01.enabledRouteIds.map(getS01Scenario);
   const routeText =
     state.stopId === 'signal' && state.signalGuess === null
@@ -99,9 +104,11 @@ function S01JourneyContent() {
               ? 'presentation'
               : config.defaultView;
       dispatch({ type: 'set-display-mode', displayMode });
-      const rawHash = window.location.hash;
-      if (!rawHash || rawHash === '#bibliografia') {
-        setBibliography(true);
+      const rawHash =
+        window.location.hash === '#s01-book-references' ? '#bibliografia' : window.location.hash;
+      if (!rawHash || rawHash === '#portada' || rawHash === '#bibliografia') {
+        setOpening(rawHash !== '#bibliografia');
+        setBibliography(rawHash === '#bibliografia');
         setPartIndex(0);
         dispatch({ type: 'set-scenario', scenarioId: routeId });
         dispatch({ type: 'set-stop', stopId: 'question' });
@@ -110,6 +117,7 @@ function S01JourneyContent() {
         return;
       }
       setBibliography(false);
+      setOpening(false);
       if (rawHash === '#mapa') {
         dispatch({ type: 'set-scenario', scenarioId: routeId });
         setInvalidHash(false);
@@ -156,6 +164,7 @@ function S01JourneyContent() {
 
   function openBibliography() {
     setBibliography(true);
+    setOpening(false);
     setPartIndex(0);
     dispatch({ type: 'set-stop', stopId: 'question' });
     dispatch({ type: 'set-view', view: 'focus' });
@@ -164,6 +173,7 @@ function S01JourneyContent() {
 
   function openStop(stopId: S01StopId, focus = false) {
     setBibliography(false);
+    setOpening(false);
     setPartIndex(0);
     dispatch({ type: 'set-stop', stopId });
     updateHash(getS01SlideHash(stopId, 0));
@@ -176,17 +186,26 @@ function S01JourneyContent() {
     const partsForStop = getS01Parts(state.stopId);
     const nextPartIndex = Math.min(Math.max(partIndex, 0), partsForStop.length - 1);
     setBibliography(false);
+    setOpening(false);
     setPartIndex(nextPartIndex);
     dispatch({ type: 'set-stop', stopId: state.stopId });
     updateHash(getS01SlideHash(state.stopId, nextPartIndex));
   }
 
   function openSlide(slide: S01Slide) {
+    if (slide.role === 'opening') {
+      setOpening(true);
+      setBibliography(false);
+      dispatch({ type: 'set-view', view: 'focus' });
+      updateHash('#portada');
+      return;
+    }
     if (slide.stopId === null) {
       openBibliography();
       return;
     }
     setBibliography(false);
+    setOpening(false);
     setPartIndex(slide.partIndex);
     dispatch({ type: 'set-stop', stopId: slide.stopId });
     dispatch({ type: 'set-view', view: 'focus' });
@@ -194,22 +213,20 @@ function S01JourneyContent() {
   }
 
   function move(delta: -1 | 1) {
-    if (bibliography) {
-      if (delta === 1) openSlide(s01Slides[1]!);
-      return;
-    }
-    const next = moveS01Slide(state.stopId, partIndex, delta);
-    if (next) {
-      openSlide(s01Slides[getS01SlideIndex(next.stopId, next.partIndex)]!);
-    } else if (delta === -1 && state.stopId === 'question' && partIndex === 0) {
-      openBibliography();
-    }
+    const nextIndex = Math.min(Math.max(activeSlideIndex + delta, 0), s01Slides.length - 1);
+    openSlide(s01Slides[nextIndex]!);
   }
 
   function toggleOverview() {
     if (state.view === 'overview') {
       dispatch({ type: 'set-view', view: 'focus' });
-      updateHash(getS01SlideHash(state.stopId, partIndex));
+      updateHash(
+        opening
+          ? '#portada'
+          : bibliography
+            ? '#bibliografia'
+            : getS01SlideHash(state.stopId, partIndex),
+      );
     } else {
       dispatch({ type: 'set-view', view: 'overview' });
       updateHash('#mapa');
@@ -230,6 +247,8 @@ function S01JourneyContent() {
     } else {
       if (explicitReadingMode || leavingActivities) url.searchParams.delete('modo');
       else url.searchParams.set('modo', 'presentacion');
+      if (state.displayMode === 'reading')
+        url.hash = bibliography ? '#bibliografia' : getS01SlideHash(state.stopId, partIndex);
     }
     window.history.pushState(
       historyStateForRoute(state.scenarioId),
@@ -255,7 +274,7 @@ function S01JourneyContent() {
     window.requestAnimationFrame(() => {
       document.getElementById(`lectura-${getS01Stop(stopId).hash}`)?.scrollIntoView?.({
         block: 'start',
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        behavior: 'auto',
       });
     });
   }
@@ -264,15 +283,18 @@ function S01JourneyContent() {
     dispatch({ type: 'reset' });
     dispatch({ type: 'set-scenario', scenarioId: defaultRouteId });
     setPartIndex(0);
-    setBibliography(state.displayMode === 'presentation');
+    setBibliography(false);
+    setOpening(true);
+    dispatch({ type: 'set-display-mode', displayMode: 'presentation' });
     setInvalidHash(false);
     setActivityResetKey((key) => key + 1);
     const url = new URL(window.location.href);
-    url.hash = '';
+    url.hash = 'portada';
+    url.searchParams.delete('modo');
     window.history.replaceState(
       historyStateForRoute(defaultRouteId),
       '',
-      `${url.pathname}${url.search}`,
+      `${url.pathname}${url.search}${url.hash}`,
     );
   }
 
@@ -288,6 +310,7 @@ function S01JourneyContent() {
       data-active-slide={activeSlideIndex}
       data-slide-count={s01Slides.length}
       data-bibliography={bibliography}
+      data-slide-role={opening ? 'opening' : bibliography ? 'references' : 'content'}
       data-interaction-mode={config.interactionMode}
       style={cssState}
       aria-labelledby="s01-journey-title"
@@ -300,6 +323,7 @@ function S01JourneyContent() {
         activeSlideIndex={activeSlideIndex}
         partIndex={partIndex}
         bibliography={bibliography}
+        opening={opening}
         invalidHash={invalidHash}
         pilot={pilot}
         parts={parts}
@@ -321,11 +345,29 @@ function S01JourneyContent() {
         {state.displayMode === 'activities' ? (
           <ActivitiesView key={activityResetKey} onOpenStop={openStopInPresentation} />
         ) : state.displayMode === 'reading' ? (
-          <ReadingView state={state} scenario={scenario} dispatch={dispatch} onJump={jumpReading} />
-        ) : bibliography ? (
-          <SessionBibliography />
+          <ReadingView
+            state={state}
+            scenario={scenario}
+            dispatch={dispatch}
+            onJump={jumpReading}
+            bibliography={bibliography}
+            onReferencesVisible={() => {
+              setOpening(false);
+              setBibliography(true);
+            }}
+            onVisibleChapter={(stopId) => {
+              setOpening(false);
+              setBibliography(false);
+              if (stopId !== state.stopId) setPartIndex(0);
+              dispatch({ type: 'set-stop', stopId });
+            }}
+          />
         ) : state.view === 'overview' ? (
           <Overview scenario={scenario} onOpen={openStop} />
+        ) : opening ? (
+          <SessionOpening session="S01" />
+        ) : bibliography ? (
+          <SessionBibliography />
         ) : (
           <div className="s01-workspace" data-pilot={pilot}>
             {pilot && (

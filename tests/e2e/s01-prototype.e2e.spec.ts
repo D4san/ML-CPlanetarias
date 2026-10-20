@@ -269,14 +269,14 @@ test('offers presentation and linear reading over the same route and stop', asyn
     page.getByRole('heading', { name: 'De una pregunta astronómica a una afirmación con límites' }),
   ).toBeVisible();
 
-  const contents = page.getByRole('navigation', { name: 'Contenido de la lectura' });
-  await contents.getByRole('button', { name: '6. Datos y dominio' }).click();
+  const contents = page.getByRole('navigation', { name: 'Capítulos de S01' });
+  await contents.getByRole('link', { name: 'El dominio conecta entrenamiento y uso' }).click();
   await expect(journey).toHaveAttribute('data-active-stop', 'domain');
   await expect(page).toHaveURL(/\?modo=lectura#dominio$/);
   const tocBox = await contents.boundingBox();
   const domainTitleBox = await page
     .locator('#lectura-dominio')
-    .getByRole('heading', { name: 'Datos y dominio' })
+    .getByRole('heading', { name: 'El dominio conecta entrenamiento y uso' })
     .boundingBox();
   expect(tocBox).not.toBeNull();
   expect(domainTitleBox).not.toBeNull();
@@ -426,9 +426,9 @@ test('gives each S01 part the projection surface', async ({ page }) => {
 });
 
 test('restores a subslide with history and retains it across modes', async ({ page }) => {
-  await page.getByRole('button', { name: 'Siguiente →' }).click();
+  await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await expect(page).toHaveURL(/#pregunta\/salidas$/);
-  await page.getByRole('button', { name: 'Siguiente →' }).click();
+  await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await expect(page).toHaveURL(/#pregunta\/disciplinas$/);
   await page.goBack();
   await expect(
@@ -439,9 +439,9 @@ test('restores a subslide with history and retains it across modes', async ({ pa
   await expect(page).toHaveURL(/#pregunta\/salidas$/);
   await page.getByRole('button', { name: 'Reiniciar' }).click();
   await expect(
-    page.getByRole('heading', { name: 'Dos libros para orientar el recorrido' }),
+    page.getByRole('heading', { name: 'De una observación a una afirmación' }),
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Siguiente →' }).click();
+  await page.getByRole('button', { name: 'Siguiente', exact: true }).click();
   await expect(page).toHaveURL(/#pregunta$/);
 });
 
@@ -510,7 +510,7 @@ test('retains bibliography and conceptual definitions without JavaScript', async
     await expect(
       page.getByRole('heading', { name: 'Dos libros para orientar el recorrido' }),
     ).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Siete decisiones conectadas' })).toBeVisible();
+    await expect(page.locator('.book-fallback #s01-reading-title')).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Objetos del ciclo mínimo' })).toBeVisible();
   } finally {
     await context.close();

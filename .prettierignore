@@ -13,3 +13,6 @@ config/obsidian.local.example.yaml
 docs/**/*.md
 AGENTS.md
 README.md
+
+# Metadatos locales capturados del archivo externo.
+notebooks/*_consulta_*.json

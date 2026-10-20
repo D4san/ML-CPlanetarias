@@ -95,6 +95,7 @@ function PredictionPlot({
   secondThreshold: number | null;
   leaves: Leaf[];
 }) {
+  const residualId = useId();
   const segments = leaves.map((leaf) => ({
     ...leaf,
     x1: mapX(leaf.xStart),
@@ -121,6 +122,11 @@ function PredictionPlot({
         role="img"
         viewBox="0 0 1000 282"
       >
+        <defs>
+          <marker id={residualId} markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6" fill="currentColor" />
+          </marker>
+        </defs>
         <title>El árbol de regresión cambia sus medias al mover los umbrales</title>
         <desc>
           Cada punto P01 a P06 es un dato inventado. Las regiones se separan por umbrales en x. La
@@ -219,6 +225,18 @@ function PredictionPlot({
 
             return (
               <g key={row.id}>
+                {leaf && (
+                  <line
+                    x1={mapX(row.x)}
+                    x2={mapX(row.x)}
+                    y1={mapY(leaf.prediction)}
+                    y2={mapY(row.y)}
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeDasharray="4 3"
+                    markerEnd={`url(#${residualId})`}
+                  />
+                )}
                 <circle
                   className="s02-regression-threshold__point"
                   cx={mapX(row.x)}
@@ -436,6 +454,11 @@ export default function S02RegressionThresholdExplorer() {
           <div className="s02-regression-threshold__score" aria-live="polite" aria-atomic="true">
             <span>{secondLevel ? 'SSE con dos niveles' : 'SSE de este corte'}</span>
             <strong>{formatNumber(currentSse)}</strong>
+            <span>
+              MSE = SSE / {regressionObservations.length} ={' '}
+              {formatNumber(currentSse / regressionObservations.length)}
+            </span>
+            <span>Flechas: residuo eᵢ = yᵢ − ŷ de su hoja.</span>
             <small>
               {secondLevel
                 ? `Raíz sola: ${formatNumber(rootSse)} · mejor segundo corte: ${formatNumber(bestSecond?.sse ?? currentSse)} en x ≤ ${formatNumber(bestSecond?.threshold ?? secondThreshold ?? rootThreshold, 1)}.`

@@ -2,7 +2,7 @@
 
 ## Propósito del repositorio
 
-Este repositorio aterriza el curso **ML Ciencias Planetarias** en material reproducible: notas publicables, notebooks, ejercicios, gráficos originales, código y una futura página web.
+Este repositorio aterriza el curso **ML Ciencias Planetarias** en material reproducible: notas publicables, notebooks, ejercicios, gráficos originales, código y el sitio web educativo del curso.
 
 El repositorio es un proyecto agéntico independiente del vault de Obsidian. Su contexto de origen está descrito en `docs/architecture/OBSIDIAN_BRIDGE.md`.
 
@@ -17,7 +17,7 @@ El repositorio es un proyecto agéntico independiente del vault de Obsidian. Su 
 
 ## Producto final del curso
 
-Este repo no es solo un almacén de notebooks: debe convertirse en un sitio web educativo del curso, potencialmente publicado con GitHub Pages. La infraestructura web vigente está decidida en `docs/architecture/decisions/ADR-0001-site-stack.md`: Astro estático con React para islas interactivas. Esta decisión no define remoto, URL, licencia ni publicación; esos aspectos siguen abiertos y no deben inventarse.
+Este repo no es solo un almacén de notebooks: debe convertirse en un sitio web educativo del curso, potencialmente publicado con GitHub Pages. La infraestructura web vigente está decidida en `docs/architecture/decisions/ADR-0001-site-stack.md`: Astro estático con React para islas interactivas. La configuración y disponibilidad actuales se documentan en README y QUALITY_AND_RELEASE; la licencia y autorización editorial se revisan por separado.
 
 La web deberá poder ofrecer, de forma navegable y reutilizable:
 
@@ -48,7 +48,8 @@ El `inbox/` puede contener el diseño teórico detallado que alimenta la web, pe
 5. Si la tarea devuelve observaciones al vault, leer `outbox/README.md`.
 6. Para trabajo web, leer la ADR activa y el protocolo pertinente de `docs/protocols/`.
 7. Para crear o revisar una página interactiva, usar la skill local `$develop-mlcp-web`.
-8. Para escribir o revisar código que el estudiante leerá o ejecutará, seguir `docs/protocols/PEDAGOGICAL_CODE.md`.
+8. Para abrir, cerrar o navegar una presentación, seguir la ADR-0003 y reutilizar portada/controles comunes.
+9. Para escribir o revisar código que el estudiante leerá o ejecutará, seguir `docs/protocols/PEDAGOGICAL_CODE.md`.
 
 ## Fuentes de verdad
 

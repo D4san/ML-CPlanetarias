@@ -1,0 +1,122 @@
+.s03-paper-figure {
+  display: grid;
+  align-content: start;
+  gap: 0.42rem;
+  min-width: 0;
+  margin: 0;
+}
+
+.s03-paper-figure__zoom-trigger {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  min-height: 10rem;
+  align-content: center;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgb(239 244 246 / 0.5);
+  border-radius: 0.55rem;
+  background: #f4f6f7;
+  cursor: zoom-in;
+}
+
+.s03-paper-figure--white .s03-paper-figure__zoom-trigger,
+.s03-paper-figure--white .s03-paper-figure__zoom-trigger img,
+.s03-paper-figure--white .s03-paper-figure__full-image {
+  background: #fff;
+}
+
+.s03-paper-figure--white .s03-paper-figure__zoom-trigger {
+  border-color: rgb(255 255 255 / 0.8);
+}
+
+.s03-paper-figure__zoom-trigger img {
+  display: block;
+  width: 100%;
+  height: clamp(12rem, 33vh, 24rem);
+  object-fit: contain;
+}
+
+.s03-paper-figure--portrait .s03-paper-figure__zoom-trigger img {
+  height: clamp(15rem, 38vh, 28rem);
+}
+
+.s03-paper-figure--wide .s03-paper-figure__zoom-trigger img {
+  height: clamp(12rem, 30vh, 21rem);
+}
+
+.s03-paper-figure__zoom-hint {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0.55rem;
+  padding: 0.25rem 0.45rem;
+  border-radius: 0.25rem;
+  color: #f7fbfc;
+  background: rgb(5 23 31 / 0.85);
+  font-size: 0.78em;
+}
+
+.s03-paper-figure figcaption {
+  display: grid;
+  gap: 0.3rem;
+  color: var(--paper-200);
+  font-size: max(13px, 0.8em);
+  line-height: 1.38;
+}
+
+.s03-paper-figure figcaption p {
+  margin: 0;
+}
+
+.s03-paper-figure figcaption a,
+.s03-paper-figure__citation a {
+  color: #a8e9ef;
+  text-underline-offset: 0.18em;
+}
+
+.s03-paper-figure__dialog {
+  width: min(96vw, 92rem);
+  max-height: 94vh;
+}
+
+.s03-paper-figure__dialog .s03-info-dialog__panel {
+  gap: 0.65rem;
+}
+
+.s03-paper-figure__dialog-reading,
+.s03-paper-figure__citation {
+  margin: 0;
+}
+
+.s03-paper-figure__full-image {
+  display: block;
+  width: 100%;
+  max-height: 68vh;
+  object-fit: contain;
+  background: #f4f6f7;
+}
+
+.s03-paper-figure__citation {
+  font-size: max(13px, 0.82em);
+}
+
+@media (max-width: 48rem) {
+  .s03-paper-figure__zoom-trigger img,
+  .s03-paper-figure--wide .s03-paper-figure__zoom-trigger img {
+    height: clamp(10rem, 34vh, 18rem);
+  }
+
+  .s03-paper-figure--portrait .s03-paper-figure__zoom-trigger img {
+    height: clamp(14rem, 48vh, 24rem);
+  }
+
+  .s03-paper-figure__dialog {
+    width: calc(100vw - 1rem);
+    max-height: 96vh;
+  }
+
+  .s03-paper-figure__full-image {
+    max-height: 62vh;
+  }
+}

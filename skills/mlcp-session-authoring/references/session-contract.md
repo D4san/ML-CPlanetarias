@@ -7,7 +7,8 @@ Este resumen sirve para preparar contenido. La decisión normativa es [ADR-0002]
 ```text
 curso mlcp
 └── sesión S01
-    ├── bibliografía: diapositiva 0
+    ├── portada: diapositiva 0
+    ├── bibliografía: última diapositiva
     └── estaciones en orden
         └── unidades explicativas en orden
             ├── ejemplos por ID
@@ -77,3 +78,6 @@ Una laguna conserva la paráfrasis provisional si es útil para la preparación,
 ## Frontera editorial
 
 `inbox/` es material de trabajo. Un paquete `drafting`, `internal` o `publish_ready: false` puede orientar un fixture o una revisión, pero no debe entrar al build ni presentarse como aprobado. Antes de promover un tramo a `docs/content/` deben coincidir procedencia portable, derechos, revisión de contenido, representación pública autorizada y `publish_ready: true`. La skill registra estas condiciones; no cambia sus estados.
+
+
+Portada → contenido → cierre → referencias; véase ADR-0003. Si una unidad incluye cálculo, documentar ejemplo trabajado, valores intermedios esperados y transición a exploración.

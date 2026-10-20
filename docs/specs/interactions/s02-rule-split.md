@@ -130,7 +130,7 @@ La escena muestra una comparación local de divisiones. No garantiza que el árb
 
 ## Matriz mínima de revisión
 
-- [ ] El carril abre en la bibliografía `00` y conserva números estación.subestación a continuación.
+- [ ] El carril abre en la portada `0` y termina en referencias y conserva números estación.subestación a continuación.
 - [ ] La galería presenta los cuatro ejemplos, sus medidas y sus etiquetas; «Clasificar» abre el árbol con la ruta puffy resaltada y elegir cada caso actualiza su ruta sin un botón adicional.
 - [ ] Cada caso termina en su hoja didáctica esperada y el texto explica la ruta; se recuerda que los umbrales son de juguete y «puffy» es un descriptor contextual.
 - [ ] El acceso general a Colab aparece en una diapositiva final de la práctica; la cabecera queda despejada.
@@ -147,3 +147,6 @@ La escena muestra una comparación local de divisiones. No garantiza que el árb
 - [ ] La ficha de hiperparámetros enlaza los nombres del código con el explorador y aclara que este usa un CART didáctico.
 - [ ] Las etiquetas, unidades, límites y alternativas textuales siguen visibles con teclado y móvil.
 - [ ] La página interna mantiene su procedencia y estado; no promueve el paquete desde `inbox/`.
+
+
+Actualización I03 / ADR-0003: portada 0, contenido y cierre, referencias al final; controles globales visibles y pasos locales diferenciados.

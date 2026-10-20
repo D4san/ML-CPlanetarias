@@ -2190,8 +2190,8 @@ button.s01-algorithm-tree__task:focus-visible {
    while compact instrument labels retain a secondary hierarchy. */
 .s01-journey[data-display-mode='presentation'] {
   --s01-projection-body: clamp(1rem, 0.82rem + 0.25vw, 1.16rem);
-  --s01-projection-small: clamp(0.76rem, 0.67rem + 0.15vw, 0.88rem);
-  --s01-projection-control: clamp(0.9rem, 0.78rem + 0.18vw, 1rem);
+  --s01-projection-small: clamp(var(--presentation-metadata-size), 0.67rem + 0.15vw, 0.88rem);
+  --s01-projection-control: clamp(var(--presentation-control-size), 0.78rem + 0.18vw, 1rem);
 }
 
 .s01-journey[data-display-mode='presentation']
@@ -2274,6 +2274,16 @@ button.s01-algorithm-tree__task:focus-visible {
 .s01-journey[data-display-mode='presentation'] .s01-formal-map__signal > p,
 .s01-journey[data-display-mode='presentation'] .s01-domain-controls li {
   font-size: var(--s01-projection-small);
+}
+
+.s01-journey[data-display-mode='presentation'] .s01-formal-node small,
+.s01-journey[data-display-mode='presentation'] .s01-formal-node > span:last-child,
+.s01-journey[data-display-mode='presentation'] .s01-formal-map__signal > p {
+  max-width: 100%;
+  min-width: 0;
+  font-size: var(--presentation-control-size);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 @media (min-width: 80rem) and (orientation: landscape) {
@@ -2568,6 +2578,16 @@ button.s01-algorithm-tree__task:focus-visible {
 
   .s01-journey[data-display-mode='presentation'] .s01-scene svg text {
     font-size: 16px;
+  }
+
+  .s01-journey[data-display-mode='presentation'] .s01-scene--signal .s01-signal-trunk circle {
+    transform: scale(1.28);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .s01-journey[data-display-mode='presentation'] .s01-scene--signal .s01-signal-trunk text {
+    font-size: 16px !important;
   }
 
   .s01-journey[data-display-mode='presentation']

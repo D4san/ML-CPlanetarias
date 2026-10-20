@@ -1,7 +1,7 @@
 ---
+import SessionBookFallback from './SessionBookFallback.astro';
 import S01LearningJourney from './react/S01LearningJourney';
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { s01InstanceTerms, s01Lenses, s01Outcomes, s01Stops } from '../lib/s01-journey';
 ---
 
 <SiteLayout
@@ -16,73 +16,7 @@ import { s01InstanceTerms, s01Lenses, s01Outcomes, s01Stops } from '../lib/s01-j
       <S01LearningJourney client:load />
     </section>
 
-    <noscript>
-      <section class="site-shell s01-fallback" aria-labelledby="s01-fallback-title">
-        <p class="eyebrow">Sesión 1 · lectura lineal</p>
-        <h2 id="s01-fallback-title">Siete decisiones conectadas</h2>
-        <ol>
-          {
-            s01Stops.map((stop) => (
-              <li>
-                <h3>{stop.title}</h3>
-                <p>
-                  <strong>La ruta llega aquí:</strong> {stop.arrival}
-                </p>
-                <p>{stop.explanation}</p>
-                <p>
-                  <strong>Esto nos lleva a:</strong> {stop.next}
-                </p>
-              </li>
-            ))
-          }
-        </ol>
-        <div class="s01-fallback-definitions">
-          <section aria-labelledby="s01-fallback-uses">
-            <h3 id="s01-fallback-uses">¿Qué podemos hacer con una observación?</h3>
-            <dl>
-              {
-                s01Outcomes.map((outcome) => (
-                  <div>
-                    <dt>{outcome.label}</dt>
-                    <dd>{outcome.definition}</dd>
-                  </div>
-                ))
-              }
-            </dl>
-          </section>
-          <section aria-labelledby="s01-fallback-lenses">
-            <h3 id="s01-fallback-lenses">¿Qué aporta cada disciplina?</h3>
-            <dl>
-              {
-                s01Lenses.map((lens) => (
-                  <div>
-                    <dt>{lens.label}</dt>
-                    <dd>
-                      <strong>{lens.question}</strong> {lens.text}
-                    </dd>
-                  </div>
-                ))
-              }
-            </dl>
-          </section>
-          <section aria-labelledby="s01-fallback-cycle">
-            <h3 id="s01-fallback-cycle">Objetos del ciclo mínimo</h3>
-            <dl>
-              {
-                s01InstanceTerms.map((term) => (
-                  <div>
-                    <dt>
-                      {term.label} · <code>{term.notation}</code>
-                    </dt>
-                    <dd>{term.definition}</dd>
-                  </div>
-                ))
-              }
-            </dl>
-          </section>
-        </div>
-      </section>
-    </noscript>
+    <noscript><SessionBookFallback session="S01" /></noscript>
 
     <details class="site-shell s01-version-note">
       <summary>Estado y procedencia</summary>

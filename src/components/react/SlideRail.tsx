@@ -1,4 +1,4 @@
-import { useRef, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
+import { useEffect, useRef, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
 
 import {
   getSlideRailStackOrder,
@@ -62,6 +62,18 @@ export default function SlideRail<T extends SlideRailItem>({
   className,
 }: SlideRailProps<T>) {
   const slideButtons = useRef<Array<HTMLButtonElement | null>>([]);
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function' || !window.matchMedia('(max-width: 48rem)').matches)
+      return;
+    const button = slideButtons.current[activeIndex];
+    const list = button?.closest('ol');
+    if (list && typeof list.scrollTo === 'function')
+      list.scrollTo({
+        left: Math.max(0, (button?.parentElement?.offsetLeft ?? 0) - 8),
+        behavior: 'auto',
+      });
+  }, [activeIndex]);
 
   if (slides.length === 0) return null;
 

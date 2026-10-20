@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import S02Math from './S02Math';
 
 type Observation = { id: string; x: number; y: number };
@@ -63,6 +64,7 @@ function RegressionPlot({
   const rightMeanY = mapY(rightMean);
   const stepPath = `M ${plot.left} ${leftMeanY} H ${splitX} V ${rightMeanY} H ${plot.right}`;
 
+  const residualId = useId();
   return (
     <figure className="s02-regression__figure">
       <figcaption>Una hoja guarda una predicción para toda su región.</figcaption>
@@ -78,6 +80,11 @@ function RegressionPlot({
           muestra las medias 1,5 y 13,5 que predice el árbol con el corte x menor o igual que 2,5.
           Una línea discontinua marca la mediana 8,5 del grupo derecho.
         </desc>
+        <defs>
+          <marker id={residualId} markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6" fill="currentColor" />
+          </marker>
+        </defs>
         <g aria-hidden="true">
           <rect
             className="s02-regression__region s02-regression__region--left"
@@ -162,6 +169,16 @@ function RegressionPlot({
           <path className="s02-regression__step" d={stepPath} />
           {regressionObservations.map((item, index) => (
             <g key={item.id}>
+              <line
+                x1={mapX(item.x)}
+                x2={mapX(item.x)}
+                y1={mapY(item.x <= threshold ? leftMean : rightMean)}
+                y2={mapY(item.y)}
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeDasharray="4 3"
+                markerEnd={`url(#${residualId})`}
+              />
               <circle className="s02-regression__point" cx={mapX(item.x)} cy={mapY(item.y)} r="7" />
               <text
                 className="s02-regression__point-label"
