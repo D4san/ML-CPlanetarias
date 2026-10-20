@@ -334,7 +334,13 @@ export default function S03LearningJourney() {
                 </span>
               </header>
             )}
-            <div className="s03-scene" key={screen.id}>
+            <div
+              className="s03-scene"
+              key={screen.id}
+              role="region"
+              aria-label={`Contenido visual de ${screen.title}`}
+              tabIndex={0}
+            >
               <S03Scene screen={screen} />
             </div>
             {screen.role === 'content' && (

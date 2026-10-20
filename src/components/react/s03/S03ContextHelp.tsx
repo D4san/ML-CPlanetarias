@@ -369,13 +369,13 @@ export default function S03ContextHelp({ sceneId }: { sceneId: string }) {
   if (!sceneTermIds.length) return null;
   const labels = sceneTermIds.map((id) => terms[id].title).join(', ');
   return (
-    <aside className="s03-context-help" aria-label={`Ayudas de concepto: ${labels}`}>
+    <div className="s03-context-help" role="group" aria-label={`Ayudas de concepto: ${labels}`}>
       <span className="s03-context-help__label">Conceptos</span>
       <div className="s03-context-help__items">
         {sceneTermIds.map((termId) => (
           <HelpButton key={termId} termId={termId} />
         ))}
       </div>
-    </aside>
+    </div>
   );
 }

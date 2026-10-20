@@ -70,7 +70,10 @@ test('el control de limbo modifica el disco estelar y la curva en la pantalla 1.
   await expect(geometry.locator('.s03-transit__live-summary')).toHaveCount(0);
   await expect(geometry.locator('.s03-transit__curve-figure figcaption')).toHaveCount(0);
 
-  const limbToggle = geometry.getByRole('button', { name: 'Oscurecimiento al limbo' });
+  const limbToggle = geometry.getByRole('button', {
+    name: 'Oscurecimiento al limbo',
+    exact: true,
+  });
   await expect(limbToggle).toHaveAttribute('aria-pressed', 'false');
   await limbToggle.click();
   await expect(projection).toHaveAttribute('data-profile', 'linear-limb-darkening');
@@ -211,6 +214,7 @@ test('S03 abre enlaces, alterna lectura y actividades y conserva la unidad', asy
   await expect(page.locator('#s03-screen-title')).toHaveText(
     'De las predicciones PC, ¿cuántas coinciden?',
   );
+  await page.locator('.s03-navigation-disclosure > summary').click();
   await page.getByRole('button', { name: 'Lectura', exact: true }).click();
   await expect(page.locator('.book-chapter')).toHaveCount(9);
   await expect(page.locator('.book-example')).toHaveCount(9);

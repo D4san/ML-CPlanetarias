@@ -41,6 +41,10 @@ test('la variabilidad estelar respeta movimiento reducido y mantiene el control 
     .not.toBe(initialPhase);
 
   await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await expect(scene.getByRole('button', { name: 'Pausar giro' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(scene.getByRole('button', { name: 'Reanudar giro' })).toHaveAttribute(
     'aria-pressed',
@@ -75,6 +79,10 @@ test('la binaria respeta movimiento reducido y permite iniciar la órbita manual
   await expect(curve).toHaveAttribute('data-phase', (await orbit.getAttribute('data-phase'))!);
 
   await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await expect(scene.getByRole('button', { name: 'Pausar órbita' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(scene.getByRole('button', { name: 'Reanudar órbita' })).toHaveAttribute(
     'aria-pressed',
