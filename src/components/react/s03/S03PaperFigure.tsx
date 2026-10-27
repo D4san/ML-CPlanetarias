@@ -22,7 +22,7 @@ const figures = {
     image: '/images/s03/paper-fig-06.svg',
     alt: 'Figura 6 del artículo: curvas precision–recall que comparan modelos lineal, totalmente conectado y convolucional.',
     reading:
-      'Cada curva muestra el intercambio entre recuperar más señales PC y mantener precision alta al cambiar el umbral. En el test del estudio, la CNN alcanza recall 0,95 con precision 0,90 en un punto de operación.',
+      'En las 1.523 señales de prueba, la red convolucional presenta el mejor desempeño general. En un punto de su curva recupera el 95 % de las candidatas de referencia y el 90 % de las señales que selecciona coincide con esa referencia.',
   },
   8: {
     image: '/images/s03/paper-fig-08.png',

@@ -12,12 +12,6 @@ type VocabularyTerm = 'TCE' | 'PC' | 'AFP' | 'NTP' | 'FP';
 const preparationFields = [
   { symbol: 't', label: 'Tiempo', description: 'cuándo se hizo la medición' },
   { symbol: 'F(t)', label: 'Flujo', description: 'brillo de la estrella registrado' },
-  { symbol: 'σ', label: 'Incertidumbre', description: 'margen estimado del flujo' },
-  {
-    symbol: 'q',
-    label: 'Calidad',
-    description: 'bandera SAP_QUALITY de la cadencia, no una medida de brillo',
-  },
 ];
 
 const classificationSignals = [
@@ -1375,63 +1369,48 @@ function ClassificationTask() {
 }
 
 function BinaryInputOutput() {
-  const [mode, setMode] = useState<'training' | 'inference'>('training');
+  const [mode, setMode] = useState<'training' | 'evaluation'>('training');
   const panelId = `s03-binary-flow-${useId().replaceAll(':', '')}`;
   return (
     <section
       className="s03-science__input-output"
-      aria-label="Entrenamiento e inferencia de un clasificador de señales"
+      aria-label="Entrenamiento y evaluación de un clasificador de señales"
     >
-      <p className="s03-science__study-lead">
-        <strong>Datos de partida.</strong> El catálogo Autovetter de Kepler aportó 15 737 señales
-        etiquetadas; se excluyeron las de clase desconocida (UNK).
+      <p className="s03-science__task-intro">
+        Una caída de brillo con forma de tránsito puede tener causas distintas. El estudio pregunta
+        si una CNN puede separar los TCE que el catálogo clasifica como candidatos planetarios de
+        los que clasifica como no planetarios.
       </p>
-      <section
-        className="s03-science__catalog-labels"
-        aria-label="Etiquetas del catálogo Autovetter de Kepler"
-      >
-        <div className="s03-science__catalog-heading">
-          <strong>Qué significaba cada etiqueta</strong>
-          <span>PC fue positiva · AFP y NTP se agruparon como negativas</span>
-        </div>
-        <div className="s03-science__catalog-grid">
-          <div className="s03-science__catalog-card" data-tone="candidate">
-            <p>
-              <b>PC</b>
-              <span>Planet Candidate</span>
-              <strong>3 600</strong>
-            </p>
-            <h3>Candidata a planeta</h3>
-            <p>El catálogo la marcó como posible planeta; aún requiere confirmación.</p>
-          </div>
-          <div className="s03-science__catalog-card" data-tone="astrophysical">
-            <p>
-              <b>AFP</b>
-              <span>Astrophysical False Positive</span>
-              <strong>9 596</strong>
-            </p>
-            <h3>Falso positivo astrofísico</h3>
-            <p>Otro fenómeno astronómico imita un tránsito, por ejemplo, una binaria eclipsante.</p>
-          </div>
-          <div className="s03-science__catalog-card" data-tone="non-transit">
-            <p>
-              <b>NTP</b>
-              <span>Non-Transiting Phenomenon</span>
-              <strong>2 541</strong>
-            </p>
-            <h3>Fenómeno no transitorio</h3>
-            <p>La señal detectada no corresponde a un tránsito planetario.</p>
-          </div>
-        </div>
-        <p className="s03-science__catalog-note">
-          El catálogo combinó revisión manual y otros diagnósticos; los autores detectaron algunas
-          etiquetas erróneas.
+      <details className="s03-science__autovetter-help">
+        <summary>¿Qué era Autovetter?</summary>
+        <p>
+          Autovetter fue un proyecto de aprendizaje automático de Kepler: clasificaba TCE en tres
+          grupos con un bosque aleatorio y rasgos derivados sobre todo del pipeline. La CNN de este
+          artículo es otro modelo: analiza directamente curvas de luz y aprende de las etiquetas de
+          referencia del catálogo.
         </p>
-      </section>
+      </details>
+      <aside
+        className="s03-science__dataset-note"
+        aria-label="Alcance y límites del conjunto de datos"
+      >
+        <strong>El catálogo es una referencia, no una verdad física</strong>
+        <p>
+          El estudio reunió 15 737 TCE etiquetados de Kepler Q1–Q17 DR24 y excluyó los casos UNK.
+          Las etiquetas proceden de revisión manual y otros diagnósticos; los autores encontraron
+          algunas mal asignadas. La evaluación mide acuerdo con esa referencia, no planetas
+          confirmados.
+        </p>
+      </aside>
+      <p className="s03-science__binary-lead">
+        El entrenamiento ajusta la red con ejemplos etiquetados; la validación ayuda a elegir la
+        configuración y un conjunto de prueba reservado estima su desempeño. Aquí comparamos el
+        ajuste con la evaluación; la partición exacta se retoma al presentar los ejemplos del test.
+      </p>
       <div
         className="s03-science__toggle"
         role="group"
-        aria-label="Cambiar entre entrenamiento e inferencia"
+        aria-label="Cambiar entre entrenamiento y evaluación"
       >
         <button
           type="button"
@@ -1443,11 +1422,11 @@ function BinaryInputOutput() {
         </button>
         <button
           type="button"
-          aria-pressed={mode === 'inference'}
+          aria-pressed={mode === 'evaluation'}
           aria-controls={panelId}
-          onClick={() => setMode('inference')}
+          onClick={() => setMode('evaluation')}
         >
-          Inferencia
+          Evaluación
         </button>
       </div>
       <div id={panelId} className="s03-science__binary-panel" aria-live="polite" aria-atomic="true">
@@ -1455,49 +1434,49 @@ function BinaryInputOutput() {
           {mode === 'training' ? (
             <>
               <div data-tone="data">
-                <span>1 · Señal ya revisada</span>
-                <strong>Curva de luz + etiqueta del catálogo</strong>
-                <p>PC: candidata · AFP/NTP: clases negativas</p>
+                <span>1 · Ejemplo etiquetado</span>
+                <strong>TCE + referencia del catálogo</strong>
+                <p>La respuesta esperada es conocida durante el ajuste.</p>
               </div>
               <span aria-hidden="true">→</span>
               <div data-tone="model">
-                <span>2 · El modelo calcula</span>
+                <span>2 · La CNN calcula</span>
                 <strong>Un puntaje para la clase candidata</strong>
-                <p>Compara su salida con la etiqueta conocida</p>
+                <p>El puntaje se compara con la referencia disponible.</p>
               </div>
               <span aria-hidden="true">→</span>
               <div data-tone="decision">
                 <span>3 · Ajuste</span>
-                <strong>Modifica sus parámetros</strong>
-                <p>Aprende de las diferencias en los ejemplos</p>
+                <strong>Reduce el error de aprendizaje</strong>
+                <p>La entropía cruzada mide el error; Adam ajusta los parámetros para reducirlo.</p>
               </div>
             </>
           ) : (
             <>
               <div data-tone="data">
-                <span>1 · Señal nueva</span>
-                <strong>Una curva sin etiqueta conocida</strong>
-                <p>El modelo recibe la señal preparada</p>
+                <span>1 · Señales reservadas</span>
+                <strong>TCE que no ajustaron la red</strong>
+                <p>Sus etiquetas quedan disponibles para medir el desempeño.</p>
               </div>
               <span aria-hidden="true">→</span>
               <div data-tone="model">
-                <span>2 · Modelo entrenado</span>
-                <strong>Calcula un puntaje de candidatura</strong>
-                <p>Usa los parámetros aprendidos</p>
+                <span>2 · Modelo ya ajustado</span>
+                <strong>Calcula puntajes sin cambiar sus parámetros</strong>
+                <p>La evaluación no usa estos ejemplos para volver a entrenar.</p>
               </div>
               <span aria-hidden="true">→</span>
               <div data-tone="decision">
-                <span>3 · Predicción</span>
-                <strong>Compara s con un umbral</strong>
-                <p>El resultado es candidata o no candidata, según el umbral elegido</p>
+                <span>3 · Comparación</span>
+                <strong>Predicción frente a referencia</strong>
+                <p>Los acuerdos y errores alimentan las métricas de desempeño.</p>
               </div>
             </>
           )}
         </div>
         <p className="s03-science__binary-outcome">
           {mode === 'training'
-            ? 'La red aprende a reproducir las etiquetas del catálogo, incluidas sus posibles imperfecciones.'
-            : 'El puntaje ayuda a priorizar la revisión; por sí solo no confirma un planeta.'}
+            ? 'Entrenar significa ajustar la red para reproducir las referencias del catálogo.'
+            : 'Evaluar significa medir el acuerdo en señales reservadas; no confirma por sí solo un planeta.'}
         </p>
       </div>
     </section>
@@ -1644,7 +1623,7 @@ function Preparation() {
         <li className="s03-science__prep-step">
           <span className="s03-science__prep-number">01</span>
           <h3>¿Qué mide cada punto?</h3>
-          <p>Kepler observa la misma estrella en muchas cadencias, una medición por instante.</p>
+          <p>Una curva de luz reúne mediciones de la misma estrella en distintos instantes.</p>
           <dl className="s03-science__prep-fields">
             {preparationFields.map((field) => (
               <div key={field.symbol}>
@@ -1658,29 +1637,26 @@ function Preparation() {
         </li>
         <li className="s03-science__prep-step">
           <span className="s03-science__prep-number">02</span>
-          <h3>Aplanar sin borrar el tránsito</h3>
+          <h3>Preparar la curva sin borrar la señal</h3>
           <p>
-            Para cada TCE, retiran los tránsitos de otros planetas confirmados. Luego estiman la
-            tendencia lenta <code>B(t)</code> con una spline: ocultan las mediciones del tránsito
-            buscado durante el ajuste y las interpolan, para que la tendencia no lo aplaste. Dividen
-            el flujo por <code>B(t)</code> (<code>F(t) / B(t)</code>) y retiran puntos que se alejan
-            más de 3σ del ajuste.
+            La curva puede incluir cambios lentos del brillo y tránsitos de otros planetas
+            conocidos. El estudio aparta esos tránsitos y reduce las variaciones lentas para
+            destacar la señal que quiere analizar.
           </p>
         </li>
         <li className="s03-science__prep-step">
           <span className="s03-science__prep-number">03</span>
-          <h3>Alinear y resumir los ciclos</h3>
+          <h3>Comparar las repeticiones</h3>
           <p>
-            Usan el período del TCE para plegar la curva: cada repetición cae en la misma fase.
-            Agrupan mediciones en bins, calculan la mediana de cada uno y normalizan la curva a
-            mediana 0 y mínimo −1. Así crean vectores comparables para las vistas global y local que
-            veremos enseguida.
+            El período de la señal permite alinear cada tránsito repetido en el mismo punto del
+            ciclo. Luego el estudio resume la curva en dos escalas: el ciclo completo y un
+            acercamiento al tránsito. La siguiente pantalla compara ambas vistas.
           </p>
         </li>
       </ol>
       <p className="s03-science__source-note">
-        El clasificador recibe esta representación preparada; cada decisión puede conservar o borrar
-        un rasgo de la señal.
+        La CNN recibe una representación preparada, no la curva en bruto. Estas decisiones influyen
+        en qué rasgos de la señal quedan visibles.
       </p>
     </section>
   );
@@ -1758,144 +1734,163 @@ function FoldedViews() {
 }
 
 function CnnScore() {
-  const [stage, setStage] = useState<'training' | 'inference'>('training');
-  const reflectionId = useId().replaceAll(':', '');
   return (
-    <section className="s03-science__cnn" aria-label="Representaciones, CNN y puntaje">
-      <div className="s03-science__toggle" role="group" aria-label="Etapa de uso del modelo">
-        <button
-          type="button"
-          aria-pressed={stage === 'training'}
-          onClick={() => setStage('training')}
+    <section className="s03-science__cnn" aria-label="Arquitectura de la CNN de dos vistas">
+      <figure className="s03-science__cnn-architecture">
+        <div
+          className="s03-cnn-diagram"
+          role="group"
+          aria-label="La vista global y la vista local pasan por ramas convolucionales separadas. Sus rasgos se combinan en capas densas que producen el puntaje s."
         >
-          Entrenamiento
-        </button>
-        <button
-          type="button"
-          aria-pressed={stage === 'inference'}
-          onClick={() => setStage('inference')}
-        >
-          Inferencia
-        </button>
-      </div>
-      <div className="s03-science__cnn-flow" aria-live="polite">
-        <div>
-          <span>Global + local</span>
-          <strong>dos vistas</strong>
-        </div>
-        <span aria-hidden="true">→</span>
-        <div>
-          <span>Red convolucional</span>
-          <strong>{stage === 'training' ? 'ajusta filtros' : 'combina patrones'}</strong>
-        </div>
-        <span aria-hidden="true">→</span>
-        <div>
-          <span>Salida</span>
-          <strong>puntaje s</strong>
-        </div>
-      </div>
-      <p>
-        {stage === 'training'
-          ? 'La etiqueta de referencia guía el ajuste del modelo. Al invertir el orden de los bins, la señal conserva su clase: PC sigue siendo PC y una señal no planetaria sigue siendo no planetaria.'
-          : 'La inferencia entrega el puntaje. No se interpreta como probabilidad calibrada sin una prueba de calibración.'}
-      </p>
-      {stage === 'training' && (
-        <section
-          className="s03-science__cnn-augmentation"
-          aria-label="Reflejo horizontal durante el entrenamiento"
-        >
-          <div className="s03-science__cnn-augmentation-heading">
-            <p className="s03-science__folded-kicker">AUMENTACIÓN · SOLO EN ENTRENAMIENTO</p>
-            <h3>Reflejar invierte el orden de los bins</h3>
+          <div className="s03-cnn-diagram__view s03-cnn-diagram__view--global">
+            <div className="s03-cnn-diagram__view-heading">
+              <strong>Vista global</strong>
+              <span>ciclo orbital · 2 001 valores</span>
+            </div>
+            <svg viewBox="0 0 180 48" aria-hidden="true">
+              <path d="M4 15H36C41 15 42 25 48 25S55 15 62 15H91C98 15 100 20 106 20S114 15 120 15H137C143 15 144 31 151 31S159 15 166 15H176" />
+              <path className="s03-cnn-diagram__sparkline-detail" d="M4 39H176" />
+            </svg>
           </div>
-          <figure className="s03-science__cnn-augmentation-figure">
-            <svg
-              viewBox="0 0 740 166"
-              preserveAspectRatio="none"
-              role="img"
-              aria-labelledby={`${reflectionId}-title ${reflectionId}-description`}
-            >
-              <title id={`${reflectionId}-title`}>
-                Reflejo horizontal de una curva de tránsito
-              </title>
-              <desc id={`${reflectionId}-description`}>
-                Esquema de una curva y su reflejo superpuestos: se invierte el orden horizontal de
-                los bins, el tránsito sigue en fase cero y ambas entradas conservan la etiqueta PC.
-              </desc>
-              <rect
-                className="s03-science__cnn-augmentation-panel"
-                x="8"
-                y="8"
-                width="724"
-                height="148"
-                rx="8"
-              />
-              <line
-                className="s03-science__cnn-augmentation-axis"
-                x1="24"
-                y1="76"
-                x2="716"
-                y2="76"
-              />
-              <line
-                className="s03-science__cnn-augmentation-center"
-                x1="370"
-                y1="32"
-                x2="370"
-                y2="132"
-              />
-              <path
-                className="s03-science__cnn-augmentation-curve"
-                d="M24 76 H250 C280 76 305 77 320 87 C336 98 345 121 357 132 C367 139 385 139 398 136 C418 133 431 129 446 120 C461 111 476 95 490 82 C500 76 510 76 530 76 H716"
-              />
-              <g transform="translate(740 0) scale(-1 1)">
-                <path
-                  className="s03-science__cnn-augmentation-reflected"
-                  d="M24 76 H250 C280 76 305 77 320 87 C336 98 345 121 357 132 C367 139 385 139 398 136 C418 133 431 129 446 120 C461 111 476 95 490 82 C500 76 510 76 530 76 H716"
-                />
+          <span
+            className="s03-cnn-diagram__arrow s03-cnn-diagram__arrow--global"
+            aria-hidden="true"
+          >
+            →
+          </span>
+          <div className="s03-cnn-diagram__stage s03-cnn-diagram__stage--global-conv">
+            <span>01 · Convolución 1D</span>
+            <strong>filtros aprendidos</strong>
+            <i className="s03-cnn-diagram__filter-window" aria-hidden="true" />
+          </div>
+          <span
+            className="s03-cnn-diagram__arrow s03-cnn-diagram__arrow--global-pool"
+            aria-hidden="true"
+          >
+            →
+          </span>
+          <div className="s03-cnn-diagram__stage s03-cnn-diagram__stage--global-pool">
+            <span>02 · Max-pooling</span>
+            <strong>resume respuestas</strong>
+            <i className="s03-cnn-diagram__pool-bars" aria-hidden="true">
+              <b />
+              <b />
+              <b />
+              <b />
+              <b />
+              <b />
+            </i>
+          </div>
+          <span
+            className="s03-cnn-diagram__arrow s03-cnn-diagram__arrow--global-merge"
+            aria-hidden="true"
+          >
+            →
+          </span>
+
+          <div className="s03-cnn-diagram__view s03-cnn-diagram__view--local">
+            <div className="s03-cnn-diagram__view-heading">
+              <strong>Vista local</strong>
+              <span>tránsito cercano · 201 valores</span>
+            </div>
+            <svg viewBox="0 0 180 48" aria-hidden="true">
+              <path d="M4 14H47C58 14 62 17 67 28S77 39 88 39 105 36 111 25 120 14 132 14H176" />
+              <path className="s03-cnn-diagram__sparkline-detail" d="M4 39H176" />
+            </svg>
+          </div>
+          <span className="s03-cnn-diagram__arrow s03-cnn-diagram__arrow--local" aria-hidden="true">
+            →
+          </span>
+          <div className="s03-cnn-diagram__stage s03-cnn-diagram__stage--local-conv">
+            <span>01 · Convolución 1D</span>
+            <strong>filtros aprendidos</strong>
+            <i className="s03-cnn-diagram__filter-window" aria-hidden="true" />
+          </div>
+          <span
+            className="s03-cnn-diagram__arrow s03-cnn-diagram__arrow--local-pool"
+            aria-hidden="true"
+          >
+            →
+          </span>
+          <div className="s03-cnn-diagram__stage s03-cnn-diagram__stage--local-pool">
+            <span>02 · Max-pooling</span>
+            <strong>resume respuestas</strong>
+            <i className="s03-cnn-diagram__pool-bars" aria-hidden="true">
+              <b />
+              <b />
+              <b />
+              <b />
+              <b />
+              <b />
+            </i>
+          </div>
+          <span
+            className="s03-cnn-diagram__arrow s03-cnn-diagram__arrow--local-merge"
+            aria-hidden="true"
+          >
+            →
+          </span>
+
+          <div className="s03-cnn-diagram__dense">
+            <span>03 · Capas densas</span>
+            <strong>combinan ambas vistas</strong>
+            <svg viewBox="0 0 180 110" aria-hidden="true">
+              <g className="s03-cnn-diagram__neuron-links">
+                <path d="M35 20 83 14M35 20 83 38M35 20 83 62M35 20 83 86M35 55 83 14M35 55 83 38M35 55 83 62M35 55 83 86M35 90 83 14M35 90 83 38M35 90 83 62M35 90 83 86M97 14 145 31M97 38 145 31M97 62 145 76M97 86 145 76" />
+              </g>
+              <g className="s03-cnn-diagram__neurons">
+                <circle cx="35" cy="20" r="7" />
+                <circle cx="35" cy="55" r="7" />
+                <circle cx="35" cy="90" r="7" />
+                <circle cx="90" cy="14" r="7" />
+                <circle cx="90" cy="38" r="7" />
+                <circle cx="90" cy="62" r="7" />
+                <circle cx="90" cy="86" r="7" />
+                <circle cx="152" cy="31" r="7" />
+                <circle cx="152" cy="76" r="7" />
               </g>
             </svg>
-            <div
-              className="s03-science__cnn-augmentation-legend"
-              role="group"
-              aria-label="Leyenda de las curvas"
-            >
-              <span>
-                <i className="s03-science__cnn-augmentation-swatch" aria-hidden="true" />
-                Curva original · PC
-              </span>
-              <span>
-                <i
-                  className="s03-science__cnn-augmentation-swatch s03-science__cnn-augmentation-swatch--reflected"
-                  aria-hidden="true"
-                />
-                Reflejo · PC
-              </span>
-            </div>
-            <figcaption>
-              La línea punteada marca la fase 0. Inversión temporal: <code>x₁,…,xₙ → xₙ,…,x₁</code>.
-              El dibujo es esquemático; no es una curva observada.
-            </figcaption>
-          </figure>
-          <p className="s03-science__cnn-augmentation-note">
-            El artículo aplica estos reflejos al azar durante el entrenamiento. Genera variantes con
-            la misma clase; no añade observaciones de Kepler. En inferencia se usan las vistas
-            originales.
-          </p>
-        </section>
-      )}
+          </div>
+          <span
+            className="s03-cnn-diagram__arrow s03-cnn-diagram__arrow--output"
+            aria-hidden="true"
+          >
+            →
+          </span>
+          <div className="s03-cnn-diagram__score">
+            <span>04 · Salida sigmoide</span>
+            <strong>s</strong>
+            <span>puntaje · 0–1</span>
+          </div>
+        </div>
+        <figcaption>
+          Reconstrucción didáctica a partir de la arquitectura seleccionada en la{' '}
+          <a href="https://arxiv.org/abs/1712.05044" target="_blank" rel="noreferrer">
+            Figura 7 de Shallue y Vanderburg (2018)
+          </a>
+          . Las curvas son esquemáticas. Los bloques condensan capas repetidas y omiten sus tamaños
+          y el número de filtros.
+        </figcaption>
+      </figure>
+      <p className="s03-science__cnn-explanation">
+        Los filtros aprendidos recorren fragmentos de cada curva; el max-pooling resume respuestas
+        cercanas. Las capas densas combinan lo que extrajo cada rama y la salida sigmoide transforma
+        esa combinación en un puntaje entre 0 y 1.
+      </p>
+      <p className="s03-science__cnn-caution">
+        Ese puntaje ayuda a priorizar señales para revisión; por sí solo no confirma un planeta ni
+        equivale automáticamente a una probabilidad calibrada.
+      </p>
     </section>
   );
 }
 
 function PaperResults() {
-  const [metric, setMetric] = useState<'accuracy' | 'auc'>('accuracy');
   const models = [
     { name: 'Lineal', accuracy: 0.917, auc: 0.963 },
     { name: 'Totalmente conectado', accuracy: 0.941, auc: 0.977 },
     { name: 'CNN', accuracy: 0.96, auc: 0.988 },
   ];
-  const metricLabel = metric === 'accuracy' ? 'Accuracy' : 'ROC-AUC';
   return (
     <section
       className="s03-science__results"
@@ -1904,45 +1899,6 @@ function PaperResults() {
       <p className="s03-science__eyebrow">Test del estudio · 1 523 TCE · accuracy con umbral 0,5</p>
       <div className="s03-science__results-layout">
         <div className="s03-science__results-analysis">
-          <div
-            className="s03-science__toggle"
-            role="group"
-            aria-label="Elegir métrica para comparar"
-          >
-            <button
-              type="button"
-              aria-pressed={metric === 'accuracy'}
-              onClick={() => setMetric('accuracy')}
-            >
-              Accuracy
-            </button>
-            <button type="button" aria-pressed={metric === 'auc'} onClick={() => setMetric('auc')}>
-              ROC-AUC
-            </button>
-          </div>
-          <div className="s03-results-chart" aria-live="polite">
-            <h3>{metricLabel} · comparación de modelos</h3>
-            <p>Escala completa de 0 a 1. Los tres modelos reciben las mismas dos vistas.</p>
-            <div className="s03-results-chart__axis" aria-hidden="true">
-              <span>0</span>
-              <span>0,5</span>
-              <span>1,0</span>
-            </div>
-            <ol>
-              {models.map((model) => {
-                const value = model[metric];
-                return (
-                  <li key={model.name}>
-                    <span>{model.name}</span>
-                    <span className="s03-results-chart__track" aria-hidden="true">
-                      <span style={{ width: `${value * 100}%` }} />
-                    </span>
-                    <strong>{value.toFixed(3).replace('.', ',')}</strong>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
           <div className="s03-science__table-scroll">
             <table>
               <caption>Valores publicados en el test del artículo.</caption>
@@ -1965,13 +1921,25 @@ function PaperResults() {
             </table>
           </div>
         </div>
-        <S03PaperFigure figureNumber={6} variant="wide" />
+        <div className="s03-science__results-reading">
+          <h3>¿Qué muestran los resultados?</h3>
+          <p>
+            Con las mismas vistas global y local, la red convolucional obtuvo los valores más altos
+            de las tres arquitecturas en el conjunto de prueba. Con umbral 0,5, sus predicciones
+            coincidieron con las etiquetas de referencia en el 96 % de las señales.
+          </p>
+          <p>
+            El AUC de 0,988 indica que la red ordenó bien las señales de prueba: al comparar una
+            candidata de referencia con una señal negativa, casi siempre dio un puntaje mayor a la
+            candidata. Cuando hay muchas señales, este orden ayuda a decidir cuáles revisar primero.
+          </p>
+          <p>
+            Estos resultados describen el desempeño frente al catálogo de referencia. Las señales
+            seleccionadas requieren una evaluación astronómica posterior para confirmar si son
+            planetas.
+          </p>
+        </div>
       </div>
-      <p className="s03-science__source-note">
-        La Figura 6 del artículo es precision–recall; ROC-AUC se reporta en el texto y en otra
-        figura. Alterna las métricas para comparar el test; la búsqueda posterior es una población
-        distinta.
-      </p>
     </section>
   );
 }

@@ -488,16 +488,16 @@ const contentScreens: S03Screen[] = [
     id: 's03-classification-2',
     sceneId: 'binary-input-output',
     stationId: 'classification',
-    title: 'Entrenamiento e inferencia',
+    title: 'Entrenamiento y evaluación',
     partLabel: '4.1',
     intro:
-      'En 2017, Christopher Shallue y Andrew Vanderburg entrenaron una red convolucional para clasificar señales de Kepler y priorizar posibles planetas.',
+      'En 2017, Christopher Shallue y Andrew Vanderburg entrenaron una CNN para priorizar TCE etiquetados de Kepler y medir su desempeño en señales reservadas.',
     role: 'content',
     sourceIds: ['shallue-vanderburg-2017'],
     summary:
-      'El estudio usa 15 737 TCEs del catálogo Autovetter de Kepler Q1–Q17 DR24: 3 600 PC (Planet Candidate, candidata a planeta), 9 596 AFP (Astrophysical False Positive, falso positivo astrofísico) y 2 541 NTP (Non-Transiting Phenomenon, fenómeno no transitorio); excluye UNK. Las etiquetas, obtenidas por evaluación manual y otros diagnósticos, se agrupan en PC como clase positiva y AFP/NTP como negativas. Los autores encontraron algunos ejemplos mal etiquetados, así que la salida del modelo se interpreta respecto al catálogo y no como confirmación física. En entrenamiento, la red compara su puntaje con una etiqueta conocida y ajusta parámetros; en inferencia, puntúa una señal nueva sin etiqueta, y un umbral determina la predicción.',
+      'Una señal TCE con forma de tránsito no revela su causa. El estudio reunió 15 737 TCE etiquetados del catálogo Autovetter de Kepler Q1–Q17 DR24 y excluyó UNK; la tarea binaria contrasta PC frente a AFP/NTP. Autovetter era un proyecto distinto de clasificación automática con bosque aleatorio y estadísticas del pipeline. Las etiquetas del catálogo procedían de revisión manual y otros diagnósticos, y los autores encontraron ejemplos mal asignados. La CNN ajusta sus parámetros con ejemplos etiquetados y se evalúa con señales reservadas; sus métricas describen acuerdo con la referencia, no confirmación planetaria.',
     takeaway:
-      'La red aprende a reproducir etiquetas de referencia; su puntaje orienta la revisión y no confirma por sí solo un planeta.',
+      'El test estima cuánto reproduce la CNN las referencias del catálogo; no confirma planetas.',
   },
   {
     id: 's03-classification-3',
@@ -521,11 +521,11 @@ const contentScreens: S03Screen[] = [
     title: 'Del registro de Kepler a la entrada del clasificador',
     partLabel: '5.1',
     intro:
-      'Kepler registra el brillo de una estrella, no una imagen del planeta. Para analizar un TCE (evento que superó el umbral de búsqueda), el artículo limpia la curva, alinea sus repeticiones y construye dos vistas.',
+      'Kepler registra el brillo de una estrella, no una imagen del planeta. Antes de entrar en la CNN, la curva de luz se organiza para comparar los tránsitos repetidos y construir dos vistas.',
     role: 'content',
     sourceIds: ['shallue-vanderburg-2017'],
     summary:
-      'Una curva de Kepler registra el tiempo t y el flujo F(t), junto con la incertidumbre σ y la bandera de calidad q (SAP_QUALITY) de cada cadencia. La bandera acompaña la medición; las vistas de entrada del artículo se construyen a partir del flujo. Para cada TCE, el artículo retira las mediciones de tránsitos de otros planetas confirmados, estima la variación lenta con una spline y enmascara e interpola el tránsito estudiado durante ese ajuste para no aplanarlo. Divide el flujo por la tendencia, itera el ajuste y retira puntos que se alejan más de 3σ del ajuste. Después pliega la curva por el período del TCE, agrupa puntos en bins y normaliza las vistas a mediana 0 y mínimo −1. El resultado son representaciones comparables, no la curva original sin decisiones.',
+      'La curva de luz reúne mediciones del flujo estelar a lo largo del tiempo. Antes de clasificar, el estudio reduce variaciones lentas y aparta tránsitos conocidos de otros planetas para destacar la señal estudiada. Después alinea sus repeticiones y construye dos vistas, una del ciclo completo y otra cercana al tránsito. Estas decisiones dan forma a la entrada de la CNN e influyen en qué rasgos quedan visibles.',
     takeaway:
       'El clasificador recibe una representación preparada; su forma depende de estas decisiones.',
   },
@@ -551,14 +551,16 @@ const contentScreens: S03Screen[] = [
     id: 's03-representation-3',
     sceneId: 'cnn-score',
     stationId: 'representation',
-    title: 'De las vistas a un puntaje',
+    title: 'Dos vistas, una CNN y un puntaje',
     partLabel: '5.3',
-    intro: 'La CNN compara patrones en las dos vistas y entrega un puntaje.',
+    intro:
+      'La vista global y la local recorren ramas distintas; la red reúne sus rasgos y devuelve un puntaje.',
     role: 'content',
     sourceIds: ['shallue-vanderburg-2017'],
     summary:
-      'Durante el entrenamiento, el estudio aplica reflejos horizontales aleatorios a las entradas: invierte de izquierda a derecha el orden de los bins (x₁,…,xₙ → xₙ,…,x₁). La transformación conserva la clase planetaria/no planetaria, así que ofrece una variante del ejemplo sin añadir observaciones. La CNN aprende patrones en las vistas global y local y combina esa información para producir un puntaje. En inferencia se evalúan las vistas originales. No se deriva la arquitectura ni se entrena una red en esta sesión. El puntaje no es una probabilidad calibrada salvo que se demuestre calibración, y la decisión de clase requiere un umbral explícito.',
-    takeaway: 'La CNN produce un puntaje; la evaluación y el umbral determinan cómo leerlo.',
+      'La CNN procesa las vistas global y local en ramas convolucionales separadas. En cada rama, filtros 1D reconocen formas de la curva y el max-pooling resume respuestas cercanas; después, capas densas combinan ambas representaciones y una salida sigmoide produce el puntaje s. El esquema agrupa los bloques de la arquitectura seleccionada en el artículo. El puntaje permite priorizar una señal, pero no confirma por sí solo un planeta ni equivale automáticamente a una probabilidad calibrada.',
+    takeaway:
+      'Dos ramas reúnen evidencias de escalas distintas en un puntaje que prioriza la revisión; la confirmación requiere evaluación posterior.',
   },
   {
     id: 's03-errors-1',
@@ -577,14 +579,14 @@ const contentScreens: S03Screen[] = [
     id: 's03-errors-2',
     sceneId: 'confusion-matrix',
     stationId: 'errors',
-    title: 'La matriz tiene una clase positiva',
+    title: 'Clasifica una señal y sigue su fila',
     partLabel: '6.2',
-    intro: 'Tránsito (PC) es la clase positiva; NTránsito agrupa AFP/NTP.',
+    intro: 'Arrastra ocho señales a la predicción «tránsito» o «no tránsito».',
     role: 'content',
     sourceIds: ['shallue-vanderburg-2017', 'geron-classification', 'kelleher-classification'],
     summary:
-      'La matriz cruza referencia y predicción: Tránsito representa PC y NTránsito agrupa AFP/NTP. TP, FN, FP y TN identifican las cuatro combinaciones; cada celda tiene un color propio y cada caso muestra la clase que predice el modelo. Activar un caso cambia su predicción, su celda y su color, mientras conserva fija la referencia. Cambiar la clase positiva cambia el significado de las métricas; la etiqueta de referencia continúa siendo imperfecta.',
-    takeaway: 'Los términos TP, FP, FN y TN dependen de la referencia y de la clase positiva.',
+      'El buscador de Kepler entrega señales periódicas llamadas TCE; una señal así todavía no confirma un planeta. Para ver cómo se organiza la decisión, esta actividad usa ocho ejemplos ficticios: algunos muestran un planeta en tránsito, otros una binaria eclipsante y otros variación estelar sin tránsito. Arrastra cada tarjeta a la clase que predeciría el clasificador: «tránsito» (PC, positiva) o «no tránsito» (AFP/NTP, negativa). Al soltarla, aparece su etiqueta de referencia del catálogo y la tarjeta ocupa la casilla correspondiente: TP, FN, FP o TN. Si cambias la predicción, cambia la columna y la casilla; la referencia permanece fija. Las escenas son conceptuales, y las etiquetas del catálogo pueden ser imperfectas. Estos ocho ejemplos solo enseñan a leer la matriz; los cálculos siguientes usan otra muestra ficticia de veinte señales.',
+    takeaway: 'La referencia determina la fila; la predicción determina la columna de la matriz.',
   },
   {
     id: 's03-errors-3',
@@ -592,12 +594,13 @@ const contentScreens: S03Screen[] = [
     stationId: 'errors',
     title: 'Dos errores, dos consecuencias',
     partLabel: '6.3',
-    intro: 'Compara FP y FN en el ejemplo de veinte señales.',
+    intro: 'En una búsqueda, una decisión orienta qué señales siguen a revisión.',
     role: 'content',
     sourceIds: ['shallue-vanderburg-2017', 'geron-classification', 'kelleher-classification'],
     summary:
-      'En el ejemplo ficticio guiado hay TP=6, FN=4, FP=2 y TN=8. Un FP añade una señal negativa de referencia a la lista de predicciones PC; un FN deja sin recuperar una señal PC de referencia. La prioridad entre revisión y recuperación depende del objetivo científico y del presupuesto de seguimiento, no existe un costo universal.',
-    takeaway: 'Los errores importan por sus consecuencias para la tarea, además de por el conteo.',
+      'Kepler primero detecta TCE: señales periódicas cuya forma podría corresponder a un tránsito. La CNN del estudio ayuda a priorizar cuáles señales etiquetadas como candidatas conviene revisar, dentro de una cadena que también requiere criterio humano y seguimiento. Imagina que el equipo dispone de tiempo limitado para examinar señales. Si el catálogo de referencia marca una binaria eclipsante como no planetaria, pero el clasificador la predice como PC, aparece un falso positivo del clasificador (FP): la señal entra a la lista de candidatas y puede consumir trabajo de revisión o seguimiento. Si el catálogo marca PC, pero el clasificador predice «no tránsito», aparece un falso negativo (FN): esa candidata puede quedar relegada y reducirse su recuperación. PC sigue significando candidata, no planeta confirmado; además, FP y FN describen desacuerdos con una referencia que puede contener errores. Los dos casos son escenarios didácticos, no señales concretas reportadas por el artículo. Cuál error preocupa más depende del objetivo científico y de los recursos disponibles.',
+    takeaway:
+      'Una falsa alerta consume revisión; una omisión puede reducir la recuperación de candidatas.',
   },
   {
     id: 's03-metrics-1',
@@ -605,11 +608,11 @@ const contentScreens: S03Screen[] = [
     stationId: 'metrics',
     title: '¿Qué fracción total acertó?',
     partLabel: '7.1',
-    intro: 'Accuracy resume aciertos sobre todas las señales evaluadas.',
+    intro: 'Volvamos a una matriz numérica ficticia de veinte señales.',
     role: 'content',
     sourceIds: ['geron-classification', 'kelleher-classification', 'shallue-vanderburg-2017'],
     summary:
-      'Accuracy se calcula como (TP+TN)/(TP+TN+FP+FN). En el ejemplo de veinte señales es 14/20=0,70. La muestra del catálogo está desbalanceada: predecir siempre AFP/NTP acertaría 12 137 de 15 737 etiquetas (77,12 %) y tendría recall cero para PC. Ese cálculo usa el catálogo etiquetado completo y no describe la composición exacta del test.',
+      'Para practicar las métricas retomamos otro conjunto ficticio de veinte señales, con TP=7, FP=2, FN=3 y TN=8. Accuracy es (TP+TN)/N=(7+8)/20=15/20=0,75. La muestra etiquetada del catálogo está desbalanceada: predecir siempre AFP/NTP acertaría 12 137 de 15 737 etiquetas (77,12 %) y tendría recall cero para PC. Ese cálculo usa el catálogo etiquetado completo y no describe la composición exacta del test.',
     takeaway: 'Una accuracy alta puede esconder cero recuperación de la clase minoritaria.',
   },
   {
@@ -622,7 +625,7 @@ const contentScreens: S03Screen[] = [
     role: 'content',
     sourceIds: ['geron-classification', 'kelleher-classification'],
     summary:
-      'La tasa de error es (FP+FN)/N. Para la matriz didáctica, (2+4)/20=0,30. Accuracy y tasa de error se complementan cuando todas las observaciones participan de la misma cuenta; sus valores no describen qué clase concentra los errores.',
+      'La tasa de error es (FP+FN)/N. Para la matriz didáctica, (2+3)/20=0,25. Accuracy y tasa de error se complementan cuando todas las observaciones participan de la misma cuenta; sus valores no describen qué clase concentra los errores.',
     takeaway: 'La tasa total de error necesita métricas por clase para mostrar dónde falla.',
   },
   {
@@ -635,7 +638,7 @@ const contentScreens: S03Screen[] = [
     role: 'content',
     sourceIds: ['geron-classification', 'kelleher-classification'],
     summary:
-      'Precision es TP/(TP+FP): entre las señales que el clasificador marcó PC, cuántas tienen etiqueta de referencia PC. En el ejemplo es 6/8=0,75. Responde a la coincidencia de la lista de predicciones positivas con las etiquetas, no a la verdad física del planeta.',
+      'Precision es TP/(TP+FP): entre las señales que el clasificador marcó PC, cuántas tienen etiqueta de referencia PC. En el ejemplo es 7/9≈0,78. Responde a la coincidencia de la lista de predicciones positivas con las etiquetas, no a la verdad física del planeta.',
     takeaway: 'Precision baja cuando crece la fracción de falsos avisos entre predicciones PC.',
   },
   {
@@ -648,7 +651,7 @@ const contentScreens: S03Screen[] = [
     role: 'content',
     sourceIds: ['geron-classification', 'kelleher-classification'],
     summary:
-      'Recall o TPR es TP/(TP+FN): entre las señales con etiqueta de referencia PC, cuántas recuperó el clasificador. En el ejemplo es 6/10=0,60. Elevar recall puede incorporar más señales positivas y también cambiar la cantidad de falsas alertas.',
+      'Recall o TPR es TP/(TP+FN): entre las señales con etiqueta de referencia PC, cuántas recuperó el clasificador. En el ejemplo es 7/10=0,70. Elevar recall puede incorporar más señales positivas y también cambiar la cantidad de falsas alertas.',
     takeaway: 'Recall bajo deja más PC de referencia sin recuperar.',
   },
   {
@@ -687,7 +690,7 @@ const contentScreens: S03Screen[] = [
     role: 'content',
     sourceIds: ['geron-classification', 'kelleher-classification'],
     summary:
-      'F1=2·precision·recall/(precision+recall)=2TP/(2TP+FP+FN). En el ejemplo, precision=6/8 y recall=6/10, por lo que F1=12/18≈0,67. La fórmula no incluye TN y no sustituye la decisión sobre qué error importa en la tarea.',
+      'F1=2·precision·recall/(precision+recall)=2TP/(2TP+FP+FN). En el ejemplo, precision=7/9 y recall=7/10, por lo que F1=14/19≈0,74. La fórmula no incluye TN y no sustituye la decisión sobre qué error importa en la tarea.',
     takeaway: 'F1 resume precision y recall; no evalúa por sí sola todas las consecuencias.',
   },
   {
@@ -696,7 +699,8 @@ const contentScreens: S03Screen[] = [
     stationId: 'thresholds',
     title: 'El umbral transforma puntajes en clases',
     partLabel: '8.1',
-    intro: 'Usamos una práctica nueva de seis señales con regla puntaje ≥ umbral.',
+    intro:
+      'El umbral es el valor de corte que elegimos para convertir el puntaje del modelo en una predicción. Si el puntaje lo iguala o supera, predecimos PC; si queda por debajo, no tránsito.',
     role: 'content',
     sourceIds: ['geron-classification', 'shallue-vanderburg-2017'],
     summary:
@@ -710,7 +714,8 @@ const contentScreens: S03Screen[] = [
     stationId: 'thresholds',
     title: 'Cada umbral produce un punto precision–recall',
     partLabel: '8.2',
-    intro: 'Lee qué combinación de precision y recall corresponde a cada corte.',
+    intro:
+      'Cada umbral produce una combinación de recuperación y precisión: por eso el punto se mueve sobre la curva. La precisión no siempre baja en cada paso; depende de las señales que se incorporan a la lista. Al bajar el umbral entran más señales en la lista: esto puede recuperar más candidatas de referencia, pero también sumar falsas alertas y reducir la precisión. Al subirlo, la selección se hace más estricta: puede disminuir las falsas alertas, aunque también dejar candidatas sin recuperar.',
     role: 'content',
     sourceIds: ['geron-classification', 'kelleher-classification', 'shallue-vanderburg-2017'],
     summary:
@@ -729,7 +734,8 @@ const contentScreens: S03Screen[] = [
     stationId: 'thresholds',
     title: 'ROC conecta falsas alarmas y recuperación',
     partLabel: '8.3',
-    intro: 'La curva relaciona FPR con TPR al mover el umbral.',
+    intro:
+      'La curva ROC compara dos tasas: qué proporción de candidatas de referencia recuperamos y qué proporción de señales negativas marcamos por error como candidatas. Cada punto corresponde a un umbral: al bajarlo podemos recuperar más candidatas, pero también generar más falsas alertas.',
     role: 'content',
     sourceIds: ['geron-classification', 'kelleher-classification'],
     summary:
@@ -742,7 +748,8 @@ const contentScreens: S03Screen[] = [
     stationId: 'thresholds',
     title: 'AUC mide ordenamiento, no confirmación',
     partLabel: '8.4',
-    intro: 'Ocho de nueve pares positivo–negativo quedan en el orden esperado.',
+    intro:
+      'El área bajo la curva ROC, o AUC, resume cómo el modelo ordena las señales de referencia a través de todos los umbrales. Un área mayor indica que suele asignar puntajes más altos a las candidatas que a las señales negativas.',
     role: 'content',
     sourceIds: ['geron-classification', 'kelleher-classification', 'shallue-vanderburg-2017'],
     summary:
@@ -755,7 +762,8 @@ const contentScreens: S03Screen[] = [
     stationId: 'results',
     title: 'Qué reportó el estudio',
     partLabel: '9.1',
-    intro: 'El test, la accuracy al umbral 0,5 y ROC-AUC responden preguntas distintas.',
+    intro:
+      'Los autores compararon tres modelos sobre señales reservadas para prueba. La tabla reúne dos medidas de su desempeño con las vistas global y local de la curva de luz.',
     role: 'content',
     sourceIds: ['shallue-vanderburg-2017'],
     summary:

@@ -9,80 +9,60 @@ import S03EvaluationScenes from './S03EvaluationScenes';
 const metricExpectations = [
   {
     id: 'accuracy',
-    numerator: ['tp', 'tn'],
-    denominator: ['tp', 'tn', 'fp', 'fn'],
-    result: '14/20 = 0,7 (70 %)',
+    definition: 'Accuracy es la proporción de señales cuya predicción coincide con la referencia.',
+    result: '15/20 = 0,75 (75 %)',
   },
   {
     id: 'error',
-    numerator: ['fp', 'fn'],
-    denominator: ['tp', 'tn', 'fp', 'fn'],
-    result: '6/20 = 0,3 (30 %)',
+    definition:
+      'La tasa de error es la proporción de señales cuya predicción difiere de la referencia.',
+    result: '5/20 = 0,25 (25 %)',
   },
   {
     id: 'precision',
-    numerator: ['tp'],
-    denominator: ['tp', 'fp'],
-    result: '6/8 = 0,75 (75 %)',
+    definition: 'Precision es la proporción de predicciones PC cuya referencia también es PC.',
+    result: '7/9 = 0,778 (77,778 %)',
   },
-  { id: 'recall', numerator: ['tp'], denominator: ['tp', 'fn'], result: '6/10 = 0,6 (60 %)' },
+  {
+    id: 'recall',
+    definition:
+      'Recall es la proporción de señales PC de referencia que el clasificador recupera como PC.',
+    result: '7/10 = 0,7 (70 %)',
+  },
   {
     id: 'specificity',
-    numerator: ['tn'],
-    denominator: ['tn', 'fp'],
+    definition:
+      'La especificidad es la proporción de referencias negativas clasificadas como negativas.',
     result: '8/10 = 0,8 (80 %)',
   },
-  { id: 'fpr', numerator: ['fp'], denominator: ['fp', 'tn'], result: '2/10 = 0,2 (20 %)' },
+  {
+    id: 'fpr',
+    definition:
+      'La tasa de falsos positivos es la proporción de referencias negativas clasificadas como PC.',
+    result: '2/10 = 0,2 (20 %)',
+  },
   {
     id: 'f1',
-    numerator: ['tp'],
-    denominator: ['tp', 'fp', 'fn'],
-    result: '12/18 = 0,667 (66,667 %)',
+    definition: 'F1 es la media armónica de precision y recall para la clase PC.',
+    result: '14/19 = 0,737 (73,684 %)',
   },
 ] as const;
 
 describe('S03: escenas de evaluación', () => {
   it.each(metricExpectations)(
-    'actualiza la matriz y la sustitución de $id al cambiar una predicción',
-    async ({ id, numerator, denominator, result }) => {
-      const user = userEvent.setup();
+    'define $id y calcula el resultado de la misma matriz fija',
+    ({ id, definition, result }) => {
       render(<S03EvaluationScenes sceneId={`metric-${id}`} />);
 
-      const matrix = screen.getByRole('table');
-      for (const cellId of ['tp', 'fp', 'fn', 'tn']) {
-        const cell = matrix.querySelector(`td[data-cell="${cellId}"]`)!;
-        expect(cell.classList.contains('s03-confusion__cell--numerator')).toBe(
-          numerator.includes(cellId as never),
-        );
-        expect(cell.classList.contains('s03-confusion__cell--denominator')).toBe(
-          denominator.includes(cellId as never),
-        );
+      const matrix = screen.getByRole('table', { name: definition });
+      for (const [cellId, count] of Object.entries({ tp: 7, fn: 3, fp: 2, tn: 8 })) {
+        expect(matrix.querySelector(`td[data-cell="${cellId}"]`)).toHaveTextContent(String(count));
       }
-
-      if (id === 'precision') {
-        await user.click(
-          screen.getByRole('button', {
-            name: /^PC-01 · referencia PC · predicción PC\. Clase visible: Tránsito/,
-          }),
-        );
-      } else {
-        await user.click(screen.getByRole('button', { name: 'Cambiar predicción a AFP/NTP' }));
-      }
-
-      expect(screen.getByText('Conteos actuales: TP 6 · FP 2 · FN 4 · TN 8.')).toBeInTheDocument();
-      if (id === 'precision') {
-        expect(document.querySelector('.s03-case-control')).not.toBeInTheDocument();
-        expect(
-          screen.getByRole('button', {
-            name: /^PC-01 · referencia PC · predicción AFP\/NTP\. Clase visible: NTránsito/,
-          }),
-        ).toHaveAttribute('aria-pressed', 'false');
-      } else {
-        expect(document.querySelector('.s03-case-control p')).toHaveTextContent(
-          'Referencia fija: PC. Solo cambia la columna de predicción.',
-        );
-        expect(screen.getByRole('button', { name: 'Cambiar predicción a PC' })).toBeInTheDocument();
-      }
+      expect(within(matrix).queryByRole('button')).not.toBeInTheDocument();
+      expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+      expect(
+        screen.queryByText(/Conteos actuales|El borde verde|Caso ficticio que cambiará/),
+      ).not.toBeInTheDocument();
       expect(screen.getByText(result)).toBeInTheDocument();
     },
   );
@@ -110,48 +90,42 @@ describe('S03: escenas de evaluación', () => {
 
     const ids = Array.from(document.querySelectorAll('[id]'), (element) => element.id);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(screen.getAllByLabelText('Caso ficticio que cambiará')).toHaveLength(6);
+    expect(screen.queryByLabelText('Caso ficticio que cambiará')).not.toBeInTheDocument();
     expect(document.querySelectorAll('input[type="range"]')).toHaveLength(4);
     expect(document.querySelectorAll('select#s03-case-select')).toHaveLength(0);
     expect(document.querySelectorAll('input#s03-threshold-slider')).toHaveLength(0);
   });
 
-  it('permite mover una señal ficticia entre celdas sin mover su referencia', async () => {
+  it('clasifica escenas y revela su referencia junto con la celda correspondiente', async () => {
     const user = userEvent.setup();
     render(<S03EvaluationScenes sceneId="confusion-matrix" />);
 
-    const transit = screen.getByRole('button', { name: /^PC-01 · referencia PC · predicción PC/ });
-    expect(transit).toHaveAttribute('data-cell', 'tp');
-    expect(transit).toHaveTextContent('PC-01Tránsito');
-    expect(screen.getByRole('columnheader', { name: 'Tránsito' })).toBeInTheDocument();
-    expect(screen.getByRole('columnheader', { name: 'NTránsito' })).toBeInTheDocument();
+    expect(screen.getAllByRole('article', { name: /Señal sin clasificar/ })).toHaveLength(8);
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+
+    const planet = screen.getAllByRole('article', { name: /Planeta en tránsito/ })[0]!;
+    await user.click(within(planet).getByRole('button', { name: 'Tránsito' }));
+
+    const matrix = screen.getByRole('table');
     expect(
-      screen.getByText(/Tránsito representa PC; NTránsito reúne AFP\/NTP/),
+      within(matrix).getByRole('rowheader', { name: 'PC · candidata a planeta' }),
+    ).toBeInTheDocument();
+    expect(within(matrix).getByText('TP · acierto')).toBeInTheDocument();
+    expect(screen.getByText(/Clasificadas 1 de ocho/)).toBeInTheDocument();
+
+    const binary = screen.getAllByRole('article', { name: /Binaria eclipsante/ })[0]!;
+    await user.click(within(binary).getByRole('button', { name: 'Tránsito' }));
+    expect(within(matrix).getByText('FP · error')).toBeInTheDocument();
+    expect(
+      within(matrix).getByText('Referencia: AFP · falso positivo astrofísico'),
     ).toBeInTheDocument();
 
-    await user.click(transit);
-
-    expect(screen.getByText(/TP 6 · FP 2 · FN 4 · TN 8/)).toBeInTheDocument();
-    const nonTransit = screen.getByRole('button', {
-      name: /^PC-01 · referencia PC · predicción AFP\/NTP\. Clase visible: NTránsito/,
-    });
-    expect(nonTransit).toHaveAttribute('aria-pressed', 'false');
-    expect(nonTransit).toHaveAttribute('data-cell', 'fn');
-    expect(nonTransit).toHaveTextContent('PC-01NTránsito');
-    expect(screen.getByRole('rowheader', { name: 'Tránsito (positiva)' })).toBeInTheDocument();
-
-    const falsePositive = screen.getByRole('button', {
-      name: /^NEG-01 · referencia AFP\/NTP · predicción PC/,
-    });
-    expect(falsePositive).toHaveAttribute('data-cell', 'fp');
-    expect(falsePositive).toHaveTextContent('NEG-01Tránsito');
-    await user.click(falsePositive);
-
-    const trueNegative = screen.getByRole('button', {
-      name: /^NEG-01 · referencia AFP\/NTP · predicción AFP\/NTP\. Clase visible: NTránsito/,
-    });
-    expect(trueNegative).toHaveAttribute('data-cell', 'tn');
-    expect(trueNegative).toHaveTextContent('NEG-01NTránsito');
+    const falsePositiveCell = matrix.querySelector<HTMLTableCellElement>('td[data-cell="fp"]')!;
+    await user.click(
+      within(falsePositiveCell).getByRole('button', { name: 'Cambiar a no tránsito' }),
+    );
+    expect(within(matrix).getByText('TN · acierto')).toBeInTheDocument();
+    expect(screen.getByText(/TP 1 · FN 0 · FP 0 · TN 1/)).toBeInTheDocument();
   });
 
   it('actualiza la clasificación inclusiva al umbral seleccionado', async () => {
@@ -160,9 +134,10 @@ describe('S03: escenas de evaluación', () => {
 
     await user.click(screen.getByRole('button', { name: '0,5' }));
 
-    expect(document.querySelector('.s03-threshold-summary [role="status"]')).toHaveTextContent(
-      'TP 3 · FP 2 · FN 0 · TN 1',
-    );
+    const matrix = screen.getByRole('table', { name: /Tránsito representa PC/ });
+    for (const [cellId, count] of Object.entries({ tp: 3, fp: 2, fn: 0, tn: 1 })) {
+      expect(matrix.querySelector(`td[data-cell="${cellId}"]`)).toHaveTextContent(String(count));
+    }
     expect(document.querySelector('input[type="range"]')).toHaveValue('0.5');
   });
 
@@ -183,12 +158,16 @@ describe('S03: escenas de evaluación', () => {
       }),
     ).toHaveAttribute('href', 'https://doi.org/10.3847/1538-3881/aa9e09');
     await user.click(screen.getByRole('button', { name: '0,5' }));
-    expect(screen.getByText(/Con umbral 0,5, recall = 1 y precision = 0,6/)).toBeInTheDocument();
+    expect(
+      screen.getByRole('img', { name: /Curva precision–recall sintética/ }),
+    ).toHaveAccessibleDescription(/Con umbral 0,5, recall es 1 y precision es 0,6/);
   });
 
   it('muestra los nueve pares y el área ROC desglosada, constante ante el umbral', async () => {
     const user = userEvent.setup();
     render(<S03EvaluationScenes sceneId="auc" />);
+
+    await user.click(screen.getByText('Ver cómo se calcula el área del ejemplo'));
 
     const comparisons = screen.getByRole('table', {
       name: /Ordenar PC por encima de la referencia negativa/,

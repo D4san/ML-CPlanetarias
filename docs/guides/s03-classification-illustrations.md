@@ -1,11 +1,11 @@
 # S03 — Ilustraciones para las clases de Kepler
 
-Fecha: 2026-10-20. Uso: pantalla `s03-classification-3` (4.3), «Instancia, etiqueta, modelo y predicción».
+Actualizada: 2026-10-26. Uso: las cinco escenas TCE, PC, AFP, NTP y FP se exploran en `s03-classification-3` (4.3), «Instancia, etiqueta, modelo y predicción». La pantalla 4.2 se centra en el problema, el conjunto etiquetado, el entrenamiento y la evaluación; ya no despliega ilustraciones de las clases.
 
 ## Brief común de la familia
 
-- **Propósito:** situar visualmente la señal detectada, las etiquetas de referencia del catálogo y un desacuerdo posible entre referencia y predicción.
-- **Audiencia y acción:** el estudiante recorre TCE, PC, AFP, NTP y FP, y puede explicar qué nombra cada término y qué relación muestra la ilustración.
+- **Propósito:** situar visualmente la señal detectada, explicar las clases de referencia del catálogo y mostrar un desacuerdo entre referencia y predicción dentro de la unidad que distingue instancia, etiqueta, modelo y error.
+- **Audiencia y acción:** el estudiante recorre TCE, PC, AFP, NTP y FP en 4.3, y puede explicar qué nombra cada término y qué relación muestra la ilustración.
 - **Medio y tipo:** cinco ilustraciones raster cualitativas, generadas con ImageGen; tipo `conceptual`. Las etiquetas, descripciones y relaciones exactas permanecen en HTML accesible.
 - **Estilo:** familia astronómica realista de S03: composición horizontal 16:9, iluminación sobria, espacio profundo azul oscuro, luz estelar cálida, pocos objetos y márgenes para el texto externo. Usa la paleta semántica del curso en la interfaz; el color de una estrella no codifica una clase.
 - **Exclusiones:** no incluir texto, siglas, números, ejes, gráficas, retículas, flechas, marcos, marcas de agua, logotipos ni escalas. Ninguna imagen afirma representar un objeto o dato observado por Kepler.
@@ -29,7 +29,8 @@ Fecha: 2026-10-20. Uso: pantalla `s03-classification-3` (4.3), «Instancia, etiq
 ### PC — clase planetaria
 
 - **ID y archivo:** `s03-classification-pc-conceptual` · `public/images/s03/s03-classification-pc-conceptual.png`.
-- **Función y acción:** ilustrar la interpretación planetaria que el estudio asigna a la clase de referencia PC.
+- **Uso:** exploración de PC en 4.3.
+- **Función y acción:** ilustrar la interpretación planetaria que el catálogo asigna a PC y recordar que la clase conserva el estatus de candidata.
 - **Objeto y relación:** un solo cuerpo oscuro cruza el disco de una estrella.
 - **Omisiones deliberadas:** confirmación física, órbita con escala, datos de Kepler, etiquetas y texto.
 - **Alt:** «Un solo cuerpo oscuro cruza el disco de una estrella brillante».
@@ -39,6 +40,7 @@ Fecha: 2026-10-20. Uso: pantalla `s03-classification-3` (4.3), «Instancia, etiq
 ### AFP — falso positivo astrofísico
 
 - **ID y archivo:** `s03-classification-afp-conceptual` · `public/images/s03/s03-classification-afp-conceptual.png`.
+- **Uso:** exploración de AFP en 4.3.
 - **Función y acción:** distinguir una explicación astrofísica alternativa de un tránsito planetario.
 - **Objeto y relación:** dos estrellas de distinto brillo se superponen en la línea de visión; una eclipsa parcialmente a la otra.
 - **Omisiones deliberadas:** planeta, tamaños a escala, parámetros orbitales, curva, etiquetas y texto.
@@ -49,6 +51,7 @@ Fecha: 2026-10-20. Uso: pantalla `s03-classification-3` (4.3), «Instancia, etiq
 ### NTP — fenómeno no transitorio
 
 - **ID y archivo:** `s03-classification-ntp-conceptual` · `public/images/s03/s03-classification-ntp-conceptual.png`.
+- **Uso:** exploración de NTP en 4.3.
 - **Función y acción:** mostrar una causa de variación que no necesita un planeta en tránsito.
 - **Objeto y relación:** estrella con manchas oscuras y brillo superficial desigual; no hay un cuerpo cruzando por delante.
 - **Omisiones deliberadas:** planeta, explosión, curva, magnitudes medidas, etiquetas y texto.
@@ -69,3 +72,7 @@ Fecha: 2026-10-20. Uso: pantalla `s03-classification-3` (4.3), «Instancia, etiq
 ## Revisión
 
 Las cinco salidas se inspeccionaron a tamaño intrínseco: mantienen el estilo horizontal, no contienen texto ni marcas, y cada una conserva el objeto y la relación declarados en su ficha. La revisión de integración en los contextos objetivo se registra en `docs/planning/agent-execution/evidence/I05-VISUAL-REVIEW.md` y en el manifiesto `public/images/s03/s03-illustrations.manifest.json`.
+
+### Exploración de las clases en 4.3
+
+Las imágenes de PC, AFP y NTP aparecen únicamente en el selector de vocabulario de 4.3, junto con TCE y FP. La pantalla 4.2 presenta la procedencia de las etiquetas y la cautela del conjunto en texto, y reserva el desarrollo conceptual de cada categoría para esta secuencia. La revisión de integración pendiente o completada para cada recurso se registra en `docs/planning/agent-execution/evidence/I05-VISUAL-REVIEW.md` y en el manifiesto.

@@ -190,28 +190,26 @@ describe('S03: escenas científicas', () => {
     );
   });
 
-  it('separa el ajuste con etiquetas de la inferencia sobre una señal nueva', async () => {
+  it('separa el entrenamiento de la evaluación y advierte los límites del catálogo', async () => {
     const user = userEvent.setup();
     render(<S03ScienceScenes sceneId="binary-input-output" />);
 
-    expect(screen.getByText(/15 737 señales etiquetadas/)).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Candidata a planeta' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Falso positivo astrofísico' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Fenómeno no transitorio' })).toBeInTheDocument();
-    expect(screen.getByText(/Planet Candidate/)).toBeInTheDocument();
-    expect(screen.getByText(/Astrophysical False Positive/)).toBeInTheDocument();
-    expect(screen.getByText(/Non-Transiting Phenomenon/)).toBeInTheDocument();
-    expect(screen.getByText(/PC fue positiva/)).toBeInTheDocument();
-    expect(screen.getByText(/incluidas sus posibles imperfecciones/)).toBeInTheDocument();
-    expect(screen.getByText('Curva de luz + etiqueta del catálogo')).toBeInTheDocument();
-    expect(screen.getByText('Modifica sus parámetros')).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Inferencia' }));
-    expect(screen.getByText('Una curva sin etiqueta conocida')).toBeInTheDocument();
-    expect(screen.getByText(/por sí solo no confirma un planeta/)).toBeInTheDocument();
-    expect(screen.getByText('Calcula un puntaje de candidatura')).toBeInTheDocument();
+    expect(screen.getByText(/Una señal con forma de tránsito/)).toBeInTheDocument();
+    expect(screen.getByText(/15 737 TCE etiquetados/)).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Candidata a planeta' })).not.toBeInTheDocument();
+    const autovetterSummary = screen.getByText('¿Qué era Autovetter?');
+    expect(autovetterSummary.closest('details')!).not.toHaveAttribute('open');
+    await user.click(autovetterSummary);
+    expect(screen.getByText(/Autovetter fue un proyecto/)).toBeVisible();
+    expect(screen.getByText(/algunas mal asignadas/)).toBeInTheDocument();
+    expect(screen.getByText('TCE + referencia del catálogo')).toBeInTheDocument();
+    expect(screen.getByText('Reduce el error de aprendizaje')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Evaluación' }));
+    expect(screen.getByText('TCE que no ajustaron la red')).toBeInTheDocument();
+    expect(screen.getByText('Predicción frente a referencia')).toBeInTheDocument();
     expect(
       screen.getByText(
-        'El puntaje ayuda a priorizar la revisión; por sí solo no confirma un planeta.',
+        'Evaluar significa medir el acuerdo en señales reservadas; no confirma por sí solo un planeta.',
       ),
     ).toBeInTheDocument();
   });
@@ -231,13 +229,15 @@ describe('S03: escenas científicas', () => {
 
     expect(screen.getByRole('heading', { name: '¿Qué mide cada punto?' })).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Aplanar sin borrar el tránsito' }),
+      screen.getByRole('heading', { name: 'Preparar la curva sin borrar la señal' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Comparar las repeticiones' })).toBeInTheDocument();
+    expect(
+      screen.getByText(/cambios lentos del brillo y tránsitos de otros planetas conocidos/),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Alinear y resumir los ciclos' }),
+      screen.getByText(/Estas decisiones influyen en qué rasgos de la señal quedan visibles/),
     ).toBeInTheDocument();
-    expect(screen.getByText(/ocultan las mediciones del tránsito buscado/)).toBeInTheDocument();
-    expect(screen.getByText(/puede conservar o borrar un rasgo de la señal/)).toBeInTheDocument();
   });
 
   it('explica las vistas global/local y el plegado junto a la Figura 3', async () => {
@@ -277,54 +277,37 @@ describe('S03: escenas científicas', () => {
     expect(zoom).toHaveFocus();
   });
 
-  it('ubica el reflejo horizontal en entrenamiento y lo retira durante la inferencia', async () => {
-    const user = userEvent.setup();
+  it('presenta la arquitectura de dos vistas que combina rasgos para producir un puntaje', () => {
     render(<S03ScienceScenes sceneId="cnn-score" />);
 
-    expect(screen.getByText('puntaje s')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Entrenamiento' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
     expect(
-      screen.getByRole('img', { name: /Reflejo horizontal de una curva de tránsito/ }),
+      screen.getByRole('group', { name: /vista global y la vista local/ }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/x₁,…,xₙ → xₙ,…,x₁/)).toBeInTheDocument();
-    expect(screen.getByText(/no añade observaciones de Kepler/)).toBeInTheDocument();
-
-    await user.click(screen.getByRole('button', { name: 'Inferencia' }));
-    expect(
-      screen.queryByRole('img', { name: /Reflejo horizontal de una curva de tránsito/ }),
-    ).not.toBeInTheDocument();
-    expect(screen.getByText(/probabilidad calibrada/)).toBeInTheDocument();
-
-    await user.click(screen.getByRole('button', { name: 'Entrenamiento' }));
-    expect(screen.getByText(/ajusta filtros/)).toBeInTheDocument();
-    expect(screen.getByText(/La etiqueta de referencia guía el ajuste/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Convolución 1D/)).toHaveLength(2);
+    expect(screen.getAllByText(/Max-pooling/)).toHaveLength(2);
+    expect(screen.getByText(/Capas densas/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Figura 7 de Shallue y Vanderburg/ })).toHaveAttribute(
+      'href',
+      'https://arxiv.org/abs/1712.05044',
+    );
+    expect(screen.getByText(/por sí solo no confirma un planeta/)).toBeInTheDocument();
   });
 
-  it('compara accuracy y ROC-AUC del test y acompaña la Figura 6 original', async () => {
-    const user = userEvent.setup();
+  it('presenta la tabla del test y una lectura de los resultados', () => {
     render(<S03ScienceScenes sceneId="paper-results" />);
 
     const table = screen.getByRole('table', { name: /Valores publicados en el test/ });
     expect(within(table).getByText('0,960')).toBeInTheDocument();
     expect(within(table).getByText('0,988')).toBeInTheDocument();
-    expect(screen.getByText(/La Figura 6 del artículo es precision–recall/)).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: /Figura 6 del artículo/ })).toHaveAttribute(
-      'src',
-      expect.stringContaining('paper-fig-06.svg'),
-    );
     expect(
-      screen.getByRole('link', {
-        name: /Christopher J\. Shallue & Andrew Vanderburg \(2018\).*Figura 6/,
-      }),
-    ).toHaveAttribute('href', 'https://doi.org/10.3847/1538-3881/aa9e09');
-    await user.click(screen.getByRole('button', { name: 'ROC-AUC' }));
-    expect(
-      screen.getByRole('heading', { name: 'ROC-AUC · comparación de modelos' }),
+      screen.getByRole('heading', { name: '¿Qué muestran los resultados?' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'ROC-AUC' })).toHaveAttribute('aria-pressed', 'true');
+    expect(
+      screen.getByText(/una evaluación astronómica posterior para confirmar si son planetas/),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('group', { name: 'Elegir métrica para comparar' }),
+    ).not.toBeInTheDocument();
   });
 
   it('narra la selección y validación posterior y cambia entre las figuras 8, 10 y 11', async () => {

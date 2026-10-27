@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useId, useState, type DragEvent } from 'react';
 
 import { SessionNavigationControls } from '../SessionNavigationControls';
 import S03PaperFigure from './S03PaperFigure';
@@ -10,17 +10,15 @@ import {
   precisionRecallCurve,
   rocCurve,
   S03_CONFUSION_CASES,
-  S03_CONFUSION_PRESETS,
   S03_SCORED_SIGNALS,
-  togglePrediction,
   type ConfusionCounts,
   type CurvePoint,
   type MetricId,
   type MetricResult,
-  type PredictionCase,
   type ScoredSignal,
 } from '../../../lib/s03-metrics';
 
+// La matriz, las curvas y sus controles comparten esta hoja de estilos.
 import './s03-evaluation.css';
 
 const METRIC_SPECS: Readonly<
@@ -28,91 +26,75 @@ const METRIC_SPECS: Readonly<
     MetricId,
     {
       title: string;
-      question: string;
+      definition: string;
       denominator: string;
       formula: string;
-      interpretation: string;
       limit: string;
     }
   >
 > = {
   accuracy: {
     title: 'Accuracy',
-    question: 'De todas las señales, ¿qué fracción quedó clasificada según su referencia?',
+    definition: 'Accuracy es la proporción de señales cuya predicción coincide con la referencia.',
     denominator: 'Todas las señales: TP + TN + FP + FN.',
     formula: '(TP + TN) / (TP + TN + FP + FN)',
-    interpretation: 'Compara los aciertos totales con el tamaño de esta muestra.',
     limit:
       'Puede ocultar que una clase minoritaria queda sin recuperar; revisa también sus métricas propias.',
   },
   error: {
     title: 'Tasa de error',
-    question: 'De todas las señales, ¿qué fracción quedó mal clasificada?',
+    definition:
+      'La tasa de error es la proporción de señales cuya predicción difiere de la referencia.',
     denominator: 'Todas las señales: TP + TN + FP + FN.',
     formula: '(FP + FN) / (TP + TN + FP + FN)',
-    interpretation:
-      'Cuenta falsas alertas y señales positivas omitidas dentro de una fracción total.',
     limit:
       'La fórmula da el mismo peso a FP y FN; una aplicación real debe describir sus consecuencias por separado.',
   },
   precision: {
     title: 'Precision',
-    question: 'De las señales que el clasificador marcó PC, ¿cuántas tienen referencia PC?',
+    definition: 'Precision es la proporción de predicciones PC cuya referencia también es PC.',
     denominator: 'Predicciones PC: TP + FP.',
     formula: 'TP / (TP + FP)',
-    interpretation: 'Describe qué tan concentradas en PC quedan las señales seleccionadas.',
     limit:
       'Depende de la población evaluada y puede quedar indefinida cuando no hay predicciones PC.',
   },
   recall: {
     title: 'Recall o TPR',
-    question: 'De los PC de referencia, ¿cuántos recuperó el clasificador?',
+    definition:
+      'Recall es la proporción de señales PC de referencia que el clasificador recupera como PC.',
     denominator: 'Referencias PC: TP + FN.',
     formula: 'TP / (TP + FN)',
-    interpretation: 'Mide qué fracción de las etiquetas positivas de esta muestra se recuperó.',
     limit:
       'Aumentarlo puede traer más falsas alertas; un recall alto no confirma la naturaleza planetaria.',
   },
   specificity: {
     title: 'Especificidad o TNR',
-    question: 'De las referencias negativas, ¿cuántas quedaron correctamente como negativas?',
+    definition:
+      'La especificidad es la proporción de referencias negativas clasificadas como negativas.',
     denominator: 'Referencias negativas: TN + FP.',
     formula: 'TN / (TN + FP)',
-    interpretation: 'Mide qué fracción de las etiquetas negativas se dejó sin alerta PC.',
     limit: 'No informa cuántos PC de referencia se recuperaron; acompáñala con recall.',
   },
   fpr: {
     title: 'Tasa de falsos positivos (FPR)',
-    question: 'De las referencias negativas, ¿cuántas recibieron una predicción PC?',
+    definition:
+      'La tasa de falsos positivos es la proporción de referencias negativas clasificadas como PC.',
     denominator: 'Referencias negativas: FP + TN.',
     formula: 'FP / (FP + TN) = 1 − especificidad',
-    interpretation: 'Mide la fracción de negativas que se convierte en alerta PC.',
     limit:
       'Una tasa baja depende de la población de referencia y no mide por sí sola el número de casos a revisar.',
   },
   f1: {
     title: 'F1',
-    question: '¿Cómo resumimos el balance armónico entre precision y recall?',
+    definition: 'F1 es la media armónica de precision y recall para la clase PC.',
     denominator: '2TP + FP + FN; los TN no entran en esta cuenta.',
     formula: '2TP / (2TP + FP + FN)',
-    interpretation: 'En esta convención, F1 queda entre cero y uno y resume precision con recall.',
     limit: 'No incorpora TN ni costos científicos; si su denominador es cero, queda indefinido.',
   },
 };
 
 const METRIC_IDS = Object.keys(METRIC_SPECS) as MetricId[];
 const DEFAULT_THRESHOLD = 0.8;
-const METRIC_CELL_ROLES: Readonly<
-  Record<MetricId, { numerator: readonly string[]; denominator: readonly string[] }>
-> = {
-  accuracy: { numerator: ['tp', 'tn'], denominator: ['tp', 'tn', 'fp', 'fn'] },
-  error: { numerator: ['fp', 'fn'], denominator: ['tp', 'tn', 'fp', 'fn'] },
-  precision: { numerator: ['tp'], denominator: ['tp', 'fp'] },
-  recall: { numerator: ['tp'], denominator: ['tp', 'fn'] },
-  specificity: { numerator: ['tn'], denominator: ['tn', 'fp'] },
-  fpr: { numerator: ['fp'], denominator: ['fp', 'tn'] },
-  f1: { numerator: ['tp'], denominator: ['tp', 'fp', 'fn'] },
-};
 
 function formatNumber(value: number): string {
   if (!Number.isFinite(value)) return 'indefinido';
@@ -143,18 +125,6 @@ function formatFraction(result: MetricResult): string {
 
 function predictionName(value: 'PC' | 'NEG'): string {
   return value === 'PC' ? 'PC' : 'AFP/NTP';
-}
-
-function matrixClassName(value: 'PC' | 'NEG'): string {
-  return value === 'PC' ? 'Tránsito' : 'NTránsito';
-}
-
-function caseLabel(example: PredictionCase): string {
-  return `${example.id} · referencia ${predictionName(example.reference)} · predicción ${predictionName(example.prediction)}`;
-}
-
-function metricCountLine(counts: ConfusionCounts): string {
-  return `TP ${counts.tp} · FP ${counts.fp} · FN ${counts.fn} · TN ${counts.tn}`;
 }
 
 function metricSubstitution(id: MetricId, counts: ConfusionCounts): string {
@@ -197,7 +167,7 @@ function metricQuestionInterpretation(id: MetricId, result: MetricResult): strin
     case 'fpr':
       return `${result.numerator} de ${result.denominator} referencias negativas se marcaron como PC: ${percentage}.`;
     case 'f1':
-      return `La sustitución en conteos produce F1 = ${formatNumber(result.value)} (${percentage}).`;
+      return 'Combina la proporción de aciertos entre las señales seleccionadas con la recuperación de PC de referencia.';
   }
 }
 
@@ -207,16 +177,12 @@ function countsForMetric(id: MetricId, counts: ConfusionCounts): MetricResult {
 
 function ConfusionMatrix({
   counts,
-  cases,
-  onToggle,
   compact = false,
-  metricId,
+  caption = 'Tránsito representa PC; NTránsito reúne AFP/NTP. Filas = referencia y columnas = predicción.',
 }: {
   counts: ConfusionCounts;
-  cases?: readonly PredictionCase[];
-  onToggle?: (caseId: string) => void;
   compact?: boolean;
-  metricId?: MetricId;
+  caption?: string;
 }) {
   const cells = [
     {
@@ -254,10 +220,7 @@ function ConfusionMatrix({
   return (
     <div className="s03-confusion__scroll">
       <table className={`s03-confusion${compact ? ' s03-confusion--compact' : ''}`}>
-        <caption>
-          Tránsito representa PC; NTránsito reúne AFP/NTP. Filas = referencia y columnas =
-          predicción.
-        </caption>
+        <caption>{caption}</caption>
         <thead>
           <tr>
             <th scope="col">Referencia ↓ / Predicción →</th>
@@ -273,48 +236,10 @@ function ConfusionMatrix({
               </th>
               {(['PC', 'NEG'] as const).map((prediction) => {
                 const cell = cellFor(reference, prediction);
-                const roles = metricId ? METRIC_CELL_ROLES[metricId] : undefined;
-                const isNumerator = roles?.numerator.includes(cell.id) ?? false;
-                const isDenominator = roles?.denominator.includes(cell.id) ?? false;
-                const examples = cases?.filter(
-                  (example) => example.reference === reference && example.prediction === prediction,
-                );
                 return (
-                  <td
-                    key={cell.id}
-                    data-cell={cell.id}
-                    data-numerator={isNumerator || undefined}
-                    data-denominator={isDenominator || undefined}
-                    className={[
-                      isNumerator && 's03-confusion__cell--numerator',
-                      isDenominator && 's03-confusion__cell--denominator',
-                      isNumerator && isDenominator && 's03-confusion__cell--numerator-denominator',
-                    ]
-                      .filter(Boolean)
-                      .join(' ')}
-                  >
+                  <td key={cell.id} data-cell={cell.id}>
                     <strong>{cell.label}</strong>
                     <span className="s03-confusion__count">{cell.count}</span>
-                    {examples && examples.length > 0 && (
-                      <span className="s03-confusion__examples">
-                        {examples.map((example) => (
-                          <button
-                            key={example.id}
-                            type="button"
-                            data-cell={cell.id}
-                            aria-label={`${caseLabel(example)}. Clase visible: ${matrixClassName(example.prediction)}. Cambiar solo la predicción.`}
-                            aria-pressed={example.prediction === 'PC'}
-                            title="Activa para cambiar la predicción; la referencia permanece fija."
-                            onClick={() => onToggle?.(example.id)}
-                          >
-                            <span className="s03-confusion__case-id">{example.id}</span>
-                            <span className="s03-confusion__prediction">
-                              {matrixClassName(example.prediction)}
-                            </span>
-                          </button>
-                        ))}
-                      </span>
-                    )}
                   </td>
                 );
               })}
@@ -326,42 +251,338 @@ function ConfusionMatrix({
   );
 }
 
-function CasePredictionControl({
-  cases,
-  selectedCaseId,
-  onSelect,
-  onToggle,
-}: {
-  cases: readonly PredictionCase[];
-  selectedCaseId: string;
-  onSelect: (id: string) => void;
-  onToggle: (id: string) => void;
-}) {
-  const id = useId().replaceAll(':', '');
-  const selected = cases.find((example) => example.id === selectedCaseId) ?? cases[0]!;
-  const nextPrediction = selected.prediction === 'PC' ? 'AFP/NTP' : 'PC';
+type SceneKind = 'planet' | 'binary' | 'activity';
+type PredictedClass = 'PC' | 'NEG';
+
+type SortableSignal = {
+  id: string;
+  scene: SceneKind;
+  reference: PredictedClass;
+  referenceLabel: string;
+};
+
+const SORTABLE_SIGNALS: readonly SortableSignal[] = [
+  { id: 'signal-a', scene: 'planet', reference: 'PC', referenceLabel: 'PC · candidata a planeta' },
+  { id: 'signal-b', scene: 'planet', reference: 'PC', referenceLabel: 'PC · candidata a planeta' },
+  {
+    id: 'signal-c',
+    scene: 'binary',
+    reference: 'NEG',
+    referenceLabel: 'AFP · falso positivo astrofísico',
+  },
+  {
+    id: 'signal-d',
+    scene: 'binary',
+    reference: 'NEG',
+    referenceLabel: 'AFP · falso positivo astrofísico',
+  },
+  {
+    id: 'signal-e',
+    scene: 'binary',
+    reference: 'NEG',
+    referenceLabel: 'AFP · falso positivo astrofísico',
+  },
+  {
+    id: 'signal-f',
+    scene: 'activity',
+    reference: 'NEG',
+    referenceLabel: 'NTP · fenómeno no transitorio',
+  },
+  {
+    id: 'signal-g',
+    scene: 'activity',
+    reference: 'NEG',
+    referenceLabel: 'NTP · fenómeno no transitorio',
+  },
+  {
+    id: 'signal-h',
+    scene: 'activity',
+    reference: 'NEG',
+    referenceLabel: 'NTP · fenómeno no transitorio',
+  },
+];
+
+const SCENE_LABELS: Readonly<Record<SceneKind, string>> = {
+  planet: 'Planeta en tránsito',
+  binary: 'Binaria eclipsante',
+  activity: 'Variación estelar sin tránsito',
+};
+
+function SignalIcon({ scene }: { scene: SceneKind }) {
+  const positions: Readonly<Record<SceneKind, string>> = {
+    planet: '0%',
+    binary: '50%',
+    activity: '100%',
+  };
+  const baseUrl = import.meta.env.BASE_URL;
   return (
-    <div className="s03-case-control">
-      <label htmlFor={`s03-case-select-${id}`}>Caso ficticio que cambiará</label>
-      <div className="s03-case-control__row">
-        <select
-          id={`s03-case-select-${id}`}
-          value={selected.id}
-          onChange={(event) => onSelect(event.currentTarget.value)}
-        >
-          {cases.map((example) => (
-            <option key={example.id} value={example.id}>
-              {caseLabel(example)}
-            </option>
-          ))}
-        </select>
-        <button type="button" onClick={() => onToggle(selected.id)}>
-          Cambiar predicción a {nextPrediction}
+    <span
+      className="s03-sort-signal__icon"
+      role="img"
+      aria-label={SCENE_LABELS[scene]}
+      style={{
+        backgroundImage: `url("${baseUrl}images/s03/s03-confusion-signal-icons.png")`,
+        backgroundPosition: `${positions[scene]} center`,
+      }}
+    />
+  );
+}
+
+function SignalSortingActivity() {
+  const [predictions, setPredictions] = useState<Record<string, PredictedClass | undefined>>({});
+  const [draggedSignalId, setDraggedSignalId] = useState<string | null>(null);
+  const classifiedCount = Object.keys(predictions).length;
+  const pending = SORTABLE_SIGNALS.filter((signal) => !predictions[signal.id]);
+  const cells = {
+    tp: SORTABLE_SIGNALS.filter(
+      (signal) => signal.reference === 'PC' && predictions[signal.id] === 'PC',
+    ),
+    fn: SORTABLE_SIGNALS.filter(
+      (signal) => signal.reference === 'PC' && predictions[signal.id] === 'NEG',
+    ),
+    fp: SORTABLE_SIGNALS.filter(
+      (signal) => signal.reference === 'NEG' && predictions[signal.id] === 'PC',
+    ),
+    tn: SORTABLE_SIGNALS.filter(
+      (signal) => signal.reference === 'NEG' && predictions[signal.id] === 'NEG',
+    ),
+  };
+
+  const classify = (signalId: string, prediction: PredictedClass) => {
+    setPredictions((current) => ({ ...current, [signalId]: prediction }));
+    setDraggedSignalId(null);
+  };
+
+  const handleDrop = (event: DragEvent<HTMLElement>, prediction: PredictedClass) => {
+    event.preventDefault();
+    const signalId = event.dataTransfer.getData('text/plain') || draggedSignalId;
+    if (signalId && SORTABLE_SIGNALS.some((signal) => signal.id === signalId)) {
+      classify(signalId, prediction);
+    }
+  };
+
+  return (
+    <div className="s03-sort-activity">
+      <p className="s03-sort-activity__lead">
+        Cada dibujo representa una causa posible de una señal. Decide qué predeciría el
+        clasificador; al soltarla, aparece la referencia del catálogo y vemos si la decisión fue un
+        acierto o un error.
+      </p>
+
+      {pending.length > 0 ? (
+        <section className="s03-sort-activity__pool" aria-labelledby="s03-sort-pool-title">
+          <div className="s03-sort-activity__section-heading">
+            <h4 id="s03-sort-pool-title">Señales por clasificar</h4>
+            <span>{pending.length} pendientes</span>
+          </div>
+          <div className="s03-sort-activity__cards">
+            {pending.map((signal, index) => (
+              <article
+                key={signal.id}
+                className="s03-sort-signal"
+                draggable
+                aria-label={`Señal sin clasificar, ${SCENE_LABELS[signal.scene]}, ${index + 1} de ocho`}
+                onDragStart={(event) => {
+                  event.dataTransfer.setData('text/plain', signal.id);
+                  event.dataTransfer.effectAllowed = 'move';
+                  setDraggedSignalId(signal.id);
+                }}
+                onDragEnd={() => setDraggedSignalId(null)}
+              >
+                <SignalIcon scene={signal.scene} />
+                <span className="s03-sort-signal__title">{SCENE_LABELS[signal.scene]}</span>
+                <div
+                  className="s03-sort-signal__actions"
+                  aria-label="Clasificar con teclado o pantalla táctil"
+                >
+                  <button type="button" onClick={() => classify(signal.id, 'PC')}>
+                    Tránsito
+                  </button>
+                  <button type="button" onClick={() => classify(signal.id, 'NEG')}>
+                    No tránsito
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : (
+        <p className="s03-sort-activity__complete" role="status">
+          Clasificaste las ocho señales. Puedes cambiar cualquier predicción desde su tarjeta.
+        </p>
+      )}
+
+      <section
+        className="s03-sort-activity__targets"
+        aria-label="Elige la predicción del clasificador"
+      >
+        {(['PC', 'NEG'] as const).map((prediction) => (
+          <div
+            key={prediction}
+            className="s03-sort-target"
+            data-prediction={prediction.toLowerCase()}
+            onDragOver={(event) => event.preventDefault()}
+            onDrop={(event) => handleDrop(event, prediction)}
+          >
+            <strong>{prediction === 'PC' ? 'Predecir: tránsito' : 'Predecir: no tránsito'}</strong>
+            <span>Arrastra aquí una señal</span>
+          </div>
+        ))}
+      </section>
+
+      <p className="s03-sort-activity__status" role="status" aria-live="polite">
+        Clasificadas {classifiedCount} de ocho · TP {cells.tp.length} · FN {cells.fn.length} · FP{' '}
+        {cells.fp.length} · TN {cells.tn.length}
+      </p>
+
+      {classifiedCount > 0 && (
+        <div className="s03-sort-matrix__scroll">
+          <table className="s03-sort-matrix">
+            <caption>
+              La fila muestra la referencia revelada; la columna conserva tu predicción.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Referencia ↓ / Predicción →</th>
+                <th scope="col">Tránsito</th>
+                <th scope="col">No tránsito</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                {
+                  reference: 'PC' as const,
+                  label: 'PC · candidata a planeta',
+                  predicted: 'PC' as const,
+                  wrong: 'NEG' as const,
+                  correctCell: 'tp' as const,
+                  wrongCell: 'fn' as const,
+                },
+                {
+                  reference: 'NEG' as const,
+                  label: 'AFP/NTP · referencia negativa',
+                  predicted: 'PC' as const,
+                  wrong: 'NEG' as const,
+                  correctCell: 'fp' as const,
+                  wrongCell: 'tn' as const,
+                },
+              ].map((row) => (
+                <tr key={row.reference}>
+                  <th scope="row">{row.label}</th>
+                  {([row.predicted, row.wrong] as const).map((prediction, index) => {
+                    const cellId = index === 0 ? row.correctCell : row.wrongCell;
+                    const signals = cells[cellId];
+                    const outcome = cellId === 'tp' || cellId === 'tn' ? 'acierto' : 'error';
+                    return (
+                      <td key={cellId} data-cell={cellId}>
+                        <strong>
+                          {cellId.toUpperCase()} · {outcome}
+                        </strong>
+                        {signals.length > 0 ? (
+                          <div className="s03-sort-matrix__cards">
+                            {signals.map((signal) => (
+                              <article
+                                key={signal.id}
+                                className="s03-sort-signal s03-sort-signal--placed"
+                              >
+                                <SignalIcon scene={signal.scene} />
+                                <span className="s03-sort-signal__title">
+                                  {SCENE_LABELS[signal.scene]}
+                                </span>
+                                <span className="s03-sort-signal__reference">
+                                  Referencia: {signal.referenceLabel}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    classify(signal.id, prediction === 'PC' ? 'NEG' : 'PC')
+                                  }
+                                >
+                                  Cambiar a {prediction === 'PC' ? 'no tránsito' : 'tránsito'}
+                                </button>
+                              </article>
+                            ))}
+                          </div>
+                        ) : (
+                          <p>Aún sin señales</p>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div className="s03-sort-activity__footer">
+        <p>
+          En los casos negativos, la referencia agrupa AFP (binaria eclipsante) y NTP (variación sin
+          tránsito).
+        </p>
+        <button type="button" onClick={() => setPredictions({})}>
+          Reiniciar actividad
         </button>
       </div>
-      <p>
-        Referencia fija: <strong>{predictionName(selected.reference)}</strong>. Solo cambia la
-        columna de predicción.
+      <p className="s03-evaluation__note">
+        Dibujos y tarjetas son ejemplos conceptuales. PC, AFP y NTP son etiquetas de referencia del
+        catálogo; pueden contener errores y no equivalen a una confirmación física.
+      </p>
+    </div>
+  );
+}
+
+function ErrorConsequenceStories() {
+  return (
+    <div className="s03-error-stories">
+      <div className="s03-error-stories__context">
+        <p>
+          Kepler registra variaciones periódicas del brillo y su buscador entrega TCE: eventos que
+          podrían parecer tránsitos. La CNN estudiada ayuda a ordenar esas señales para la revisión
+          posterior. Imagina ahora un equipo con tiempo limitado para examinar candidatas.
+        </p>
+        <div
+          className="s03-error-stories__flow"
+          aria-label="Del registro de Kepler a la revisión de candidatas"
+        >
+          <span>Caída de brillo</span>
+          <b aria-hidden="true">→</b>
+          <span>TCE</span>
+          <b aria-hidden="true">→</b>
+          <span>Prioridad de la CNN</span>
+          <b aria-hidden="true">→</b>
+          <span>Revisión humana</span>
+        </div>
+      </div>
+      <div className="s03-error-stories__cards">
+        <article className="s03-error-story s03-error-story--fp">
+          <SignalIcon scene="binary" />
+          <div>
+            <h4>Falsa alerta · FP</h4>
+            <p>
+              La señal corresponde a una binaria eclipsante y la referencia la marca AFP. Si el
+              clasificador predice «tránsito / PC», la alerta puede ocupar tiempo de revisión o
+              seguimiento aunque no sea una candidata planetaria.
+            </p>
+          </div>
+        </article>
+        <article className="s03-error-story s03-error-story--fn">
+          <SignalIcon scene="planet" />
+          <div>
+            <h4>Candidata omitida · FN</h4>
+            <p>
+              La referencia marca PC, pero el clasificador predice «no tránsito». La candidata puede
+              quedar relegada y reducirse la recuperación de señales potencialmente interesantes.
+            </p>
+          </div>
+        </article>
+      </div>
+      <p className="s03-evaluation__note">
+        PC significa candidata a planeta, no planeta confirmado. FP y FN nombran desacuerdos con la
+        referencia; el catálogo puede contener etiquetas imperfectas. Son escenarios didácticos, no
+        errores concretos reportados por el artículo, y su costo relativo depende de la meta y los
+        recursos del estudio.
       </p>
     </div>
   );
@@ -389,40 +610,103 @@ function PrecisionFraction({
   );
 }
 
-function PrecisionWalkthrough({
+function metricWalkthrough(id: MetricId, counts: ConfusionCounts, result: MetricResult) {
+  const { tp, fp, fn, tn } = counts;
+  const total = tp + fp + fn + tn;
+  const explanations = {
+    accuracy: {
+      numerator: 'TP + TN',
+      denominator: 'TP + TN + FP + FN',
+      numeratorText: `Contamos los acuerdos: ${tp} PC y ${tn} señales negativas clasificadas según su referencia.`,
+      denominatorText: `Los comparamos con las ${total} señales del ejemplo: ${tp} + ${tn} + ${fp} + ${fn}.`,
+      use: 'Sirve para resumir el acierto global y comparar modelos sobre una misma muestra.',
+    },
+    error: {
+      numerator: 'FP + FN',
+      denominator: 'TP + TN + FP + FN',
+      numeratorText: `Contamos los desacuerdos: ${fp} falsas alertas y ${fn} candidatas de referencia que no se recuperaron.`,
+      denominatorText: `Los comparamos con las ${total} señales del ejemplo: ${tp} + ${tn} + ${fp} + ${fn}.`,
+      use: 'Sirve para resumir la fracción de errores; es el complemento de accuracy.',
+    },
+    precision: {
+      numerator: 'TP',
+      denominator: 'TP + FP',
+      numeratorText: `Contamos las predicciones PC cuya referencia también es PC: ${tp} verdaderos positivos.`,
+      denominatorText: `Reunimos todas las señales seleccionadas como PC: ${tp} TP + ${fp} FP = ${tp + fp}.`,
+      use: 'Ayuda a valorar qué tan fiable es la lista seleccionada para revisión.',
+    },
+    recall: {
+      numerator: 'TP',
+      denominator: 'TP + FN',
+      numeratorText: `Contamos las candidatas de referencia recuperadas: ${tp} verdaderos positivos.`,
+      denominatorText: `Reunimos todas las PC de referencia: ${tp} recuperadas y ${fn} omitidas, en total ${tp + fn}.`,
+      use: 'Ayuda a valorar cuántas candidatas de referencia se conservan en la búsqueda.',
+    },
+    specificity: {
+      numerator: 'TN',
+      denominator: 'TN + FP',
+      numeratorText: `Contamos las señales negativas de referencia clasificadas como negativas: ${tn} verdaderos negativos.`,
+      denominatorText: `Reunimos las ${tn + fp} referencias negativas: ${tn} TN y ${fp} FP.`,
+      use: 'Ayuda a ver qué proporción de señales negativas se descarta correctamente.',
+    },
+    fpr: {
+      numerator: 'FP',
+      denominator: 'FP + TN',
+      numeratorText: `Contamos las señales negativas de referencia marcadas como PC: ${fp} falsas alertas.`,
+      denominatorText: `Las comparamos con las ${fp + tn} referencias negativas: ${fp} FP y ${tn} TN.`,
+      use: 'Ayuda a medir la frecuencia de falsas alertas entre las señales negativas; es el complemento de la especificidad.',
+    },
+    f1: {
+      numerator: '2 × TP',
+      denominator: '2 × TP + FP + FN',
+      numeratorText: `F1 combina precision y recall mediante 2 × precision × recall / (precision + recall). Con los conteos de la matriz, el numerador equivalente es 2 × TP: 2 × ${tp} = ${2 * tp}.`,
+      denominatorText: `Sumamos a esa cantidad ${fp} falsas alertas y ${fn} candidatas omitidas: ${2 * tp} + ${fp} + ${fn} = ${2 * tp + fp + fn}.`,
+      use: 'Sirve para resumir conjuntamente precision y recall; baja cuando cualquiera de las dos es baja. El valor no es una fracción de señales.',
+    },
+  } satisfies Record<
+    MetricId,
+    {
+      numerator: string;
+      denominator: string;
+      numeratorText: string;
+      denominatorText: string;
+      use: string;
+    }
+  >;
+  return { ...explanations[id], interpretation: metricQuestionInterpretation(id, result) };
+}
+
+function MetricWalkthrough({
+  id,
   counts,
   result,
-  spec,
 }: {
+  id: MetricId;
   counts: ConfusionCounts;
   result: MetricResult;
-  spec: (typeof METRIC_SPECS)['precision'];
 }) {
   const [step, setStep] = useState(0);
   const headingId = useId().replaceAll(':', '');
-  const denominator = `${counts.tp} + ${counts.fp} = ${result.denominator}`;
-  const numerator = step === 0 ? 'TP' : String(counts.tp);
-  const fractionDenominator = step === 0 || step === 1 ? 'TP + FP' : denominator;
+  const spec = METRIC_SPECS[id];
+  const explanation = metricWalkthrough(id, counts, result);
+  const numerator = step === 0 ? explanation.numerator : String(result.numerator);
+  const fractionDenominator = step === 0 ? explanation.denominator : String(result.denominator);
   const fractionLabel =
     step === 0
-      ? 'Precision: TP dividido entre TP más FP.'
-      : `Precision: ${numerator} dividido entre ${fractionDenominator}.`;
+      ? `${spec.title}: ${explanation.numerator} dividido entre ${explanation.denominator}.`
+      : `${spec.title}: ${numerator} dividido entre ${fractionDenominator}.`;
   const stepContent = [
     {
-      title: 'Pregunta',
-      description: spec.question,
+      title: 'Identifica el numerador',
+      description: explanation.numeratorText,
     },
     {
-      title: 'Cuenta los aciertos',
-      description: `El numerador cuenta las predicciones PC cuya referencia también es PC: ${counts.tp} verdaderos positivos.`,
+      title: 'Construye el denominador',
+      description: explanation.denominatorText,
     },
     {
-      title: 'Reúne las predicciones PC',
-      description: `El denominador incluye todos los casos marcados PC: ${counts.tp} TP y ${counts.fp} FP, para un total de ${result.denominator}.`,
-    },
-    {
-      title: 'Interpreta el resultado y su límite',
-      description: `${metricQuestionInterpretation('precision', result)} Un FP reduce precision; recall cuenta los FN. La cifra depende de la población y queda indefinida si no se predice ningún PC.`,
+      title: 'Interpreta y usa el resultado',
+      description: `${explanation.interpretation} ${explanation.use} ${spec.limit}`,
     },
   ][step]!;
 
@@ -430,113 +714,55 @@ function PrecisionWalkthrough({
     <div className="s03-precision-walkthrough">
       <section
         className="s03-precision-walkthrough__step"
-        aria-labelledby={`s03-precision-step-${headingId}`}
+        aria-labelledby={`s03-metric-step-${headingId}`}
       >
-        <h4 id={`s03-precision-step-${headingId}`}>Construimos la precision</h4>
+        <h4 id={`s03-metric-step-${headingId}`}>Construimos {spec.title}</h4>
         <p className="s03-precision-walkthrough__progress">
-          Paso {step + 1} de 4 · {stepContent.title}
+          Paso {step + 1} de 3 · {stepContent.title}
         </p>
         <p>{stepContent.description}</p>
-        {step === 0 && (
-          <p className="s03-precision-walkthrough__denominator-note">{spec.denominator}</p>
-        )}
         <PrecisionFraction
           numerator={numerator}
           denominator={fractionDenominator}
           label={fractionLabel}
         />
         <p className="s03-precision-walkthrough__current-result" role="status" aria-live="polite">
-          <strong>Resultado actual: </strong>
+          <strong>Resultado del ejemplo: </strong>
           <span>{formatFraction(result)}</span>
         </p>
         <SessionNavigationControls
           index={step}
-          count={4}
-          onMove={(delta) => setStep((current) => Math.max(0, Math.min(3, current + delta)))}
+          count={3}
+          onMove={(delta) => setStep((current) => Math.max(0, Math.min(2, current + delta)))}
           scope="explanation"
         />
+        <noscript>
+          <p>
+            {explanation.numeratorText} {explanation.denominatorText}
+          </p>
+          <p>
+            {spec.formula}: {metricSubstitution(id, counts)}. {formatFraction(result)}.
+          </p>
+          <p>
+            {explanation.interpretation} {explanation.use} {spec.limit}
+          </p>
+        </noscript>
       </section>
     </div>
   );
 }
 
-function MetricScene({
-  id,
-  cases,
-  onToggle,
-  selectedCaseId,
-  onSelectCase,
-}: {
-  id: MetricId;
-  cases: readonly PredictionCase[];
-  onToggle: (caseId: string) => void;
-  selectedCaseId: string;
-  onSelectCase: (caseId: string) => void;
-}) {
-  const counts = countPredictions(cases);
+function MetricScene({ id }: { id: MetricId }) {
+  const counts = countPredictions(S03_CONFUSION_CASES);
   const spec = METRIC_SPECS[id];
   const value = countsForMetric(id, counts);
-  const matrixExamples =
-    id === 'precision' ? cases.filter((example) => ['PC-01', 'NEG-01'].includes(example.id)) : [];
   return (
     <div className="s03-metric-scene">
       <div className="s03-metric-scene__visual">
-        <ConfusionMatrix
-          counts={counts}
-          cases={id === 'precision' ? matrixExamples : undefined}
-          onToggle={onToggle}
-          compact
-          metricId={id}
-        />
-        <p className="s03-metric-scene__matrix-key">
-          {id === 'precision'
-            ? 'PC-01 (TP) y NEG-01 (FP) cambian de celda al activar el caso; su referencia queda fija.'
-            : 'El borde verde marca el numerador y el azul el denominador; una celda con ambos bordes aporta a los dos.'}
-        </p>
-        <p className="s03-metric-scene__counts" role="status" aria-live="polite">
-          Conteos actuales: {metricCountLine(counts)}.
-        </p>
-        {id !== 'precision' && (
-          <CasePredictionControl
-            cases={cases}
-            selectedCaseId={selectedCaseId}
-            onSelect={onSelectCase}
-            onToggle={onToggle}
-          />
-        )}
+        <ConfusionMatrix counts={counts} caption={spec.definition} compact />
       </div>
       <div className="s03-metric-scene__explanation">
-        {id === 'precision' ? (
-          <PrecisionWalkthrough counts={counts} result={value} spec={spec} />
-        ) : (
-          <>
-            <section>
-              <h4>Pregunta</h4>
-              <p>{spec.question}</p>
-            </section>
-            <section>
-              <h4>Denominador</h4>
-              <p>{spec.denominator}</p>
-            </section>
-            <section>
-              <h4>Fórmula</h4>
-              <code className="s03-formula">{spec.formula}</code>
-            </section>
-            <section>
-              <h4>Sustitución</h4>
-              <code className="s03-formula">{metricSubstitution(id, counts)}</code>
-              <p className="s03-metric-scene__result">{formatFraction(value)}</p>
-            </section>
-            <section>
-              <h4>Interpretación</h4>
-              <p>{metricQuestionInterpretation(id, value)}</p>
-            </section>
-            <section className="s03-metric-scene__limit">
-              <h4>Consecuencia y límite</h4>
-              <p>{spec.limit}</p>
-            </section>
-          </>
-        )}
+        <MetricWalkthrough key={id} id={id} counts={counts} result={value} />
       </div>
     </div>
   );
@@ -545,9 +771,11 @@ function MetricScene({
 function ThresholdControl({
   value,
   onChange,
+  showRule = true,
 }: {
   value: number;
   onChange: (value: number) => void;
+  showRule?: boolean;
 }) {
   const id = useId().replaceAll(':', '');
   return (
@@ -577,7 +805,7 @@ function ThresholdControl({
           </button>
         ))}
       </div>
-      <p>Regla de decisión: puntaje ≥ umbral → predicción PC.</p>
+      {showRule && <p>Regla de decisión: puntaje ≥ umbral → predicción PC.</p>}
     </div>
   );
 }
@@ -621,36 +849,20 @@ function ScoreTable({
   );
 }
 
-function ThresholdSummary({
-  signals,
-  threshold,
-}: {
-  signals: readonly ScoredSignal[];
-  threshold: number;
-}) {
-  const counts = confusionAtThreshold(signals, threshold);
-  const metrics = calculateMetrics(counts);
-  return (
-    <div className="s03-threshold-summary">
-      <ConfusionMatrix counts={counts} compact />
-      <p role="status" aria-live="polite">
-        {metricCountLine(counts)} · accuracy {formatFraction(metrics.accuracy)} · precision{' '}
-        {formatFraction(metrics.precision)} · recall {formatFraction(metrics.recall)}.
-      </p>
-    </div>
-  );
-}
-
 function CurveChart({
   kind,
   points,
   current,
   threshold,
+  showCaption = true,
+  showArea = false,
 }: {
   kind: 'pr' | 'roc';
   points: readonly CurvePoint[];
   current: CurvePoint;
   threshold: number;
+  showCaption?: boolean;
+  showArea?: boolean;
 }) {
   const id = useId().replaceAll(':', '');
   const width = 480;
@@ -661,7 +873,7 @@ function CurveChart({
   const bottom = 54;
   const plotWidth = width - left - right;
   const plotHeight = height - top - bottom;
-  const xLabel = kind === 'pr' ? 'Recall (TPR)' : 'Tasa de falsos positivos (FPR)';
+  const xLabel = kind === 'pr' ? 'Recall' : 'Tasa de falsos positivos (FPR)';
   const yLabel = kind === 'pr' ? 'Precision' : 'Recall (TPR)';
   const validPoints = points.filter(
     (point): point is CurvePoint & { x: number; y: number } =>
@@ -681,15 +893,16 @@ function CurveChart({
       <svg
         viewBox={`0 0 ${width} ${height}`}
         role="img"
-        aria-labelledby={`${id}-title ${id}-description`}
+        aria-labelledby={`${id}-title`}
+        aria-describedby={`${id}-description`}
       >
         <title id={`${id}-title`}>
           {kind === 'pr' ? 'Curva precision–recall sintética' : 'Curva ROC sintética'}
         </title>
         <desc id={`${id}-description`}>
           {kind === 'pr'
-            ? 'Curva calculada a partir de seis puntajes ficticios. El punto actual cambia con el umbral. Cuando no hay predicciones positivas, precision queda indefinida y no se dibuja el punto.'
-            : 'Curva calculada a partir de seis puntajes ficticios. El punto actual cambia con el umbral; el área total se calcula una sola vez a partir del orden de los puntajes.'}
+            ? `Curva calculada con seis puntajes ficticios. Con umbral ${formatNumber(threshold)}, recall es ${current.x === undefined ? 'indefinido' : formatNumber(current.x)} y precision es ${current.y === undefined ? 'indefinida' : formatNumber(current.y)}. Si no hay predicciones positivas, precision queda indefinida y no se dibuja el punto.`
+            : `Curva calculada con seis puntajes ficticios. ${showArea ? 'La región sombreada representa el área bajo la curva, 8/9.' : ''} Con umbral ${formatNumber(threshold)}, la tasa de falsos positivos es ${current.x === undefined ? 'indefinida' : formatNumber(current.x)} y la recuperación es ${current.y === undefined ? 'indefinida' : formatNumber(current.y)}.`}
         </desc>
         {[0, 0.25, 0.5, 0.75, 1].map((tick) => (
           <g key={tick} className="s03-curve__gridline" aria-hidden="true">
@@ -711,6 +924,13 @@ function CurveChart({
           y2={height - bottom}
         />
         <line className="s03-curve__axis" x1={left} x2={left} y1={top} y2={height - bottom} />
+        {kind === 'roc' && showArea && validPoints.length > 0 && (
+          <path
+            className="s03-curve__area"
+            d={`${path} L ${xPosition(validPoints[validPoints.length - 1]!.x)} ${yPosition(0)} L ${xPosition(validPoints[0]!.x)} ${yPosition(0)} Z`}
+            aria-hidden="true"
+          />
+        )}
         {kind === 'roc' && (
           <line
             className="s03-curve__reference"
@@ -758,11 +978,11 @@ function CurveChart({
           {yLabel}
         </text>
       </svg>
-      <figcaption>
-        {kind === 'pr'
-          ? `Con umbral ${formatNumber(threshold)}, recall = ${current.x === undefined ? 'indefinido' : formatNumber(current.x)} y precision = ${current.y === undefined ? 'indefinida' : formatNumber(current.y)}.`
-          : `Con umbral ${formatNumber(threshold)}, FPR = ${current.x === undefined ? 'indefinida' : formatNumber(current.x)} y TPR = ${current.y === undefined ? 'indefinido' : formatNumber(current.y)}.`}
-      </figcaption>
+      {kind === 'roc' && showCaption && (
+        <figcaption>
+          {`Con umbral ${formatNumber(threshold)}, FPR = ${current.x === undefined ? 'indefinida' : formatNumber(current.x)} y TPR = ${current.y === undefined ? 'indefinido' : formatNumber(current.y)}.`}
+        </figcaption>
+      )}
     </figure>
   );
 }
@@ -790,17 +1010,21 @@ function ThresholdScene({
   onChange: (threshold: number) => void;
 }) {
   const counts = confusionAtThreshold(S03_SCORED_SIGNALS, threshold);
+  const example = S03_SCORED_SIGNALS.find((signal) => signal.id === 'C')!;
   return (
     <div className="s03-threshold-scene">
       <div className="s03-threshold-scene__controls">
-        <ThresholdControl value={threshold} onChange={onChange} />
-        <ThresholdSummary signals={S03_SCORED_SIGNALS} threshold={threshold} />
+        <ThresholdControl value={threshold} onChange={onChange} showRule={false} />
+        <p className="s03-threshold-scene__example" role="status" aria-live="polite">
+          Por ejemplo, la señal C tiene puntaje {formatNumber(example.score)}. Con umbral{' '}
+          {formatNumber(threshold)}, se predice {example.score >= threshold ? 'PC' : 'no tránsito'}.
+        </p>
+        <ConfusionMatrix counts={counts} compact />
       </div>
       <ScoreTable signals={S03_SCORED_SIGNALS} threshold={threshold} />
       <p className="s03-evaluation__note">
         Al mover el umbral solo cambian las predicciones. Las tres referencias PC y las tres
-        referencias negativas permanecen fijas. Conteos: {metricCountLine(counts)}. Todos los casos
-        y puntajes son ficticios.
+        referencias negativas permanecen fijas. Todos los casos y puntajes son ficticios.
       </p>
     </div>
   );
@@ -821,42 +1045,56 @@ function CurveScene({
   return (
     <div className={`s03-curve-scene s03-curve-scene--${kind}`}>
       <div>
-        <ThresholdControl value={threshold} onChange={onChange} />
-        <CurveChart kind={kind} points={points} current={current} threshold={threshold} />
+        <ThresholdControl value={threshold} onChange={onChange} showRule={kind !== 'pr'} />
+        <CurveChart
+          kind={kind}
+          points={points}
+          current={current}
+          threshold={threshold}
+          showCaption={false}
+        />
       </div>
       <aside className="s03-curve-scene__reading">
-        <h3>Qué observar</h3>
+        <h3>{kind === 'pr' ? 'Qué muestra la curva' : 'Qué observar'}</h3>
         {kind === 'pr' ? (
           <>
             <p>
-              PR sigue recall frente a precision mientras el umbral recorre los puntajes. El punto
-              cambia; las seis señales se mantienen.
+              Al comparar modelos, busca una curva que se mantenga más arriba: para la misma
+              recuperación, una precisión mayor significa una menor proporción de falsas alertas
+              entre las señales seleccionadas. Una curva próxima a la esquina superior derecha
+              combina alta recuperación y alta precisión.
             </p>
             <p>
-              Si ningún caso se predice PC, precision no tiene denominador y queda indefinida. Por
-              eso el gráfico omite ese punto.
+              La figura del artículo compara tres modelos: lineal (morado), red totalmente conectada
+              (naranja) y red convolucional (azul). Los tres reciben las vistas global y local de
+              las señales; cada curva muestra su precisión y recuperación al variar el umbral.
             </p>
-            <p>
-              El artículo compara tres modelos sobre el test: recorre sus curvas para elegir un
-              balance entre recuperar señales y controlar falsas alarmas.
-            </p>
+            {current.y === undefined && (
+              <p>
+                Con este umbral no se selecciona ninguna señal: la precisión queda indefinida y el
+                punto no aparece.
+              </p>
+            )}
             <S03PaperFigure figureNumber={6} variant="wide" />
           </>
         ) : (
           <>
-            <p>ROC grafica la tasa de falsas alertas FPR frente a la recuperación TPR.</p>
             <p>
-              La línea diagonal es una referencia de ordenamiento aleatorio; cada umbral selecciona
-              otro punto de operación.
+              La recuperación cuenta las candidatas encontradas entre las candidatas de referencia.
+              La tasa de falsos positivos cuenta las falsas alertas entre las señales de referencia
+              negativas. Cada tasa se calcula sobre un grupo distinto.
             </p>
             <p>
-              La curva se construye con los seis puntajes ficticios. El área de esta figura es 8/9.
+              Un punto cerca de la esquina superior izquierda combina una recuperación alta con
+              pocas falsas alertas entre las señales negativas.
+            </p>
+            <p>
+              La diagonal representa el comportamiento esperado de un clasificador que ordena al
+              azar: allí las tasas de recuperación y de falsas alertas son iguales. Una curva más
+              cercana a la esquina superior izquierda muestra una mejor separación en esa zona.
             </p>
           </>
         )}
-        <p className="s03-evaluation__note">
-          El gráfico es didáctico y propio; no representa resultados publicados.
-        </p>
       </aside>
     </div>
   );
@@ -882,113 +1120,129 @@ function AucScene({
   });
   return (
     <div className="s03-auc-scene">
-      <div className="s03-auc-scene__pairwise">
-        <p>Compara cada puntaje PC con cada puntaje negativo: hay 3 × 3 = 9 pares.</p>
-        <div className="s03-pairwise__scroll">
-          <table className="s03-pairwise">
-            <caption>
-              Ordenar PC por encima de la referencia negativa suma 1; un empate sumaría 0,5.
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">PC ↓ / negativa →</th>
-                {negatives.map((negative) => (
-                  <th scope="col" key={negative.id}>
-                    {negative.id} · {formatNumber(negative.score)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {positives.map((positive) => (
-                <tr key={positive.id}>
-                  <th scope="row">
-                    {positive.id} · {formatNumber(positive.score)}
-                  </th>
-                  {negatives.map((negative) => {
-                    const comparison = Math.sign(positive.score - negative.score);
-                    const label =
-                      comparison > 0
-                        ? 'orden correcto'
-                        : comparison < 0
-                          ? 'orden invertido'
-                          : 'empate';
-                    return (
-                      <td
-                        key={negative.id}
-                        data-order={
-                          comparison > 0 ? 'correct' : comparison < 0 ? 'inverted' : 'tie'
-                        }
-                      >
-                        <span aria-hidden="true">
-                          {comparison > 0 ? '>' : comparison < 0 ? '<' : '='}
-                        </span>
-                        <span className="s03-sr-only">{label}</span>
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="s03-auc-scene__result">
-          {auc === undefined ? 'AUC indefinida' : `AUC = 8/9 = ${formatNumber(auc)}`}
-          <span> Ocho pares quedan ordenados correctamente de nueve.</span>
-        </p>
-        <p>El AUC depende del orden de los puntajes; no depende del umbral elegido.</p>
-        <div className="s03-auc-scene__area">
-          <h3>Área bajo la ROC por tramos</h3>
-          <p>
-            Para cada tramo: ΔFPR × (TPR inicial + TPR final) / 2. Los saltos verticales tienen ΔFPR
-            = 0 y aportan área cero.
-          </p>
-          <div className="s03-area__scroll">
-            <table className="s03-area">
-              <caption>Seis tramos entre los siete puntos de operación ROC.</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Puntos (FPR, TPR)</th>
-                  <th scope="col">Área del tramo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {areaSegments.map(({ previous, point, area }, index) => (
-                  <tr key={index}>
-                    <th scope="row">
-                      ({formatThird(previous.x!)}, {formatThird(previous.y!)}) → (
-                      {formatThird(point.x!)}, {formatThird(point.y!)})
-                    </th>
-                    <td>{formatArea(area)}</td>
-                  </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th scope="row">Suma</th>
-                  <td>2/9 + 1/3 + 1/3 = 8/9</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-      </div>
       <div className="s03-auc-scene__threshold">
-        <ThresholdControl value={threshold} onChange={onChange} />
-        <CurveChart kind="roc" points={rocPoints} current={current} threshold={threshold} />
-        <p>El punto de operación se mueve con el umbral; el área 8/9 permanece constante.</p>
+        <ThresholdControl value={threshold} onChange={onChange} showRule={false} />
+        <CurveChart
+          kind="roc"
+          points={rocPoints}
+          current={current}
+          threshold={threshold}
+          showCaption={false}
+          showArea
+        />
       </div>
+      <aside className="s03-curve-scene__reading">
+        <h3>Qué nos dice el área</h3>
+        <p>
+          El área sombreada resume toda la curva: un valor de 1 corresponde a un ordenamiento
+          perfecto y 0,5 al valor esperado si el ordenamiento fuera aleatorio.
+        </p>
+        <p>
+          En el artículo, la red convolucional obtuvo un AUC de <strong>0,988</strong> en el
+          conjunto de prueba. Esa cifra resume el ordenamiento de sus señales de prueba.
+        </p>
+        <details className="s03-auc-scene__details">
+          <summary>Ver cómo se calcula el área del ejemplo</summary>
+          <div className="s03-auc-scene__pairwise">
+            <p>Compara cada puntaje PC con cada puntaje negativo: hay 3 × 3 = 9 pares.</p>
+            <div className="s03-pairwise__scroll">
+              <table className="s03-pairwise">
+                <caption>
+                  Ordenar PC por encima de la referencia negativa suma 1; un empate sumaría 0,5.
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">PC ↓ / negativa →</th>
+                    {negatives.map((negative) => (
+                      <th scope="col" key={negative.id}>
+                        {negative.id} · {formatNumber(negative.score)}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {positives.map((positive) => (
+                    <tr key={positive.id}>
+                      <th scope="row">
+                        {positive.id} · {formatNumber(positive.score)}
+                      </th>
+                      {negatives.map((negative) => {
+                        const comparison = Math.sign(positive.score - negative.score);
+                        const label =
+                          comparison > 0
+                            ? 'orden correcto'
+                            : comparison < 0
+                              ? 'orden invertido'
+                              : 'empate';
+                        return (
+                          <td
+                            key={negative.id}
+                            data-order={
+                              comparison > 0 ? 'correct' : comparison < 0 ? 'inverted' : 'tie'
+                            }
+                          >
+                            <span aria-hidden="true">
+                              {comparison > 0 ? '>' : comparison < 0 ? '<' : '='}
+                            </span>
+                            <span className="s03-sr-only">{label}</span>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="s03-auc-scene__result">
+              {auc === undefined ? 'AUC indefinida' : `AUC = 8/9 = ${formatNumber(auc)}`}
+              <span> Ocho pares quedan ordenados correctamente de nueve.</span>
+            </p>
+            <p>El AUC depende del orden de los puntajes; no depende del umbral elegido.</p>
+            <div className="s03-auc-scene__area">
+              <h3>Área bajo la ROC por tramos</h3>
+              <p>
+                Para cada tramo: ΔFPR × (TPR inicial + TPR final) / 2. Los saltos verticales tienen
+                ΔFPR = 0 y aportan área cero.
+              </p>
+              <div className="s03-area__scroll">
+                <table className="s03-area">
+                  <caption>Seis tramos entre los siete puntos de operación ROC.</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Puntos (FPR, TPR)</th>
+                      <th scope="col">Área del tramo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {areaSegments.map(({ previous, point, area }, index) => (
+                      <tr key={index}>
+                        <th scope="row">
+                          ({formatThird(previous.x!)}, {formatThird(previous.y!)}) → (
+                          {formatThird(point.x!)}, {formatThird(point.y!)})
+                        </th>
+                        <td>{formatArea(area)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th scope="row">Suma</th>
+                      <td>2/9 + 1/3 + 1/3 = 8/9</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </details>
+      </aside>
     </div>
   );
 }
 
 /** Visual and mathematical content for S03 stations 6–8. */
 export default function S03EvaluationScenes({ sceneId }: { sceneId: string }) {
-  const [cases, setCases] = useState<PredictionCase[]>(() => [...S03_CONFUSION_CASES]);
-  const [selectedCaseId, setSelectedCaseId] = useState('PC-01');
-  const [selectedPresetId, setSelectedPresetId] = useState('a');
   const [threshold, setThreshold] = useState(DEFAULT_THRESHOLD);
-  const toggleCase = (caseId: string) => setCases((current) => togglePrediction(current, caseId));
 
   if (sceneId === 'evaluation-split') {
     return (
@@ -1048,60 +1302,17 @@ export default function S03EvaluationScenes({ sceneId }: { sceneId: string }) {
   }
 
   if (sceneId === 'confusion-matrix') {
-    const counts = countPredictions(cases);
     return (
       <div className="s03-evaluation s03-evaluation--matrix">
-        <p>
-          Veinte señales ficticias con una referencia fija por caso. Activa un ID para cambiar su
-          predicción y observa cómo se mueve entre columnas.
-        </p>
-        <ConfusionMatrix counts={counts} cases={cases} onToggle={toggleCase} />
-        <p className="s03-evaluation__status" role="status" aria-live="polite">
-          {metricCountLine(counts)}. Tránsito = PC (positiva) y NTránsito = AFP/NTP (negativa). La
-          predicción cambia y la referencia permanece fija.
-        </p>
+        <SignalSortingActivity />
       </div>
     );
   }
 
   if (sceneId === 'confusion-cases') {
-    const preset = S03_CONFUSION_PRESETS.find((item) => item.id === selectedPresetId)!;
-    const metrics = calculateMetrics(preset.counts);
     return (
-      <div className="s03-evaluation s03-evaluation--presets">
-        <div className="s03-preset-picker" role="group" aria-label="Conjuntos de conteos ficticios">
-          {S03_CONFUSION_PRESETS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              aria-pressed={selectedPresetId === item.id}
-              onClick={() => setSelectedPresetId(item.id)}
-            >
-              <strong>{item.label}</strong>
-              <span>
-                TP {item.counts.tp} · FP {item.counts.fp} · FN {item.counts.fn} · TN{' '}
-                {item.counts.tn}
-              </span>
-            </button>
-          ))}
-        </div>
-        <div className="s03-preset-detail" aria-live="polite">
-          <p>{preset.population} Estos conteos son ficticios.</p>
-          <ConfusionMatrix counts={preset.counts} compact />
-          <p className="s03-preset-detail__readout">
-            Accuracy: {formatFraction(metrics.accuracy)} · Recall: {formatFraction(metrics.recall)}.
-          </p>
-          {preset.id === 'd' && (
-            <p className="s03-evaluation__note">
-              Aquí accuracy llega a 90 % aunque recall es cero: el clasificador no recupera ninguno
-              de los dos PC de referencia.
-            </p>
-          )}
-        </div>
-        <p className="s03-evaluation__source">
-          A, B y C comparten una población ficticia balanceada. D usa otra composición; comparar
-          poblaciones distintas cambia también la referencia.
-        </p>
+      <div className="s03-evaluation">
+        <ErrorConsequenceStories />
       </div>
     );
   }
@@ -1112,13 +1323,7 @@ export default function S03EvaluationScenes({ sceneId }: { sceneId: string }) {
       return (
         <div className="s03-evaluation s03-evaluation--metric">
           <h3>{METRIC_SPECS[metricId].title}</h3>
-          <MetricScene
-            id={metricId}
-            cases={cases}
-            onToggle={toggleCase}
-            selectedCaseId={selectedCaseId}
-            onSelectCase={setSelectedCaseId}
-          />
+          <MetricScene id={metricId} />
         </div>
       );
     }

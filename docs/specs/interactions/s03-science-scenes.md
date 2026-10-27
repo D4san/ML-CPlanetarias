@@ -15,12 +15,12 @@
 | `eclipsing-blend` | Una animación de la órbita de una binaria eclipsante sincronizada con una curva calculada; incluye proyección sobre el cielo, una fuente vecina dentro de la apertura y una comparación entre la curva propia y la curva diluida. |
 | `artifact-aperture` | Compara la misma estrella en `t₀` y `t₁` sobre dos retículas iguales; la apertura `A` permanece fija y el desplazamiento se conecta con el flujo sumado y el centroide. |
 | `classification-task` | Diagrama estático de dos series de puntos sin unir: una con descensos repetidos clasificada como tránsito y otra sin ese patrón clasificada como no tránsito. |
-| `binary-input-output` | Presenta el objetivo del estudio de Shallue y Vanderburg (2017), define PC, AFP y NTP con sus conteos en el catálogo Autovetter y los agrupa para la clasificación binaria. Alterna el flujo de ajuste con etiquetas del catálogo y el puntaje/umbral aplicado a una señal nueva. |
+| `binary-input-output` | Presenta el problema supervisado, el conjunto de referencia y la diferencia entre entrenar una CNN y evaluarla en señales reservadas. Una ayuda desplegable define Autovetter y distingue ese proyecto de la CNN del artículo. |
 | `classification-vocabulary` | Abre con la tarea del artículo; un selector recorre TCE, PC, AFP, NTP y FP con una ilustración cualitativa por caso. Distingue las etiquetas de referencia del catálogo del error de predicción. |
 | `preparation` | Secuencia estática del preprocesamiento: significado de `t`, `F(t)`, `σ` y `q`; limpieza y aplanamiento con máscara; plegado, binning y normalización. |
 | `folded-views` | Presenta directamente la metodología global/local en dos columnas, define el plegado por fase y compara ambas escalas con la Figura 3 original, citada y ampliable. |
-| `cnn-score` | Alterna entrenamiento/inferencia sobre las dos vistas; en entrenamiento explica con un diagrama el reflejo horizontal aleatorio, la inversión del orden de los bins y la conservación de la etiqueta. En inferencia muestra el puntaje de las vistas originales. |
-| `paper-results` | Tabla del test, gráfico interactivo de Accuracy/ROC-AUC y Figura 6 original de precision–recall, con cita y ampliación. |
+| `cnn-score` | Reconstruye didácticamente la arquitectura CNN de dos vistas: ramas global/local con convolución 1D y max-pooling, capas densas compartidas y salida de puntaje. La explicación mantiene el límite del puntaje como priorización, no confirmación ni probabilidad calibrada. |
+| `paper-results` | Tabla de accuracy y ROC-AUC en el conjunto de prueba y lectura narrativa que compara los modelos, interpreta el resultado y contextualiza sus límites. |
 | `paper-limits` | Embudo interactivo 513 → 30 → 9 → 4; relato de diagnóstico astronómico y validación de Kepler-80 g/Kepler-90 i; selector de las Figuras 11, 8 y 10 sobre fondo blanco. |
 
 ## 3.3 — Movimiento respecto de una apertura fija
@@ -61,19 +61,21 @@ Las escenas de posibles falsos positivos ahora emparejan cada ilustración con u
 
 ## 5.1 — Del registro de Kepler a la entrada del clasificador
 
-- **Narrativa:** Kepler registra el brillo de una estrella, no una imagen de un planeta. El artículo transforma las curvas de luz para analizar cada TCE y producir representaciones comparables.
-- **Registro:** `t` es el instante de la medición; `F(t)`, el flujo estelar medido; `σ`, la incertidumbre de ese flujo; `q`, la bandera de calidad de la cadencia (`SAP_QUALITY`). `q` describe calidad instrumental y no se muestra como una entrada independiente de la CNN.
-- **Limpieza y tendencia:** retirar tránsitos de otros planetas confirmados del mismo sistema; ajustar una spline a la variación lenta; enmascarar e interpolar las cadencias del TCE durante el ajuste para no aplanar el tránsito; dividir el flujo por la tendencia estimada y retirar valores atípicos con el criterio descrito de 3σ.
-- **Plegado y escala:** usar el período del TCE para alinear las repeticiones en fase; agrupar mediciones en bins y resumirlas con medianas; normalizar las vistas a mediana 0 y mínimo −1. La 5.2 explica las vistas global y local y sus respectivas resoluciones.
+- **Narrativa:** Kepler registra el brillo de una estrella, no una imagen del planeta. La curva de luz se prepara para que la CNN compare los tránsitos repetidos y reciba dos vistas de la señal.
+- **Registro:** cada punto relaciona un instante `t` con el flujo estelar `F(t)`. La pantalla conserva esta base de la representación sin enumerar todas las variables auxiliares del archivo.
+- **Preparación:** la curva puede contener cambios lentos del brillo y tránsitos de otros planetas conocidos. El preprocesamiento reduce esas variaciones y procura mantener visible la señal estudiada; la pantalla explica el propósito, no cada operación del ajuste.
+- **Repeticiones y vistas:** el período permite alinear los tránsitos repetidos. El estudio los resume en una vista del ciclo completo y otra centrada en el evento; la 5.2 compara qué información aporta cada escala.
 - **Composición:** los tres pasos y sus explicaciones permanecen visibles en una secuencia; no hay controles que oculten etapas. En ventanas estrechas se apilan en orden.
-- **Límite:** presentar el pipeline descrito por Shallue y Vanderburg; no generalizarlo como una receta universal ni confundir `F/B(t)` con `F − B(t)`.
+- **Límite:** presentar el propósito general del preprocesamiento descrito por Shallue y Vanderburg; reservar los detalles técnicos para cuando sean necesarios para interpretar las vistas o el modelo.
 
-## Interacción: etiquetas, entrenamiento e inferencia
+## Interacción: entrenamiento y evaluación
 
-- **Secuencia:** la escena 4.1 presenta dos señales y sus clases de referencia. La 4.2 empieza en entrenamiento: una señal y su etiqueta conocida acompañan al puntaje; la comparación ajusta los parámetros del modelo. En inferencia, una señal nueva entra sin etiqueta del catálogo, el modelo entrenado calcula `s` para PC y un umbral produce la predicción PC o AFP/NTP. La referencia sirve después para evaluar.
-- **Control y lectura:** botones nativos en un grupo con estado `aria-pressed`; cada estado presenta tres pasos y un resultado en una región `aria-live="polite"`.
-- **Límite pedagógico:** la escena resume el aprendizaje supervisado. La transformación específica de aumento de datos y las dos vistas aparecen más adelante, en la escena de entrenamiento de la CNN.
-- **Adaptación:** los tres pasos se muestran en una fila en pantallas amplias y se apilan en ventanas estrechas.
+- **Narración:** 4.2 plantea la clasificación binaria de TCE con forma de tránsito. Menciona PC frente a AFP/NTP sin desarrollar cada etiqueta; sus nombres y diferencias se explican en 4.3.
+- **Autovetter y datos:** una ayuda desplegable explica que Autovetter fue un proyecto de clasificación automática basado en bosque aleatorio y estadísticas del pipeline. El artículo entrena otra arquitectura, una CNN sobre curvas de luz. El conjunto reúne 15 737 TCE etiquetados de Q1–Q17 DR24 y excluye UNK; sus etiquetas proceden de revisión manual y otros diagnósticos. Los autores encontraron ejemplos mal asignados, por lo que el desempeño mide acuerdo con el catálogo y no confirmación planetaria.
+- **Entrenamiento:** una señal TCE y su referencia conocida → puntaje de la CNN → la entropía cruzada mide el desacuerdo y Adam ajusta los parámetros.
+- **Evaluación:** señales reservadas → modelo ya ajustado, sin cambiar parámetros → comparación con las etiquetas de referencia y cálculo de métricas. La división detallada y la población del test se desarrollan en 6.1; las métricas se explican desde 6.2 en adelante.
+- **Control y lectura:** botones nativos «Entrenamiento» y «Evaluación» con estado `aria-pressed`; cada estado presenta tres pasos y un resultado en una región `aria-live="polite"`. La ayuda de Autovetter usa un `details` nativo y comienza cerrada.
+- **Límite pedagógico:** la escena resume la lógica de aprendizaje y evaluación. La transformación de aumento de datos y las dos vistas aparecen más adelante, en la escena de entrenamiento de la CNN.
 
 ## Interacción: clases del catálogo y error del clasificador
 
@@ -122,24 +124,25 @@ Las escenas de posibles falsos positivos ahora emparejan cada ilustración con u
 - **Interpretación y límites:** las profundidades primaria y secundaria dependen del tamaño y brillo de ambas estrellas; una tercera fuente constante disminuye la profundidad fraccional observada. El modelo asume órbita circular, alineación central, estrellas esféricas, brillo uniforme, fuentes no variables y flujo vecino constante. No incluye ruido, variabilidad, parámetros de un sistema real ni datos de Kepler.
 - **Fuente y comprobación:** Prša et al. (2011) respalda el contexto de binarias eclipsantes y los parámetros catalogados; Shallue y Vanderburg (2017) contextualiza binarias y falsos positivos en la búsqueda de exoplanetas. Verificar profundidad primaria mayor que secundaria con los parámetros didácticos, sincronía de ambos SVG y las dos curvas, pausa/reanudación, fase reducida, lectura con teclado, móvil y accesibilidad automática.
 
-## Interacción: etiquetas, entrenamiento e inferencia de la clasificación binaria
+## Interacción: entrenamiento y evaluación de la clasificación binaria
 
-- **Pregunta y objetivo:** ¿qué hicieron Shallue y Vanderburg con señales de Kepler, qué significa cada etiqueta del catálogo y cómo pasa el modelo de ejemplos conocidos a una señal sin etiqueta?
-- **Estado inicial y contexto:** el encabezado nombra a Christopher Shallue y Andrew Vanderburg, el año 2017, la red convolucional y el propósito de revisar señales de Kepler para priorizar posibles planetas. La banda de datos indica que el catálogo Autovetter reúne 15 737 señales etiquetadas y excluye UNK.
-- **Etiquetas y denominadores:** PC significa *Planet Candidate* (candidata a planeta; 3 600); AFP significa *Astrophysical False Positive* (falso positivo astrofísico; 9 596); NTP significa *Non-Transiting Phenomenon* (fenómeno no transitorio; 2 541). PC es la clase positiva; AFP y NTP se agrupan como negativas. Una etiqueta PC sigue siendo candidatura, no confirmación física. El artículo indica que las etiquetas proceden de evaluación manual y otros diagnósticos, y reconoce errores en algunos ejemplos.
-- **Entrenamiento:** curva de luz revisada + etiqueta conocida → puntaje para la clase candidata → ajuste de parámetros. La etiqueta del catálogo funciona como referencia de aprendizaje.
-- **Inferencia:** curva nueva sin etiqueta conocida → puntaje del modelo → comparación con el umbral → predicción candidata/no candidata. La etiqueta de catálogo, cuando existe, se consulta después para evaluar; el puntaje por sí solo no confirma un planeta.
-- **Adaptación y acceso:** los tres resúmenes de clase se leen antes del control. El cambio entre entrenamiento e inferencia usa botones con `aria-pressed`; las tarjetas se apilan en anchos pequeños. No hay animación en esta escena, por lo que no necesita control de movimiento reducido.
-- **Comprobación:** contenido visible de las tres expansiones y conteos; agrupación PC frente a AFP/NTP; entrenamiento desde una señal etiquetada; inferencia desde una señal nueva; teclado, lectura accesible y presentación a 1299 × 884 y móvil.
+- **Pregunta y objetivo:** ¿cómo aprende una CNN de ejemplos etiquetados y cómo estimamos su desempeño con señales que no participaron en el ajuste?
+- **Estado inicial y contexto:** el encabezado nombra a Christopher Shallue y Andrew Vanderburg, el año 2017 y el propósito de priorizar TCE que podían corresponder a planetas. La narración plantea PC frente a AFP/NTP y refiere a 4.3 para el significado de las categorías.
+- **Conjunto y cautela:** el artículo toma 15 737 TCE etiquetados del catálogo Autovetter de Kepler Q1–Q17 DR24 y excluye UNK. Las etiquetas proceden de revisión manual y otros diagnósticos; se encontraron algunos errores. La pantalla advierte que la evaluación estima acuerdo con esa referencia, no confirmación física.
+- **Autovetter:** la ayuda desplegable lo presenta como un proyecto de clasificación automática de Kepler basado en un bosque aleatorio y rasgos derivados de las estadísticas del pipeline. Distingue esa herramienta de la CNN del estudio, que recibe curvas de luz.
+- **Entrenamiento:** TCE etiquetado → puntaje de la CNN → función de pérdida que resume la diferencia con la referencia → actualización de parámetros.
+- **Evaluación:** un TCE del conjunto reservado → puntaje del modelo ya ajustado → comparación con su etiqueta de referencia → métricas. El protocolo de partición se desarrolla en la pantalla 6.1.
+- **Adaptación y acceso:** los botones «Entrenamiento» y «Evaluación» informan la selección con `aria-pressed`. Cada estado presenta tres pasos y un resultado en `aria-live="polite"`. La explicación de Autovetter usa un `details` nativo, cerrado inicialmente y operable con teclado.
+- **Comprobación:** se muestran la tarea binaria y la advertencia del catálogo sin tarjetas que desarrollen las tres clases; apertura por teclado de la ayuda; diferencias entre ajuste y evaluación reservada; correspondencia entre estados visuales y texto accesible; presentación a 1299 × 884 y móvil.
 
-## Interacción: aumentación de ejemplos y puntaje de la CNN
+## Interacción: arquitectura de la CNN y puntaje
 
-- **Pregunta:** ¿qué transformación se usa para ampliar los ejemplos de entrenamiento y qué entra al modelo al puntuar una señal?
-- **Estado inicial:** entrenamiento seleccionado para mostrar desde la apertura el reflejo horizontal aleatorio descrito por Shallue y Vanderburg (2017, § IV.2).
-- **Entrenamiento:** el diagrama compara una curva esquemática con su reflexión izquierda-derecha. Se define como inversión del orden de los bins, `x₁,…,xₙ → xₙ,…,x₁`; la etiqueta PC/no planetaria se conserva. La explicación aclara que son variantes de ejemplos, no observaciones nuevas.
-- **Inferencia:** el diagrama de aumentación desaparece; el flujo queda en las dos vistas originales → CNN → puntaje, con la advertencia de calibración.
-- **Accesibilidad y visual:** los botones nativos informan su selección con `aria-pressed`; el SVG tiene título y descripción únicos mediante `useId`; la leyenda distingue las curvas por texto y trazo además de color. La gráfica se escala al ancho disponible y su pie declara su carácter esquemático.
-- **Comprobación:** validar estado inicial, cambio a inferencia y regreso al entrenamiento; inspeccionar nombres accesibles, IDs al montar varias escenas y lectura en escritorio y móvil.
+- **Pregunta y función:** ¿cómo transforma el clasificador las vistas global y local en un puntaje? Esta pantalla conecta la representación de 5.2 con la predicción que luego se evalúa.
+- **Diagrama:** cada vista alimenta una rama convolucional propia. Los bloques de convolución 1D y max-pooling resumen patrones a escalas distintas; las capas densas reúnen ambas ramas y una salida produce `s`.
+- **Reconstrucción y alcance:** recurso gráfico original del curso, basado en la arquitectura seleccionada de la Figura 7 de Shallue y Vanderburg (2018). Las curvas son esquemáticas; los bloques agrupan capas repetidas y omiten tamaños y número de filtros. No reproduce ni redistribuye la figura del artículo.
+- **Lectura científica:** el texto describe filtros aprendidos, resumen de respuestas cercanas y combinación de ambas vistas. El puntaje prioriza la revisión, pero no confirma un planeta ni equivale automáticamente a una probabilidad calibrada.
+- **Accesibilidad y visual:** el diagrama conserva una descripción accesible del flujo completo, etiquetas textuales junto a las diferencias de color y una distribución en ramas que se apila en móvil.
+- **Comprobación:** revisar el contenido del diagrama, la atribución a la fuente primaria y el reflujo en escritorio y móvil.
 
 ## Interacción: puntajes, selección y validación astronómica
 

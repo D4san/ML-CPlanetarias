@@ -22,17 +22,16 @@ describe('S03: contrato editorial y disponibilidad', () => {
       expect(screen.summary.length).toBeGreaterThan(40);
     }
   });
-  it('presenta el estudio y expande las tres etiquetas antes del flujo del clasificador', () => {
+  it('presenta el entrenamiento, la evaluación y el límite del catálogo', () => {
     const screen = S03_SCREENS.find((item) => item.id === 's03-classification-2');
     expect(screen).toBeDefined();
+    expect(screen!.title).toBe('Entrenamiento y evaluación');
     expect(screen!.intro).toContain('Christopher Shallue y Andrew Vanderburg');
-    expect(screen!.summary).toContain('15 737 TCEs');
-    expect(screen!.summary).toContain('Planet Candidate, candidata a planeta');
-    expect(screen!.summary).toContain('Astrophysical False Positive, falso positivo astrofísico');
-    expect(screen!.summary).toContain('Non-Transiting Phenomenon, fenómeno no transitorio');
-    expect(screen!.summary).toContain('3 600 PC');
-    expect(screen!.summary).toContain('9 596 AFP');
-    expect(screen!.summary).toContain('2 541 NTP');
+    expect(screen!.summary).toContain('15 737 TCE');
+    expect(screen!.summary).toContain('Autovetter');
+    expect(screen!.summary).toContain('se evalúa con señales reservadas');
+    expect(screen!.summary).toContain('no confirmación planetaria');
+    expect(screen!.summary).not.toContain('Planet Candidate, candidata a planeta');
   });
   it('mantiene nueve capítulos autónomos con ejemplos, respuestas y fuentes', () => {
     expect(s03Book.chapters).toHaveLength(9);

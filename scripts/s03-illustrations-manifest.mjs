@@ -147,7 +147,7 @@ const items = [
     unit: '4.3',
     screenId: 's03-classification-3',
     case: 'Escena conceptual de una señal compatible con un candidato planetario.',
-    purpose: 'Ilustrar la interpretación planetaria que el estudio asigna a la referencia PC.',
+    purpose: 'Explicar la etiqueta PC como referencia y distinguirla de la señal y la predicción.',
     alt: 'Un solo cuerpo oscuro cruza el disco de una estrella brillante.',
     caption: 'Escena conceptual de una señal compatible con un candidato planetario.',
     sourceRefs: ['shallue-vanderburg-2017'],
@@ -176,7 +176,7 @@ const items = [
     screenId: 's03-classification-3',
     case: 'Binaria eclipsante como explicación astrofísica de una caída parecida a un tránsito.',
     purpose:
-      'Distinguir AFP de una señal planetaria mediante una explicación astrofísica alternativa.',
+      'Explicar AFP como etiqueta de referencia para una señal con causa astrofísica alternativa.',
     alt: 'Dos estrellas de distinto brillo se superponen en la línea de visión; la estrella menor eclipsa parcialmente a la mayor.',
     caption: 'Una binaria eclipsante puede producir una caída parecida a un tránsito.',
     sourceRefs: ['shallue-vanderburg-2017'],
@@ -265,6 +265,40 @@ const items = [
     reviewInspectedAt: '2026-10-20',
     reviewContexts: ['intrinsic-size', '1920x1080', '1024x768', '1299x884', '390x844'],
   },
+  {
+    file: 's03-confusion-signal-icons.png',
+    unit: '6.2',
+    screenId: 's03-errors-2',
+    case: 'Tres escenas conceptuales compactas para clasificar señales de tránsito, binarias eclipsantes y variación sin tránsito.',
+    purpose:
+      'Dar una pista visual legible en tarjetas pequeñas y vincular cada predicción con la referencia que revela la actividad.',
+    alt: 'Tres escenas conceptuales: un planeta cruza una estrella; dos estrellas se eclipsan; una estrella con manchas varía sin un cuerpo en tránsito.',
+    caption:
+      'Ilustraciones conceptuales de tres causas posibles; la clasificación se evalúa frente a etiquetas de referencia del catálogo.',
+    sourceRefs: ['s03-confusion-signal-icons.md', 'shallue-vanderburg-2017'],
+    limits: [
+      'Las escenas son conceptuales, no observaciones de Kepler ni datos de las ocho tarjetas.',
+      'AFP y NTP se agrupan como referencias negativas, aunque representan causas astrofísicas distintas.',
+      'La ilustración ofrece una pista de causa; la decisión del estudiante es una predicción didáctica, no evidencia de desempeño del clasificador del artículo.',
+    ],
+    reviewFinding:
+      'Inspección intrínseca: las tres siluetas se distinguen; PNG RGBA 2172×724, cuatro esquinas con alfa 0 y 870980 bytes. La revisión de integración sigue pendiente.',
+    reviewFindings: [
+      'Inspección intrínseca: las tres siluetas se distinguen; PNG RGBA 2172×724, cuatro esquinas con alfa 0 y 870980 bytes. La revisión de integración sigue pendiente.',
+    ],
+    toolProcess:
+      'ImageGen integrado el 2026-10-26; tríptico PNG original copiado sin modificación desde la salida generada.',
+    sourcePath: 'docs/guides/s03-confusion-signal-icons.md',
+    sourceHeading: 'Encargo',
+    styleFamily:
+      'Miniaturas astronómicas editoriales de S03: discos estelares cálidos, fondos transparentes y siluetas limpias para lectura a tamaño pequeño.',
+    backgroundMode: 'transparent-alpha',
+    alphaStatus: 'passed',
+    transformation:
+      'PNG original sin retoque; la interfaz recorta cada tercio con sprite CSS para repetir las tres miniaturas en las tarjetas.',
+    reviewInspectedAt: '2026-10-26',
+    reviewContexts: ['intrinsic-size', 'alpha-channel'],
+  },
 ];
 const assets = [];
 for (const item of items) {
@@ -345,6 +379,6 @@ for (const item of items) {
 }
 await writeFile(
   new URL('../public/images/s03/s03-illustrations.manifest.json', import.meta.url),
-  `${JSON.stringify({ id: 's03-illustrations', date: '2026-10-20', assets }, null, 2)}\n`,
+  `${JSON.stringify({ id: 's03-illustrations', date: '2026-10-26', assets }, null, 2)}\n`,
 );
 console.log(`Manifiesto actualizado: ${assets.length} ilustraciones.`);

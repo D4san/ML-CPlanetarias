@@ -1,6 +1,6 @@
 {
   "id": "s03-illustrations",
-  "date": "2026-10-20",
+  "date": "2026-10-26",
   "assets": [
     {
       "id": "s03-variabilidad-conceptual",
@@ -279,7 +279,7 @@
       "type": "conceptual",
       "unit": "S03 / 4.3",
       "case": "Escena conceptual de una señal compatible con un candidato planetario.",
-      "purpose": "Ilustrar la interpretación planetaria que el estudio asigna a la referencia PC.",
+      "purpose": "Explicar la etiqueta PC como referencia y distinguirla de la señal y la predicción.",
       "tool_process": "ImageGen integrado el 2026-10-20; PNG horizontal copiado sin edición; la ficha conserva el encargo.",
       "style_family": "Ilustración astronómica realista de S03: luz sobria, espacio azul oscuro, pocos objetos y composición horizontal.",
       "width": 1672,
@@ -330,7 +330,7 @@
       "type": "conceptual",
       "unit": "S03 / 4.3",
       "case": "Binaria eclipsante como explicación astrofísica de una caída parecida a un tránsito.",
-      "purpose": "Distinguir AFP de una señal planetaria mediante una explicación astrofísica alternativa.",
+      "purpose": "Explicar AFP como etiqueta de referencia para una señal con causa astrofísica alternativa.",
       "tool_process": "ImageGen integrado el 2026-10-20; PNG horizontal copiado sin edición; la ficha conserva el encargo.",
       "style_family": "Ilustración astronómica realista de S03: luz sobria, espacio azul oscuro, pocos objetos y composición horizontal.",
       "width": 1672,
@@ -483,6 +483,58 @@
         "findings": [
           "Inspección intrínseca: una estrella con manchas y una sombra aparente son visibles; no hay texto ni etiquetas técnicas.",
           "Integrada en 1920×1080, 1024×768, 1299×884 y 390×844: las tres etapas conservan su relación de izquierda a derecha en escritorio y se apilan en móvil; el texto y las fuentes se alcanzan con desplazamiento vertical, sin desbordamiento horizontal."
+        ]
+      }
+    },
+    {
+      "id": "s03-confusion-signal-icons",
+      "file": "public/images/s03/s03-confusion-signal-icons.png",
+      "type": "conceptual",
+      "unit": "S03 / 6.2",
+      "case": "Tres escenas conceptuales compactas para clasificar señales de tránsito, binarias eclipsantes y variación sin tránsito.",
+      "purpose": "Dar una pista visual legible en tarjetas pequeñas y vincular cada predicción con la referencia que revela la actividad.",
+      "tool_process": "ImageGen integrado el 2026-10-26; tríptico PNG original copiado sin modificación desde la salida generada.",
+      "style_family": "Miniaturas astronómicas editoriales de S03: discos estelares cálidos, fondos transparentes y siluetas limpias para lectura a tamaño pequeño.",
+      "width": 2172,
+      "height": 724,
+      "weight_bytes": 870980,
+      "sha256": "4c5c5b2fd2bcb461b4f641dd3773e84502d7db24e8f31bc904df940bbb7830e7",
+      "alt": "Tres escenas conceptuales: un planeta cruza una estrella; dos estrellas se eclipsan; una estrella con manchas varía sin un cuerpo en tránsito.",
+      "caption": "Ilustraciones conceptuales de tres causas posibles; la clasificación se evalúa frente a etiquetas de referencia del catálogo.",
+      "generation_method": "imagegen",
+      "background_mode": "transparent-alpha",
+      "alpha_status": "passed",
+      "rights": {
+        "status": "original",
+        "note": "Ilustración generada para el curso; no observación ni simulación calibrada."
+      },
+      "provenance": {
+        "origin": "repo",
+        "source_path": "docs/guides/s03-confusion-signal-icons.md",
+        "source_heading": "Encargo",
+        "source_refs": [
+          "src/lib/s03-content.ts#s03-errors-2",
+          "s03-confusion-signal-icons.md",
+          "shallue-vanderburg-2017"
+        ],
+        "transformation": "PNG original sin retoque; la interfaz recorta cada tercio con sprite CSS para repetir las tres miniaturas en las tarjetas.",
+        "units": null,
+        "seed": null
+      },
+      "limits": [
+        "Las escenas son conceptuales, no observaciones de Kepler ni datos de las ocho tarjetas.",
+        "AFP y NTP se agrupan como referencias negativas, aunque representan causas astrofísicas distintas.",
+        "La ilustración ofrece una pista de causa; la decisión del estudiante es una predicción didáctica, no evidencia de desempeño del clasificador del artículo."
+      ],
+      "review": {
+        "status": "pending",
+        "inspected_at": "2026-10-26",
+        "contexts": [
+          "intrinsic-size",
+          "alpha-channel"
+        ],
+        "findings": [
+          "Inspección intrínseca: las tres siluetas se distinguen; PNG RGBA 2172×724, cuatro esquinas con alfa 0 y 870980 bytes. La revisión de integración sigue pendiente."
         ]
       }
     }
