@@ -194,7 +194,7 @@ describe('S03: escenas científicas', () => {
     const user = userEvent.setup();
     render(<S03ScienceScenes sceneId="binary-input-output" />);
 
-    expect(screen.getByText(/Una señal con forma de tránsito/)).toBeInTheDocument();
+    expect(screen.getByText(/Una caída de brillo con forma de tránsito/)).toBeInTheDocument();
     expect(screen.getByText(/15 737 TCE etiquetados/)).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'Candidata a planeta' })).not.toBeInTheDocument();
     const autovetterSummary = screen.getByText('¿Qué era Autovetter?');
